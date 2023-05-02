@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://portfolio.c4nscvpnlijb.ap-northeast-2.rds.amazonaws.com:3306/joinus
+    username: admin
+    password: 1q2w3e4r
+    
+mybatis:
+  mapper-locations:
+    - /mappers/*.xml
+
+jwt:
+  secret: ezV2FMXHX7bzV8eEL9lHf0MLSCnB5M6gtjcHmokIxABqjplbHtRypoN8H2vMTxVO
