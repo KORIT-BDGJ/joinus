@@ -3,14 +3,15 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-const container = css`
+const container = css` // TODO: 컴포넌트의 전체적인 스타일을 작성
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 80px 30px;
+  
 `;
 
-const title = css`
+const title = css` // TODO: 글 목록의 제목을 보여주는 컴포넌트의 스타일을 작성
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,21 +20,34 @@ const title = css`
   font-weight: 600;
 `;
 
-const list = css`
+const list = css` // TODO: 글 목록을 보여주는 컴포넌트의 스타일을 작성
   width: 100%;
   max-width: 800px;
   margin-top: 50px;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  border: 1px solid #dbdbdb;
   padding: 30px 0;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+`;
+
+const listItem = css` // TODO: 수정 버튼과 삭제 버튼을 오른쪽에 배치하기 위해 flex 속성을 사용
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const buttons = css` // TODO: 수정 버튼과 삭제 버튼 사이의 간격을 10px로 설정
+  display: flex;
+  gap: 10px;
 `;
 
 const OwnerPostList = () => {
   const [posts, setPosts] = useState([ //예시 데이터
     { id: 1, title: '글 제목 1', body: '글 내용 1', editable: true, deletable: true },
     { id: 2, title: '글 제목 2', body: '글 내용 2', editable: true, deletable: true },
-    { id: 3, title: '글 제목 3', body: '글 내용 3', editable: false, deletable: false },
+    { id: 3, title: '글 제목 3', body: '글 내용 3', editable: true, deletable: true },
   ]);
 
   // useEffect(() => {
@@ -60,18 +74,23 @@ const OwnerPostList = () => {
     <div css={container}> 
       <h1 css={title}>내가 올린 글</h1>
       <ul css={list}>
-        {posts.map((post) => ( // TODO: posts.map()을 사용하여 게시글 목록 표시
-          <li key={post.id}> 
-            <div>
-              <h2>{post.title}</h2>
-              <p>{post.body}</p>
-            </div>
-            <div>
-              {post.editable && <button onClick={() => Edit(post.id)}>수정하기</button>}
-              {post.deletable && <button onClick={() => Delete(post.id)}>삭제하기</button>}
-            </div>
-          </li>
-        ))}
+      {posts.map((post) => (
+        <li key={post.id} css={listItem}>
+          <div>
+            <h2>{post.title}</h2>
+            <p>{post.body}</p>
+          </div>
+          <div css={buttons}>
+            {post.editable && (
+              <button onClick={() => Edit(post.id)}>수정하기</button>
+            )}
+            {post.deletable && (
+              <button onClick={() => Delete(post.id)}>삭제하기</button>
+            )}
+          </div>
+        </li>
+      ))}
+
       </ul>
     </div>
   );
