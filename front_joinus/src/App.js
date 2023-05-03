@@ -1,5 +1,5 @@
 import { Global } from '@emotion/react'
-import { Reset } from "./Styles/Global/reset";
+import { Reset } from './Styles/Global/reset';
 import { Routes } from 'react-router-dom';
 
 
