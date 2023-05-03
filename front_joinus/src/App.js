@@ -1,15 +1,15 @@
 import { Global } from '@emotion/react'
 import { Reset } from './Styles/Global/reset';
-import { Routes } from 'react-router-dom';
+import Main from './pages/Main/Main';
+import PostRegister from './pages/Post/PostRegister/PostRegister';
 
 
 function App() {
   return (
     <>
       <Global styles={ Reset }></Global>
-      <Routes>
-
-      </Routes>
+      {/* <Main /> */}
+      <PostRegister />
     </>
   );
 }
