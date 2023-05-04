@@ -2,6 +2,8 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 
 const container = css`
     display: flex;
@@ -44,39 +46,100 @@ const listItem = css`
   }
 `;
 
+const postTitle = css` // 글 제목
+	font-size: 24px;
+	font-weight: 600;
+	margin: 0;
+	&:hover {
+		cursor: pointer;
+		color: #0095f6;
+	}
+`;
+
 const buttons = css`
   display: flex;
   gap: 10px;
   height: 30px;
 `;
 
+const modalOverlay = css` // 모달창 배경
+	position: fixed;	
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const modal = css` 
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	padding: 20px;
+	width: 400px;
+	height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
+const modalMessage = css`
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+`;
+
+
+const modalButtons = css` // 모달창 버튼들
+	display: flex;
+	gap: 20px;
+	height: 30px;
+	margin-top: 20px;
+`;
 
 
 const HostPostList = () => {
     const [posts, setPosts] = useState([
-        { id: 1, title: '글 제목 1', body: '글 내용 1', moveButton: true, cancelButton: true },
-        { id: 2, title: '글 제목 2', body: '글 내용 2', moveButton: true, cancelButton: true },
-        { id: 3, title: '글 제목 3', body: '글 내용 3', moveButton: true, cancelButton: true },
+        { id: 1, title: '글 제목 1', cancelButton: true },
+        { id: 2, title: '글 제목 2', cancelButton: true },
+        { id: 3, title: '글 제목 3', cancelButton: true },
     ]);
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:8080/api/posts')
-    //         .then((res) => {
-    //             console.log(res.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // }, []);
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/posts')
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
 
-    const Move = (id) => { 
-        // TODO: 이동 버튼 클릭 시 처리할 로직 구현
-        
+    const movePost = (id) => {
+		console.log(`해당 상세페이지로 이동 ${id}`);
+	};
+
+    const cancelPost = (id) => { 
+        setIsModalOpen(true); // 모달 창 열기
     };
 
-    const Cancel = (id) => { 
-        // TODO: 취소 버튼 클릭 시 처리할 로직 구현
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 열림/닫힘 상태
+	
+    const cancelRemove = () => {
+		setIsModalOpen(false); // 모달창 닫기
     };
+	
+	const confirmRemove = () => {
+		console.log('게시글 삭제');
+		setIsModalOpen(false); // 모달창 닫기
+	};
 
     return (
         <div css={container}> 
@@ -85,20 +148,30 @@ const HostPostList = () => {
                 {posts.map((post) => (
                     <li key={post.id} css={listItem}>
                         <div>
-                            <h2>{post.title}</h2>
+                            <h2 css={postTitle} onClick={() => movePost(post.id)}>
+                            {post.title}
+                            </h2>
                             <p>{post.body}</p>
                         </div>
                         <div css={buttons}>
-                            {post.moveButton && (
-                                <button onClick={() => Move(post.id)}>이동하기</button>
-                            )}
                             {post.cancelButton && (
-                                <button onClick={() => Cancel(post.id)}>취소하기</button>
+                                <button onClick={() => cancelPost(post.id)}>취소하기</button>
                             )}
                         </div>
                     </li>
                 ))}
             </ul>
+            {isModalOpen && (
+			<div css={modalOverlay}>
+				<div css={modal}>
+				<p css={modalMessage}>취소하시겠습니까?</p>
+				<div css={modalButtons}>
+					<button onClick={confirmRemove}>확인</button>
+					<button onClick={cancelRemove}>취소</button>
+				</div>
+				</div>
+			</div>
+			)}
   </div>
   );
 };
