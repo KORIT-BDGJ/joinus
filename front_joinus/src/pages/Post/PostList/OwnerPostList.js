@@ -112,21 +112,6 @@ const OwnerPostList = () => {
 		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
 		{ id: 2, title: '첫번째 글', editButton: true, deleteButton: true },
 		{ id: 3, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
 
 	]);
 

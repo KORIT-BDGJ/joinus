@@ -29,7 +29,7 @@ const list = css`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  height: auto; 
+  max-height: 730px; 
 `;
 
 
@@ -48,11 +48,19 @@ const listItem = css`
 const postTitle = css` // 글 제목
   font-size: 24px;
   font-weight: 600;
-  margin: 0;
+  margin: 10;
+  line-height: 1.25;
+  margin-bottom: 10px;
   &:hover {
     cursor: pointer;
     color: #0095f6;
   }
+`;
+
+const postDate = css`
+  font-size: 24px;
+  color: #8e8e8e;
+  margin: 10;
 `;
 
 const buttons = css`
@@ -126,25 +134,25 @@ const paginationItem = css`
   }
 `;
 
+
+
 const KimDuYeongTest = () => {
 	const [posts, setPosts] = useState([
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-
-
+		{ id: 1, title: '1', date: '2021-05-04', editButton: true, deleteButton: true },
+		{ id: 2, title: '2', date: '2023-05-04', editButton: true, deleteButton: true },
+		{ id: 3, title: '3', date: '2022-05-04', editButton: true, deleteButton: true },
+		{ id: 4, title: '4', date: '2021-05-04', editButton: true, deleteButton: true },
+		{ id: 5, title: '5', date: '2023-05-04', editButton: true, deleteButton: true },
+		{ id: 6, title: '6', date: '2022-05-04', editButton: true, deleteButton: true },
+		{ id: 7, title: '7', date: '2021-05-04', editButton: true, deleteButton: true },
+		{ id: 8, title: '8', date: '2023-05-04', editButton: true, deleteButton: true },
+		{ id: 9, title: '9', date: '2022-05-04', editButton: true, deleteButton: true },
+		{ id: 10, title: '10', date: '2021-05-04', editButton: true, deleteButton: true },
+		{ id: 11, title: '11', date: '2023-05-04', editButton: true, deleteButton: true },
+		{ id: 12, title: '12', date: '2022-05-04', editButton: true, deleteButton: true },
+		{ id: 13, title: '13', date: '2021-05-04', editButton: true, deleteButton: true },
+		{ id: 14, title: '14', date: '2023-05-04', editButton: true, deleteButton: true },
+		{ id: 15, title: '15', date: '2022-05-04', editButton: true, deleteButton: true },
 	]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const postsPerPage = 10;
@@ -204,6 +212,7 @@ const KimDuYeongTest = () => {
 					<h2 css={postTitle} onClick={() => movePost(post.id)}>
 					{post.title}
 					</h2>
+					<p css={postDate}>{post.date}</p>
 				</div>
 				<div css={buttons}>
 					{post.editButton && (
@@ -226,6 +235,7 @@ const KimDuYeongTest = () => {
 					key={pageNumber}
 					css={paginationItem}
 					onClick={() => handleClick(pageNumber)}
+					style={{ backgroundColor: pageNumber === currentPage ? "#dbdbdb" : "transparent" }} // 현재 페이지 번호 강조
 				>
 					{pageNumber}
 				</li>
