@@ -2,12 +2,13 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import React from 'react';
 
 const container = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80px 30px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	padding: 30px 30px;
 `;
 
 const title = css` // 내가 참여한 글
@@ -19,17 +20,17 @@ const title = css` // 내가 참여한 글
   font-weight: 600;
 `;
 
-const list = css`
-  width: 100%;
-  max-width: 800px;
-  margin-top: 50px;
-  border: 1px solid #dbdbdb;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  max-height: 650px;
+const list = css` 
+	width: 100%;
+	max-width: 800px;
+	margin-top: 30px;
+	border: 1px solid #dbdbdb;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	max-height: 700px;
 `;
 
 const listItem = css`

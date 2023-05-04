@@ -2,19 +2,19 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import React from 'react';
 
 const container = css`
   	display: flex;
   	flex-direction: column;
   	align-items: center;
-  	padding: 80px 30px;
+  	padding: 30px 30px;
 `;
 
 const title = css` // 내가 올린 글
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100px;
 	font-size: 34px;
 	font-weight: 600;
 `;
@@ -22,14 +22,14 @@ const title = css` // 내가 올린 글
 const list = css` 
 	width: 100%;
 	max-width: 800px;
-	margin-top: 50px;
+	margin-top: 30px;
 	border: 1px solid #dbdbdb;
 	padding: 0;
 	list-style: none;
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
-	max-height: 650px;
+	max-height: 700px;
 `;
 
 const listItem = css` 
@@ -44,6 +44,16 @@ const listItem = css`
 	}
 `;
 
+const postTitle = css` // 글 제목
+	font-size: 24px;
+	font-weight: 600;
+	margin: 0;
+	&:hover {
+		cursor: pointer;
+		color: #0095f6;
+	}
+`;
+
 const buttons = css`
 	display: flex;
 	gap: 10px;
@@ -53,16 +63,6 @@ const buttons = css`
 const buttonLabel = css`
 	white-space: nowrap;
 	overflow: hidden;
-`;
-
-const postTitle = css` // 글 제목
-	font-size: 24px;
-	font-weight: 600;
-	margin: 0;
-	&:hover {
-		cursor: pointer;
-		color: #0095f6;
-	}
 `;
 
 const modalOverlay = css`
@@ -112,6 +112,20 @@ const OwnerPostList = () => {
 		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
 		{ id: 2, title: '첫번째 글', editButton: true, deleteButton: true },
 		{ id: 3, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
 		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
 
 	]);
