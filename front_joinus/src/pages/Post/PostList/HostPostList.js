@@ -20,27 +20,37 @@ const title = css`
 `;
 
 const list = css`
-    width: 100%;
-    max-width: 800px;
-    margin-top: 50px;
-    border: 1px solid #dbdbdb;
-    padding: 30px 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 50px;
+  border: 1px solid #dbdbdb;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 650px;
 `;
 
 const listItem = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  border-bottom: 1px solid #dbdbdb;
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 const buttons = css`
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
+  height: 30px;
 `;
+
+
 
 const HostPostList = () => {
     const [posts, setPosts] = useState([
