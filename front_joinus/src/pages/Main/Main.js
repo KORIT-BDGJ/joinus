@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import React from 'react';
-import { AiFillCaretDown } from 'react-icons/ai';
+import { useNavigate } from "react-router-dom";
 
 const mainContainer = css`
     padding: 10px;
@@ -14,20 +14,19 @@ const header = css`
     height: 100px;
 `;
 
-const searchItems = css`
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
+const selectCountry = css`
+    width: 100px;
+    height: 35px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    background-color: white;
 `;
 
-const categoryButton = css`
-    position: relative;
-    border: 1px solid #dbdbdb;
+const searchCategory = css`
+    width: 100px;
+    height: 35px;
+    border: 1px solid #999;
     border-radius: 5px;
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    cursor: pointer;
 `;
 
 const searchInput = css`
@@ -35,10 +34,10 @@ const searchInput = css`
     border-radius: 7px;
     padding: 5px;
     width: 200px;
-    height: 30px;
+    height: 35px;
 `;
 
-const main = css`
+const mainListBox = css`
     display: flex;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
@@ -47,12 +46,13 @@ const main = css`
     overflow-y: auto;
 `;
 
-const post = css`
+const listContainer = css`
     border: 1px solid #dbdbdb;
     border-radius: 7px;
     padding: 5px;
     width: 100%;
     height: 120px;
+    background-color: beige;
 `;
 
 const postHeader = css`
@@ -60,53 +60,75 @@ const postHeader = css`
 `;
 const postMain = css`
     display: flex;
-
     justify-content: center;
     align-items: center;
     height: 60%;
+    font-size: 30px;
 `;
-const postInfo = css`
+const postSub = css`
     height: 20%;
 `;
 
 const pageButton = css`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 15px;
 `;
 
+const createButton = css`
+    position: absolute;
+    border-radius: 6px;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 40px;
+`;
+
 const Main = () => {
+
+    const navigate = useNavigate();
+
+    const createClickHandle = () => {
+        navigate("/post/register");
+    }
 
     return (
         <div css={mainContainer}>
             <header css={header}>
-                <div> 운동종목 설정
-                    <button css={categoryButton}>
-                        <AiFillCaretDown/>
-                    </button>
-                </div>
-                <div> 지역설정
-                    <button css={categoryButton}>
-                        <AiFillCaretDown/>
-                    </button>
-                </div>
+                <select css={selectCountry}>
+                    <option selected>운동</option>
+                </select>
+                <select css={selectCountry}>
+                    <option selected>지역</option>
+                    <option>부산</option>
+                    <option>서울</option>
+                    <option>대구</option>
+                </select>
                 <div>
-                    <button css={categoryButton}>
-                        <AiFillCaretDown/>
-                    </button>
-                    <input css={searchInput} type="search" placeholder="검색창"/>
+                    <select css={searchCategory}>
+                        <option selected>제목</option>
+                        <option>작성자</option>
+                        <option>내용</option>
+                    </select>
+                    <input css={searchInput} type="text" placeholder="검색"/>
                 </div>
             </header>
-            <main css={main}>
-                <div css={post}>
-                    <header css={postHeader}>작성 날짜</header>
-                    <main css={postMain}> 제목 </main>
-                    <footer css={postInfo}>방장정보/모집시간/인원수</footer>
+            <div css={mainListBox}>
+                <div css={listContainer}>
+                    <header css={postHeader}>등록 날짜</header>
+                    <main css={postMain}>모집 제목</main>
+                    <footer css={postSub}>모집유저이름/모집지역/모집시간/신청인원</footer>
                 </div>
-            </main>
-            <button>작성하기</button>
-            <div css={pageButton}>페이지 이동</div>
+            </div>
+            <div css={pageButton}>
+                <button>pagination</button>
+            </div>
+                <button css={createButton} onClick={createClickHandle}>
+                    작성하기
+                </button>
+            
         </div>
     );
 };
