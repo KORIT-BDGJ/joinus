@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-
 const container = css`
   	display: flex;
   	flex-direction: column;
@@ -11,7 +10,7 @@ const container = css`
   	padding: 80px 30px;
 `;
 
-const title = css`
+const title = css` // 내가 올린 글
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -20,7 +19,7 @@ const title = css`
 	font-weight: 600;
 `;
 
-const list = css`
+const list = css` 
 	width: 100%;
 	max-width: 800px;
 	margin-top: 50px;
@@ -33,7 +32,7 @@ const list = css`
 	max-height: 650px;
 `;
 
-const listItem = css`
+const listItem = css` 
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
@@ -45,13 +44,13 @@ const listItem = css`
 	}
 `;
 
-const buttons = css` // 버튼들
+const buttons = css`
 	display: flex;
 	gap: 10px;
 	height: 30px;
 `;
 
-const buttonLabel = css` // 버튼 안의 글자
+const buttonLabel = css`
 	white-space: nowrap;
 	overflow: hidden;
 `;
@@ -66,7 +65,7 @@ const postTitle = css` // 글 제목
 	}
 `;
 
-const modalOverlay = css` // 모달창 배경
+const modalOverlay = css`
 	position: fixed;	
 	top: 0;
 	left: 0;
@@ -101,7 +100,7 @@ const modalMessage = css`
 `;
 
 
-const modalButtons = css` // 모달창 버튼들
+const modalButtons = css`
 	display: flex;
 	gap: 20px;
 	height: 30px;
@@ -111,42 +110,44 @@ const modalButtons = css` // 모달창 버튼들
 const OwnerPostList = () => {
 	const [posts, setPosts] = useState([
 		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 2, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 3, title: '첫번째 글', editButton: true, deleteButton: true },
+		{ id: 4, title: '첫번째 글', editButton: true, deleteButton: true },
 
 	]);
 
-	useEffect(() => {
-		axios.get('http://localhost:8080/api/posts')
-		  .then((res) => {
-			setPosts(res.data);
-		  })
-		  .catch((error) => {
-			console.error(error);
-		  });
-	  }, []);
+	// useEffect(() => {
+	// 	axios.get('http://localhost:8080/api/posts')
+	// 	  .then((res) => {
+	// 		setPosts(res.data);
+	// 	  })
+	// 	  .catch((error) => {
+	// 		console.error(error);
+	// 	  });
+	//   }, []);
 
     
-    const movePost = (id) => {
+    const movePost = (id) => { // 상세페이지로 이동
 		console.log(`해당 상세페이지로 이동 ${id}`);
 	};
     
-    const modifyPost = (id) => {};
+    const modifyPost = (id) => { // 게시글 수정
 
-    const removePost = (id) => {
-		setIsModalOpen(true); // 모달 창 열기
+	}; 
+
+    const removePost = (id) => { // 게시글 삭제
+		setIsModalOpen(true); 
 	};
 	
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 열림/닫힘 상태
 	
-    const cancelRemove = () => {
-		setIsModalOpen(false); // 모달창 닫기
+    const cancelRemove = () => { // 게시글 삭제 취소
+		setIsModalOpen(false); 
     };
 	
-	const confirmRemove = () => {
+	const confirmRemove = () => { // 게시글 삭제
 		console.log('게시글 삭제');
-		setIsModalOpen(false); // 모달창 닫기
+		setIsModalOpen(false); 
 	};
 
     return (
