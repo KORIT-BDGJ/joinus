@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import  { FiLock, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { BsGoogle } from 'react-icons/bs';
+import { SiNaver,SiKakao } from 'react-icons/si';
 
 const container = css`
     display: flex;
@@ -91,6 +93,37 @@ const register = css`
     font-weight: 600;
 `;
 
+const userinfo = css`
+    margin-top: 10px;
+    font-weight: 600;
+`;
+
+const oauth2Container = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+`;
+
+const oauth2 = (provider) => css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+    
+    border: 1px solid ${provider === "google" ? "#0075ff" : provider === "naver" ? "#19ce60":  "#ffdc00"};
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: ${provider === "kakao" ? "30px" : "20px"};
+    cursor: pointer;
+    &:hover {
+        background-color: ${provider === "google" ? "#0075ff" : provider === "naver" ? "#19ce60":  "#ffdc00"};
+    }
+    
+    
+`;
 
 
 const Login = () => {
@@ -135,10 +168,18 @@ const Login = () => {
 
             <div css = { signupMessage }>Or Sign Up Using</div>
 
-            <div></div>
+            <div css= {oauth2Container}>
+                <div css={ oauth2("google") }><BsGoogle /></div>
+                <div css={ oauth2("naver") }><SiNaver /></div>
+                <div css={ oauth2("kakao") }><SiKakao /></div>
+            </div>
+
+
+            
 
             <footer>
             <div css = { register }><Link to="/register">회원가입</Link></div>
+            <div css = { userinfo }><Link to="/userinfo">유저정보</Link></div>
             </footer>
             
         </div>

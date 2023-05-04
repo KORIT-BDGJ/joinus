@@ -7,7 +7,11 @@ import { FiLock, FiUser } from 'react-icons/fi';
 import {BiRename} from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { HiOutlineMail } from 'react-icons/hi';
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { FaRegAddressCard } from 'react-icons/fa';
 
+import { BiFemale, BiMale } from 'react-icons/bi';
 
 const container = css`
     display: flex;
@@ -133,39 +137,41 @@ const UserRegister = () => {
             <main css={ mainContainer }>
                 <div css={authForm}>
                     <label css={ inputLabel }>Name</label>
-                    <LoginInput type="text" placeholder="Type your name" onChange={onChangeHandle} name ="name">
-                        <BiRename />
+                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name">
+                        <FiUser />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.name}</div>
                     <label css={ inputLabel }>Email</label>
-                    <LoginInput type="email" placeholder="Type your email" onChange={onChangeHandle} name="email">
-                        <FiUser />
+                    <LoginInput type="email" placeholder="Please enter your email" onChange={onChangeHandle} name="email">
+                        <HiOutlineMail />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.email}</div>
 
                     <label css={ inputLabel }>Password</label>
-                    <LoginInput type="password" placeholder="Type your password" onChange={onChangeHandle} name="password">
+                    <LoginInput type="password" placeholder="Please enter your password" onChange={onChangeHandle} name="password">
                         <FiLock />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
                     <label css={ inputLabel }>Password 확인</label>
-                    <LoginInput type="password" placeholder="Type your password" onChange={onChangeHandle} name="password">
-                        <FiLock />
+                    <LoginInput type="password" placeholder="Please check your password" onChange={onChangeHandle} name="password">
+                        <RiLockPasswordLine />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
                     <label css={ inputLabel }>Address</label>
-                    <LoginInput type="password" placeholder="Type your password" onChange={onChangeHandle} name="password">
-                        <FiLock />
+                    <LoginInput type="password" placeholder="Please enter your address" onChange={onChangeHandle} name="password">
+                        <FaRegAddressCard />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
                     <label css={inputLabel}>성별</label>
                     <div>
                     <label>
                         <input type="radio" name="gender" value="male" onChange={onChangeHandle} />
+                        <BiMale />
                         남성
                     </label>
                     <label>
                         <input type="radio" name="gender" value="female" onChange={onChangeHandle} />
+                        <BiFemale />
                         여성
                     </label>
                     </div>
@@ -173,10 +179,8 @@ const UserRegister = () => {
 
 
                     <button css={ loginButton } onClick={registerSubmit}>등록</button>
+                    
                 </div>
-
-                
-                <div></div>
                 
             </main>
 
