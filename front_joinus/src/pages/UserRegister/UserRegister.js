@@ -13,25 +13,30 @@ import { FaRegAddressCard } from 'react-icons/fa';
 
 import { BiFemale, BiMale } from 'react-icons/bi';
 
+
+
+
+const headerContainer = css`
+    height :0px ;
+`;
+
 const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 70px 30px;
+    background-image: url('/images/6.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 `;
 
 const title = css`
-    margin: 0px 0px;
-    font-size: 48px;
+    margin: 50px 0px;
+    padding-top: 70px;
+    font-size: 25px;
     font-weight: 600;
 `;   
-
-const logo = css`
-    margin: 50px 0px;
-    font-size: 34px;
-    font-weight: 600;
-
-`;
 
 
 const mainContainer = css`
@@ -40,6 +45,7 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
+    margin-top: 170px;
     padding: 40px 20px;
     width: 400px;
 `;
@@ -131,8 +137,9 @@ const UserRegister = () => {
     return (
         <div css= {container}>
             <header>
-            <h1 css = { title }>Joinus</h1>
-                <h2 css ={ logo }>회원가입</h2>  
+                <div css={headerContainer}>
+                    <h2 css ={ title }> </h2>  
+                </div>
             </header>
             <main css={ mainContainer }>
                 <div css={authForm}>

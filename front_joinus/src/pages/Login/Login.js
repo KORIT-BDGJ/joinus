@@ -1,33 +1,37 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import React, { useState } from 'react';
-import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
-import  { FiLock, FiUser } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
 import { BsGoogle } from 'react-icons/bs';
-import { SiNaver,SiKakao } from 'react-icons/si';
+import { FiLock, FiUser } from 'react-icons/fi';
+import { SiKakao, SiNaver } from 'react-icons/si';
+import { Link } from 'react-router-dom';
+import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
+
+
+const headerContainer = css`
+    height :125px ;
+`;
 
 const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 70px 30px;
+    background-image: url('/images/5.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 
 `;
 
 const title = css`
-    margin: 0px 0px;
-    font-size: 48px;
-    font-weight: 600;
-`;   
-
-const logo = css`
     margin: 50px 0px;
-    font-size: 34px;
+    padding-top: 50px;
+    font-size: 25px;
     font-weight: 600;
     text-align: center;
+`;   
 
-`;
 
 const mainContainer = css`
     display: flex;
@@ -126,13 +130,14 @@ const oauth2 = (provider) => css`
 `;
 
 
-const Login = () => {
 
+const Login = () => {
+    
     const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
 
     const handleChange = () => {
     
-    
+        
         
     };
 
@@ -144,8 +149,13 @@ const Login = () => {
     return (
         <div css ={ container }>
             <header>
-                <h1 css = { title }>Joinus</h1>
-                <h2 css ={ logo }>Login</h2>   
+                
+                
+                <div css={headerContainer}>
+                    <h1 css = { title }> </h1>
+                </div>
+
+                
             </header>
             <main css = { mainContainer}>
                 <div>

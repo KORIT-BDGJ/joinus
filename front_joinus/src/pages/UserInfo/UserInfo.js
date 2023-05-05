@@ -6,7 +6,11 @@ import SportsIconModal from '../../components/Modal/SportsIconModal';
 
 const container = css`
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0px auto;
+    background-image: url('/images/11.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 `;
 
 const mainContainer = css`
@@ -14,6 +18,7 @@ const mainContainer = css`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    
 `;
 
 const userContainer = css`
