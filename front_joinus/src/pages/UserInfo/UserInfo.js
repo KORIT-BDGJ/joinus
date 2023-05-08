@@ -3,10 +3,12 @@ import { css } from '@emotion/react';
 import React, { useRef, useState } from 'react';
 import PwChangeModal from '../../components/Modal/PwChangeModal';
 import SportsIconModal from '../../components/Modal/SportsIconModal';
+import NicknameChangeModal from '../../components/Modal/NicknameChangeModal';
 import { GiBaseballBat, GiBasketballBasket, GiMountainClimbing, GiSoccerKick } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import AddressChangeModal from '../../components/Modal/AddressChangeModal';
 
 const container = css`
   max-width: 1200px;
@@ -82,8 +84,12 @@ const userDetail = css`
 `;
 
 const changeButton = css`
+  background-color: #2ecc71;
+  color: white;
   margin-left: auto;
-  font-size: 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
 `;
 
@@ -182,12 +188,23 @@ const UserInfo = () => {
   const navigate = useNavigate();
   const fileInput = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [isNicknameChangeModalOpen, setIsNicknameChangeModalOpen] = useState(false);
   const [isPwChangeModalOpen, setIsPwChangeModalOpen] = useState(false);
+  const [isAddressChangeModalOpen, setIsAddressChangeModalOpen] = useState(false);
   const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
   const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [plusVisible, setPlusVisible] = useState([true, true, true]);
+  const [nickname, setNickname] = useState('헬창남');
+  const [password , setPassword] = useState("1q2w3e4r5t");
+  const [address, setAddress] = useState("부산시 동래구 @@동");
 
+  const closeAddressChangeModal = () => {
+    setIsAddressChangeModalOpen(!isAddressChangeModalOpen);
+  }
+  const closeNicknameChangeModal = () => {
+    setIsNicknameChangeModalOpen(!isNicknameChangeModalOpen);
+  }
 
   const closePwChangeModal = () => {
     setIsPwChangeModalOpen(!isPwChangeModalOpen);
@@ -222,7 +239,18 @@ const UserInfo = () => {
   const handleModifyClick = () => {
     navigate('/main');
   };
+
+  const updatePassword = (newPw) => {
+    setPassword(newPw);
+  };
+
+  const updateNickname = (newNickname) => {
+    setNickname(newNickname);
+  };
   
+  const updateAddress = (newAddress) => {
+    setAddress(newAddress);
+  };
 
   const renderSportIcon = (sport, size) => {
     // 운동 아이콘 추가 시 확장 
@@ -257,17 +285,23 @@ const UserInfo = () => {
                 <input type="file" ref={fileInput} style={{ display: 'none' }} onChange={onChangeHandle} />
                 <div css={userInfo}>
                     
-                    <h1 css={subTitle}>유저정보 </h1>
-                    
-                    <div css={userDetail}>닉네임 : 헬창남 </div>
-                    <div css={userDetail}>
-                        비밀번호: 1q2w3e4r5t
-                        <button css={changeButton} onClick={closePwChangeModal}>변경</button>
-                    </div>
-                    <div css={userDetail}>
-                        주소: 부산시 동래구 @@동
-                        <button css={changeButton}>변경</button>
-                    </div>
+                  <h1 css={subTitle}>유저정보 </h1>
+                  
+                  <div css={userDetail}>
+                    닉네임 : {nickname}
+                    <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
+                  </div>
+                  <div css={userDetail}>
+                    비밀번호 : {password}
+                    <button css={changeButton} onClick={closePwChangeModal}>변경</button>
+                  </div>
+                  <div css={userDetail}>
+                    주소 : {address}
+                    <button css={changeButton} onClick={closeAddressChangeModal}>변경</button>
+                  </div>
+                  <div css={userDetail}>
+                    획득 메달 : 🥇
+                  </div>
                 </div>
             </div>
             <div css={detailContainer}>
@@ -293,7 +327,9 @@ const UserInfo = () => {
             <button css={modifyButton} onClick={handleModifyClick}>수정</button>
           </div>
         </footer>
-        {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} />}
+        {isAddressChangeModalOpen && <AddressChangeModal closeModal={closeAddressChangeModal} updateAddress={updateAddress} />}
+        {isNicknameChangeModalOpen && <NicknameChangeModal closeModal={closeNicknameChangeModal} updateNickname={updateNickname} />}
+        {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} updatePassword={updatePassword} />}
         {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} plusVisible={plusVisible}
     setPlusVisible={setPlusVisible} />}
     </div>

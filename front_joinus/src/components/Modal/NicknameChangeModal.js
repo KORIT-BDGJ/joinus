@@ -61,48 +61,31 @@ const confirmButton = css`
   cursor: pointer;
 `;
 
-const PwChangeModal = ({ closeModal, updatePassword }) => {
-  const [currentPw, setCurrentPw] = useState('');
-  const [newPw, setNewPw] = useState('');
-  const [confirmPw, setConfirmPw] = useState('');
+const NicknameChangeModal = ({ closeModal, updateNickname }) => {
 
-  const handleCurrentPwChange = (e) => {
-    setCurrentPw(e.target.value);
+  const [newNickname, setNewNickname] = useState('');
+
+
+  const handleNewNicknameChange = (e) => {
+    setNewNickname(e.target.value);
   };
 
-  const handleNewPwChange = (e) => {
-    setNewPw(e.target.value);
-  };
 
-  const handleConfirmPwChange = (e) => {
-    setConfirmPw(e.target.value);
-  };
+  
 
   const handleSubmit = () => {
     // 비밀번호 변경 로직 구현
-    if(newPw !== confirmPw){
-      alert("비밀번호가 일치하지 않습니다.");
-    }else{
-      updatePassword(newPw);
-      alert("비밀번호가 성공적으로 변경되었습니다.");
-      closeModal();
-    }
+    updateNickname(newNickname);
+    alert("닉네임이 성공적으로 변경되었습니다.");
+    closeModal();
   };
 
   return (
     <div css={modalContainer}>
       <div css={modalContent}>
         <div css={inputWrapper}>
-          <label css={label}>기존 비밀번호</label>
-          <input css={input} type="password" value={currentPw} onChange={handleCurrentPwChange} />
-        </div>
-        <div css={inputWrapper}>
-          <label css={label}>새 비밀번호</label>
-          <input css={input} type="password" value={newPw} onChange={handleNewPwChange} />
-        </div>
-        <div css={inputWrapper}>
-          <label css={label}>비밀번호 확인</label>
-          <input css={input} type="password" value={confirmPw} onChange={handleConfirmPwChange} />
+        <label css={label}>변경할 닉네임을 입력하시오</label>
+        <input css={input} type="text" value={newNickname} onChange={handleNewNicknameChange} />
         </div>
         <div css={buttonContainer}>
           <button css={cancelButton} onClick={closeModal}>취소</button>
@@ -113,4 +96,4 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
   );
 };
 
-export default PwChangeModal;
+export default NicknameChangeModal;

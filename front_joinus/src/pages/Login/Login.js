@@ -14,7 +14,6 @@ const headerContainer = css`
     display: flex;
     align-content: flex-start;
     justify-content: center;
-
 `;
 
 const container = css`

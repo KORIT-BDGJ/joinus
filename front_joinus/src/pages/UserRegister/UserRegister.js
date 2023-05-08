@@ -1,10 +1,9 @@
 
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import React, { useState } from 'react';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { FiLock, FiUser } from 'react-icons/fi';
-import {BiRename} from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HiOutlineMail } from 'react-icons/hi';
@@ -27,12 +26,11 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 70px 30px;
-    
+    padding-top: 50px;
 `;
 const logoStyle= css`
-    width: 300px; 
-    height: 200px;
+    width: 310px; 
+    height: 210px;
     background-image: url('/images/6_plus.png');
     background-repeat: no-repeat;
     background-size: contain;
@@ -52,7 +50,7 @@ const mainContainer = css`
     border: 1px solid #dbdbdb;
     border-radius: 10px;
     margin-top: 75px;
-    padding: 40px 20px;
+    padding: 50px 20px;
     width: 400px;
 `;
 
