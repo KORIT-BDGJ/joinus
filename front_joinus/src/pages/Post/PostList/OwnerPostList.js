@@ -65,7 +65,7 @@ const buttonLabel = css`
 	overflow: hidden;
 `;
 
-const modalOverlay = css`
+const modalContainer = css`
 	position: fixed;	
 	top: 0;
 	left: 0;
@@ -176,7 +176,7 @@ const OwnerPostList = () => {
 			))}
 			</ul>
 			{isModalOpen && (
-			<div css={modalOverlay}>
+			<div css={modalContainer}>
 				<div css={modal}>
 				<p css={modalMessage}>삭제하시겠습니까?</p>
 				<div css={modalButtons}>
