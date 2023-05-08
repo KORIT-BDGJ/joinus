@@ -10,6 +10,7 @@ const container = css`
   	flex-direction: column;
   	align-items: center;
   	padding: 30px 30px;
+    margin-bottom: 20px;
 `;
 
 const title = css` // 평가하기
@@ -46,14 +47,15 @@ const listItem = css`
     }
 `;
 
-const postInfo = css`
+const postInfo = css` // 글 정보
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 10px; 
 `;
 
-const userInfo = css`
+const userInfo = css` // 유저 정보
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -61,13 +63,20 @@ const userInfo = css`
 `;
 
 const postTitle = css` // 글 제목
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 600;
     margin: 0;
+    display: inline;
     &:hover {
         cursor: pointer;
         color: #0095f6;
     }
+`;
+
+const postDate = css`
+    font-size: 24px;
+    margin-left: 10px;
+    color: #8e8e8e;
 `;
 
 const buttons = css`
@@ -84,11 +93,13 @@ const buttonLabel = css`
 const userContainer = css`
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px; 
 `;
 
-const userNickname = css`
-  margin-right: 10px;
+
+const userName = css`
+    font-size: 26px;
+    margin-right: 10px;
 `;
 
 const medalButton = css`
@@ -102,31 +113,33 @@ const Review = () => {
     const [posts, setPosts] = useState([
         {
             id: 1,
-            title: '완료한 운동 목록 1',
+            title: '크로스핏',
+            date: '2021-05-05',
             editButton: true,
             deleteButton: true,
             users: [
-                { nickname: '유저1', medalCount: 2 },
-                { nickname: '유저2', medalCount: 3 },
+                { userId: 1, username: '유저1', medalCount: 2 },
+                { userId: 2, username: '유저2', medalCount: 3 },
             ],
         },
         {
             id: 2,
-            title: '완료한 운동 목록 2',
+            title: '자전거',
+            date: '2021-05-08',
             editButton: true,
             deleteButton: true,
             users: [
-                { nickname: '유저3', medalCount: 4 },
-                { nickname: '유저4', medalCount: 1 },
+                { userId: 3, username: '유저3', medalCount: 4 },
+                { userId: 4, username: '유저4', medalCount: 1 },
             ],
         },
     ]);
     
-    const [modal, setModal] = useState({ type: '', isOpen: false }); 
+    const [modal, setModal] = useState({ type: '', isOpen: false }); // 모달 상태
 
-    const [hoveredStar, setHoveredStar] = useState({ postId: null, userNickname: null, starCount: 0 });
+    const [hoveredStar, setHoveredStar] = useState({ postId: null, userId: null, starCount: 0 }); // 별점 상태
 
-    const handleButtonClick = (type, id) => { 
+    const handleButtonClick = (type, id) => { // 버튼 클릭 시 모달 열기
 		setModal({ type, isOpen: true });
 	};
 
@@ -143,22 +156,22 @@ const Review = () => {
 		setModal({ type: '', isOpen: false });
 	};
 
-    const handleStarMouseOver = (postId, userNickname, starCount) => {
-        setHoveredStar({ postId, userNickname, starCount });
+    const handleStarMouseOver = (postId, userId, starCount) => {
+        setHoveredStar({ postId, userId, starCount });
     };
 
     const handleStarMouseOut = () => {
-        setHoveredStar({ postId: null, userNickname: null, starCount: 0 });
+        setHoveredStar({ postId: null, userId: null, starCount: 0 });
     };
 
-    const handleStarClick = (postId, userNickname, newMedalCount) => {
+    const handleStarClick = (postId, userId, newMedalCount) => { // 별점 클릭 시
         setPosts((prevPosts) =>
             prevPosts.map((post) => {
                 if (post.id === postId) {
                     return {
                         ...post,
                         users: post.users.map((user) => {
-                            if (user.nickname === userNickname) {
+                            if (user.userId === userId) {
                                 return {
                                     ...user,
                                     medalCount: newMedalCount,
@@ -187,6 +200,7 @@ const Review = () => {
                     <li key={post.id} css={listItem}>
                     <div css={postInfo}>
                         <h2 css={postTitle}>{post.title}</h2>
+                        <span css={postDate}>{post.date}</span>
                         <div css={buttons}>
                             {post.editButton && (
                             <button onClick={() => handleButtonClick('evaluate', post.id)}> 
@@ -202,30 +216,30 @@ const Review = () => {
                     </div>
                     <div css={userInfo}>
                     {post.users.map((user) => (
-                        <div key={user.nickname} css={userContainer}>
-                            <span css={userNickname}>{user.nickname}</span>
+                        <div key={user.userId} css={userContainer}>
+                            <span css={userName}>{user.username}</span>
                             <div>
-                            {starOptions.map((starCount) => (
-                                <button
-                                    key={starCount}
-                                    css={medalButton}
-                                    onMouseOver={() =>
-                                        handleStarMouseOver(post.id, user.nickname, starCount)
-                                    }
-                                    onMouseOut={handleStarMouseOut}
-                                    onClick={() =>
-                                        handleStarClick(post.id, user.nickname, starCount)
-                                    }
-                                >
-                                    {starCount <=
-                                    (hoveredStar.postId === post.id &&
-                                    hoveredStar.userNickname === user.nickname
-                                        ? hoveredStar.starCount
-                                        : user.medalCount)
-                                        ? activeStar
-                                        : inactiveStar}
-                                </button>
-                            ))}
+                                {starOptions.map((starCount) => (
+                                    <button
+                                        key={starCount}
+                                        css={medalButton}
+                                        onMouseOver={() =>
+                                            handleStarMouseOver(post.id, user.userId, starCount)
+                                        }
+                                        onMouseOut={handleStarMouseOut}
+                                        onClick={() =>
+                                            handleStarClick(post.id, user.userId, starCount)
+                                        }
+                                    >
+                                        {starCount <=
+                                        (hoveredStar.postId === post.id &&
+                                        hoveredStar.userId === user.userId
+                                            ? hoveredStar.starCount
+                                            : user.medalCount)
+                                            ? activeStar
+                                            : inactiveStar}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     ))}
