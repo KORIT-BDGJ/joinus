@@ -87,14 +87,6 @@ const sportIcon = css`
     cursor: pointer;
 `;
 
-const selectStatus = css`
-    width: 20%;
-    height: 35px;
-    margin-left: 40px;
-    border-radius:7px;
-    background-color: white;
-`;
-
 const selectCount = css`
     display: flex;
     height: 25px;
@@ -107,10 +99,6 @@ const countBox = css`
     border: 1px solid #999;
     width: 50px;
     text-align: end;
-`;
-
-const selectDateBox = css`
-    margin-left: 30px;
 `;
 
 const buttonContainer = css`
