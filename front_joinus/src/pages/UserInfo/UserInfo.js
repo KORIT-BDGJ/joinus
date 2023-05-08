@@ -6,6 +6,7 @@ import SportsIconModal from '../../components/Modal/SportsIconModal';
 import { GiBaseballBat, GiBasketballBasket, GiMountainClimbing, GiSoccerKick } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 const container = css`
   max-width: 1200px;
@@ -178,12 +179,14 @@ const plusButton = css`
 
 
 const UserInfo = () => {
+  const navigate = useNavigate();
   const fileInput = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isPwChangeModalOpen, setIsPwChangeModalOpen] = useState(false);
   const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
   const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [plusVisible, setPlusVisible] = useState([true, true, true]);
 
 
   const closePwChangeModal = () => {
@@ -214,11 +217,11 @@ const UserInfo = () => {
     const index = parseInt(e.currentTarget.getAttribute("data-index"));
     setIsSportsIconModalOpen(true);
     setSelectedIndex(index);
+  };
 
-    const plusButton = e.currentTarget.querySelector("div");
-    plusButton.style.display = "none";
-  }
-
+  const handleModifyClick = () => {
+    navigate('/main');
+  };
   
 
   const renderSportIcon = (sport, size) => {
@@ -272,26 +275,27 @@ const UserInfo = () => {
               <div css={circleContainer}>
                 <div css={circle} data-index={0} onClick={handleCircleClick}>
                   {renderSportIcon(selectedSports[0] ,30)}
-                  <div css={plusButton}>+</div>
+                  {plusVisible[0] && <div css={plusButton}>+</div>}
                 </div>
                 <div css={circle} data-index={1} onClick={handleCircleClick}>
                   {renderSportIcon(selectedSports[1], 30)}
-                  <div css={plusButton}>+</div>
+                  {plusVisible[1] && <div css={plusButton}>+</div>}
                 </div>
                 <div css={circle} data-index={2} onClick={handleCircleClick}>
                   {renderSportIcon(selectedSports[2], 30)}
-                  <div css={plusButton}>+</div>
+                  {plusVisible[2] && <div css={plusButton}>+</div>}
                 </div>
               </div>
             </div>
         </main>
         <footer>
           <div css={footerContainer}>
-            <button css={modifyButton}>수정</button>
+            <button css={modifyButton} onClick={handleModifyClick}>수정</button>
           </div>
         </footer>
         {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} />}
-        {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} />}
+        {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} plusVisible={plusVisible}
+    setPlusVisible={setPlusVisible} />}
     </div>
   );
 };

@@ -96,10 +96,9 @@ const modalCancelButton = css`
 
 
 
-const SportsIconModal = ({ closeModal, selectedIndex, setSelectedSports }) => {
+const SportsIconModal = ({ closeModal, selectedIndex, setSelectedSports, plusVisible, setPlusVisible  }) => {
   const [selectedSport, setSelectedSport] = useState(null);
-  //const selectedSport = selectedSports[selectedIndex];
-
+ 
   const handleSportSelect = (e) => {
     const selectedSport = e.currentTarget.getAttribute('data-sport');
     setSelectedSport(selectedSport);
@@ -113,12 +112,19 @@ const SportsIconModal = ({ closeModal, selectedIndex, setSelectedSports }) => {
         newSports[selectedIndex] = selectedSport;
         return newSports;
       });
+      setPlusVisible((preVisible) =>{
+        const newVisible = [...preVisible];
+        newVisible[selectedIndex] = false;
+        return newVisible;
+      });
       //alert(`선택 운동 : ${selectedSport}`);
       closeModal();
     } else {
       //alert("선호 운동을 선택하세요.");
     }
   };
+
+  
 
   
 
