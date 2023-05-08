@@ -3,65 +3,81 @@ import { css } from '@emotion/react';
 import React, { useRef, useState } from 'react';
 import PwChangeModal from '../../components/Modal/PwChangeModal';
 import SportsIconModal from '../../components/Modal/SportsIconModal';
+import { GiBaseballBat, GiBasketballBasket, GiMountainClimbing, GiSoccerKick } from 'react-icons/gi';
+import { CgGym } from 'react-icons/cg';
+import { IoMdBicycle } from 'react-icons/io';
 
 const container = css`
-    max-width: 1200px;
-    margin: 0px auto;
-    background-image: url('/images/11.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+  max-width: 1200px;
+  margin: 0px auto;
+  
+`;
+
+const headerContainer = css`
+  height :125px ;
+  display: flex;
+  align-content: flex-start;
+  justify-content: center;
+`;
+
+const logoStyle= css`
+  width: 724px; 
+  height: 125px;
+  background-image: url('/images/12_plus.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 `;
 
 const mainContainer = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
     
 `;
 
 const userContainer = css`
-    width: 100%;
-    display: flex;
-    
-    //justify-content: center;
-    //align-items: center;
-    //flex-direction: row;
+  width: 100%;
+  display: flex;
+  
+  //justify-content: center;
+  //align-items: center;
+  //flex-direction: row;
 `;
 
 
 const userInfo = css`
-    width: 320px;
-    margin-top: 50px;
-    font-size: 24px;
+  width: 320px;
+  margin-top: 20px;
+  font-size: 24px;
 `;
 
 const title = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    font-size: 48px;
-    font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-size: 48px;
+  font-weight: 600;
 `;
 
 const subTitle = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0px 5px 20px;
-    font-size: 30px;
-    font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 5px 20px;
+  font-size: 30px;
+  font-weight: 600;
 `;
 
 const userDetail = css`
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    white-space: nowrap;
-    overflow-wrap: break-word;
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  padding: 10px;
 `;
 
 const changeButton = css`
@@ -76,7 +92,7 @@ const imageBox = css`
   border: 1px solid #333;
   border-radius: 5px;
   padding: 15px;
-  margin: 50px;
+  margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,7 +106,7 @@ const imagePreview = css`
 `;
 
 const detailContainer = css`
-  width: 620px;
+  width: 680px;
   height: 350px;
   border: 1px solid #333;
   border-radius: 10px;
@@ -154,12 +170,16 @@ const circle = css`
 
 
 
-const UserInfo = ({ selectedSport }) => {
+
+
+const UserInfo = () => {
   const fileInput = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isPwChangeModalOpen, setIsPwChangeModalOpen] = useState(false);
   const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
-  //const [selectedSport, setSelectedSport] = useState(null);
+  const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
 
   const closePwChangeModal = () => {
     setIsPwChangeModalOpen(!isPwChangeModalOpen);
@@ -185,14 +205,31 @@ const UserInfo = ({ selectedSport }) => {
   };
 
 
-  const handleCircleClick = () => {
+  const handleCircleClick = (e) => {
+    const index = parseInt(e.currentTarget.getAttribute("data-index"));
     setIsSportsIconModalOpen(true);
+    setSelectedIndex(index);
   }
+
+  
+
+  const renderSportIcon = (sport, size) => {
+    if (sport === "soccer") return <GiSoccerKick size={size} />;
+    if (sport === "baseball") return <GiBaseballBat size={size} />;
+    if (sport === "basketball") return <GiBasketballBasket size={size} />;
+    if (sport === "health") return <CgGym size={size} />;
+    if (sport === "climbing") return <GiMountainClimbing size={size} />;
+    if (sport === "riding") return <IoMdBicycle size={size} />;
+  };
 
   return (
     <div css={container}>
-        <header>
-            <h1 css={title}>회원 정보 수정</h1>
+        <header css={headerContainer}>
+            <h1 css={title}>
+              <div css={logoStyle}>
+
+              </div>
+            </h1>
         </header>
         <main css={mainContainer}>
             <div css={userContainer}>
@@ -224,9 +261,9 @@ const UserInfo = ({ selectedSport }) => {
             <div css={detailContainer}>
               <h1 css={dcTitle}>선호 운동</h1>
               <div css={circleContainer}>
-                <div css={circle} onClick={handleCircleClick}></div>
-                <div css={circle} onClick={handleCircleClick}></div>
-                <div css={circle} onClick={handleCircleClick}></div>
+                <div css={circle} data-index={0} onClick={handleCircleClick}>{renderSportIcon(selectedSports[0] ,30)}</div>
+                <div css={circle} data-index={1} onClick={handleCircleClick}>{renderSportIcon(selectedSports[1], 30)}</div>
+                <div css={circle} data-index={2} onClick={handleCircleClick}>{renderSportIcon(selectedSports[2], 30)}</div>
               </div>
             </div>
         </main>
@@ -236,7 +273,7 @@ const UserInfo = ({ selectedSport }) => {
           </div>
         </footer>
         {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} />}
-        {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} />}
+        {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} />}
     </div>
   );
 };
