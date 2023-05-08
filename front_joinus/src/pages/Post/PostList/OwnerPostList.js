@@ -66,48 +66,6 @@ const buttonLabel = css`
 	overflow: hidden;
 `;
 
-const modalContainer = css`
-	position: fixed;	
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const modal = css` 
-	background-color: white;
-	border-radius: 4px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	padding: 20px;
-	width: 400px;
-	height: 200px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-`;
-
-const modalMessage = css`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
-
-
-const modalButtons = css`
-	display: flex;
-	gap: 20px;
-	height: 30px;
-	margin-top: 20px;
-`;
-
 const OwnerPostList = () => {
 	const [posts, setPosts] = useState([
 		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
