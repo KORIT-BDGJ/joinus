@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
-import CancelModal from '../../../components/Modal/CancelModal';
+import AlertModal from '../../../components/Modal/AlertModal';
 
 const container = css`
   	display: flex;
@@ -119,10 +119,11 @@ const HostPostList = () => {
                 ))}
             </ul>
             {isModalOpen && (
-                <CancelModal
+                <AlertModal
                 isModalOpen={isModalOpen}
                 confirmRemove={confirmRemove}
                 cancelRemove={cancelRemove}
+                message="취소하시겠습니까?"
                 />
             )}
         </div>

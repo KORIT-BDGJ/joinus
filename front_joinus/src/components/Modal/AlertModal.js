@@ -64,13 +64,13 @@ const confirmButton = css`
   cursor: pointer;
 `;
 
-const CancelModal = ({ isModalOpen, confirmRemove, cancelRemove }) => {
+const AlertModal = ({ isModalOpen, confirmRemove, cancelRemove, message }) => { 
   if (!isModalOpen) return null;
 
   return (
     <div css={modalOverlay}>
       <div css={modal}>
-        <p css={modalMessage}>취소하시겠습니까?</p>
+        <p css={modalMessage}>{message}</p> 
         <div css={modalButtons}>
           <button css={confirmButton} onClick={confirmRemove}>확인</button>
           <button css={cancelButton} onClick={cancelRemove}>취소</button>
@@ -80,4 +80,4 @@ const CancelModal = ({ isModalOpen, confirmRemove, cancelRemove }) => {
   );
 };
 
-export default CancelModal;
+export default AlertModal;
