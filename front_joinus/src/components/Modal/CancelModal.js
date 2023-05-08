@@ -41,7 +41,8 @@ const modalButtons = css`
   gap: 20px;
   height: 30px;
   margin-top: 20px;
-  justify-content: center; 
+  justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
