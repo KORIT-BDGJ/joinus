@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import React from 'react';
+import { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { CgGym } from 'react-icons/cg';
+
 
 const container = css`
     display: flex;
@@ -73,10 +75,11 @@ const detailButton = css`
     border: 1px solid #dbdbdb;
     border-radius: 5px;
     height: 30px;
+    cursor: pointer;
 `;
 
-const infoDetail = css`
-    display: flex;
+const infoDetail = (detailShow) => css`
+    display: ${detailShow ? "flex" : "none"};
     flex-direction: row;
     padding: 10px;
     border: 1px solid #dbdbdb;
@@ -157,11 +160,16 @@ const applicantButton = css`
     border: 1px solid #dbdbdb;
     border-radius: 5px;
     height: 30px;
+    cursor: pointer;
 `;
 
+const attendList = (attendShow) => css`
+    display: ${attendShow ? "flex" : "none"};
+    flex-direction: column;
+`;
 
-const applicantList = css`
-    display: flex;
+const applicantList = (applicantShow) => css`
+    display: ${applicantShow ? "flex" : "none"};
     flex-direction: column;
 `;
 
@@ -169,6 +177,8 @@ const member = css`
     margin-top: 5px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 
@@ -221,6 +231,19 @@ const footButton = css`
 
 
 const HostPostDetail = () => {
+    const [ detailShow, setDetailShow ] = useState(false);
+    const [ attendShow, setAttendShow ] = useState(false);
+    const [ applicantShow, setApplicantShow ] = useState(false);
+
+    const detailClickHandle = (e) => {
+        setDetailShow(!detailShow);
+    };
+    const attendClickHandle = (e) => {
+        setAttendShow(!attendShow);
+    };
+    const applicantClickHandle = (e) => {
+        setApplicantShow(!applicantShow);
+    };
     return (
         <div css={container}>
             <div css={detailHeader}>
@@ -234,9 +257,9 @@ const HostPostDetail = () => {
                         <div css={ownerPicture}><FaUserCircle /></div>
                         <div css={ownerNickname}>진정한헬창</div>
                     </div>
-                    <button css={detailButton}>상세정보 버튼</button>
+                    <button css={detailButton} onClick={detailClickHandle}>상세정보 버튼</button>
                 </div>
-                <div css={infoDetail}>
+                <div css={infoDetail(detailShow)}>
                     <div css={ownerLevel}>레벨: 고급</div>
                     <div css={ownerState}>상태: 가르쳐주고 싶어요</div>
                     <div css={ownerMedal}>메달: 금메달</div>
@@ -260,38 +283,54 @@ const HostPostDetail = () => {
                 <div css={applicant}>
                     <div css={applicantHeader}>
                         <div css={applicantCount}>참여인원 정보 : (4/10)</div>
-                        <button css={applicantButton}>참여자 보기</button>
+                        <button css={applicantButton} onClick={attendClickHandle}>참여자 보기</button>
                     </div>
-                    <div css={applicantList}>
+                    <div css={attendList(attendShow)}>
                         <div css={member}>
-                            <FaUserCircle /> 참여자1
+                            <div>
+                                <FaUserCircle /> 신청자1
+                            </div>
                         </div>
                         <div css={member}>
-                            <FaUserCircle /> 참여자2
+                            <div>
+                                <FaUserCircle /> 신청자2
+                            </div>
                         </div>
                         <div css={member}>
-                            <FaUserCircle /> 참여자3
+                            <div>
+                                <FaUserCircle /> 신청자3
+                            </div>
                         </div>
                         <div css={member}>
-                            <FaUserCircle /> 참여자4
+                            <div>
+                                <FaUserCircle /> 신청자4
+                            </div>
                         </div>
                     </div>
                     <div css={applicantHeader}>
                         <div css={applicantCount}>신청인원 정보 : (4/10)</div>
-                        <button css={applicantButton}>신청자 보기</button>
+                        <button css={applicantButton} onClick={applicantClickHandle}>신청자 보기</button>
                     </div>
-                    <div css={applicantList}>
+                    <div css={applicantList(applicantShow)}>
                         <div css={member}>
-                            <FaUserCircle /> 신청자1
+                            <div>
+                                <FaUserCircle /> 신청자1
+                            </div>
                         </div>
                         <div css={member}>
-                            <FaUserCircle /> 신청자2
+                            <div>
+                                <FaUserCircle /> 신청자2
+                            </div>
                         </div>
                         <div css={member}>
-                            <FaUserCircle /> 신청자3
+                            <div>
+                                <FaUserCircle /> 신청자3
+                            </div>
                         </div>
                         <div css={member}>
-                            <FaUserCircle /> 신청자4
+                            <div>
+                                <FaUserCircle /> 신청자4
+                            </div>
                         </div>
                     </div>
                 </div>
