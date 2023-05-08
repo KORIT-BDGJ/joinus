@@ -113,10 +113,10 @@ const SportsIconModal = ({ closeModal, selectedIndex, setSelectedSports }) => {
         newSports[selectedIndex] = selectedSport;
         return newSports;
       });
-      alert(`선택 운동 : ${selectedSport}`);
+      //alert(`선택 운동 : ${selectedSport}`);
       closeModal();
     } else {
-      alert("선호 운동을 선택하세요.");
+      //alert("선호 운동을 선택하세요.");
     }
   };
 

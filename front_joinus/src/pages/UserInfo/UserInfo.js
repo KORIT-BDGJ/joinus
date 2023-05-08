@@ -165,9 +165,14 @@ const circle = css`
   height: 60px;
   border-radius: 50%;
   border: 2px solid #333;
-  cursor: pointer;
 `;
 
+const plusButton = css`
+  font-size: 25px;
+  font-weight: 600;
+  color: #00B894;
+  cursor: pointer;
+`;
 
 
 
@@ -209,11 +214,15 @@ const UserInfo = () => {
     const index = parseInt(e.currentTarget.getAttribute("data-index"));
     setIsSportsIconModalOpen(true);
     setSelectedIndex(index);
+
+    const plusButton = e.currentTarget.querySelector("div");
+    plusButton.style.display = "none";
   }
 
   
 
   const renderSportIcon = (sport, size) => {
+    // 운동 아이콘 추가 시 확장 
     if (sport === "soccer") return <GiSoccerKick size={size} />;
     if (sport === "baseball") return <GiBaseballBat size={size} />;
     if (sport === "basketball") return <GiBasketballBasket size={size} />;
@@ -261,9 +270,18 @@ const UserInfo = () => {
             <div css={detailContainer}>
               <h1 css={dcTitle}>선호 운동</h1>
               <div css={circleContainer}>
-                <div css={circle} data-index={0} onClick={handleCircleClick}>{renderSportIcon(selectedSports[0] ,30)}</div>
-                <div css={circle} data-index={1} onClick={handleCircleClick}>{renderSportIcon(selectedSports[1], 30)}</div>
-                <div css={circle} data-index={2} onClick={handleCircleClick}>{renderSportIcon(selectedSports[2], 30)}</div>
+                <div css={circle} data-index={0} onClick={handleCircleClick}>
+                  {renderSportIcon(selectedSports[0] ,30)}
+                  <div css={plusButton}>+</div>
+                </div>
+                <div css={circle} data-index={1} onClick={handleCircleClick}>
+                  {renderSportIcon(selectedSports[1], 30)}
+                  <div css={plusButton}>+</div>
+                </div>
+                <div css={circle} data-index={2} onClick={handleCircleClick}>
+                  {renderSportIcon(selectedSports[2], 30)}
+                  <div css={plusButton}>+</div>
+                </div>
               </div>
             </div>
         </main>
