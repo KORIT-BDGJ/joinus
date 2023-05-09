@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import AlertModal from '../../../components/Modal/AlertModal';
+import { FcSportsMode } from 'react-icons/fc';
+import { MdOutlineSportsTennis } from 'react-icons/md';
 
 const container = css`
   	display: flex;
@@ -62,18 +64,22 @@ const userInfo = css` // 유저 정보
     margin-top: 10px;
 `;
 
-const postTitle = css` // 글 제목
+const iconWrapper = css` // 리스트 스포츠 아이콘
+    font-size: 50px; 
+    &:hover {
+        cursor: pointer;
+        filter: invert(1);
+    }
+`;
+
+const postOwnerNickName = css` // 방장(작성자) 닉네임
     font-size: 30px;
     font-weight: 600;
     margin: 0;
     display: inline;
-    &:hover {
-        cursor: pointer;
-        color: #0095f6;
-    }
 `;
 
-const postDate = css`
+const postDate = css` // 글 작성 날짜
     font-size: 24px;
     margin-left: 10px;
     color: #8e8e8e;
@@ -112,9 +118,10 @@ const Review = () => {
 
     const [posts, setPosts] = useState([
         {
-            id: 1,
-            title: '크로스핏',
-            date: '2021-05-05',
+            postId: 1,
+            sportsIcon : <FcSportsMode />,
+            ownerNickname: '방장1',
+            date: '2021-05-06',
             editButton: true,
             deleteButton: true,
             users: [
@@ -123,8 +130,9 @@ const Review = () => {
             ],
         },
         {
-            id: 2,
-            title: '자전거',
+            PostId: 2,
+            sportsIcon : <MdOutlineSportsTennis />,
+            ownerNickname: '방장2',
             date: '2021-05-08',
             editButton: true,
             deleteButton: true,
@@ -134,7 +142,21 @@ const Review = () => {
             ],
         },
     ]);
+
+    const [userType, setUserType] = useState(""); // 방장인지 일반 유저인지 구분하기 위한 상태
     
+    const handleIconClick = () => { // 방장 또는 일반 유저 가 아이콘을 누를 시 OwnerHostDetail 또는 HostPostDetail로 이동하도록 한다.
+        if (userType === 'owner') {
+            // 방장인 경우
+            // ownerPostDetail로 이동하는 코드를 여기에 작성합니다.
+            console.log("Move to ownerPostDetail");
+        } else {
+            // 일반 사용자인 경우
+            // HostPostDetail로 이동하는 코드를 여기에 작성합니다.
+            console.log("Move to HostPostDetail");
+        }
+    };
+
     const [modal, setModal] = useState({ type: '', isOpen: false }); // 모달 상태
 
     const [hoveredStar, setHoveredStar] = useState({ postId: null, userId: null, starCount: 0 }); // 별점 상태
@@ -156,7 +178,7 @@ const Review = () => {
 		setModal({ type: '', isOpen: false });
 	};
 
-    const handleStarMouseOver = (postId, userId, starCount) => {
+    const handleStarMouseOver = (postId, userId, starCount) => {  // 별점 마우스 오버 시
         setHoveredStar({ postId, userId, starCount });
     };
 
@@ -196,19 +218,20 @@ const Review = () => {
         <div css={container}> 
             <h1 css={title}>평가하기</h1>
             <ul css={list}>
-                {posts.map((post) => (
-                    <li key={post.id} css={listItem}>
+            {posts.map((post) => (
+                <li key={post.postId} css={listItem}>
                     <div css={postInfo}>
-                        <h2 css={postTitle}>{post.title}</h2>
+                        <div css={iconWrapper} onClick={handleIconClick}> {post.sportsIcon}</div> 
+                        <span css={postOwnerNickName}>{post.ownerNickname}</span>
                         <span css={postDate}>{post.date}</span>
                         <div css={buttons}>
                             {post.editButton && (
-                            <button onClick={() => handleButtonClick('evaluate', post.id)}> 
+                            <button onClick={() => handleButtonClick('evaluate', post.postId)}> 
                                 <span css={buttonLabel}>평가하기</span>
                             </button>
                             )}
                             {post.deleteButton && (
-                            <button onClick={() => handleButtonClick('skip', post.id)}>
+                            <button onClick={() => handleButtonClick('skip', post.postId)}>
                                 <span css={buttonLabel}>하지않기</span>
                             </button>
                             )}
