@@ -20,7 +20,7 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect}) => {
 
    
     return (
-        <div>
+        <>
            <GiSoccerKick
               data-sport="soccer"
               onClick={handleSportSelect}
@@ -160,7 +160,7 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect}) => {
             title="게임"
             
             /> 
-        </div>
+        </>
     );
 };
 

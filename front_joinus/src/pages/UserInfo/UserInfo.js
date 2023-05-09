@@ -4,11 +4,15 @@ import React, { useRef, useState } from 'react';
 import PwChangeModal from '../../components/Modal/PwChangeModal';
 import SportsIconModal from '../../components/Modal/SportsIconModal';
 import NicknameChangeModal from '../../components/Modal/NicknameChangeModal';
-import { GiBaseballBat, GiBasketballBasket, GiMountainClimbing, GiSoccerKick } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import AddressChangeModal from '../../components/Modal/AddressChangeModal';
+import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
+import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { GrGamepad } from 'react-icons/gr';
 
 const container = css`
   max-width: 1200px;
@@ -260,6 +264,20 @@ const UserInfo = () => {
     if (sport === "health") return <CgGym size={size} />;
     if (sport === "climbing") return <GiMountainClimbing size={size} />;
     if (sport === "riding") return <IoMdBicycle size={size} />;
+    if (sport === "golf") return <MdGolfCourse size={size} />;
+    if (sport === "fishing") return <GiBoatFishing size={size} />;
+    if (sport === "tennis") return <GiTennisRacket size={size} />;
+    if (sport === "mountain") return <GiMountainRoad size={size} />;
+    if (sport === "bowling") return <GiBowlingStrike size={size} />;
+    if (sport === "tabletennis") return <FaTableTennis size={size} />;
+    if (sport === "volleyball") return <FaVolleyballBall size={size} />;
+    if (sport === "running") return <FaRunning size={size} />;
+    if (sport === "swimming") return <FaSwimmer size={size} />;
+    if (sport === "surfing") return <MdSurfing size={size} />;
+    if (sport === "scubadiving") return <MdOutlineScubaDiving size={size} />;
+    if (sport === "skateboarding") return <MdOutlineSkateboarding size={size} />;
+    if (sport === "billiard") return <RiBilliardsFill size={size} />;
+    if (sport === "game") return <GrGamepad size={size} />;
   };
 
   return (
