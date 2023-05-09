@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
-import { GiBaseballBat, GiBasketballBasket, GiMountainClimbing, GiSoccerKick } from 'react-icons/gi';
-import { CgGym } from 'react-icons/cg';
-import { IoMdBicycle } from 'react-icons/io';
+import ModalsIcon from './ModalsIcon';
+
 
 
 const modalOverlay = css`
@@ -36,11 +35,14 @@ const modalTitle = css`
 `;
 
 const sportsIconsContainer = css`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  justify-items: center;
+  align-items: center;
+  max-height: 280px;
+  overflow-y: auto;
 `;
-
 const sportsIcon = css`
   font-size: 50px;
   margin: 10px;
@@ -56,6 +58,7 @@ const sportsIcon = css`
     
     }
 `;
+
 
 const modalButtonContainer = css`
     display: flex;
@@ -96,9 +99,17 @@ const modalCancelButton = css`
 
 
 
-const SportsIconModal = ({ closeModal, selectedIndex, setSelectedSports, plusVisible, setPlusVisible  }) => {
+const SportsIconModal = ({
+  closeModal,
+  selectedIndex,
+  setSelectedSports,
+  plusVisible,
+  setPlusVisible,
+}) => {
   const [selectedSport, setSelectedSport] = useState(null);
- 
+
+  
+
   const handleSportSelect = (e) => {
     const selectedSport = e.currentTarget.getAttribute('data-sport');
     setSelectedSport(selectedSport);
@@ -107,91 +118,50 @@ const SportsIconModal = ({ closeModal, selectedIndex, setSelectedSports, plusVis
   const handleConfirm = () => {
     console.log(selectedSport);
     if (selectedSport !== null) {
-      setSelectedSports(prevSports => {
+      setSelectedSports((prevSports) => {
         const newSports = [...prevSports];
         newSports[selectedIndex] = selectedSport;
         return newSports;
       });
-      setPlusVisible((preVisible) =>{
+      setPlusVisible((preVisible) => {
         const newVisible = [...preVisible];
         newVisible[selectedIndex] = false;
         return newVisible;
       });
-      //alert(`선택 운동 : ${selectedSport}`);
       closeModal();
-    } else {
-      //alert("선호 운동을 선택하세요.");
     }
   };
 
-  
-
-  
-
   const sportsIconActive = (sport) => {
-    return selectedSport === sport ? css`
-      ${sportsIcon};
-      background-color: rgba(0, 255, 0, 0.2);
-      border-radius: 0;
-      ` : sportsIcon; 
+    return selectedSport === sport
+      ? css`
+          ${sportsIcon};
+          background-color: rgba(0, 255, 0, 0.2);
+          border-radius: 0;
+        `
+      : sportsIcon;
   };
-    
-    
 
   return (
     <div css={modalOverlay}>
       <div css={modalContent}>
-          <h2 css={modalTitle}>선호 운동 선택</h2>
-          <div css={sportsIconsContainer}>
-              
-              <GiSoccerKick
-              data-sport="soccer"
-              onClick={handleSportSelect}
-              css={sportsIconActive('soccer')}
-              title="축구"
-              />
-              <GiBaseballBat
-              data-sport="baseball"
-              onClick={handleSportSelect}
-              css={sportsIconActive('baseball')}
-              title="야구"
-              />
-              <GiBasketballBasket
-              data-sport="basketball"
-              onClick={handleSportSelect}
-              css={sportsIconActive('basketball')}
-              title="농구"
-              />
-
-              <CgGym
-              data-sport="health"
-              onClick= {handleSportSelect}
-              css={sportsIconActive('health')}
-              title="헬스"
-              />
-
-              <GiMountainClimbing
-              data-sport="climbing"
-              onClick= {handleSportSelect}
-              css={sportsIconActive('climbing')}
-              title="클라이밍"
-              />
-
-              <IoMdBicycle 
-              data-sport="riding"
-              onClick= {handleSportSelect}
-              css={sportsIconActive('riding')}
-              title="라이딩"
-              />
-
-
-          </div>
-          <div css={modalButtonContainer}>
-              <button onClick={closeModal} css={modalCancelButton}>취소</button>
-              <button onClick={handleConfirm} css={modalConfirmButton}>확인</button>
-          </div>
+        <h2 css={modalTitle}>선호 운동 선택</h2>
+        <div css={sportsIconsContainer}>
+          <ModalsIcon
+            handleSportSelect={handleSportSelect}
+            sportsIconActive={sportsIconActive}
+          />
+        </div>
+        <div css={modalButtonContainer}>
+          <button onClick={closeModal} css={modalCancelButton}>
+            취소
+          </button>
+          <button onClick={handleConfirm} css={modalConfirmButton}>
+            확인
+          </button>
+        </div>
       </div>
-  </div>
+    </div>
   );
 };
 
