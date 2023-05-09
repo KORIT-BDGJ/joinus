@@ -6,6 +6,7 @@ import { FcSportsMode } from 'react-icons/fc';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Select from 'react-select';
+import { GiSoccerBall } from 'react-icons/gi';
 
 const mainContainer = css`
     padding: 10px;
@@ -58,26 +59,43 @@ const mainListBox = css`
 `;
 
 const listContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
-    padding: 5px;
+    padding: 3px;
     width: 100%;
     height: 120px;
     background-color: beige;
 `;
 
-const postHeader = css`
-    height: 20%;
+const postIconBox = css`
+    border: 1px solid #999;
+    border-radius: 50%;
+    margin: 10px;
+    width: 60px;
+    height: 60px;
 `;
+
+const postIcon = css`
+    width: 100%;
+    height: 100%;
+`;
+
+const postContent = css`
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    width: 90%;
+    height: 100%;
+`;
+
 const postMain = css`
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 60%;
-    font-size: 30px;
-`;
-const postSub = css`
-    height: 20%;
+    height: 80px;
+    font-size: 28px;
 `;
 
 const pageButton = css`
@@ -161,9 +179,12 @@ const Main = () => {
             </header>
             <div css={mainListBox} onClick={listClickHandle}>
                 <div css={listContainer}>
-                    <header css={postHeader}>등록 날짜</header>
-                    <main css={postMain}>모집 제목</main>
-                    <footer css={postSub}>모집유저이름/모집지역/모집시간/신청인원</footer>
+                    <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
+                    <div css={postContent}>
+                        <header>2023.05.05</header>
+                        <main css={postMain}>모집 제목</main>
+                        <footer>모집유저이름/모집지역/모집시간/신청인원</footer>
+                    </div>
                 </div>
             </div>
             <div css={pageButton}>

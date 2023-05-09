@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React from 'react';
+import IconsModal from './IconsModal';
 
 const modalMainContainer = (isOpen) => css`
     display: ${isOpen ? "block" : "none"};
@@ -30,9 +31,7 @@ const modalMainTitle = css`
 `;
 
 const modalMain = css`
-    display: flex;
-    height: 380px;
-    overflow-y: auto;
+    height: 70%;
 `;
 
 const modalMainButton = css`
@@ -61,6 +60,7 @@ const SelectSportsModal = ({ isOpen, setIsOpen }) => {
                 <h1 css={modalMainTitle}>운동 종목 선택</h1>
             </header>
             <main css={modalMain}>
+                <IconsModal/>
             </main>
             <footer css={modalMainButton}>
                 <button css={okButton} onClick={()=> setIsOpen(false)}>확인</button>

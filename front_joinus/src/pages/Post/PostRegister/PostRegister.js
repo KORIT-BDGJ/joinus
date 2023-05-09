@@ -167,9 +167,9 @@ const options = {
         { value: 'advanced', label: '고급자' }
       ],
       status: [
-        { value: 'teach', label: '가르치고 싶어요' },
-        { value: 'study', label: '배우고 싶어요' },
-        { value: 'together', label: '함께 하고 싶어요' }
+        { value: 'teach', label: '알려줄게요' },
+        { value: 'study', label: '알려주세요' },
+        { value: 'together', label: '같이해요' }
       ],
       countries: [
         { value: 'busan', label: '부산' },
@@ -270,7 +270,7 @@ const PostRegister = () => {
                             selected={selectedDate} 
                             onChange={date => setSelectedDate(date)}
                             showTimeSelect
-                            dateFormat="yyyy년 MM월 dd일 HH시 MM분"
+                            dateFormat="yyyy년 MM월 dd일 HH시 mm분"
                         />
                     </div>
                 </div>
