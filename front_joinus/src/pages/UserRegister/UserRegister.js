@@ -1,10 +1,9 @@
 
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import React, { useState } from 'react';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { FiLock, FiUser } from 'react-icons/fi';
-import {BiRename} from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HiOutlineMail } from 'react-icons/hi';
@@ -17,25 +16,30 @@ import { BiFemale, BiMale } from 'react-icons/bi';
 
 
 const headerContainer = css`
-    height :0px ;
+    height :125px ;
+    display: flex;
+    align-content: flex-start;
+    justify-content: center;
 `;
 
 const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 70px 30px;
-    background-image: url('/images/6.png');
+    padding-top: 50px;
+`;
+const logoStyle= css`
+    width: 310px; 
+    height: 210px;
+    background-image: url('/images/6_plus.png');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
 `;
 
+
 const title = css`
-    margin: 50px 0px;
-    padding-top: 70px;
-    font-size: 25px;
-    font-weight: 600;
+    margin: 0px;
 `;   
 
 
@@ -45,8 +49,8 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    margin-top: 170px;
-    padding: 40px 20px;
+    margin-top: 75px;
+    padding: 50px 20px;
     width: 400px;
 `;
 
@@ -138,7 +142,10 @@ const UserRegister = () => {
         <div css= {container}>
             <header>
                 <div css={headerContainer}>
-                    <h2 css ={ title }> </h2>  
+                    <div css={logoStyle}>
+                        <h2 css ={ title }> </h2>  
+
+                    </div>
                 </div>
             </header>
             <main css={ mainContainer }>

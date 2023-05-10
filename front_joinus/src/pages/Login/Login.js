@@ -8,28 +8,33 @@ import { Link } from 'react-router-dom';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 
 
+
 const headerContainer = css`
     height :125px ;
+    display: flex;
+    align-content: flex-start;
+    justify-content: center;
 `;
 
 const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 70px 30px;
-    background-image: url('/images/5.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    padding-top: 50px;
+    
+`;
 
+const logoStyle= css`
+    width: 300px; 
+    height: 200px;
+    background-image: url('/images/5_plus.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 `;
 
 const title = css`
-    margin: 50px 0px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
-    text-align: center;
+    margin: 0px;
 `;   
 
 
@@ -39,7 +44,8 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    padding: 40px 20px;
+    padding: 50px 20px;
+    margin-top: 75px;
     width: 400px;
 
 `;
@@ -149,13 +155,11 @@ const Login = () => {
     return (
         <div css ={ container }>
             <header>
-                
-                
                 <div css={headerContainer}>
-                    <h1 css = { title }> </h1>
+                    <h1 css = { title }>
+                        <div css={logoStyle} />
+                    </h1>
                 </div>
-
-                
             </header>
             <main css = { mainContainer}>
                 <div>
