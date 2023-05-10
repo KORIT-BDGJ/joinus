@@ -3,10 +3,10 @@ import { css } from "@emotion/react";
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
-import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Select from 'react-select';
 import { GiSoccerBall } from 'react-icons/gi';
+import SportsIconModal from "../../components/Modal/SportsIconModal";
 
 const mainContainer = css`
     padding: 10px;
@@ -132,11 +132,16 @@ const options = {
 const Main = () => {
 
     const navigate = useNavigate();
-    const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
+    const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
+
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedCountry: null,
         selectedSearch: null
     });
+
+    const closeSportsIconModal  = () => {
+        setIsSportsIconModalOpen(!isSportsIconModalOpen);
+    }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
         setSelectedOptions((prevState) => ({
@@ -157,8 +162,8 @@ const Main = () => {
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
-                <FcSportsMode css={sportIcon}  onClick={() => setSportsModalIsOpen(true)}/>
-                <SelectSportsModal isOpen={sportsModalIsOpen} setIsOpen={setSportsModalIsOpen} />
+                <FcSportsMode css={sportIcon}  onClick={() => setIsSportsIconModalOpen(true)}/>
+                {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal}/>}
                 <Select
                     css={selectCountry}
                     value={selectedOptions.selectedCountry}

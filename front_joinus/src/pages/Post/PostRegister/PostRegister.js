@@ -8,10 +8,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from "react-icons/fc";
-import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
 import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
 import Select from 'react-select';
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import SportsIconModal from "../../../components/Modal/SportsIconModal";
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
+import { CgGym } from 'react-icons/cg';
+import { IoMdBicycle } from 'react-icons/io';
+import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
+import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { GrGamepad } from 'react-icons/gr';
 
 const mainContainer = css`
     padding: 10px;
@@ -184,7 +191,9 @@ const PostRegister = () => {
     const [ count, setCount ] = useState(0);
     const [ gender, setGender ] = useState('');
 
-    const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
+    const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
+    const [selectedSports, setSelectedSports] = useState(null);
+    const [selectedSportsIcon, setSelectedSportsIcon] = useState(null);
     const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
 
     const navigate = useNavigate();
@@ -196,6 +205,10 @@ const PostRegister = () => {
         selectedStatus: null,
         selectedCountry: null
     });
+
+    const closeSportsIconModal  = () => {
+        setIsSportsIconModalOpen(!isSportsIconModalOpen);
+    }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
         setSelectedOptions((prevState) => ({
@@ -231,8 +244,8 @@ const PostRegister = () => {
                 </div>
                 <div css={postContainer}>
                     <p css={postTitle}>운동 종목</p>
-                    <FcSportsMode css={sportIcon}  onClick={() => setSportsModalIsOpen(true)}/>
-                    <SelectSportsModal isOpen={sportsModalIsOpen} setIsOpen={setSportsModalIsOpen} />
+                    <FcSportsMode css={sportIcon}  onClick={() => setIsSportsIconModalOpen(true)}/>
+                    {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal}/>}
                     <div css={selectLevelBox}>
                         <Select
                             css={selectLevel}
