@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import AlertModal from '../../../components/Modal/AlertModal';
 
 const container = css`
   	display: flex;
@@ -34,80 +35,39 @@ const list = css`
 `;
 
 const listItem = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 20px;
-  border-bottom: 1px solid #dbdbdb;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    border-bottom: 1px solid #dbdbdb;
 
-  &:last-child {
-    border-bottom: none;
-  }
+    &:last-child {
+        border-bottom: none;
+    }
 `;
 
 const postTitle = css` // 글 제목
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0;
-  &:hover {
-    cursor: pointer;
-    color: #0095f6;
-  }
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    &:hover {
+        cursor: pointer;
+        color: #0095f6;
+    }
 `;
 
 const buttons = css`
-  display: flex;
-  gap: 10px;
-  height: 30px;
-`;
-
-const modalOverlay = css` // 모달창 배경
-  position: fixed;	
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const modal = css` 
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  width: 400px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const modalMessage = css`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
-
-const modalButtons = css` // 모달창 버튼들
-  display: flex;
-  gap: 20px;
-  height: 30px;
-  margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    height: 30px;
 `;
 
 const HostPostList = () => {
-  const [posts, setPosts] = useState([
-    { id: 1, title: '글 제목 1', cancelButton: true },
-    { id: 2, title: '글 제목 2', cancelButton: true },
-    { id: 3, title: '글 제목 3', cancelButton: true },
-  ]);
+    const [posts, setPosts] = useState([
+        { id: 1, title: '글 제목 1', cancelButton: true },
+        { id: 2, title: '글 제목 2', cancelButton: true },
+        { id: 3, title: '글 제목 3', cancelButton: true },
+    ]);
 
     // useEffect(() => {
     //     axios.get('http://localhost:8080/api/posts')
@@ -159,18 +119,15 @@ const HostPostList = () => {
                 ))}
             </ul>
             {isModalOpen && (
-			<div css={modalOverlay}>
-				<div css={modal}>
-				<p css={modalMessage}>취소하시겠습니까?</p>
-				<div css={modalButtons}>
-					<button onClick={confirmRemove}>확인</button>
-					<button onClick={cancelRemove}>취소</button>
-				</div>
-				</div>
-			</div>
-			)}
-  </div>
-  );
+                <AlertModal
+                isModalOpen={isModalOpen}
+                confirmRemove={confirmRemove}
+                cancelRemove={cancelRemove}
+                message="취소하시겠습니까?"
+                />
+            )}
+        </div>
+    );
 };
 
 export default HostPostList;

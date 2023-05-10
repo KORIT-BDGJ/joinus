@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import AlertModal from '../../../components/Modal/AlertModal';
 
 const container = css`
   	display: flex;
@@ -65,48 +66,6 @@ const buttonLabel = css`
 	overflow: hidden;
 `;
 
-const modalOverlay = css`
-	position: fixed;	
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const modal = css` 
-	background-color: white;
-	border-radius: 4px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	padding: 20px;
-	width: 400px;
-	height: 200px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-`;
-
-const modalMessage = css`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
-
-
-const modalButtons = css`
-	display: flex;
-	gap: 20px;
-	height: 30px;
-	margin-top: 20px;
-`;
-
 const OwnerPostList = () => {
 	const [posts, setPosts] = useState([
 		{ id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
@@ -130,23 +89,23 @@ const OwnerPostList = () => {
 		console.log(`해당 상세페이지로 이동 ${id}`);
 	};
     
-    const modifyPost = (id) => { // 게시글 수정
-
-	}; 
-
-    const removePost = (id) => { // 게시글 삭제
-		setIsModalOpen(true); 
+    const handleButtonClick = (type, id) => {
+		setModal({ type, isOpen: true });
 	};
+
+	const [modal, setModal] = useState({ type: '', isOpen: false });
+
+    const cancelAction = () => {
+	setModal({ type: '', isOpen: false });
+};
 	
-	const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 열림/닫힘 상태
-	
-    const cancelRemove = () => { // 게시글 삭제 취소
-		setIsModalOpen(false); 
-    };
-	
-	const confirmRemove = () => { // 게시글 삭제
-		console.log('게시글 삭제');
-		setIsModalOpen(false); 
+	const confirmAction = () => {
+		if (modal.type === 'delete') {
+			console.log('게시글 삭제');
+		} else if (modal.type === 'edit') {
+			console.log('게시글 수정');
+		}
+		setModal({ type: '', isOpen: false });
 	};
 
     return (
@@ -162,12 +121,12 @@ const OwnerPostList = () => {
 				</div>
 				<div css={buttons}>
 					{post.editButton && (
-					<button onClick={() => modifyPost(post.id)}>
+					<button onClick={() => handleButtonClick('edit', post.id)}>
 						<span css={buttonLabel}>수정하기</span>
 					</button>
 					)}
 					{post.deleteButton && (
-					<button onClick={() => removePost(post.id)}>
+					<button onClick={() => handleButtonClick('delete', post.id)}>
 						<span css={buttonLabel}>삭제하기</span>
 					</button>
 					)}
@@ -175,16 +134,14 @@ const OwnerPostList = () => {
 				</li>
 			))}
 			</ul>
-			{isModalOpen && (
-			<div css={modalOverlay}>
-				<div css={modal}>
-				<p css={modalMessage}>삭제하시겠습니까?</p>
-				<div css={modalButtons}>
-					<button onClick={confirmRemove}>확인</button>
-					<button onClick={cancelRemove}>취소</button>
-				</div>
-				</div>
-			</div>
+			{modal.isOpen && (
+				<AlertModal
+					isModalOpen={modal.isOpen}
+					confirmRemove={confirmAction}
+					cancelRemove={cancelAction}
+					message={modal.type === 'delete' ? '삭제하시겠습니까?' : '수정하시겠습니까?'}
+				/>
+			  
 			)}
 		</div>
 	);
