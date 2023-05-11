@@ -6,7 +6,7 @@ import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Select from 'react-select';
 import { GiSoccerBall } from 'react-icons/gi';
-import SportsIconModal from "../../components/Modal/SportsIconModal";
+import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 
 const mainContainer = css`
     padding: 10px;
@@ -14,9 +14,17 @@ const mainContainer = css`
 
 const header = css`
     display: flex;
-    justify-content: space-between;
-    padding: 40px;
+    flex-direction: row;
+    align-items: center;
     height: 100px;
+`;
+
+const selectIconbox = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 100%;
 `;
 
 const sportIcon = css`
@@ -26,6 +34,7 @@ const sportIcon = css`
 `;
 
 const selectCountry = css`
+    z-index: 99;
     width: 100px;
     height: 35px;
 `;
@@ -38,14 +47,16 @@ const selectSearch = css`
 
 const inputBox = css`
     display: flex;
-    width: 300px;
-    height: 35px;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 100%;
 `;
 
 const searchInput = css`
     border: 1px solid #dbdbdb;
     border-radius: 7px;
-    padding: 5px;
+    height: 38px;
 `;
 
 const mainListBox = css`
@@ -55,7 +66,6 @@ const mainListBox = css`
     flex-wrap: wrap;
     height: 700px;
     overflow-y: auto;
-    cursor: pointer;
 `;
 
 const listContainer = css`
@@ -68,6 +78,7 @@ const listContainer = css`
     width: 100%;
     height: 120px;
     background-color: beige;
+    cursor: pointer;
 `;
 
 const postIconBox = css`
@@ -132,15 +143,27 @@ const options = {
 const Main = () => {
 
     const navigate = useNavigate();
-    const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
-
+    const [ selectedIcon, setSelectedIcon ] = useState(null);
+    const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedCountry: null,
         selectedSearch: null
     });
 
-    const closeSportsIconModal  = () => {
-        setIsSportsIconModalOpen(!isSportsIconModalOpen);
+    const handleIconSelect = (IconComponent) => {
+        if (!sportsModalIsOpen) {
+            return;
+        }
+
+        setSelectedIcon(<IconComponent css={sportIcon}/>);
+    }
+
+    const selectedIconClickHandle = () => {
+        setIcons(() => (selectedIcon))
+    }
+
+    const onConfirm = () => {
+        setSportsModalIsOpen(false);
     }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
@@ -158,19 +181,31 @@ const Main = () => {
         navigate("/postregister");
     }
 
+    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>))
+
     return (
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
-                <FcSportsMode css={sportIcon}  onClick={() => setIsSportsIconModalOpen(true)}/>
-                {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal}/>}
-                <Select
-                    css={selectCountry}
-                    value={selectedOptions.selectedCountry}
-                    onChange={handleOptionChange('selectedCountry')}
-                    options={options.countries}
-                    placeholder="지역"
-                />
+                <div css={selectIconbox} onClick={() => setSportsModalIsOpen(true)}>
+                    {icons}
+                </div>
+                {<SelectSportsModal 
+                    isOpen={sportsModalIsOpen} 
+                    setIsOpen={setSportsModalIsOpen} 
+                    onSelect={handleIconSelect} 
+                    onConfirm={onConfirm}
+                    onClick={selectedIconClickHandle}
+                />}
+                <div css={selectIconbox}>
+                    <Select
+                        css={selectCountry}
+                        value={selectedOptions.selectedCountry}
+                        onChange={handleOptionChange('selectedCountry')}
+                        options={options.countries}
+                        placeholder="지역"
+                    />
+                </div>
                 <div css={inputBox}>
                     <Select
                         css={selectSearch}
@@ -182,8 +217,8 @@ const Main = () => {
                     <input css={searchInput} type="text" placeholder="검색"/>
                 </div>
             </header>
-            <div css={mainListBox} onClick={listClickHandle}>
-                <div css={listContainer}>
+            <div css={mainListBox}>
+                <div css={listContainer} onClick={listClickHandle}>
                     <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
                     <div css={postContent}>
                         <header>2023.05.05</header>

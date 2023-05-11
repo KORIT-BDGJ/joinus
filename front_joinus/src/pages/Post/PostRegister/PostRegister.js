@@ -8,17 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from "react-icons/fc";
-import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
 import Select from 'react-select';
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import SportsIconModal from "../../../components/Modal/SportsIconModal";
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
-import { CgGym } from 'react-icons/cg';
-import { IoMdBicycle } from 'react-icons/io';
-import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
-import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
-import { RiBilliardsFill } from 'react-icons/ri';
-import { GrGamepad } from 'react-icons/gr';
+import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
+import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
 
 const mainContainer = css`
     padding: 10px;
@@ -191,9 +184,8 @@ const PostRegister = () => {
     const [ count, setCount ] = useState(0);
     const [ gender, setGender ] = useState('');
 
-    const [isSportsIconModalOpen, setIsSportsIconModalOpen] = useState(false);
-    const [selectedSports, setSelectedSports] = useState(null);
-    const [selectedSportsIcon, setSelectedSportsIcon] = useState(null);
+    const [ selectedIcon, setSelectedIcon ] = useState(null);
+    const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
 
     const navigate = useNavigate();
@@ -206,8 +198,20 @@ const PostRegister = () => {
         selectedCountry: null
     });
 
-    const closeSportsIconModal  = () => {
-        setIsSportsIconModalOpen(!isSportsIconModalOpen);
+    const handleIconSelect = (IconComponent) => {
+        if (!sportsModalIsOpen) {
+            return;
+        }
+
+        setSelectedIcon(<IconComponent css={sportIcon}/>);
+    }
+
+    const selectedIconClickHandle = () => {
+        setIcons(() => (selectedIcon))
+    }
+
+    const onConfirm = () => {
+        setSportsModalIsOpen(false);
     }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
@@ -231,6 +235,8 @@ const PostRegister = () => {
         navigate("/main");
     }
 
+    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+
     return (
         <div css={mainContainer}>
             <Sidebar></Sidebar>
@@ -244,8 +250,16 @@ const PostRegister = () => {
                 </div>
                 <div css={postContainer}>
                     <p css={postTitle}>운동 종목</p>
-                    <FcSportsMode css={sportIcon}  onClick={() => setIsSportsIconModalOpen(true)}/>
-                    {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal}/>}
+                    <div onClick={() => setSportsModalIsOpen(true)}>
+                        {icons}
+                    </div>
+                    {<SelectSportsModal 
+                        isOpen={sportsModalIsOpen} 
+                        setIsOpen={setSportsModalIsOpen} 
+                        onSelect={handleIconSelect} 
+                        onConfirm={onConfirm}
+                        onClick={selectedIconClickHandle}
+                    />}
                     <div css={selectLevelBox}>
                         <Select
                             css={selectLevel}
