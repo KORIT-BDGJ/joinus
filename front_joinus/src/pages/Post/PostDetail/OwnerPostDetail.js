@@ -4,6 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { CgGym } from 'react-icons/cg';
+import Sidebar from '../../../components/Sidebar/Sidebar';
 
 
 const container = css`
@@ -248,6 +249,7 @@ const OwnerPostDetail = () => {
 
     return (
         <div css={container}>
+            <Sidebar></Sidebar>
             <div css={detailHeader}>
                 <div css={headerTitle}>헬스 삼분할 하체 조지실분</div>
                 <div>
