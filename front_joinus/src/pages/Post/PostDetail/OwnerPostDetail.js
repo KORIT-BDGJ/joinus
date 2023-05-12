@@ -247,21 +247,22 @@ const OwnerPostDetail = () => {
     const applicantClickHandle = (e) => {
         setApplicantShow(!applicantShow);
     };
-
+    
     const { postId } = useParams();
     const queryClient = useQueryClient();
-
+    
     const getPost = useQuery(["getPost"], async () => {
-
+        
         const response = await axios.get(`http://localhost:8080/post/${postId}`);
-        console.log(response)
+        console.log(response.data)
         return response;
     });
 
+    
     if(getPost.isLoading) {
         return <div>불러오는 중...</div>
     }
-
+    
     if(!getPost.isLoading)
     return (
         
@@ -279,34 +280,34 @@ const OwnerPostDetail = () => {
                     <div css={infoBox}>
                         <div css={ownerInfo}>방장정보 :</div>
                         <div css={ownerPicture}><FaUserCircle /></div>
-                        <div css={ownerNickname}>진정한헬창</div>
+                        <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
                     </div>
                     <button css={detailButton} onClick={detailClickHandle}>상세정보 버튼</button>
                 </div>
                 <div css={infoDetail(detailShow)}>
-                    <div css={ownerLevel}>레벨: 고급</div>
-                    <div css={ownerState}>상태: 가르쳐주고 싶어요</div>
-                    <div css={ownerMedal}>메달: 금메달</div>
+                    <div css={ownerLevel}>레벨: {getPost.data.data.levelName}</div>
+                    <div css={ownerState}>상태: {getPost.data.data.stateName}</div>
+                    <div css={ownerMedal}>메달: {getPost.data.data.writerNickName}</div>
                 </div>
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
-                    <div css={recruitSports}><CgGym /></div>
-                    <div css={recruitRegion}>지역: 부산</div>
-                    <div css={recruitTime}>5월5일 19:00시</div>
-                    <div css={recruitGender}>남성만</div>
+                    <div css={recruitSports}><CgGym />{getPost.data.data.sportsName}</div>
+                    <div css={recruitRegion}>지역: {getPost.data.data.regionName}</div>
+                    <div css={recruitTime}>{getPost.data.data.deadLine}</div>
+                    <div css={recruitGender}>{getPost.data.data.genderName}</div>
                 </div>
                 <div css={recruitText}>
                     <div css={recruitTextHeader}>
                         모집글 소개
                     </div>
                     <div css={recruitTextBody}>
-                        내용
+                        {getPost.data.data.text}
                     </div>
 
                 </div>
                 <div css={applicant}>
                     <div css={applicantHeader}>
-                        <div css={applicantCount}>참여인원 정보 : (4/10)</div>
+                        <div css={applicantCount}>참여인원 정보 : (4/{getPost.data.data.recruitsCount})</div>
                         <button css={applicantButton} onClick={attendClickHandle}>참여자 보기</button>
                     </div>
                     <div css={attendList(attendShow)}>
