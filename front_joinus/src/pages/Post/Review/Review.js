@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import React from 'react';
 import AlertModal from '../../../components/Modal/AlertModal';
 import { FcSportsMode } from 'react-icons/fc';
 import { MdOutlineSportsTennis } from 'react-icons/md';
+import Sidebar from './../../../components/Sidebar/Sidebar';
 
 const container = css`
   	display: flex;
@@ -215,6 +215,7 @@ const Review = () => {
 
     return (
         <div css={container}> 
+        <Sidebar></Sidebar>
             <h1 css={title}>평가하기</h1>
             <ul css={list}>
             {posts.map((post) => (
