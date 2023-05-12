@@ -16,9 +16,20 @@ import lombok.Data;
 @Builder
 @Data
 public class PrincipalUser implements UserDetails {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6165939369947232956L;
+	
+	
 	private int userId;
+	private String name;
 	private String email;
 	private String password;
+	private String passwordConfirm;
+	private String address;
+	private String gender;
+	private String provider;
 	private List<Authority> authorities;
 
 	@Override
