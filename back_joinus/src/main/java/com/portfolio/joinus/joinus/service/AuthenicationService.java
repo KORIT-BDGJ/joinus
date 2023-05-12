@@ -1,7 +1,11 @@
 package com.portfolio.joinus.joinus.service;
 
-import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.stereotype.Service;
+
+import com.portfolio.joinus.joinus.entity.User;
+import com.portfolio.joinus.joinus.exception.CustomException;
+import com.portfolio.joinus.joinus.exception.ErrorMap;
+import com.portfolio.joinus.joinus.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenicationService {
 	
-	private final UserDetailsRepository userRepository;
+	private final UserRepository userRepository;
 	
 	public void checkDuplicatedEmail(String email) {
 			
