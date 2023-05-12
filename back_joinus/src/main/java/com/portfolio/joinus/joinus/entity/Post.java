@@ -28,7 +28,7 @@ public class Post {
 	private int genderId;
 	private String text;
 	
-	private UserInfo userinfo;
+	private User user;
 	private Sports sports;
 	private Level level;
 	private State state;
@@ -38,7 +38,7 @@ public class Post {
 	public GetPostRespDto toGetPostDto() {
 		return GetPostRespDto.builder()
 				.postId(postId)
-				.writerNickName(userinfo.getNickName())
+				.writerNickName(user.getUserInfo().getNickName())
 				.title(title)
 				.sportsName(sports.getSportsName())
 				.levelName(level.getLevelName())

@@ -14,30 +14,13 @@
 		<result property="recruitsCount" column="recruits_count"/>
 		<result property="genderId" column="gender_id"/>
 		<result property="text" column="text"/>
-		<association property="userInfo"  resultMap="UserInfoMap"></association>
+		<association property="user"  resultMap="UserMap"></association>
 		<association property="sports" resultMap="SportsMap"></association>
 		<association property="level" resultMap="LevelMap"></association>
 		<association property="state" resultMap="StateMap"></association>
 		<association property="region" resultMap="RegionMap"></association>
 		<association property="gender" resultMap="GenderMap"></association>
 	</resultMap>
-	
-	<resultMap type="com.portfolio.joinus.joinus.entity.UserInfo" id="UserInfoMap">
-		<id property="userInfoId" column="user_info_id"/>
-		<result property="userId" column="user_id"/>
-		<result property="image" column="image"/>
-		<result property="nickName" column="nickname"/>
-		<result property="pointId" column="point_id"/>
-		<association property="user"  resultMap="UserMap"></association>
-		<association property="point"  resultMap="PointMap"></association>
-	</resultMap>
-
-	<resultMap type="com.portfolio.joinus.joinus.entity.Point" id="PointMap">
-		<id property="pointId" column="point_id"/>
-		<result property="userId" column="user_id"/>
-		<result property="point" column="point"/>
-		<association property="user"  resultMap="UserMap"></association>
-	</resultMap>	
 	
 	<resultMap type="com.portfolio.joinus.joinus.entity.User" id="UserMap">
 		<id property="userId" column="user_id"/>
@@ -47,7 +30,26 @@
 		<result property="adress" column="adress"/>
 		<result property="gender" column="gender"/>
 		<result property="provider" column="provier"/>
+		<association property="userInfo"  resultMap="UserInfoMap"></association>
+		<association property="point"  resultMap="PointMap"></association>
 	</resultMap>
+	
+	<resultMap type="com.portfolio.joinus.joinus.entity.UserInfo" id="UserInfoMap">
+		<id property="userInfoId" column="user_info_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="image" column="image"/>
+		<result property="nickName" column="nickname"/>
+		<result property="pointId" column="point_id"/>
+		
+	</resultMap>
+
+	<resultMap type="com.portfolio.joinus.joinus.entity.Point" id="PointMap">
+		<id property="pointId" column="point_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="point" column="point"/>
+	</resultMap>	
+	
+	
 	
 	<resultMap type="com.portfolio.joinus.joinus.entity.Sports" id="SportsMap">
 		<id property="sportsId" column="sports_id"/>
@@ -88,6 +90,8 @@
             pt.gender_id,
             pt.text,
 		    
+		    ut.user_id,
+		    
 		    uit.user_info_id,
 		    uit.nickname,
 		    
@@ -107,7 +111,8 @@
 		    gt.gender_name
 		from 
             post_tb pt
-		    left outer join user_info_tb uit on(uit.user_info_id = pt.writer_id)
+            left outer join user_tb ut on(ut.user_id = pt.writer_id)
+		    left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
 		    left outer join sports_tb spt on(spt.sports_id = pt.sports_id)
 		    left outer join level_tb lt on(lt.level_id = pt.level_id)
             left outer join state_tb stt on(stt.state_id = pt.state_id)

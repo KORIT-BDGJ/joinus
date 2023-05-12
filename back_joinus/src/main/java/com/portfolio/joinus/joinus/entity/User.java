@@ -23,6 +23,9 @@ public class User {
 	private String gender; // 추가된 부분
 	private String provider;
 	
+	private UserInfo userInfo;
+	private Point point;
+	
 	private List<Authority> authorities;
 	
 	public PrincipalUser toPrincipal() {
