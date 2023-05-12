@@ -1,5 +1,5 @@
 package com.portfolio.joinus.joinus.controller;
 
-public class test {
+public class PostController {
 
 }
