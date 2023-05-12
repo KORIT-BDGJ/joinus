@@ -12,7 +12,6 @@ const container = css`
   	flex-direction: column;
   	align-items: center;
   	padding: 30px 30px;
-    margin-bottom: 20px;
 `;
 
 const title = css` // 평가하기

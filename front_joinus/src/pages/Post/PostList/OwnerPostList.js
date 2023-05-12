@@ -16,6 +16,7 @@ const title = css` // 내가 올린 글
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	height: 100px;
 	font-size: 34px;
 	font-weight: 600;
 `;
