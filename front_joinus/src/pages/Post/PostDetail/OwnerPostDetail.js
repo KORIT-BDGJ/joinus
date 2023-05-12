@@ -252,21 +252,23 @@ const OwnerPostDetail = () => {
     const queryClient = useQueryClient();
 
     const getPost = useQuery(["getPost"], async () => {
-        const option = {
-            headers: {
-                Authorization: localStorage.getItem("accessToken")
-            }
-        }
-        const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
+
+        const response = await axios.get(`http://localhost:8080/post/${postId}`);
+        console.log(response)
         return response;
     });
 
+    if(getPost.isLoading) {
+        return <div>불러오는 중...</div>
+    }
+
+    if(!getPost.isLoading)
     return (
         
         <div css={container}>
             <Sidebar></Sidebar>
             <div css={detailHeader}>
-                <div css={headerTitle}>헬스 삼분할 하체 조지실분</div>
+                <div css={headerTitle}>{getPost.data.data.title}</div>
                 <div>
                     <button css={attendButton}>수정하기</button>
                     <button css={attendButton}>삭제하기</button>

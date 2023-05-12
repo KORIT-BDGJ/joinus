@@ -1,7 +1,6 @@
 package com.portfolio.joinus.joinus.dto.post;
 
 import java.util.Date;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,13 +8,13 @@ import lombok.Data;
 @Data
 public class GetPostRespDto {
 	private int postId;
-	private String writerName;
+	private String writerNickName;
 	private String title;
 	private String sportsName;
 	private String levelName;
 	private String stateName;
 	private String regionName;
-	private Date deadline;
+	private Date deadLine;
 	private int recruitsCount;
 	private String genderName;
 	private String text;

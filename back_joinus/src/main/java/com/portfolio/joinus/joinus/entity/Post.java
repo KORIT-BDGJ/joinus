@@ -1,10 +1,9 @@
 package com.portfolio.joinus.joinus.entity;
 
-<<<<<<< HEAD
-import java.util.Date;
-=======
 import java.time.LocalDate;
->>>>>>> main
+import java.util.Date;
+
+import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Post {
-<<<<<<< HEAD
-=======
-	
->>>>>>> main
+
 	private int postId;
 	private int writerId;
 	private String title;
@@ -27,22 +23,32 @@ public class Post {
 	private int levelId;
 	private int stateId;
 	private int regionId;
-<<<<<<< HEAD
-	private Date deadline;
-	private int recruitsCount;
-	private int genderId;
-	private String text;
-=======
-	private LocalDate deadLine;
+	private Date deadLine;
 	private int recruitsCount;
 	private int genderId;
 	private String text;
 	
-	private User user;
+	private UserInfo userinfo;
 	private Sports sports;
 	private Level level;
 	private State state;
 	private Region region;
 	private Gender gender;
->>>>>>> main
+	
+	public GetPostRespDto toGetPostDto() {
+		return GetPostRespDto.builder()
+				.postId(postId)
+				.writerNickName(userinfo.getNickName())
+				.title(title)
+				.sportsName(sports.getSportsName())
+				.levelName(level.getLevelName())
+				.stateName(state.getStateName())
+				.regionName(region.getRegionName())
+				.deadLine(deadLine)
+				.recruitsCount(recruitsCount)
+				.genderName(gender.getGenderName())
+				.text(text)
+				.build();
+	}
+
 }

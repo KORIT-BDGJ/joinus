@@ -26,6 +26,7 @@ function App() {
         <Route path="/hostpostlist" element={<HostPostList />} />
         <Route path="/ownerpostdetail" element={<OwnerPostDetail />} />
         <Route path="/hostpostdetail" element={<HostPostDetail />} />
+        <Route path="/post/:postId" element={<OwnerPostDetail />} />
         <Route path="/" element={<Navigate to="/login"/>} />
       </Routes>
     </>
