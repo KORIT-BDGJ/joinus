@@ -214,7 +214,11 @@ const PostRegister = () => {
 
     const sendPost = async () => {
         const data = {
-            ...writePost
+            ...writePost,
+            sportsId: selectedIcon,
+            levelId: selectedOptions.selectedLevel,
+            stateId: selectedOptions.selectedStatus,
+            regionId: selectedOptions.selectedCountry,
         }
 
         const option = {
@@ -223,10 +227,22 @@ const PostRegister = () => {
             }
         }
         try {
-            const response = await axios.post("http://localhost:8080/post", JSON.stringify(data), option)
-            navigate("/main");
+            const response = await axios.post("http://localhost:8080/post/register", JSON.stringify(data), option)
         } catch(error) {
             console.log(error);
+        }
+    }
+
+    const createClickHandle = () => {
+        const hasEmptyValue = Object.values(writePost).some(value => !value);
+
+        if (hasEmptyValue) {
+          // 빈 값이 있으면 alert 출력
+          alert('Please fill out all fields.');
+        } else {
+          // 빈 값이 없으면 sendPost 호출 후 /main 페이지로 이동
+          sendPost();
+          navigate('/main');
         }
     }
 
@@ -244,11 +260,6 @@ const PostRegister = () => {
 
     const onConfirm = () => {
         setSportsModalIsOpen(false);
-    }
-
-    const sendPostClickHandle = () => {
-        setSubmitModalIsOpen(false);
-        sendPost();
     }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
@@ -371,13 +382,7 @@ const PostRegister = () => {
                 </div>
             </main>
                 <div css={buttonBox}>
-                    <button css={modifyButton}  onClick={() => setSubmitModalIsOpen(true)}>작성</button>
-                    {submitModalIsOpen && (
-                        <div>
-                            <SelectModifyModal isOpen={submitModalIsOpen} setIsOpen={setSubmitModalIsOpen}/>
-                            <button onClick={sendPost}>등록</button>
-                        </div>
-                    )}
+                    <button css={modifyButton} onClick={createClickHandle} >작성</button>
                     {/* <SelectModifyModal isOpen={submitModalIsOpen} setIsOpen={setSubmitModalIsOpen}/> */}
                     <button css={cancelButton} onClick={cancelClickHandle}>취소</button>
                 </div>
