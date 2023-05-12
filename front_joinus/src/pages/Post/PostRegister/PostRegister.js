@@ -8,10 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from "react-icons/fc";
-import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
-import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
 import Select from 'react-select';
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
+import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
 
 const mainContainer = css`
     padding: 10px;
@@ -184,6 +184,7 @@ const PostRegister = () => {
     const [ count, setCount ] = useState(0);
     const [ gender, setGender ] = useState('');
 
+    const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
 
@@ -196,6 +197,22 @@ const PostRegister = () => {
         selectedStatus: null,
         selectedCountry: null
     });
+
+    const handleIconSelect = (IconComponent) => {
+        if (!sportsModalIsOpen) {
+            return;
+        }
+
+        setSelectedIcon(<IconComponent css={sportIcon}/>);
+    }
+
+    const selectedIconClickHandle = () => {
+        setIcons(() => (selectedIcon))
+    }
+
+    const onConfirm = () => {
+        setSportsModalIsOpen(false);
+    }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
         setSelectedOptions((prevState) => ({
@@ -218,6 +235,8 @@ const PostRegister = () => {
         navigate("/main");
     }
 
+    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+
     return (
         <div css={mainContainer}>
             <Sidebar></Sidebar>
@@ -231,8 +250,16 @@ const PostRegister = () => {
                 </div>
                 <div css={postContainer}>
                     <p css={postTitle}>운동 종목</p>
-                    <FcSportsMode css={sportIcon}  onClick={() => setSportsModalIsOpen(true)}/>
-                    <SelectSportsModal isOpen={sportsModalIsOpen} setIsOpen={setSportsModalIsOpen} />
+                    <div onClick={() => setSportsModalIsOpen(true)}>
+                        {icons}
+                    </div>
+                    {<SelectSportsModal 
+                        isOpen={sportsModalIsOpen} 
+                        setIsOpen={setSportsModalIsOpen} 
+                        onSelect={handleIconSelect} 
+                        onConfirm={onConfirm}
+                        onClick={selectedIconClickHandle}
+                    />}
                     <div css={selectLevelBox}>
                         <Select
                             css={selectLevel}

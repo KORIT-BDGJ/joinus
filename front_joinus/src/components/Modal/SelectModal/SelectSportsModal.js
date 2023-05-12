@@ -31,6 +31,11 @@ const modalMainTitle = css`
 `;
 
 const modalMain = css`
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    align-items: center;
+    margin: 10px 20px;
     height: 70%;
 `;
 
@@ -52,7 +57,12 @@ const cancelButton = css`
     height: 30px;
 `;
 
-const SelectSportsModal = ({ isOpen, setIsOpen }) => {
+
+const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
+
+    const handleIconClick = (IconComponent) => {
+        onSelect(IconComponent);
+    }
 
     return (
         <div css={modalMainContainer(isOpen)}>
@@ -60,10 +70,13 @@ const SelectSportsModal = ({ isOpen, setIsOpen }) => {
                 <h1 css={modalMainTitle}>운동 종목 선택</h1>
             </header>
             <main css={modalMain}>
-                <IconsModal/>
+                <IconsModal onIconClick={handleIconClick}/>
             </main>
             <footer css={modalMainButton}>
-                <button css={okButton} onClick={()=> setIsOpen(false)}>확인</button>
+                <button css={okButton} onClick={()=> {
+                    setIsOpen(false);
+                    onClick();
+                }}>확인</button>
                 <button css={cancelButton} onClick={()=> setIsOpen(false)}>취소</button>
             </footer>
         </div>

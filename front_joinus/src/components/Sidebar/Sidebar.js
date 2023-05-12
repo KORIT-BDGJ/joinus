@@ -14,6 +14,7 @@ const sidebar = (isOpen) => css`
     border-radius: 10px;
     width: 250px;
     height: 800px;
+    z-index: 999;
     box-shadow: -1px 0px 5px #dbdbdb;
     transition: left 1s ease;
     background-color: white;
@@ -32,7 +33,6 @@ const sidebar = (isOpen) => css`
 const header = css`
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
     padding: 10px;
     height: 20%;
 `;
@@ -43,8 +43,8 @@ const userIcon = css`
     align-items: center;
     margin-right: 10px;
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
     background-color: #713fff;
     color: white;
     font-size: 30px;
@@ -54,19 +54,16 @@ const userIcon = css`
 const userInfo = css`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin: 5px;
 `;
 
-// const userName = css`
-//     font-size: 18px;
-//     font-weight: 600;
-//     padding: 5px;
-//     padding-top: 0;
-// `;
-
-// const userEmail = css`
-//     font-size: 12px;
-// `;
+const userNickName = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    border: 1px solid #999;
+`;
 
 const closeButton = css`
     position: absolute;
@@ -116,8 +113,6 @@ const Sidebar = () => {
                 <div css={userIcon}>
                 </div>
                 <div css={userInfo}>
-                    닉네임
-                    별등급
                 </div>
                 <div css={closeButton} onClick={sidebarCloseClickHandle}><GrFormClose /></div>
             </header>
