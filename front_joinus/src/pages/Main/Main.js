@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Select from 'react-select';
 import { GiSoccerBall } from 'react-icons/gi';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
+import axios from "axios";
 
 const mainContainer = css`
     padding: 10px;
@@ -148,7 +149,7 @@ const Main = () => {
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedCountry: null,
         selectedSearch: null
-    });
+    });  
 
     const handleIconSelect = (IconComponent) => {
         if (!sportsModalIsOpen) {
@@ -225,6 +226,16 @@ const Main = () => {
                         <main css={postMain}>모집 제목</main>
                         <footer>모집유저이름/모집지역/모집시간/신청인원</footer>
                     </div>
+                    {/* {posts.map((post) => (
+                        <div key={post.postId} css={listContainer} onClick={listClickHandle}>
+                            <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
+                            <div css={postContent}>
+                                <header>{post.deadLine}</header>
+                                <main css={postMain}>{post.title}</main>
+                                <footer>{`${post.writerId}/${post.regionId}/${post.deadLine}/${post.recruitsCount}`}</footer>
+                            </div>
+                        </div>
+                    ))} */}
                 </div>
             </div>
             <div css={pageButton}>
