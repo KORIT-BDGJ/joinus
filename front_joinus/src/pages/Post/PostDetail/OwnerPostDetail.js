@@ -5,6 +5,9 @@ import { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { CgGym } from 'react-icons/cg';
 import Sidebar from '../../../components/Sidebar/Sidebar';
+import { useParams } from 'react-router-dom';
+import { useQuery, useQueryClient } from 'react-query';
+import axios from 'axios';
 
 
 const container = css`
@@ -245,9 +248,21 @@ const OwnerPostDetail = () => {
         setApplicantShow(!applicantShow);
     };
 
+    const { postId } = useParams();
+    const queryClient = useQueryClient();
 
+    const getPost = useQuery(["getPost"], async () => {
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
+        const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
+        return response;
+    });
 
     return (
+        
         <div css={container}>
             <Sidebar></Sidebar>
             <div css={detailHeader}>

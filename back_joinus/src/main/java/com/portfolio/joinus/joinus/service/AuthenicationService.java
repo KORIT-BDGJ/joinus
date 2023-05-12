@@ -1,24 +1,27 @@
 package com.portfolio.joinus.joinus.service;
 
-import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.stereotype.Service;
+
+import com.portfolio.joinus.joinus.entity.User;
+import com.portfolio.joinus.joinus.exception.CustomException;
+import com.portfolio.joinus.joinus.exception.ErrorMap;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class AuthenicationService {
 	
-	private final UserDetailsRepository userRepository;
+//	private final UserDetailsRepository userRepository;
 	
 	public void checkDuplicatedEmail(String email) {
 			
-			User userEntity = userRepository.findUserByEmail(email);
-			if(userEntity != null) {
+//			User userEntity = userRepository.findUserByEmail(email);
+//			if(userEntity != null) {
 				
 				throw new CustomException("Duplicated Email",
 						ErrorMap.builder().put("email", "사용중인 이메일입니다.").build());
 				
-			}
+//			}
 		}
 }

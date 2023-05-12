@@ -2,12 +2,10 @@ package com.portfolio.joinus.joinus.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-<<<<<<< HEAD
-public interface UserRepository {
+import com.portfolio.joinus.joinus.entity.User;
 
-=======
-public class UserRepository {
+@Mapper
+public interface UserRepository {
 	public User findUserByEmail(String email);
->>>>>>> origin/front-ky
+
 }
