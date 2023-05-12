@@ -7,13 +7,14 @@ import React from 'react';
 const input = css`
     border:none;
     outline:none;
-    padding: 5px 10px
+    padding: 5px 10px;
+    width: 100%;
 `;
 
-const Input = ( { type, placeholder, onChange, name} ) => {
+const Input = ( { type, placeholder, onChange, name, onClick, readOnly,value} ) => {
     return (
         <>
-          <input css={input} type= {type} placeholder={placeholder} onChange={onChange} name={name} />  
+        <input css={input} type={type} placeholder={placeholder} onChange={onChange} name={name} onClick={onClick} readOnly={readOnly} value={value} />
         </>
     );
 };

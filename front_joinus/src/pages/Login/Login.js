@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FiLock, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
-import { GoogleLogin } from 'react-google-login';
 
 
 const headerContainer = css`
@@ -175,13 +174,6 @@ const footerStyles = css`
 
 const Login = () => {
 
-    
-    
-    
-      
-      
-
-    
     const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
     
     const handleChange = () => {

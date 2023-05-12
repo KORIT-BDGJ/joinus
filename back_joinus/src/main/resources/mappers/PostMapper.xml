@@ -14,67 +14,112 @@
 		<result property="recruitsCount" column="recruits_count"/>
 		<result property="genderId" column="gender_id"/>
 		<result property="text" column="text"/>
-		<association property="user"></association>
-		<association property="sports"></association>
-		<association property="level"></association>
-		<association property="state"></association>
-		<association property="region"></association>
-		<association property="gender"></association>
+		<association property="user"  resultMap="UserMap"></association>
+		<association property="sports" resultMap="SportsMap"></association>
+		<association property="level" resultMap="LevelMap"></association>
+		<association property="state" resultMap="StateMap"></association>
+		<association property="region" resultMap="RegionMap"></association>
+		<association property="gender" resultMap="GenderMap"></association>
 	</resultMap>
 	
 	<resultMap type="com.portfolio.joinus.joinus.entity.User" id="UserMap">
 		<id property="userId" column="user_id"/>
+		<result property="name" column="name"/>
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
-		<result property="name" column="name"/>
+		<result property="adress" column="adress"/>
+		<result property="gender" column="gender"/>
 		<result property="provider" column="provier"/>
+		<association property="userInfo"  resultMap="UserInfoMap"></association>
+		<association property="point"  resultMap="PointMap"></association>
 	</resultMap>
+	
+	<resultMap type="com.portfolio.joinus.joinus.entity.UserInfo" id="UserInfoMap">
+		<id property="userInfoId" column="user_info_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="image" column="image"/>
+		<result property="nickName" column="nickname"/>
+		<result property="pointId" column="point_id"/>
+		
+	</resultMap>
+
+	<resultMap type="com.portfolio.joinus.joinus.entity.Point" id="PointMap">
+		<id property="pointId" column="point_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="point" column="point"/>
+	</resultMap>	
+	
+	
+	
 	<resultMap type="com.portfolio.joinus.joinus.entity.Sports" id="SportsMap">
 		<id property="sportsId" column="sports_id"/>
 		<result property="sportsName" column="sports_name"/>
 	</resultMap>
+	
 	<resultMap type="com.portfolio.joinus.joinus.entity.Level" id="LevelMap">
 		<id property="levelId" column="level_id"/>
 		<result property="levelName" column="level_name"/>
 	</resultMap>
+	
 	<resultMap type="com.portfolio.joinus.joinus.entity.State" id="StateMap">
 		<id property="stateId" column="state_id"/>
 		<result property="stateName" column="state_name"/>
 	</resultMap>
+	
 	<resultMap type="com.portfolio.joinus.joinus.entity.Region" id="RegionMap">
 		<id property="regionId" column="region_id"/>
 		<result property="regionName" column="region_name"/>
 	</resultMap>
+	
 	<resultMap type="com.portfolio.joinus.joinus.entity.Gender" id="GenderMap">
 		<id property="genderId" column="gender_id"/>
 		<result property="genderName" column="gender_name"/>
 	</resultMap>
-	
-	<insert id="getPostListAll">
-		INSERT INTO post_tb (
-			writer_id, 
-			title, 
-			sports_id, 
-			level_id, 
-			state_id, 
-			region_id, 
-			deadline, 
-			recruits_count, 
-			gender_id, 
-			text
-		)
-    	VALUES (
-	        #{writerId},
-	        #{title},
-	        #{sportsId},
-	        #{levelId},
-	        #{stateId},
-	        #{regionId},
-	        #{deadLine},
-	        #{recruitsCount},
-	        #{genderId},
-	        #{text}
-    	)
-	</insert>
+
+	<select id="getPost" parameterType="Integer" resultMap="PostMap">
+		select
+			pt.post_id,
+		    pt.writer_id,
+            pt.title,
+		    pt.sports_id,
+		    pt.level_id,
+		    pt.state_id,
+		    pt.region_id,
+            pt.deadline,
+            pt.recruits_count,
+            pt.gender_id,
+            pt.text,
+		    
+		    ut.user_id,
+		    
+		    uit.user_info_id,
+		    uit.nickname,
+		    
+		    spt.sports_id,
+		    spt.sports_name,
+		    
+		    lt.level_id,
+		    lt.level_name,
+            
+            stt.state_id,
+		    stt.state_name,
+            
+            rt.region_id,
+		    rt.region_name,
+            
+            gt.gender_id,
+		    gt.gender_name
+		from 
+            post_tb pt
+            left outer join user_tb ut on(ut.user_id = pt.writer_id)
+		    left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
+		    left outer join sports_tb spt on(spt.sports_id = pt.sports_id)
+		    left outer join level_tb lt on(lt.level_id = pt.level_id)
+            left outer join state_tb stt on(stt.state_id = pt.state_id)
+            left outer join region_tb rt on(rt.region_id = pt.region_id)
+            left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
+		where
+			pt.post_id = #{postId}
+	</select>
 
 </mapper>
