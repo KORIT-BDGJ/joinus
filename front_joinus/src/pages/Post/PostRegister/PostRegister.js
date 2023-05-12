@@ -199,7 +199,6 @@ const PostRegister = () => {
     });
 
     const [ writePost, setWritePost ] = useState({
-        postId: "",
         writerId: "",
         title: "",
         sportsId: "",
@@ -214,12 +213,19 @@ const PostRegister = () => {
 
     const sendPost = async () => {
         const data = {
-            ...writePost,
+            writerId: "",
+            title: "",
             sportsId: selectedIcon,
             levelId: selectedOptions.selectedLevel,
             stateId: selectedOptions.selectedStatus,
             regionId: selectedOptions.selectedCountry,
+            deadLine: selectedDate,
+            recruitsCount: count,
+            genderId: gender,
+            text: ""
         }
+
+        console.log(data)
 
         const option = {
             headers: {
@@ -228,22 +234,16 @@ const PostRegister = () => {
         }
         try {
             const response = await axios.post("http://localhost:8080/post/register", JSON.stringify(data), option)
+            return response;
         } catch(error) {
             console.log(error);
         }
     }
 
     const createClickHandle = () => {
-        const hasEmptyValue = Object.values(writePost).some(value => !value);
-
-        if (hasEmptyValue) {
-          // 빈 값이 있으면 alert 출력
-          alert('Please fill out all fields.');
-        } else {
-          // 빈 값이 없으면 sendPost 호출 후 /main 페이지로 이동
-          sendPost();
-          navigate('/main');
-        }
+       
+        sendPost();
+        navigate('/main');
     }
 
     const handleIconSelect = (IconComponent) => {

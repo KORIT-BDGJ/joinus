@@ -8,5 +8,7 @@ public interface PostRepository {
 	
 	public Post getPost(int postId);
 
+	// 등록
+	public int registePost(Post post);
 
 }

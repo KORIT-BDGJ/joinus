@@ -3,9 +3,13 @@ package com.portfolio.joinus.joinus.controller;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,5 +25,9 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.getPost(postId)) ;
 	}
 	
-	
+	// 게시물 등록
+	@PostMapping("/post/register")
+	public ResponseEntity<?> registePost(@RequestBody Post post) {
+		return ResponseEntity.ok().body(postService.registePost(post));
+	}
 }
