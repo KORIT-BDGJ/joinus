@@ -108,13 +108,28 @@ const errorMsg = css`
 const UserRegister = () => {
 
     const navigate = useNavigate();
-    const [registerUser, setRegisterUser]  = useState( { email:"",password:"",name:"" } );
-    const [errorMessages, setErrorMessages]  = useState( { email: "", password: "" , name: "" } );
+    const [registerUser, setRegisterUser] = useState({
+        email: "",
+        password: "",
+        name: "",
+        passwordConfirm: "",
+        address: "",
+        gender: "",
+    });
+    const [errorMessages, setErrorMessages] = useState({
+        email: "",
+        password: "",
+        name: "",
+        passwordConfirm: "",
+        address: "",
+        gender: "",
+    });
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
         setRegisterUser( { ...registerUser, [name]:value } );
     }
+
     const registerSubmit = async() => {
         const data = {
             ...registerUser
@@ -132,9 +147,17 @@ const UserRegister = () => {
             alert("회원가입 성공!");
             navigate("/login");
             
-        }catch(error){
-            setErrorMessages({email: "", password: "" , name: "",...error.response.data.errorData}); //객체 (error.response.data.errorData)
-        }
+        }catch (error) {
+            setErrorMessages({
+              email: "",
+              password: "",
+              name: "",
+              passwordConfirm: "",
+              address: "",
+              gender: "",
+              ...error.response.data.errorData,
+            });
+          }
 
     }
 
@@ -167,29 +190,29 @@ const UserRegister = () => {
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
                     <label css={ inputLabel }>Password 확인</label>
-                    <LoginInput type="password" placeholder="Please check your password" onChange={onChangeHandle} name="password">
+                    <LoginInput type="password" placeholder="Please check your password" onChange={onChangeHandle} name="passwordConfirm">
                         <RiLockPasswordLine />
                     </LoginInput>
-                    <div css={errorMsg}>{errorMessages.password}</div>
+                    <div css={errorMsg}>{errorMessages.passwordConfirm}</div>
                     <label css={ inputLabel }>Address</label>
-                    <LoginInput type="password" placeholder="Please enter your address" onChange={onChangeHandle} name="password">
+                    <LoginInput type="text" placeholder="Please enter your address" onChange={onChangeHandle} name="address">
                         <FaRegAddressCard />
                     </LoginInput>
-                    <div css={errorMsg}>{errorMessages.password}</div>
+                    <div css={errorMsg}>{errorMessages.address}</div>
                     <label css={inputLabel}>성별</label>
                     <div>
-                    <label>
-                        <input type="radio" name="gender" value="male" onChange={onChangeHandle} />
-                        <BiMale />
-                        남성
-                    </label>
-                    <label>
-                        <input type="radio" name="gender" value="female" onChange={onChangeHandle} />
-                        <BiFemale />
-                        여성
-                    </label>
+                        <label>
+                            <input type="radio" name="gender" value="male" onChange={onChangeHandle} />
+                            <BiMale />
+                            남성
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female" onChange={onChangeHandle} />
+                            <BiFemale />
+                            여성
+                        </label>
                     </div>
-                    <div css={errorMsg}>{errorMessages.password}</div>
+                    <div css={errorMsg}>{errorMessages.gender}</div>
 
 
                     <button css={ loginButton } onClick={registerSubmit}>등록</button>
