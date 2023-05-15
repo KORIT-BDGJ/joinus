@@ -8,6 +8,7 @@ import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 
 
 const container = css`
@@ -172,10 +173,7 @@ const attendList = (attendShow) => css`
     flex-direction: column;
 `;
 
-const applicantList = (applicantShow) => css`
-    display: ${applicantShow ? "flex" : "none"};
-    flex-direction: column;
-`;
+
 
 const member = css`
     margin-top: 5px;
@@ -236,7 +234,7 @@ const footButton = css`
 const OwnerPostDetail = () => {
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
-    const [ applicantShow, setApplicantShow ] = useState(false);
+
 
     const detailClickHandle = (e) => {
         setDetailShow(!detailShow);
@@ -244,9 +242,7 @@ const OwnerPostDetail = () => {
     const attendClickHandle = (e) => {
         setAttendShow(!attendShow);
     };
-    const applicantClickHandle = (e) => {
-        setApplicantShow(!applicantShow);
-    };
+
     
     const { postId } = useParams();
     const queryClient = useQueryClient();
@@ -254,10 +250,8 @@ const OwnerPostDetail = () => {
     const getPost = useQuery(["getPost"], async () => {
         
         const response = await axios.get(`http://localhost:8080/post/${postId}`);
-        console.log(response.data)
         return response;
     });
-
     
     if(getPost.isLoading) {
         return <div>불러오는 중...</div>
@@ -336,48 +330,10 @@ const OwnerPostDetail = () => {
                             <button css={applicantButton}>내보내기</button>
                         </div>
                     </div>
-                    <div css={applicantHeader}>
-                        <div css={applicantCount}>신청인원 정보 : (4/10)</div>
-                        <button css={applicantButton} onClick={applicantClickHandle}>신청자 보기</button>
+                    <div>
+                        <ApplicantList postId={postId}/>
                     </div>
-                    <div css={applicantList(applicantShow)}>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자1
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자2
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자3
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자4
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div css={detailFoot}>

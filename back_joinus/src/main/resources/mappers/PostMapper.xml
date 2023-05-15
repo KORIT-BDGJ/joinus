@@ -148,5 +148,36 @@
 	        #{text}
     	)
 	</insert>
+	
+	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
+		select
+			palt.post_applicant_list_id,
+		    palt.post_id,
+		    palt.user_id,
+		    pt.post_id,
+		    
+			ut.user_id,
+			ut.user_name,
+		
+			uit.user_info_id,
+		    uit.image,
+			uit.nickname,
+		
+			lt.level_id,
+			lt.level_name,
+		
+			stt.state_id,
+			stt.state_name
+		
+		from 
+			post_applicant_list_tb palt
+		    left outer join post_tb pt on(pt.post_id = palt.post_id)
+			left outer join user_tb ut on(ut.user_id = palt.user_id)
+			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
+			left outer join state_tb stt on(stt.state_id = palt.state_id)
+			left outer join level_tb lt on(lt.level_id = palt.level_id)
+		where
+			palt.post_id = #{postId}
+	</select>
 
 </mapper>
