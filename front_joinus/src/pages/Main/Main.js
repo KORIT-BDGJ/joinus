@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { GiSoccerBall } from 'react-icons/gi';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import axios from "axios";
+import { useQuery } from "react-query";
 
 const mainContainer = css`
     padding: 10px;
@@ -144,12 +145,26 @@ const options = {
 const Main = () => {
 
     const navigate = useNavigate();
+    const [ searchParams, setSearchParams ] = useState({page: 1, searchValue: ""});
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedCountry: null,
         selectedSearch: null
-    });  
+    });
+    
+
+    // const getPostList = useQuery(["getPostList"], async () => {
+    //     const option = {
+    //         params: {
+    //             ...searchParams
+    //         },
+    //         headers: {
+    //             Authorization: localStorage.getItem("accessToken")
+    //         }
+    //     }
+    //     return await axios.get("http://localhost:8080/auth/post/list", option);
+    // });
 
     const handleIconSelect = (IconComponent) => {
         if (!sportsModalIsOpen) {
@@ -184,6 +199,17 @@ const Main = () => {
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>))
 
+    const getPostList = useQuery(["getPostList"], async () => {
+        const option = {
+            headers: {
+                "Content-Type":"application/json"
+            }
+        }
+
+        const response = await axios.get("http://localhost:8080/auth/post/list", option);
+        console.log(response)
+        return response;
+    });
     return (
         <div css={mainContainer}>
             <Sidebar></Sidebar>
@@ -219,24 +245,19 @@ const Main = () => {
                 </div>
             </header>
             <div css={mainListBox}>
-                <div css={listContainer} onClick={listClickHandle}>
+            {getPostList.isLoading ? ( 
+                "" 
+            ) : (<div css={listContainer} onClick={listClickHandle}>
                     <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
                     <div css={postContent}>
                         <header>2023.05.05</header>
-                        <main css={postMain}>모집 제목</main>
-                        <footer>모집유저이름/모집지역/모집시간/신청인원</footer>
+                        <main css={postMain}>{getPostList.data.data.title}</main>
+                        <footer>
+                        {getPostList.data.data.writer}/{getPostList.data.data.region}/
+                        {getPostList.data.data.time}/{getPostList.data.data.applicants}
+                        </footer>
                     </div>
-                    {/* {posts.map((post) => (
-                        <div key={post.postId} css={listContainer} onClick={listClickHandle}>
-                            <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
-                            <div css={postContent}>
-                                <header>{post.deadLine}</header>
-                                <main css={postMain}>{post.title}</main>
-                                <footer>{`${post.writerId}/${post.regionId}/${post.deadLine}/${post.recruitsCount}`}</footer>
-                            </div>
-                        </div>
-                    ))} */}
-                </div>
+                </div>)}
             </div>
             <div css={pageButton}>
                 <button>pagination</button>
