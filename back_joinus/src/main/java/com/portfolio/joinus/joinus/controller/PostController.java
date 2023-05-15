@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.service.PostService;
 
@@ -27,7 +28,7 @@ public class PostController {
 	
 	// 게시물 등록
 	@PostMapping("/post/register")
-	public ResponseEntity<?> registePost(@RequestBody Post post) {
-		return ResponseEntity.ok().body(postService.registePost(post));
+	public ResponseEntity<?> registePost(@RequestBody PostReqDto postReqDto) {
+		return ResponseEntity.ok().body(postService.registePost(postReqDto));
 	}
 }

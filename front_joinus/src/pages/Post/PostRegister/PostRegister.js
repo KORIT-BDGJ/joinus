@@ -189,8 +189,10 @@ const PostRegister = () => {
     const [ gender, setGender ] = useState('');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
-    const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
+    
+    // 작성버튼 확인 모달창
+    // const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
 
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedLevel: null,
