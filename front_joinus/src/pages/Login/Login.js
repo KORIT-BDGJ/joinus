@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { refreshState } from '../../atoms/Auth/AuthAtoms';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
+import { useMutation } from 'react-query';
 
 
 const headerContainer = css`
@@ -180,48 +181,44 @@ const Login = () => {
     const navigate = useNavigate();
     const [loginUser, setLoginUser] = useState({ email:"",password:"" ,name: ""});
     const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
-    const [ refresh, setRefresh] = useRecoilState( refreshState );
     
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLoginUser({ ...loginUser, [name]:value });
     }
-    
-    const loginHandleSubmit = async() => {
-        
-        const option = {
-            headers: {
-                "Content-Type" : "application/json"
+
+    const login = useMutation(async (loginUser) => {
+        try {
+            const response = await axios.post("http://localhost:8080/auth/login", loginUser);
+            return response;
+        } catch(error) {
+            setErrorMessages({email: "", password: "", ...error.response.data.errorData});
+            return error;
+        }
+    }, {
+        onSuccess: (response) => {
+            setErrorMessages({email: "", password: "" ,  });
+            if(response.status === 200) {
+                localStorage.setItem("accessToken", response.data);
+                navigate("/main");
             }
         }
-        try{
-            const response = await axios.post("http://localhost:8080/auth/login", JSON.stringify(loginUser),option);
-            setErrorMessages({email: "", password: "" ,  });
-            const accessToken = response.data.grantType + " " + response.data.accessToken;
-
-            
-
-            localStorage.setItem("accessToken", accessToken);
-            console.log(accessToken);
-            setRefresh(false);
-            navigate("/main");
-
-        }catch(error){
-           
-            setErrorMessages({email: "", password: "",  ...error.response.data.errorData});
-        }
+    });
+    
+    const loginHandleSubmit = async() => {
+        login.mutate(loginUser);
     }
 
     const googleAuthClickHandle = () => {
-
+        window.location.href="http://localhost:8080/oauth2/authorization/google";
     }
 
     const naverAuthCliclkHandle = () => {
-
+        window.location.href="http://localhost:8080/oauth2/authorization/naver";
     }
 
     const kakaoAuthClickHandle = () => {
-
+        window.location.href="http://localhost:8080/oauth2/authorization/kakao";
     }
 
 

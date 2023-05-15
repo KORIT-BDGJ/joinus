@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.portfolio.joinus.joinus.security.JwtAuthenticationEntryPoint;
 import com.portfolio.joinus.joinus.security.JwtAuthenticationFilter;
 import com.portfolio.joinus.joinus.security.JwtTokenProvider;
+import com.portfolio.joinus.joinus.service.AuthenticationService;
+import com.portfolio.joinus.joinus.service.OAuth2SuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final JwtTokenProvider jwtTokenProvider; //@component 여기서는 DI 가능
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint; //@component 여기서는 DI 가능
-	
+	private final AuthenticationService authenticationService;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -50,7 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 	 .anyRequest()
 		 	 .authenticated()
 		 	 .and()
-		 	 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+		 	 .oauth2Login()
+		 	 .loginPage("http://localhost:3000/auth/login")
+		 	 .successHandler(oAuth2SuccessHandler)
+		 	 .userInfoEndpoint()
+			 .userService(authenticationService);
+		 
+	 	 http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 		 	 .exceptionHandling()
 		 	 .authenticationEntryPoint(jwtAuthenticationEntryPoint);
 		 		

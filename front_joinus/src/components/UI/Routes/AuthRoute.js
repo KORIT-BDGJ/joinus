@@ -1,37 +1,50 @@
 import axios from 'axios';
-import React from 'react';
-import { useQuery } from 'react-query';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useQueries, useQuery } from 'react-query';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { authenticatedState } from '../../../atoms/Auth/AuthAtoms';
-import { getAuthenticated } from '../../../api/auth/authApi';
 
+const AuthRoute = ({ path, element}) => {
 
+    const navigate = useNavigate();
+    const [ authState, setAuthState ] = useRecoilState(authenticatedState); // authenticatedState 상태에 따라 로그아웃 시, 상태값 변경할 것
 
-
-const validateToken = async (accessToken) => {
-    const response =  await axios.get("http://localhost:8080/auth/authenticated", {params: { accessToken }});
-    return response.data;
-}
-
-const AuthRoute =  ({ path, element }) => {
-    const accessToken = localStorage.getItem("accessToken");
-    const [ authenticated, setAuthenticated] = useRecoilState(authenticatedState);
-    const {data, isLoading, Error}  = useQuery(()=>getAuthenticated(accessToken));
-    setAuthenticated(data);
-    const permitAll = ["/login", "/register", "/password/forgot"];
-
-    if(!authenticated){ //토큰이 있으면 이쪽으로 들어 오지 않음
-        if(permitAll.includes( path )){
-            return element;
+    const authenticated = useQuery(["authenticated"], async () => {
+        const option = {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}` 
+            }
         }
-        return <Navigate to="/login" />;
+        return await axios.get("http://localhost:8080/auth/authenticated", option);
+    },{
+        onSuccess: (response) => {
+            if(response.status === 200){
+                if(response.data){
+                    setAuthState(true);
+                    /**
+                     *  window.location.replace("/");
+                     *  replace 하는 순간 제랜더링 되면서 상태가 날라가는 현상 발생
+                     */
+                }
+            }
+        }
+    })
+
+    const authenticatedPaths = ["/user", "/main"];
+    const authPath ="/auth"
+
+    if(authenticated.isLoading) {
+        return <></>
     }
 
-    if(permitAll.includes( path )){
-        return <Navigate to="/main" />;
+    if(authState && path.startsWith(authPath)) {
+        navigate("/main");
     }
 
+    if(!authState && authenticatedPaths.filter(authenticatedPath =>  path.startsWith(authenticatedPath)).length > 0){
+        navigate("/auth/login");
+    }
     return element;
 };
 
