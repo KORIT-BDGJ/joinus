@@ -1,6 +1,5 @@
 package com.portfolio.joinus.joinus.entity;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
