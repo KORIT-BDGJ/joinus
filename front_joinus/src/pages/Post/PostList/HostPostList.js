@@ -5,6 +5,8 @@ import React from 'react';
 import AlertModal from '../../../components/Modal/AlertModal';
 import { FcSportsMode } from 'react-icons/fc';
 import { MdOutlineSportsTennis } from 'react-icons/md';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 
 const container = css`
@@ -106,6 +108,12 @@ const titleAndDateContainer = css`
 const star = css`
   font-size: 20px;
   color: #ffd700;
+  cursor: pointer;
+`;
+
+const resetButton = css`
+  font-size: 20px;
+  color: #000;
   cursor: pointer;
 `;
 
@@ -231,21 +239,16 @@ const HostPostList = () => {
     };
 
     const handleStarClick = (postId, userId, newMedalCount) => {
-    if (starCount[userId] === newMedalCount) {
+        const key = `${postId}:${userId}`; // Composite key
+    
         setStarCount({
             ...starCount,
-            [userId]: 0,
+            [key]: newMedalCount,
         });
-    } else {
-        setStarCount({
-            ...starCount,
-            [userId]: newMedalCount,
-        });
-    }
     
         setAttendPosts((prevPosts) =>
             prevPosts.map((post) => {
-                if (post.id === postId) {
+                if (post.postId === postId) {
                     return {
                         ...post,
                         users: post.users.map((user) => {
@@ -266,9 +269,41 @@ const HostPostList = () => {
         );
     };
     
+    const handleStarReset = (postId, userId) => {
+        const key = `${postId}:${userId}`; // Composite key
+    
+        setStarCount({
+            ...starCount,
+            [key]: 0,
+        });
+    
+        setAttendPosts((prevPosts) =>
+            prevPosts.map((post) => {
+                if (post.postId === postId) {
+                    return {
+                        ...post,
+                        users: post.users.map((user) => {
+                            if (user.userId === userId) {
+                                return {
+                                    ...user,
+                                    medalCount: 0,
+                                };
+                            } else {
+                                return user;
+                            }
+                        }),
+                    };
+                } else {
+                    return post;
+                }
+            })
+        );
+    };
+    
+    
     const starOptions = [1, 2, 3, 4, 5]; // 별점 옵션
-    const inactiveStar = '🔘'; // 빈 별 모양
-    const activeStar = '⭐'; // 채워진 별 모양
+    const inactiveStar = <AiOutlineStar />; // 비활성화된 별 아이콘
+    const activeStar = <AiFillStar color="#ffd700" />;
 
    
     // 3. 렌더링
@@ -325,27 +360,28 @@ const HostPostList = () => {
                                     <div key={user.userId}>
                                         <span css={attendUserName}>{user.username}</span>
                                         <div>
-                                        {starOptions.map((starCount) => (
-                                            <button
-                                                key={starCount}
-                                                css={star}
-                                                onMouseOver={() =>
-                                                    handleStarMouseOver(post.id, user.userId, starCount)
-                                                }
-                                                onMouseOut={handleStarMouseOut}
-                                                onClick={() =>
-                                                    handleStarClick(post.id, user.userId, starCount)
-                                                }
-                                            >
+                                        {starOptions.map((starCount) => {
+                                            const key = `${post.postId}:${user.userId}`; // Composite key
+                                            return (
+                                                <button
+                                                    key={starCount}
+                                                    css={star}
+                                                    onMouseOver={() => handleStarMouseOver(post.postId, user.userId, starCount)}
+                                                    onMouseOut={handleStarMouseOut}
+                                                    onClick={() => handleStarClick(post.postId, user.userId, starCount)}
+                                                >
                                                 {starCount <=
-                                                (hoveredStar.postId === post.id &&
-                                                hoveredStar.userId === user.userId
+                                                (hoveredStar.postId === post.postId && hoveredStar.userId === user.userId
                                                     ? hoveredStar.starCount
-                                                    : starCount[user.userId] || user.medalCount)
+                                                    : Math.max(starCount[key] || 0, user.medalCount))
                                                     ? activeStar
                                                     : inactiveStar}
-                                            </button>
-                                        ))}
+                                                </button>
+                                            );
+                                        })}
+                                        <button css={resetButton} onClick={() => handleStarReset(post.postId, user.userId)}>
+                                            <FaRedo />
+                                        </button>
 
                                         </div>
                                     </div>
