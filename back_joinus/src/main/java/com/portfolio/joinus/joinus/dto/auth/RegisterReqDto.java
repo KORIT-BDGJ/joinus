@@ -1,6 +1,5 @@
 package com.portfolio.joinus.joinus.dto.auth;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

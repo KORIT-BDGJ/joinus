@@ -1,5 +1,6 @@
 package com.portfolio.joinus.joinus.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.portfolio.joinus.joinus.security.PrincipalUser;
@@ -29,6 +30,12 @@ public class User {
 	private List<Authority> authorities;
 	
 	public PrincipalUser toPrincipal() {
+		
+		List<String> roles = new ArrayList<>();
+		
+		authorities.forEach(authority ->{
+			roles.add(authority.getRole().getRoleName());
+		});
 		return PrincipalUser.builder()
 				.userId(userId)
 				.email(email)

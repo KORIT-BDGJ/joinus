@@ -58,7 +58,7 @@
 		values (0, #{name}, #{email}, #{password}, #{address}, #{gender}, #{provider})
 	</insert>
 	
-	<insert id="saveAuthority" parameterType="com.portfolio.joinus.joinus.entity.Authority">
+	<insert id="registerAuthority" parameterType="com.portfolio.joinus.joinus.entity.Authority">
 		insert into authority_tb
 		values (0, #{userId}, #{roleId})
 	</insert>
