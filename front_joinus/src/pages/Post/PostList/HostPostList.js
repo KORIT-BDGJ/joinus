@@ -8,13 +8,13 @@ import { MdOutlineSportsTennis } from 'react-icons/md';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 
 const container = css`
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	padding: 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px;
 `;
 
-const title = css` // 내가 참여한 글
+const title = css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,36 +22,29 @@ const title = css` // 내가 참여한 글
   padding: 10px;
   font-size: 34px;
   font-weight: 600;
-  
 `;
 
 const list = css`
   width: 100%;
-  max-width: 900px; 
-  margin: 30px auto; 
+  max-width: 900px;
+  margin: 30px auto;
   border: 1px solid #dbdbdb;
   padding: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 700px;
-
-  // 참여 완료한 글 리스트에 대한 추가 스타일링
-  &:nth-child(2) {
-    // 필요한 스타일을 여기에 추가
-  }
+  max-height: 300px;
 `;
 
-
 const listItem = css`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    &:last-child {
-        border-bottom: none;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 const postInfo = css`
@@ -61,30 +54,20 @@ const postInfo = css`
   width: 100%;
 `;
 
-const iconWrapper = css` // 리스트 스포츠 아이콘
-    font-size: 50px; 
+const iconWrapper = css`
+  font-size: 50px;
 `;
 
-const postTitle = css` // 글 제목
-    font-size: 24px;
-    font-weight: 600;
-    width: 100%;
-    margin: 0;
-    &:hover {
-        cursor: pointer;
-        color: #0095f6;
-    }
-    
+const postTitle = css`
+  font-size: 24px;
+  font-weight: 600;
+  width: 100%;
+  margin: 0;
+  &:hover {
+    cursor: pointer;
+    color: #0095f6;
+  }
 `;
-
-const postOwnerNickName = css` // 방장(작성자) 닉네임
-    font-size: 30px;
-    font-weight: 600;
-    margin: 0;
-    display: inline;
-`;
-
-
 
 const buttons = css`
   display: flex;
@@ -92,14 +75,14 @@ const buttons = css`
   justify-content: space-around;
   align-items: center;
   gap: 10px;
-  height: 60px; 
+  height: 60px;
   width: 100px;
 `;
 
 const attendUserListTitle = css`
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
 `;
 
 const postDate = css`
@@ -109,15 +92,21 @@ const postDate = css`
 `;
 
 const attendUserName = css`
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
 `;
 
 const titleAndDateContainer = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const star = css`
+  font-size: 20px;
+  color: #ffd700;
+  cursor: pointer;
 `;
 
 const HostPostList = () => {
@@ -132,7 +121,6 @@ const HostPostList = () => {
             // date: '2021-05-06',
             cancelButton: true,
         },
-        // 여기에 다른 신청한 글 데이터를 추가
     ]);
     
     const [attendPosts, setAttendPosts] = useState([
@@ -143,8 +131,8 @@ const HostPostList = () => {
             ownerNickname: '방장4',
             date: '2021-05-11',
             users: [
-                { userId: 5, username: '유저5', medalCount: 5 },
-                { userId: 6, username: '유저6', medalCount: 3 },
+                { userId: 5, username: '유저5', medalCount: 0 },
+                { userId: 6, username: '유저6', medalCount: 0 },
             ],
         },
         {
@@ -158,34 +146,23 @@ const HostPostList = () => {
                 { userId: 8, username: '유저6', medalCount: 4 },
             ],
         },
-        {
-            postId: 6,
-            sportsIcon: <MdOutlineSportsTennis />,
-            postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
-            ownerNickname: '방장4',
-            date: '2021-05-13',
-            users: [
-                { userId: 9, username: '유저5', medalCount: 2 },
-                { userId: 10, username: '유저6', medalCount: 4 },
-            ],
-        },
-        
-        // 여기에 다른 참여 완료한 글 데이터를 추가
     ]);
 
-    const [cancelPostId, setCancelPostId] = useState(null); // 신청 취소할 글의 ID
-    
     // 1.2 모달 상태
     const [cancelModalOpen, setCancelModalOpen] = useState(false); // 신청 취소 모달 상태
     const [evaluateModalOpen, setEvaluateModalOpen] = useState({ type: '', isOpen: false });
     
     // 1.3 기타 상태
     const [hoveredStar, setHoveredStar] = useState({ postId: null, userId: null, starCount: 0 }); // 별점 상태
+    const [starCount, setStarCount] = useState({});
+    const [selectedPosts, setSelectedPosts] = useState([]); // 선택한 글의 ID를 저장하는 배열
     
-    const [selectedPost, setSelectedPost] = useState(null); // 선택한 글의 ID를 저장
+
 
     // 2. 이벤트 핸들러
     // 2.1 신청한 글 관련 핸들러
+
+    const [cancelPostId, setCancelPostId] = useState(null); // 신청 취소할 글의 ID
 
     const openCancelModal = (id) => {
         setCancelPostId(id);
@@ -207,6 +184,8 @@ const HostPostList = () => {
     const movePost = (id) => { // 글 제목 클릭 시 해당 상세페이지로 이동
 		console.log(`해당 상세페이지로 이동 ${id}`);
 	};
+
+    
 
     // 2.2 참여 완료한 글 관련 핸들러
 
@@ -233,10 +212,10 @@ const HostPostList = () => {
     };
     
     const handlePostTitleClick = (postId) => {
-        if (selectedPost === postId) {
-            setSelectedPost(null); // 같은 글을 다시 클릭하면 선택 취소
+        if (selectedPosts.includes(postId)) {
+            setSelectedPosts(selectedPosts.filter(id => id !== postId)); // 이미 선택되어 있으면 배열에서 제거
         } else {
-            setSelectedPost(postId); // 다른 글을 클릭하면 선택
+            setSelectedPosts([...selectedPosts, postId]); // 선택되어 있지 않으면 배열에 추가
         }
     };
     
@@ -251,7 +230,19 @@ const HostPostList = () => {
         setHoveredStar({ postId: null, userId: null, starCount: 0 });
     };
 
-    const handleStarClick = (postId, userId, newMedalCount) => { // 별점 클릭 시
+    const handleStarClick = (postId, userId, newMedalCount) => {
+    if (starCount[userId] === newMedalCount) {
+        setStarCount({
+            ...starCount,
+            [userId]: 0,
+        });
+    } else {
+        setStarCount({
+            ...starCount,
+            [userId]: newMedalCount,
+        });
+    }
+    
         setAttendPosts((prevPosts) =>
             prevPosts.map((post) => {
                 if (post.id === postId) {
@@ -274,7 +265,7 @@ const HostPostList = () => {
             })
         );
     };
-
+    
     const starOptions = [1, 2, 3, 4, 5]; // 별점 옵션
     const inactiveStar = '🔘'; // 빈 별 모양
     const activeStar = '⭐'; // 채워진 별 모양
@@ -320,11 +311,11 @@ const HostPostList = () => {
                                 <h1 css={postTitle} onClick={() => handlePostTitleClick(post.postId)}>{post.postTitle}</h1>
                                 
                                 <div css={buttons}>
-                                    <button onClick={() => handleButtonClick('evaluate', post.id)}>평가하기</button>
-                                    <button onClick={() => handleButtonClick('skip', post.id)}>하지않기</button>
+                                    <button onClick={() => handleButtonClick('evaluate', post.postId)}>평가하기</button>
+                                    <button onClick={() => handleButtonClick('skip', post.postId)}>하지않기</button>
                                 </div>
                             </div>
-                            {selectedPost === post.postId && (
+                            {selectedPosts.includes(post.postId) && (
                                 <div>
                                     <div css={titleAndDateContainer}> 
                                     <h2 css={attendUserListTitle}>참여 유저 목록</h2>
@@ -334,22 +325,34 @@ const HostPostList = () => {
                                     <div key={user.userId}>
                                         <span css={attendUserName}>{user.username}</span>
                                         <div>
-                                        {starOptions.map((starCount, index) => (
-                                            <span
-                                            key={index}
-                                            onMouseOver={() => handleStarMouseOver(post.postId, user.userId, starCount)}
-                                            onMouseOut={handleStarMouseOut}
-                                            onClick={() => handleStarClick(post.postId, user.userId, starCount)}
+                                        {starOptions.map((starCount) => (
+                                            <button
+                                                key={starCount}
+                                                css={star}
+                                                onMouseOver={() =>
+                                                    handleStarMouseOver(post.id, user.userId, starCount)
+                                                }
+                                                onMouseOut={handleStarMouseOut}
+                                                onClick={() =>
+                                                    handleStarClick(post.id, user.userId, starCount)
+                                                }
                                             >
-                                            {hoveredStar.postId === post.postId && hoveredStar.userId === user.userId && hoveredStar.starCount >= starCount ? activeStar : inactiveStar}
-                                            </span>
+                                                {starCount <=
+                                                (hoveredStar.postId === post.id &&
+                                                hoveredStar.userId === user.userId
+                                                    ? hoveredStar.starCount
+                                                    : starCount[user.userId] || user.medalCount)
+                                                    ? activeStar
+                                                    : inactiveStar}
+                                            </button>
                                         ))}
+
                                         </div>
                                     </div>
                                     ))}
                                 </div>
                                 )}
-                        </div>                        
+                        </div>
                     ))}
                 </ul>
             </div>
