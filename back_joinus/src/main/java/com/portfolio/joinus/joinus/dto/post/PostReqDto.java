@@ -1,6 +1,6 @@
 package com.portfolio.joinus.joinus.dto.post;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class PostReqDto {
 	private int levelId;
 	private int stateId;
 	private int regionId;
-	private LocalDate deadLine;
+	private Date deadLine;
 	private int recruitsCount;
 	private int genderId;
 	private String text;

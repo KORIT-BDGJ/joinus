@@ -189,8 +189,10 @@ const PostRegister = () => {
     const [ gender, setGender ] = useState('');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
-    const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
+    
+    // 작성버튼 확인 모달창
+    // const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false);
 
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedLevel: null,
@@ -199,7 +201,6 @@ const PostRegister = () => {
     });
 
     const [ writePost, setWritePost ] = useState({
-        postId: "",
         writerId: "",
         title: "",
         sportsId: "",
@@ -214,8 +215,19 @@ const PostRegister = () => {
 
     const sendPost = async () => {
         const data = {
-            ...writePost
+            writerId: "",
+            title: "",
+            sportsId: selectedIcon,
+            levelId: selectedOptions.selectedLevel,
+            stateId: selectedOptions.selectedStatus,
+            regionId: selectedOptions.selectedCountry,
+            deadLine: selectedDate,
+            recruitsCount: count,
+            genderId: gender,
+            text: ""
         }
+
+        console.log(data)
 
         const option = {
             headers: {
@@ -223,11 +235,17 @@ const PostRegister = () => {
             }
         }
         try {
-            const response = await axios.post("http://localhost:8080/post", JSON.stringify(data), option)
-            navigate("/main");
+            const response = await axios.post("http://localhost:8080/post/register", JSON.stringify(data), option)
+            return response;
         } catch(error) {
             console.log(error);
         }
+    }
+
+    const createClickHandle = () => {
+       
+        sendPost();
+        navigate('/main');
     }
 
     const handleIconSelect = (IconComponent) => {
@@ -244,11 +262,6 @@ const PostRegister = () => {
 
     const onConfirm = () => {
         setSportsModalIsOpen(false);
-    }
-
-    const sendPostClickHandle = () => {
-        setSubmitModalIsOpen(false);
-        sendPost();
     }
 
     const handleOptionChange = (optionName) => (selectedOption) => {
@@ -371,13 +384,7 @@ const PostRegister = () => {
                 </div>
             </main>
                 <div css={buttonBox}>
-                    <button css={modifyButton}  onClick={() => setSubmitModalIsOpen(true)}>작성</button>
-                    {submitModalIsOpen && (
-                        <div>
-                            <SelectModifyModal isOpen={submitModalIsOpen} setIsOpen={setSubmitModalIsOpen}/>
-                            <button onClick={sendPost}>등록</button>
-                        </div>
-                    )}
+                    <button css={modifyButton} onClick={createClickHandle} >작성</button>
                     {/* <SelectModifyModal isOpen={submitModalIsOpen} setIsOpen={setSubmitModalIsOpen}/> */}
                     <button css={cancelButton} onClick={cancelClickHandle}>취소</button>
                 </div>

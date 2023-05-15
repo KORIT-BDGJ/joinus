@@ -121,5 +121,32 @@
 		where
 			pt.post_id = #{postId}
 	</select>
+	
+	<insert id="registePost">
+		INSERT INTO post_tb (
+			writer_id, 
+			title, 
+			sports_id, 
+			level_id, 
+			state_id, 
+			region_id, 
+			deadline, 
+			recruits_count, 
+			gender_id, 
+			text
+		)
+    	VALUES (
+	        #{writerId},
+	        #{title},
+	        #{sportsId},
+	        #{levelId},
+	        #{stateId},
+	        #{regionId},
+	        #{deadLine},
+	        #{recruitsCount},
+	        #{genderId},
+	        #{text}
+    	)
+	</insert>
 
 </mapper>
