@@ -1,8 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FiLock, FiUser } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { refreshState } from '../../atoms/Auth/AuthAtoms';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 
 
@@ -174,16 +177,51 @@ const footerStyles = css`
 
 const Login = () => {
 
+    const navigate = useNavigate();
+    const [loginUser, setLoginUser] = useState({ email:"",password:"" ,name: ""});
     const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
+    const [ refresh, setRefresh] = useRecoilState( refreshState );
     
-    const handleChange = () => {
-        
-        
-        
-    };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setLoginUser({ ...loginUser, [name]:value });
+    }
     
-    const loginHandleSubmit = () => {
+    const loginHandleSubmit = async() => {
         
+        const option = {
+            headers: {
+                "Content-Type" : "application/json"
+            }
+        }
+        try{
+            const response = await axios.post("http://localhost:8080/auth/login", JSON.stringify(loginUser),option);
+            setErrorMessages({email: "", password: "" ,  });
+            const accessToken = response.data.grantType + " " + response.data.accessToken;
+
+            
+
+            localStorage.setItem("accessToken", accessToken);
+            console.log(accessToken);
+            setRefresh(false);
+            navigate("/main");
+
+        }catch(error){
+           
+            setErrorMessages({email: "", password: "",  ...error.response.data.errorData});
+        }
+    }
+
+    const googleAuthClickHandle = () => {
+
+    }
+
+    const naverAuthCliclkHandle = () => {
+
+    }
+
+    const kakaoAuthClickHandle = () => {
+
     }
 
 
@@ -219,13 +257,13 @@ const Login = () => {
 
             <div css={oauth2Container}>
                 <div >
-                    <button css={naverButton}></button>
+                    <button css={naverButton} onClick={naverAuthCliclkHandle}></button>
                 </div>
                 <div>
-                    <button css={googleButton}></button>
+                    <button css={googleButton} onClick={googleAuthClickHandle}></button>
                 </div>
                 <div>
-                    <button css={kakaoButton}></button>
+                    <button css={kakaoButton} onClick={kakaoAuthClickHandle}></button>
                 </div>
             </div>
 

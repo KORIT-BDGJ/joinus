@@ -23,14 +23,14 @@ public class PrincipalUser implements UserDetails {
 	
 	
 	private int userId;
-	private String name;
-	private String email;
-	private String password;
-	private String passwordConfirm;
-	private String address;
-	private String gender;
-	private String provider;
-	private List<Authority> authorities;
+    private String email;
+    private String password;
+    private String passwordConfirm;
+    private String name;
+    private String address;
+    private String gender;
+    private List<Authority> authorities;
+    private String provider;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
