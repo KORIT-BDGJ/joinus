@@ -2,25 +2,26 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toyproject.bookmanagement.repository.UserRepository">
+<mapper namespace="com.portfolio.joinus.joinus.repository.UserRepository">
 
-	<resultMap type="com.toyproject.bookmanagement.entity.User" id="userMap">
+	<resultMap type="com.portfolio.joinus.joinus.entity.User" id="userMap">
 		<id property="userId" column="user_id" />
 		<result property="email" column="email" />
 		<result property="password" column="password" />
 		<result property="name" column="name" />
 		<result property="provider" column="provider" />
+		<result property="address" column="address" />
+		<result property="gender" column="gender" />
 		<collection property="authorities" javaType="list" resultMap="authorityMap" />
 	</resultMap>
-	
-	<resultMap type="com.toyproject.bookmanagement.entity.Authority" id="authorityMap">
+	<resultMap type="com.portfolio.joinus.joinus.entity.Authority" id="authorityMap">
 		<id property="authorityId" column="authority_id" />
 		<result property="userId" column="user_id" />
 		<result property="roleId" column="role_id" />
 		<association property="role" resultMap="roleMap" />
 	</resultMap>
 	
-	<resultMap type="com.toyproject.bookmanagement.entity.Role" id="roleMap">
+	<resultMap type="com.portfolio.joinus.joinus.entity.Role" id="roleMap">
 		<id property="roleId" column="role_id" />
 		<result property="roleName" column="role_name" />
 	</resultMap>
@@ -28,9 +29,11 @@
 	<select id="findUserByEmail" resultMap="userMap">
 		select
 			ut.user_id,
+			ut.name,
 			ut.email,
 			ut.password,
-			ut.name,
+			ut.address,
+			ut.gender,
 			ut.provider,
 			
 			at.authority_id,
@@ -47,15 +50,15 @@
 			ut.email = #{email}
 	</select>
 	
-	<insert id="saveUser" 
-	parameterType="com.toyproject.bookmanagement.entity.User"
+	<insert id="registerUser" 
+	parameterType="com.portfolio.joinus.joinus.entity.User"
 	useGeneratedKeys="true"
 	keyProperty="userId">
 		insert into user_tb
-		values (0, #{email}, #{password}, #{name}, #{provider})
+		values (0, #{name}, #{email}, #{password}, #{address}, #{gender}, #{provider})
 	</insert>
 	
-	<insert id="saveAuthority" parameterType="com.toyproject.bookmanagement.entity.Authority">
+	<insert id="registerAuthority" parameterType="com.portfolio.joinus.joinus.entity.Authority">
 		insert into authority_tb
 		values (0, #{userId}, #{roleId})
 	</insert>

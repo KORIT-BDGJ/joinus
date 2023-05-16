@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { FaRegAddressCard } from 'react-icons/fa';
+import { FaRegAddressCard, FaSearch } from 'react-icons/fa';
 
 import { BiFemale, BiMale } from 'react-icons/bi';
 
@@ -68,20 +68,40 @@ const inputLabel = css`
 
 
 const loginButton = css`
+    display: flex;
+    justify-content:center;
+    align-items: center;
     margin: 10px 0px ;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
     width: 100%;
     height: 50px;
-    background-color: white;
+    background-color: #2ecc71;
+    color: white;
     font-weight: 900;
     cursor: pointer;
     &:hover {
-        background-color: #fafafa;
+    border: 1px solid #000000;
     }
     &:active {
-        background-color: #eee;
+    background-color: #27ae60;
     }
+`;
+
+const addressContainer = css`
+    display: flex;
+    align-items: center;
+`;
+
+const searchButton = css`
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-left: 10px;
+    border: none;
+    background-color : #2ecc71;
+    cursor: pointer;
+    border-radius: 5px;
 `;
 
 
@@ -108,32 +128,93 @@ const errorMsg = css`
 const UserRegister = () => {
 
     const navigate = useNavigate();
-    const [registerUser, setRegisterUser]  = useState( { email:"",password:"",name:"" } );
-    const [errorMessages, setErrorMessages]  = useState( { email: "", password: "" , name: "" } );
+    const [registerUser, setRegisterUser] = useState({
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+        address: "",
+        gender: "",
+    });
+    const [errorMessages, setErrorMessages] = useState({
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+    });
+
+    const searchAddress = () => {
+       
+        new window.daum.Postcode({
+            oncomplete: function (data) {
+                var addr = '';
+
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+                console.log(addr);
+                setRegisterUser({ ...registerUser, address: addr });
+            },
+        }).open();
+    };
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
         setRegisterUser( { ...registerUser, [name]:value } );
     }
+
     const registerSubmit = async() => {
+
+        if (registerUser.name === "" || 
+            registerUser.email === "" || 
+            registerUser.password === "" || 
+            registerUser.passwordConfirm === "" || 
+            registerUser.address === "" || 
+            registerUser.gender === ""
+            ) {
+            let missingInputs = [];
+            if (registerUser.name === "") missingInputs.push("이름");
+            if (registerUser.email === "") missingInputs.push("이메일");
+            if (registerUser.password === "") missingInputs.push("비밀번호");
+            if (registerUser.passwordConfirm === "") missingInputs.push("비밀번호 확인");
+            if (registerUser.address === "") missingInputs.push("주소");
+            if (registerUser.gender === "") missingInputs.push("성별");
+    
+            alert(missingInputs.join(", ") + " 입력란을 확인해주세요.");
+            return;
+        }
+
+        // 클라이언트 단에서 검증이 완료되면 서버와 통신
         const data = {
-            ...registerUser
+            ...registerUser,
         }
 
         const option = {
             headers: {
-                "Content-Type" : "application/json"
-            }
-        }
+                "Content-Type" : "application/json",
+            },
+        };
 
         try{
-            await axios.post("http://localhost:8080/auth/signup", JSON.stringify(data), option);
-            setErrorMessages({email: "", password: "" , name: ""}); //빈값 ( 로그인 성공 시, error 메시지 뜨지않음 )
+            await axios.post("http://localhost:8080/auth/register", JSON.stringify(data), option);
+            setErrorMessages({name: "", email: "", password: "" ,passwordConfirm: ""}); //빈값 ( 로그인 성공 시, error 메시지 뜨지않음 )
             alert("회원가입 성공!");
             navigate("/login");
             
-        }catch(error){
-            setErrorMessages({email: "", password: "" , name: "",...error.response.data.errorData}); //객체 (error.response.data.errorData)
+        }catch (error) {
+            if (error.response && error.response.data) {
+                setErrorMessages({
+                    name: "",
+                    email: "",
+                    password: "",
+                    passwordConfirm: "",
+                    ...error.response.data.errorData,
+                });
+            } else {
+                console.error('Unexpected error:', error);
+            }
         }
 
     }
@@ -167,30 +248,39 @@ const UserRegister = () => {
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
                     <label css={ inputLabel }>Password 확인</label>
-                    <LoginInput type="password" placeholder="Please check your password" onChange={onChangeHandle} name="password">
+                    <LoginInput type="password" placeholder="Please check your password" onChange={onChangeHandle} name="passwordConfirm">
                         <RiLockPasswordLine />
                     </LoginInput>
-                    <div css={errorMsg}>{errorMessages.password}</div>
+                    <div css={errorMsg}>{errorMessages.passwordConfirm}</div>
                     <label css={ inputLabel }>Address</label>
-                    <LoginInput type="password" placeholder="Please enter your address" onChange={onChangeHandle} name="password">
-                        <FaRegAddressCard />
-                    </LoginInput>
-                    <div css={errorMsg}>{errorMessages.password}</div>
+                    <div css={addressContainer}>
+                        <LoginInput
+                            type="text"
+                            placeholder="Click the search button"
+                            onChange={onChangeHandle}
+                            name="address"
+                            readOnly={true}
+                            value={registerUser.address}
+                        >
+                            <FaRegAddressCard />
+                        </LoginInput>
+                        <button css={searchButton} onClick={searchAddress}>
+                                <FaSearch />
+                        </button>
+                    </div>
                     <label css={inputLabel}>성별</label>
                     <div>
-                    <label>
-                        <input type="radio" name="gender" value="male" onChange={onChangeHandle} />
-                        <BiMale />
-                        남성
-                    </label>
-                    <label>
-                        <input type="radio" name="gender" value="female" onChange={onChangeHandle} />
-                        <BiFemale />
-                        여성
-                    </label>
+                        <label>
+                            <input type="radio" name="gender" value="male" onChange={onChangeHandle} />
+                            <BiMale />
+                            남성
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female" onChange={onChangeHandle} />
+                            <BiFemale />
+                            여성
+                        </label>
                     </div>
-                    <div css={errorMsg}>{errorMessages.password}</div>
-
 
                     <button css={ loginButton } onClick={registerSubmit}>등록</button>
                     

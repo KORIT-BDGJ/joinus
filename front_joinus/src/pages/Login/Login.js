@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import { FiLock, FiUser } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { refreshState } from '../../atoms/Auth/AuthAtoms';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
-import { GoogleLogin } from 'react-google-login';
 
 
 const headerContainer = css`
@@ -84,6 +86,51 @@ const loginButton = css`
 
 `;
 
+const naverButton = css`
+  background-image: url('/images/naver.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: #03c75A;
+  width: 160px;
+  height: 42px;
+  border-radius: 5px; /* 이미지와 동일한 모양을 얻으려면 적절한 값으로 조정하세요 */
+  border: none;
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+`;
+
+const googleButton = css`
+  background-image: url('/images/google.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: #4285F4; /* 구글 버튼의 배경색 */
+  width: 160px;
+  height: 42px;
+  border-radius: 5px; /* 이미지와 동일한 모양을 얻으려면 적절한 값으로 조정하세요 */
+  border: none;
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box; /* 박스의 크기를 일관되게 유지하려면 이 속성을 추가하세요 */
+`;
+
+const kakaoButton = css`
+  background-image: url('/images/kakao.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: #fee500; /* 카카오 버튼의 배경색 */
+  width: 160px;
+  height: 42px;
+  border-radius: 5px; /* 이미지와 동일한 모양을 얻으려면 적절한 값으로 조정하세요 */
+  border: none;
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box; /* 박스의 크기를 일관되게 유지하려면 이 속성을 추가하세요 */
+`;
+
 const errorMsg = css`
     margin-left: 5px;
     margin-bottom: 20px;
@@ -118,12 +165,7 @@ const oauth2Container = css`
     gap: 10px;
 `;
 
-const googleLoginButtonStyle = css`
-    position: relative;
-    width: 220px;
-    height: 45px;
-    border-radius: 10px;
-`;
+
 
 const footerStyles = css`
     display: flex;
@@ -135,97 +177,51 @@ const footerStyles = css`
 
 const Login = () => {
 
-    const [googleApiLoaded, setGoogleApiLoaded] = useState(false);
+    const navigate = useNavigate();
+    const [loginUser, setLoginUser] = useState({ email:"",password:"" ,name: ""});
+    const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
+    const [ refresh, setRefresh] = useRecoilState( refreshState );
     
-    useEffect(() => {
-        const initializeNaverLoginButton = () => {
-          const naverLogin = new window.naver.LoginWithNaverId({
-            clientId: "YOUR_CLIENT_ID",
-            callbackUrl: "YOUR_CALLBACK_URL",
-            loginButton: { color: "green", type: 3, height: 48 },
-          });
-      
-          naverLogin.init(); // 로그인 설정
-        };
-        const initializeKakaoLoginButton = () => {
-            if (window.Kakao && !window.Kakao.isInitialized()) {
-              window.Kakao.init("YOUR_KAKAO_APP_KEY");
-              window.Kakao.Auth.createLoginButton({
-                container: "#kakao-login-btn",
-                success: function (authObj) {
-                  console.log("Kakao login success:", authObj);
-                },
-                fail: function (err) {
-                  console.error("Kakao login error:", err);
-                },
-              });
-            }
-        };
-
-        const loadGoogleAPI = () => {
-            const script = document.createElement('script');
-            script.src = 'https://apis.google.com/js/api.js';
-            script.async = true;
-            script.onload = () => {
-              window.gapi.load('auth2', () => {
-                setGoogleApiLoaded(true);
-              });
-            };
-            document.body.appendChild(script);
-          };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setLoginUser({ ...loginUser, [name]:value });
+    }
+    
+    const loginHandleSubmit = async() => {
         
-          if (typeof window !== "undefined" && window.naver) {
-            initializeNaverLoginButton();
-          }
-          if (typeof window !== "undefined" && window.Kakao) {
-            initializeKakaoLoginButton();
-          }
-          if (typeof window !== "undefined" && window.gapi) {
-            loadGoogleAPI();
+        const option = {
+            headers: {
+                "Content-Type" : "application/json"
+            }
         }
-    }, []);
-    
-    const responseGoogle  = (response) => {
-        console.log(response);
+        try{
+            const response = await axios.post("http://localhost:8080/auth/login", JSON.stringify(loginUser),option);
+            setErrorMessages({email: "", password: "" ,  });
+            const accessToken = response.data.grantType + " " + response.data.accessToken;
+
+            
+
+            localStorage.setItem("accessToken", accessToken);
+            console.log(accessToken);
+            setRefresh(false);
+            navigate("/main");
+
+        }catch(error){
+           
+            setErrorMessages({email: "", password: "",  ...error.response.data.errorData});
+        }
     }
 
-    const renderGoogleLoginButton = (renderProps) => {
-        return (
-            <button
-                css={googleLoginButtonStyle}
-                onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
-            >
-                <img
-                    src="https://developers.google.com/identity/images/btn_google_signin_light_normal_web.png"
-                    alt="Google Login"
-                    style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: "230px",
-                        height: "auto",
-                        objectFit: "contain",
-                    }}
-                />
-            </button>
-        );
-    };
-      
-      
+    const googleAuthClickHandle = () => {
 
-    
-    const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
-    
-    const handleChange = () => {
-        
-        
-        
-    };
-    
-    const loginHandleSubmit = () => {
-        
+    }
+
+    const naverAuthCliclkHandle = () => {
+
+    }
+
+    const kakaoAuthClickHandle = () => {
+
     }
 
 
@@ -260,15 +256,15 @@ const Login = () => {
             <div css = { signupMessage }>Or Sign Up Using</div>
 
             <div css={oauth2Container}>
-                <div id="naverIdLogin"></div>
-                <div id="kakao-login-btn"></div>
-                <GoogleLogin
-                    clientId="YOUR_GOOGLE_CLIENT_ID"
-                    buttonText="Login with Google"
-                    onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
-                    render={renderGoogleLoginButton}
-                />
+                <div >
+                    <button css={naverButton} onClick={naverAuthCliclkHandle}></button>
+                </div>
+                <div>
+                    <button css={googleButton} onClick={googleAuthClickHandle}></button>
+                </div>
+                <div>
+                    <button css={kakaoButton} onClick={kakaoAuthClickHandle}></button>
+                </div>
             </div>
 
 

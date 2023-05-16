@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
 import ListButton from "./ListButton";
 import { BiHome, BiLogOut } from 'react-icons/bi';
+import { GrUserSettings } from 'react-icons/gr';
+import { Link } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 const sidebar = (isOpen) => css`
     position: absolute;
@@ -25,7 +28,7 @@ const sidebar = (isOpen) => css`
     
     ${isOpen ? "" : `
         &:hover { 
-            left: -230px;
+            left: -200px;
         }
     `}
 `;
@@ -55,6 +58,8 @@ const userInfo = css`
     display: flex;
     flex-direction: column;
     margin: 5px;
+    font-size: 20px;
+    font-weight: 600;
 `;
 
 const userNickName = css`
@@ -85,8 +90,9 @@ const closeButton = css`
 `;
 
 const main = css`
-    padding: 10px;
+    padding: 10px 50px 10px 10px;
     border-bottom: 1px solid #dbdbdb;
+    height: 570px;
 `;
 
 const footer = css`
@@ -96,6 +102,8 @@ const footer = css`
 const Sidebar = () => {
 
     const [ isOpen, setIsOpen ] = useState(false);
+
+    const queryClient = useQueryClient();
 
     const sidebarOpenClickHandle = () => {
         if(!isOpen) {
@@ -107,22 +115,41 @@ const Sidebar = () => {
         setIsOpen(false);
     }
 
+    const logoutClickHandle = () => {
+        if(window.confirm("로그아웃 하시겠습니까?")) {
+            localStorage.removeItem("accessToken");
+            queryClient.invalidateQueries("principal");
+        }
+    }
+    
+    // if(queryClient.getQueryState("principal").status === "loading") {
+    //     return <div>로딩중...</div>
+    // }
+
+    // const principalData = queryClient.getQueryData("principal").data;
+    // const roles = principalData.authorities.split(",");
+
     return (
         <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle}>
             <header css={header}>
                 <div css={userIcon}>
                 </div>
                 <div css={userInfo}>
+                    진정한헬창
                 </div>
                 <div css={closeButton} onClick={sidebarCloseClickHandle}><GrFormClose /></div>
             </header>
             <main css={main}>
-                <ListButton title="DashBoard"><BiHome /></ListButton>
-                <ListButton title="create"></ListButton>
-                <ListButton title="detail"></ListButton>
+                <div>
+                <Link to="/userinfo"><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
+                </div>
+                <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
+                <Link to="/postregister"><ListButton title="운동 모집글 작성"></ListButton></Link>
+                <Link to="/ownerpostlist"><ListButton title="내 모집글 보기"></ListButton></Link>
+                <Link to="/hostpostlist"><ListButton title="내 신청 보기"></ListButton></Link>
             </main>
             <footer css={footer}>
-                <ListButton title="Logout"><BiLogOut/></ListButton>
+                <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>
             </footer>
         </div>
     );
