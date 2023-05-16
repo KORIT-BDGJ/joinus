@@ -7,6 +7,9 @@ import { useMutation } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { BiFemale, BiMale } from 'react-icons/bi';
+import { FiLock, FiUser } from 'react-icons/fi';
+import { HiOutlineMail } from 'react-icons/hi';
+import { RiLockPasswordLine } from 'react-icons/ri';
 
 const headerContainer = css`
     height :125px ;
@@ -87,14 +90,20 @@ const addressContainer = css`
 `;
 
 const searchButton = css`
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    margin-left: 10px;
-    border: none;
-    background-color : #2ecc71;
-    cursor: pointer;
-    border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  border: none;
+  background-color: #2ecc71;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+
+  &:hover {
+    background-color: #27ae60;
+  }
 `;
 
 
@@ -121,13 +130,13 @@ const UserOAuth2Register = () => {
   const navigate = useNavigate();
   const [ searchParams ] = useSearchParams();
   const registerToken = searchParams.get('registerToken');
-  const emailFromNaver = searchParams.get('email');
-  const nameFromNaver  = searchParams.get('name');
+  const emailFromOauth2 = searchParams.get('email');
+  const nameFromOauth2  = searchParams.get('name');
   const provider = searchParams.get('provider');
 
   const [registerUser, setRegisterUser] = useState({
-    name: nameFromNaver,
-    email: emailFromNaver,
+    name: nameFromOauth2,
+    email: emailFromOauth2,
     password: "",
     passwordConfirm: "",
     address: "",
@@ -161,20 +170,18 @@ const UserOAuth2Register = () => {
 
   
   const validateInputs = () => {
-    if (registerUser.password === "" || 
-        registerUser.passwordConfirm === "" || 
-        registerUser.address === "" || 
-        registerUser.gender === "" ) {
-      let missingInputs = [];
-      if (registerUser.password === "") missingInputs.push("비밀번호");
-      if (registerUser.passwordConfirm === "") missingInputs.push("비밀번호 확인");
-      if (registerUser.address === "") missingInputs.push("주소");
-      if (registerUser.gender === "") missingInputs.push("성별");
-  
+    let missingInputs = [];
+    if (registerUser.name === "") missingInputs.push("이름");
+    if (registerUser.password === "") missingInputs.push("비밀번호");
+    if (registerUser.passwordConfirm === "") missingInputs.push("비밀번호 확인");
+    if (registerUser.address === "") missingInputs.push("주소");
+    if (registerUser.gender === "") missingInputs.push("성별");
+
+    if (missingInputs.length > 0) {
       alert(missingInputs.join(", ") + " 입력란을 확인해주세요.");
       return false;
     }
-  
+
     if (registerUser.password !== registerUser.passwordConfirm) {
       setErrorMessages((prevState) => ({
         ...prevState,
@@ -182,9 +189,14 @@ const UserOAuth2Register = () => {
       }));
       return false;
     }
-  
+
     return true;
   };
+
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setRegisterUser( { ...registerUser, [name]:value } );
+  }
   
   const oauth2Register = useMutation(
     async (registerData) => {
@@ -213,13 +225,7 @@ const UserOAuth2Register = () => {
     }
   );
 
-  const passwordInputChangeHandle = (e) => {
-    const { name, value } = e.target;
-    setPasswords((prevPasswords) => ({
-      ...prevPasswords,
-      [name]: value,
-    }));
-  };
+  
 
   const oauth2RegisterSubmitHandle = async () => {
     const isValid = validateInputs();
@@ -229,16 +235,23 @@ const UserOAuth2Register = () => {
     }
   
     const registerData = {
-      email,
-      name,
-      ...passwords,
-      provider,
-      address: registerUser.address,
-      gender: registerUser.gender,
+      ...registerUser,
     };
-  
+    
+    const option = {
+      headers: {
+         "Content-Type" : "application/json",
+        registerToken: `Bearer ${registerToken}`,
+      },
+    };
+
     try {
-      await oauth2Register.mutateAsync(registerData);
+      const response = await axios.post('http://localhost:8080/auth/oauth2/register', JSON.stringify(registerData), option);
+
+      if (response.status === 200) {
+        alert('회원가입 완료.');
+        window.location.replace('/auth/login');
+      }
     } catch (error) {
       if (error.response && error.response.data) {
         setErrorMessages({
@@ -254,32 +267,6 @@ const UserOAuth2Register = () => {
     }
   };
 
-  const addressInputChangeHandle = (e) => {
-    const { name, value } = e.target;
-    setRegisterUser({ ...registerUser, [name]: value });
-  };
-
-  const searchAddress = () => {
-    new window.daum.Postcode({
-      oncomplete: function (data) {
-        let addr = '';
-
-        if (data.userSelectedType === 'R') {
-          addr = data.roadAddress;
-        } else {
-          addr = data.jibunAddress;
-        }
-
-        setRegisterUser({ ...registerUser, address: addr });
-      },
-    }).open();
-  };
-
-  const onChangeHandle = (e) => {
-    const { name, value } = e.target;
-    setRegisterUser( { ...registerUser, [name]:value } );
-  }
-
 
   return (
     <div css= {container}>
@@ -294,12 +281,12 @@ const UserOAuth2Register = () => {
             <main css={ mainContainer }>
                 <div css={authForm}>
                     <label css={ inputLabel }>Name</label>
-                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name" value={registerUser.name} disabled={true}>
+                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name" value={registerUser.name} disabled={!nameFromOauth2}>
                         <FiUser />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.name}</div>
                     <label css={ inputLabel }>Email</label>
-                    <LoginInput type="email" placeholder="Please enter your email" onChange={onChangeHandle} name="email" value={registerUser.email} disabled={true}>
+                    <LoginInput type="email" placeholder="Please enter your email" onChange={onChangeHandle} name="email" value={registerUser.email} disabled={!emailFromOauth2}>
                         <HiOutlineMail />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.email}</div>

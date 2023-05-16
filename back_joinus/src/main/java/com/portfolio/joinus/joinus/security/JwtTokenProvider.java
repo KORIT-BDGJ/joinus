@@ -111,7 +111,7 @@ public class JwtTokenProvider {
 			.setSigningKey(key)
 			.build()
 			.parseClaimsJws(token);
-			System.out.println("Token is valid: " + token);
+//			System.out.println("Token is valid: " + token);
 			return true;
 		}catch (Exception e) {
 			

@@ -42,15 +42,22 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             String address = ""; // 주소 초기화
             String gender = ""; // 성별 초기화
 
-            response.sendRedirect(
-                    "http://localhost:3000/auth/oauth2/register"
-                            + "?registerToken=" + registerToken
-                            + "&email=" + email
-                            + "&name=" + URLEncoder.encode(name, "UTF-8")
-                            + "&provider=" + provider
-                            + "&address=" + URLEncoder.encode(address, "UTF-8")
-                            + "&gender=" + URLEncoder.encode(gender, "UTF-8")
-            );
+        // 카카오인 경우 이름, 주소, 성별 초기
+        if("kakao".equals(provider)) {
+        	name = "";
+        	address = "";
+            gender = "";
+        }
+            
+        response.sendRedirect(
+                "http://localhost:3000/auth/oauth2/register"
+                        + "?registerToken=" + registerToken
+                        + "&email=" + email
+                        + "&name=" + URLEncoder.encode(name, "UTF-8")
+                        + "&provider=" + provider
+                        + "&address=" + URLEncoder.encode(address, "UTF-8")
+                        + "&gender=" + URLEncoder.encode(gender, "UTF-8")
+        );
         } else {
             // 회원가입 성공
             if (StringUtils.hasText(userEntity.getProvider())) {
