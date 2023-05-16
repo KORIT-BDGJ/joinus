@@ -25,7 +25,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 			AuthenticationException authException) throws IOException, ServletException {
 		
 		
-		System.out.println("Token authentication failed: " + authException.getMessage());
+//		System.out.println("Token authentication failed: " + authException.getMessage());
 
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE); 
 		response.setStatus(HttpStatus.UNAUTHORIZED.value()); // 401 error

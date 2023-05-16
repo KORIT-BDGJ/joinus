@@ -7,13 +7,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
+import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
+import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
+import com.portfolio.joinus.joinus.security.JwtTokenProvider;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationController {
 	
+	
+	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationService authenticationService;
 	
 	@PostMapping("/login")
@@ -39,10 +46,37 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(true);
 	}
 	
+	@PostMapping("/oauth2/register")
+	public ResponseEntity<?> oauth2Register(
+			@RequestHeader(value="registerToken") String registerToken,
+			@RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto) {
+		
+		boolean validated = jwtTokenProvider.validateToken(jwtTokenProvider.getToken(registerToken));
+		
+		if(!validated) {
+			//토큰이 유효하지 않음
+			return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과하였습니다.");
+		}
+		
+		return ResponseEntity.ok(authenticationService.oAuth2Register(oAuth2RegisterReqDto));
+	}
+	
+	@PutMapping("/oauth2/merge")
+	public ResponseEntity<?> providerMerge(@RequestBody OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto){
+		
+		// 기존의 암호와 비교를 해야함 
+		// DB에 암호가 들어있음
+		if(!authenticationService.checkPassword(oAuth2ProviderMergeReqDto.getEmail(), oAuth2ProviderMergeReqDto.getPassword())) {
+			return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+		}
+		
+		
+		return ResponseEntity.ok(authenticationService.oAuth2ProviderMerge(oAuth2ProviderMergeReqDto));
+	}
+	
 	@GetMapping("/authenticated")
-	public ResponseEntity<?> authenticated(String accessToken){
-		System.out.println(accessToken);
-		return ResponseEntity.ok().body(authenticationService.isAuthenticated(accessToken)); //true, false
+	public ResponseEntity<?> authenticated(@RequestHeader(value = "Authorization") String accessToken) {
+		return ResponseEntity.ok(jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken)));
 	}
 	
 	@GetMapping("/principal")
