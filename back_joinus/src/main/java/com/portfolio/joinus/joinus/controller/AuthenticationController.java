@@ -25,8 +25,6 @@ public class AuthenticationController {
 	
 	private final AuthenticationService authenticationService;
 	
-	
-	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult ) {
 		return ResponseEntity.ok().body(authenticationService.authenticate(loginReqDto));
@@ -36,7 +34,6 @@ public class AuthenticationController {
 	@ValidAspect
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@Valid @RequestBody RegisterReqDto registerReqDto, BindingResult bindingResult) {
-		System.out.println(registerReqDto);
 		authenticationService.checkDuplicatedEmail(registerReqDto.getEmail());
 		authenticationService.register(registerReqDto);
 		return ResponseEntity.ok().body(true);
@@ -44,7 +41,7 @@ public class AuthenticationController {
 	
 	@GetMapping("/authenticated")
 	public ResponseEntity<?> authenticated(String accessToken){
-		
+		System.out.println(accessToken);
 		return ResponseEntity.ok().body(authenticationService.isAuthenticated(accessToken)); //true, false
 	}
 	

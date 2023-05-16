@@ -8,6 +8,7 @@ import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 
 
 const container = css`
@@ -172,10 +173,7 @@ const attendList = (attendShow) => css`
     flex-direction: column;
 `;
 
-const applicantList = (applicantShow) => css`
-    display: ${applicantShow ? "flex" : "none"};
-    flex-direction: column;
-`;
+
 
 const member = css`
     margin-top: 5px;
@@ -236,7 +234,7 @@ const footButton = css`
 const OwnerPostDetail = () => {
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
-    const [ applicantShow, setApplicantShow ] = useState(false);
+
 
     const detailClickHandle = (e) => {
         setDetailShow(!detailShow);
@@ -244,24 +242,21 @@ const OwnerPostDetail = () => {
     const attendClickHandle = (e) => {
         setAttendShow(!attendShow);
     };
-    const applicantClickHandle = (e) => {
-        setApplicantShow(!applicantShow);
-    };
 
+    
     const { postId } = useParams();
     const queryClient = useQueryClient();
-
+    
     const getPost = useQuery(["getPost"], async () => {
-
+        
         const response = await axios.get(`http://localhost:8080/post/${postId}`);
-        console.log(response)
         return response;
     });
-
+    
     if(getPost.isLoading) {
         return <div>불러오는 중...</div>
     }
-
+    
     if(!getPost.isLoading)
     return (
         
@@ -279,34 +274,34 @@ const OwnerPostDetail = () => {
                     <div css={infoBox}>
                         <div css={ownerInfo}>방장정보 :</div>
                         <div css={ownerPicture}><FaUserCircle /></div>
-                        <div css={ownerNickname}>진정한헬창</div>
+                        <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
                     </div>
                     <button css={detailButton} onClick={detailClickHandle}>상세정보 버튼</button>
                 </div>
                 <div css={infoDetail(detailShow)}>
-                    <div css={ownerLevel}>레벨: 고급</div>
-                    <div css={ownerState}>상태: 가르쳐주고 싶어요</div>
-                    <div css={ownerMedal}>메달: 금메달</div>
+                    <div css={ownerLevel}>레벨: {getPost.data.data.levelName}</div>
+                    <div css={ownerState}>상태: {getPost.data.data.stateName}</div>
+                    <div css={ownerMedal}>메달: {getPost.data.data.writerNickName}</div>
                 </div>
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
-                    <div css={recruitSports}><CgGym /></div>
-                    <div css={recruitRegion}>지역: 부산</div>
-                    <div css={recruitTime}>5월5일 19:00시</div>
-                    <div css={recruitGender}>남성만</div>
+                    <div css={recruitSports}><CgGym />{getPost.data.data.sportsName}</div>
+                    <div css={recruitRegion}>지역: {getPost.data.data.regionName}</div>
+                    <div css={recruitTime}>{getPost.data.data.deadLine}</div>
+                    <div css={recruitGender}>{getPost.data.data.genderName}</div>
                 </div>
                 <div css={recruitText}>
                     <div css={recruitTextHeader}>
                         모집글 소개
                     </div>
                     <div css={recruitTextBody}>
-                        내용
+                        {getPost.data.data.text}
                     </div>
 
                 </div>
                 <div css={applicant}>
                     <div css={applicantHeader}>
-                        <div css={applicantCount}>참여인원 정보 : (4/10)</div>
+                        <div css={applicantCount}>참여인원 정보 : (4/{getPost.data.data.recruitsCount})</div>
                         <button css={applicantButton} onClick={attendClickHandle}>참여자 보기</button>
                     </div>
                     <div css={attendList(attendShow)}>
@@ -335,48 +330,10 @@ const OwnerPostDetail = () => {
                             <button css={applicantButton}>내보내기</button>
                         </div>
                     </div>
-                    <div css={applicantHeader}>
-                        <div css={applicantCount}>신청인원 정보 : (4/10)</div>
-                        <button css={applicantButton} onClick={applicantClickHandle}>신청자 보기</button>
+                    <div>
+                        <ApplicantList postId={postId}/>
                     </div>
-                    <div css={applicantList(applicantShow)}>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자1
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자2
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자3
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자4
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div css={detailFoot}>

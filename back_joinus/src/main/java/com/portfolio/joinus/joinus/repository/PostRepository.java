@@ -1,11 +1,13 @@
 package com.portfolio.joinus.joinus.repository;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.entity.ApplicantList;
 import com.portfolio.joinus.joinus.entity.Post;
 
 @Mapper
@@ -16,8 +18,12 @@ public interface PostRepository {
 	// 게시글 작성
 	public int registePost(PostReqDto postReqDto);
 	
+
 	// 등록&조회
 	public List<Post> getPostList(Map<String, Object> map);
 	public int getTotalCount(Map<String, Object> map);
+	// post_applicant_list_tb에서 id로 list 불러오기
+	public List<ApplicantList> getApplicantListByPostId(int postId);
+
 
 }

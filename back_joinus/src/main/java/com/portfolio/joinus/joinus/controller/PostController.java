@@ -34,9 +34,17 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.registePost(postReqDto));
 	}
 	
+<<<<<<< HEAD
 	
 	@GetMapping("/post/list")
 	public ResponseEntity<?> getRegistePost() {
 		return ResponseEntity.ok().body(null);
 	}
+=======
+	@GetMapping("/post/{postId}/applicant/list")
+	public ResponseEntity<?> getApplicant(@PathVariable int postId) {
+		return ResponseEntity.ok().body(postService.getApplicantListByPostId(postId));
+	}
+	
+>>>>>>> 조병철_작업
 }
