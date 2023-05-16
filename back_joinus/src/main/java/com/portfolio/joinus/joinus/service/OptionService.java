@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.portfolio.joinus.joinus.entity.Gender;
 import com.portfolio.joinus.joinus.entity.Level;
 import com.portfolio.joinus.joinus.entity.Region;
+import com.portfolio.joinus.joinus.entity.Search;
 import com.portfolio.joinus.joinus.entity.State;
 import com.portfolio.joinus.joinus.repository.OptionRepository;
 
@@ -32,6 +33,10 @@ public class OptionService {
 	
 	public List<Gender> getGenders() {
 		return optionRepository.getGenders();
+	}
+	
+	public List<Search> getSearchs() {
+		return optionRepository.getSearchs();
 	}
 	
 }

@@ -152,19 +152,18 @@ const Main = () => {
         selectedCountry: null,
         selectedSearch: null
     });
-    
 
-    // const getPostList = useQuery(["getPostList"], async () => {
-    //     const option = {
-    //         params: {
-    //             ...searchParams
-    //         },
-    //         headers: {
-    //             Authorization: localStorage.getItem("accessToken")
-    //         }
-    //     }
-    //     return await axios.get("http://localhost:8080/auth/post/list", option);
-    // });
+    const getRegions = useQuery(["getRegions"], async () => {
+
+        const response = await axios.get("http://localhost:8080/auth/option/regions");
+        return response;
+    });
+
+    const getSearchs = useQuery(["getSearchs"], async () => {
+
+        const response = await axios.get("http://localhost:8080/auth/option/searchs");
+        return response;
+    });
 
     const handleIconSelect = (IconComponent) => {
         if (!sportsModalIsOpen) {
@@ -201,6 +200,9 @@ const Main = () => {
 
     const getPostList = useQuery(["getPostList"], async () => {
         const option = {
+            params: {
+                ...searchParams
+            },
             headers: {
                 "Content-Type":"application/json"
             }
@@ -210,6 +212,9 @@ const Main = () => {
         console.log(response)
         return response;
     });
+
+    console.log(getPostList);
+
     return (
         <div css={mainContainer}>
             <Sidebar></Sidebar>
@@ -225,13 +230,14 @@ const Main = () => {
                     onClick={selectedIconClickHandle}
                 />}
                 <div css={selectIconbox}>
-                    <Select
-                        css={selectCountry}
-                        value={selectedOptions.selectedCountry}
-                        onChange={handleOptionChange('selectedCountry')}
-                        options={options.countries}
-                        placeholder="지역"
-                    />
+                    {getRegions.isLoading ? ""
+                        : <Select
+                            css={selectCountry}
+                            value={selectedOptions.selectedCountry}
+                            onChange={handleOptionChange('selectedCountry')}
+                            options={getRegions.data.data.map(region => ({"value": region.regionId, "label": region.regionName}))}
+                            placeholder="지역"
+                        />}
                 </div>
                 <div css={inputBox}>
                     <Select
@@ -247,17 +253,23 @@ const Main = () => {
             <div css={mainListBox}>
             {getPostList.isLoading ? ( 
                 "" 
-            ) : (<div css={listContainer} onClick={listClickHandle}>
-                    <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
-                    <div css={postContent}>
-                        <header>2023.05.05</header>
-                        <main css={postMain}>{getPostList.data.data.title}</main>
-                        <footer>
-                        {getPostList.data.data.writer}/{getPostList.data.data.region}/
-                        {getPostList.data.data.time}/{getPostList.data.data.applicants}
-                        </footer>
-                    </div>
-                </div>)}
+            ) : (
+                <>
+                    {getPostList.data.data.postList.map((post) =>(
+                        <div css={listContainer} onClick={listClickHandle}>
+                            <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
+                            <div css={postContent}>
+                                <header>등록날짜</header>
+                                <main css={postMain}>{post.title}</main>
+                                <footer>
+                                    {post.writer}/{post.region}/
+                                    {post.time}/{post.applicants}
+                                </footer>
+                            </div>
+                        </div>
+                    ))}
+                </>
+            )}
             </div>
             <div css={pageButton}>
                 <button>pagination</button>

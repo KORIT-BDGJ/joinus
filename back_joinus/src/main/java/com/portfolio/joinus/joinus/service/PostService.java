@@ -31,13 +31,15 @@ public class PostService {
 		return postRepository.registePost(postReqDto);
 	}
 	
-	public Map<String, Object> getRegistePost(SearchPostReqDto searchPostReqDto) {
+	public Map<String, Object> getPostList(SearchPostReqDto searchPostReqDto) {
 		List<SearchPostRespDto> list = new ArrayList<>();
 		
 		int index = (searchPostReqDto.getPage() - 1) * 10;
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
+		map.put("searchIds", searchPostReqDto.getSearchIds());
+		map.put("searchValue", searchPostReqDto.getSearchValue());
 		
 		postRepository.getPostList(map).forEach(post -> {
 			list.add(post.toDto());
@@ -47,7 +49,7 @@ public class PostService {
 		
 		Map<String, Object> responseMap = new HashMap<>();
 		responseMap.put("totalCount", totalCount);
-		responseMap.put("PostList", list);
+		responseMap.put("postList", list);
 		
 		return responseMap;
 	}

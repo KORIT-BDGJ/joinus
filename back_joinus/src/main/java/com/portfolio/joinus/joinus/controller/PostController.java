@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.service.PostService;
 
@@ -36,7 +37,7 @@ public class PostController {
 	
 	
 	@GetMapping("/post/list")
-	public ResponseEntity<?> getRegistePost() {
-		return ResponseEntity.ok().body(null);
+	public ResponseEntity<?> getPostList(SearchPostReqDto searchPostReqDto) {
+		return ResponseEntity.ok().body(postService.getPostList(searchPostReqDto));
 	}
 }

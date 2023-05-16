@@ -40,5 +40,11 @@ public class OptionController {
 		return ResponseEntity.ok(optionService.getGenders());
 		
 	}
+	
+	@GetMapping("/searchs")
+	public ResponseEntity<?> getSearchs() {
+		return ResponseEntity.ok(optionService.getSearchs());
+		
+	}
 		
 }

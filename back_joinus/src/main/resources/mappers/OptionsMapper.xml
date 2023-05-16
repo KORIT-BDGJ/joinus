@@ -33,5 +33,13 @@
 		from
 			gender_tb
 	</select>
+	
+	<select id="getSearchs" resultType="com.portfolio.joinus.joinus.entity.Search">
+		select
+			search_id as searchId,
+			search_name as searchName
+		from
+			search_tb
+	</select>
 
 </mapper>
