@@ -270,10 +270,10 @@ const Login = () => {
 
             <footer css={footerStyles}>
                 <div css={register}>
-                    <Link to="/register">회원가입</Link>
+                    <Link to="/auth/register">회원가입</Link>
                 </div>
                 <div css={userinfo}>
-                    <Link to="/userinfo">유저정보</Link>
+                    <Link to="/auth/userinfo">유저정보</Link>
                 </div>
             </footer>
             
