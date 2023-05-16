@@ -118,7 +118,7 @@ const resetButton = css`
 `;
 
 const HostPostList = () => {
-    // 1.1 신청 글 상태
+    // 신청 글 상태
     const [applicantPosts, setApplicantPosts] = useState([
         {
             postId: 1,
@@ -129,7 +129,7 @@ const HostPostList = () => {
             cancelButton: true,
         },
     ]);
-    // 1.2 참여 완료한 글 상태
+    // 참여 완료한 글 상태
     const [attendPosts, setAttendPosts] = useState([
         {
             postId: 4,
@@ -155,7 +155,7 @@ const HostPostList = () => {
         },
     ]);
 
-    // 1.3 모달 상태
+    // 모달 상태
     const [cancelModalOpen, setCancelModalOpen] = useState(false); // 신청 취소 모달 상태
     const [evaluateModalOpen, setEvaluateModalOpen]= useState({
         type: "",
@@ -163,19 +163,21 @@ const HostPostList = () => {
         postId: null, // 평가할 글의 ID 추가
       });
     
-    // 1.4 기타 상태
+    // 기타 상태
+    const [selectedPosts, setSelectedPosts] = useState([]); // 선택한 글의 ID를 저장하는 배열
+    const [cancelPostId, setCancelPostId] = useState(null); // 신청 취소할 글의 ID
+    const [evaluateUsers, setEvaluateUsers] = useState([]); // 평가할 유저 정보 배열 추가
     const [hoveredStar, setHoveredStar] = useState({
         postId: null,
         userId: null,
         starCount: 0,
-      }); // 별점 상태
-    const [starCount, setStarCount] = useState({}); // 별점 개수 상태
-    const [selectedPosts, setSelectedPosts] = useState([]); // 선택한 글의 ID를 저장하는 배열
-    const [cancelPostId, setCancelPostId] = useState(null); // 신청 취소할 글의 ID
-    const [evaluateUsers, setEvaluateUsers] = useState([]); // 평가할 유저 정보 배열 추가
-    const [ratings, setRatings] = useState({});
+      }); 
 
-    // 2.1 신청 글 이벤트 정리
+    // 별점 상태
+    const [starCount, setStarCount] = useState({});
+    const [starCountState, setStarCountState] = useState({}); // 별점 개수 상태
+    
+    // 신청 취소 모달 열기/닫기
 
     const openCancelModal = (id) => {
         setCancelPostId(id);
@@ -187,20 +189,20 @@ const HostPostList = () => {
         setCancelModalOpen(false);
     };
 
+    // 신청 취소
     const cancelPost = () => { // 신청 취소
         console.log('취소가 완료되었습니다.');
-    
-       
         setCancelModalOpen(false);
     };
-    
+
+    // 신청 글 제목 클릭 시 상세페이지 이동
     const movePost = (id) => { // 글 제목 클릭 시 해당 상세페이지로 이동
 		console.log(`해당 상세페이지로 이동 ${id}`);
 	};
 
     
 
-    // 2.2 참여 완료한 글 이벤트 핸들러
+    // 참여 완료한 글 이벤트 핸들러
 
     const handleButtonClick = (type, postId) => {
         const selectedPost = attendPosts.find((post) => post.postId === postId);
@@ -227,7 +229,7 @@ const HostPostList = () => {
         setEvaluateModalOpen({ type: '', isOpen: false });
         console.log(evaluateModalOpen); // 상태 업데이트 후 확인
     };
-    
+    // 참여 완료한 글의 제목을 클릭하면, 선택한 글의 ID를 저장하는 배열에 추가하거나 제거
     const handlePostTitleClick = (postId) => {
         if (selectedPosts.includes(postId)) {
             setSelectedPosts(selectedPosts.filter(id => id !== postId)); // 이미 선택되어 있으면 배열에서 제거
@@ -248,11 +250,16 @@ const HostPostList = () => {
       };
       
 
-    const handleStarClick = (postId, userId, newMedalCount) => {
+      const handleStarClick = (postId, userId, newMedalCount) => {
         const key = `${postId}:${userId}`; 
     
         setStarCount({
             ...starCount,
+            [key]: newMedalCount,
+        });
+    
+        setStarCountState({
+            ...starCountState,
             [key]: newMedalCount,
         });
     
@@ -268,47 +275,46 @@ const HostPostList = () => {
             }
             })
         );
-        };
-
-        const handleRating = (postId, rating) => {
-            setRatings(prev => ({
-              ...prev,
-              [postId]: rating
-            }));
-          };
+    };
+    
     
     const handleStarReset = (postId, userId) => {
-        const key = `${postId}:${userId}`; // Composite key
-    
-        setStarCount({
-            ...starCount,
-            [key]: 0,
-        });
-
-        
-    
-        setAttendPosts((prevPosts) =>
-            prevPosts.map((post) => {
-                if (post.postId === postId) {
-                    return {
-                        ...post,
-                        users: post.users.map((user) => {
-                            if (user.userId === userId) {
-                                return {
-                                    ...user,
-                                    medalCount: 0,
-                                };
-                            } else {
-                                return user;
-                            }
-                        }),
-                    };
-                } else {
-                    return post;
-                }
-            })
-        );
-    };
+      const key = `${postId}:${userId}`; // Composite key
+  
+      setStarCount({
+          ...starCount,
+          [key]: 0,
+      });
+  
+      // starCountState 상태 업데이트
+      setStarCountState({
+          ...starCountState,
+          [key]: 0,
+      });
+  
+      setAttendPosts((prevPosts) =>
+          prevPosts.map((post) => {
+              if (post.postId === postId) {
+                  return {
+                      ...post,
+                      users: post.users.map((user) => {
+                          if (user.userId === userId) {
+                              return {
+                                  ...user,
+                                  medalCount: 0,
+                              };
+                          } else {
+                              return user;
+                          }
+                      }),
+                  };
+              } else {
+                  return post;
+              }
+          })
+      );
+  };
+  
     
     
     const starOptions = [1, 2, 3, 4, 5]; // 별점 옵션
@@ -384,26 +390,26 @@ const HostPostList = () => {
                         <div key={user.userId}>
                           <span css={attendUserName}>{user.username}</span>
                           <div>
-                            {starOptions.map((starCount) => {
-                                const key = `${post.postId}:${user.userId}`; // Composite key
-                                return (
-                                    <button
-                                        key={starCount}
-                                        css={star}
-                                        onMouseOver={() => handleStarMouseOver(post.postId, user.userId, starCount)}
-                                        onMouseOut={handleStarMouseOut}
-                                        onClick={() => handleStarClick(post.postId, user.userId, starCount)}
-                                        >
-                                        {starCount <=
-                                        (hoveredStar.postId === post.postId &&
-                                        hoveredStar.userId === user.userId
-                                            ? hoveredStar.starCount
-                                            : starCount[`${post.postId}:${user.userId}`] || user.medalCount || 0)
-                                        ? activeStar
-                                        : inactiveStar}
-                                    </button>
-                                            );
-                                        })}
+                          {starOptions.map((starCount) => {
+                              const key = `${post.postId}:${user.userId}`; // Composite key
+                              return (
+                                  <button
+                                      key={starCount}
+                                      css={star}
+                                      onMouseOver={() => handleStarMouseOver(post.postId, user.userId, starCount)}
+                                      onMouseOut={handleStarMouseOut}
+                                      onClick={() => handleStarClick(post.postId, user.userId, starCount)}
+                                      >
+                                      {starCount <=
+                                      (hoveredStar.postId === post.postId &&
+                                      hoveredStar.userId === user.userId
+                                          ? hoveredStar.starCount
+                                          : starCountState[`${post.postId}:${user.userId}`] || user.medalCount || 0)
+                                      ? activeStar
+                                      : inactiveStar}
+                                  </button>
+                              );
+                          })}
                                         <button css={resetButton} onClick={() => handleStarReset(post.postId, user.userId)}>
                                             <FaRedo />
                                         </button>
