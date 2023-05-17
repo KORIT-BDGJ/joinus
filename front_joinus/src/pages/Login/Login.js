@@ -134,7 +134,7 @@ const kakaoButton = css`
 
 const errorMsg = css`
     margin-left: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 12px;
     color:red;
 `;
@@ -179,9 +179,10 @@ const footerStyles = css`
 const Login = () => {
 
     const navigate = useNavigate();
-    const [loginUser, setLoginUser] = useState({ email:"",password:"" ,name: ""});
-    const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
-    
+    const [loginUser, setLoginUser] = useState({ email:"",password:""});
+    const [errorMessages, setErrorMessages] = useState({ email:"", password:"" });
+    const [refresh, setRefresh] = useRecoilState(refreshState);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLoginUser({ ...loginUser, [name]:value });
@@ -190,16 +191,20 @@ const Login = () => {
     const login = useMutation(async (loginUser) => {
         try {
             const response = await axios.post("http://localhost:8080/auth/login", loginUser);
+            setErrorMessages({email: "", password: "" ,  });
             return response;
         } catch(error) {
+            if(error.response.status === 401) {
+                alert("사용자 정보를 확인해주세요.");
+            }
             setErrorMessages({email: "", password: "", ...error.response.data.errorData});
             return error;
         }
     }, {
         onSuccess: (response) => {
-            setErrorMessages({email: "", password: "" ,  });
             if(response.status === 200) {
                 localStorage.setItem("accessToken", response.data);
+                setRefresh(true);
                 navigate("/main");
             }
         }

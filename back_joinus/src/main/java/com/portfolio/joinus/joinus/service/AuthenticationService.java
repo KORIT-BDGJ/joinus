@@ -83,7 +83,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 		User userEntity = userRepository.findUserByEmail(username);
 		
 		if(userEntity == null) {
-			throw new CustomException("로그인 실패",ErrorMap.builder().put("email", "사용자 정보를 확인하세요").build());
+			return null;
 		}
 		
 		return userEntity.toPrincipal();

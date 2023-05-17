@@ -16,6 +16,8 @@ function App() {
     <>
       <Global styles={ Reset } />
       <Routes>
+        
+        <Route path='/' element={<AuthRoute path={"/"} element={<></>}/>} />
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
         <Route path="/user/modification" element={<AuthRoute  path={"/user/modification"} element={<UserInfo />} />} />

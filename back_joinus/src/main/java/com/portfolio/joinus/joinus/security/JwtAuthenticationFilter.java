@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		
 		HttpServletRequest httpRequest = (HttpServletRequest) request; // 다운캐스팅
 		String authorizationHeader = httpRequest.getHeader("Authorization"); // Authorization 헤더 가져오기
-		System.out.println("Authorization header: " + authorizationHeader); // Authorization 헤더 출력
+//		System.out.println("Authorization header: " + authorizationHeader); // Authorization 헤더 출력
 
 		String accessToken = jwtTokenProvider.getToken(authorizationHeader); // 토큰 추출
 //		System.out.println("Access token: " + accessToken); // 추출된 토큰 출력

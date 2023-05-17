@@ -201,7 +201,7 @@ const UserRegister = () => {
             await axios.post("http://localhost:8080/auth/register", JSON.stringify(data), option);
             setErrorMessages({name: "", email: "", password: "" ,passwordConfirm: ""}); //빈값 ( 로그인 성공 시, error 메시지 뜨지않음 )
             alert("회원가입 성공!");
-            navigate("/login");
+            navigate("/main");
             
         }catch (error) {
             if (error.response && error.response.data) {
