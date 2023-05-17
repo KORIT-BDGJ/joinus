@@ -127,7 +127,7 @@ const errorMsg = css`
 `;
 
 const UserOAuth2Register = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [ searchParams ] = useSearchParams();
   const registerToken = searchParams.get('registerToken');
   const emailFromOauth2 = searchParams.get('email');
