@@ -291,7 +291,7 @@ const UserRegister = () => {
             <div css= { signupMessage }>Already a user?</div>
 
             <footer>
-                <div css = { register }><Link to="/login">로그인</Link></div>
+                <div css = { register }><Link to="/auth/login">로그인</Link></div>
             </footer>
         </div>
     );

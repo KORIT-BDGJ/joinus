@@ -17,6 +17,6 @@ public interface UserRepository {
 	
 	public int registerAuthority(Authority authority);
 	
-	public JwtRespDto login(LoginReqDto loginReqDto);
+	public int updateProvider(User user);
 
 }

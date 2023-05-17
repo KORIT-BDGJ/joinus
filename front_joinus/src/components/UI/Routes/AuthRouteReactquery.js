@@ -50,7 +50,7 @@ const AuthRouteReactQuery = ({ path, element }) => {
       return <div>로딩중...</div>;
     }
 
-    if (principal && principal.data !== undefined ) {
+    if (principal.data !== undefined ) {
         const roles = principal.data.data.authorities.split(",");
         const hasAdminPath = path.startsWith("/admin");
         if (hasAdminPath && !roles.includes("ROLE_ADMIN") && !displayedAlert) {
@@ -60,20 +60,21 @@ const AuthRouteReactQuery = ({ path, element }) => {
         }
     }
 
-    if (authenticated && !authenticated.isLoading) {
+    if (!authenticated.isLoading) {
         const permitAll = ["/login", "/register", "/password/forgot"];
 
         if (!authenticated.data.data) {
-          if (permitAll.includes(path)) {
-              return element;
-          }
-          return <Navigate to="/login" />;
+        if (permitAll.includes(path)) {
+            return element;
+        }
+        return <Navigate to="/login" />;
         }
         if (permitAll.includes(path)) {
-          return <Navigate to="/main" />;
+        return <Navigate to="/main" />;
         }
         return element;
     }
 };
+
 
 export default AuthRouteReactQuery;
