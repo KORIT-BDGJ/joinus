@@ -39,6 +39,10 @@ const AuthRoute = ({ path, element}) => {
         return <></>
     }
 
+    if(path === "/") {
+        navigate("/main");
+    }
+
     if(authState && path.startsWith(authPath)) {
         navigate("/main");
     }
