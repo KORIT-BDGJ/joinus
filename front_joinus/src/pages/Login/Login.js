@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { refreshState } from '../../atoms/Auth/AuthAtoms';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
+import { useMutation } from 'react-query';
 
 
 const headerContainer = css`
@@ -133,7 +134,7 @@ const kakaoButton = css`
 
 const errorMsg = css`
     margin-left: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 12px;
     color:red;
 `;
@@ -178,50 +179,51 @@ const footerStyles = css`
 const Login = () => {
 
     const navigate = useNavigate();
-    const [loginUser, setLoginUser] = useState({ email:"",password:"" ,name: ""});
-    const [errorMessages, setErrorMessages] = useState({ email: "", password: "" });
-    const [ refresh, setRefresh] = useRecoilState( refreshState );
-    
+    const [loginUser, setLoginUser] = useState({ email:"",password:""});
+    const [errorMessages, setErrorMessages] = useState({ email:"", password:"" });
+    const [refresh, setRefresh] = useRecoilState(refreshState);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLoginUser({ ...loginUser, [name]:value });
     }
-    
-    const loginHandleSubmit = async() => {
-        
-        const option = {
-            headers: {
-                "Content-Type" : "application/json"
+
+    const login = useMutation(async (loginUser) => {
+        try {
+            const response = await axios.post("http://localhost:8080/auth/login", loginUser);
+            setErrorMessages({email: "", password: "" ,  });
+            return response;
+        } catch(error) {
+            if(error.response.status === 401) {
+                alert("사용자 정보를 확인해주세요.");
+            }
+            setErrorMessages({email: "", password: "", ...error.response.data.errorData});
+            return error;
+        }
+    }, {
+        onSuccess: (response) => {
+            if(response.status === 200) {
+                localStorage.setItem("accessToken", response.data);
+                setRefresh(true);
+                navigate("/main");
             }
         }
-        try{
-            const response = await axios.post("http://localhost:8080/auth/login", JSON.stringify(loginUser),option);
-            setErrorMessages({email: "", password: "" ,  });
-            const accessToken = response.data.grantType + " " + response.data.accessToken;
-
-            
-
-            localStorage.setItem("accessToken", accessToken);
-            console.log(accessToken);
-            setRefresh(false);
-            navigate("/main");
-
-        }catch(error){
-           
-            setErrorMessages({email: "", password: "",  ...error.response.data.errorData});
-        }
+    });
+    
+    const loginHandleSubmit = async() => {
+        login.mutate(loginUser);
     }
 
     const googleAuthClickHandle = () => {
-
+        window.location.href="http://localhost:8080/oauth2/authorization/google";
     }
 
     const naverAuthCliclkHandle = () => {
-
+        window.location.href="http://localhost:8080/oauth2/authorization/naver";
     }
 
     const kakaoAuthClickHandle = () => {
-
+        window.location.href="http://localhost:8080/oauth2/authorization/kakao";
     }
 
 
@@ -273,10 +275,10 @@ const Login = () => {
 
             <footer css={footerStyles}>
                 <div css={register}>
-                    <Link to="/register">회원가입</Link>
+                    <Link to="/auth/register">회원가입</Link>
                 </div>
                 <div css={userinfo}>
-                    <Link to="/userinfo">유저정보</Link>
+                    <Link to="/auth/userinfo">유저정보</Link>
                 </div>
             </footer>
             
