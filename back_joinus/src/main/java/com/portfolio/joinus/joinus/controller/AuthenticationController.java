@@ -86,7 +86,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(authenticationService.oAuth2ProviderMerge(oAuth2ProviderMergeReqDto));
 	}
 	
-	@GetMapping("/forgot/password")
+	@PutMapping("/forget/password")
 	public ResponseEntity<?> findPassword(@RequestBody ForgetPasswordReqDto forgetPasswordReqDto ) {
 		
 		String email = forgetPasswordReqDto.getEmail();
@@ -97,7 +97,7 @@ public class AuthenticationController {
 			
 			return ResponseEntity.badRequest().body("일치하는 이메일 정보가 없습니다.");
 		}
-		
+		System.out.println(emailExists);
 	    return ResponseEntity.ok(emailExists);
 	}
 	

@@ -62,38 +62,40 @@ const ForgetPassword = () => {
 
     const checkEmailSubmitHandle = async() => {
 
-        const registerData = {
-            email: loginUser.email, // 유저가 입력한 이메일 주소
-          };
-          
-          const option = {
-            headers: {
+      const registerData = {
+          email: loginUser.email, // 유저가 입력한 이메일 주소
+      };
+        
+      const option = {
+          headers: {
               "Content-Type": "application/json",
-            },
-          };
-          
-          try {
-            const response = await axios.get("http://localhost:8080/auth/forget/password", JSON.stringify(registerData), option);
-          
-            if (response.status === 200) {
-              alert('이메일 검색 완료');
-            }
-          } catch (error) {
-            if (error.response && error.response.data) {
-                setErrorMessages((prevErrorMessages) => ({
-                  ...prevErrorMessages,
-                  email: '',
-                  ...error.response.data.errorData,
-                }));
-              } else {
-              console.error('Unexpected error:', error);
-            }
+          },
+      };
+        
+      try {
+          const response = await axios.put("http://localhost:8080/auth/forget/password", JSON.stringify(registerData), option);
+        
+          if (response.status === 200) {
+              alert('일치하는 이메일 정보가 있습니다.');
           }
+      } catch (error) {
+          if (error.response && error.response.data) {
+              if (error.response.status === 400) {
+                  alert('일치하는 이메일 정보가 없습니다.');
+              } else {
+                  setErrorMessages((prevErrorMessages) => ({
+                      ...prevErrorMessages,
+                      email: '',
+                      ...error.response.data.errorData,
+                  }));
+              }
+          } else {
+              console.error('Unexpected error:', error);
+          }
+      }
+  };
 
-
-    };
-
-    return (
+  return (
         <div css={container}>
             
             <header css={headerContainer}>
@@ -117,7 +119,7 @@ const ForgetPassword = () => {
             </footer>
              
         </div>
-    );
+  );
 };
 
 export default ForgetPassword;
