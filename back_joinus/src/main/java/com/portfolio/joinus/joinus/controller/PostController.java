@@ -44,10 +44,7 @@ public class PostController {
 	public ResponseEntity<?> getcategories() {
 		return ResponseEntity.ok().body(postService.getSearchs());
 	}
-	
-	
-	
-	
+
 	@GetMapping("/post/{postId}/applicant/list")
 	public ResponseEntity<?> getApplicant(@PathVariable int postId) {
 		System.out.println(postService.getApplicantListByPostId(postId));

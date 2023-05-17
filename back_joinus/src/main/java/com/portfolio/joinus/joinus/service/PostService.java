@@ -68,6 +68,10 @@ public class PostService {
 		
 		postRepository.getSearchs().forEach(search -> {
 			list.add(search.toDto());
+		});
+		
+		return list;
+	}
 
 	public List<ApplicantListRespDto> getApplicantListByPostId(int postId) {
 		
