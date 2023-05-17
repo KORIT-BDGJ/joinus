@@ -93,12 +93,12 @@ const OwnerPostList = () => {
     const handleButtonClick = (type, id) => {
 		setModal({ type, isOpen: true });
 		if (type === 'edit') {
-		  // Make an API request to edit the post with the given ID
-		  // Replace the following line with the appropriate API request
+		  // API 요청을 하여 지정된 ID의 게시물을 편집합니다
+		  // 다음 행을 적절한 API 요청으로 바꿉니다
 		  console.log(`Editing post: ${id}`);
 		} else if (type === 'delete') {
-		  // Make an API request to delete the post with the given ID
-		  // Replace the following line with the appropriate API request
+		  // 지정된 ID의 게시물을 삭제하도록 API를 요청합니다
+		  // 다음 행을 적절한 API 요청으로 바꿉니다
 		  console.log(`Deleting post: ${id}`);
 		}
 	  };
@@ -112,12 +112,12 @@ const OwnerPostList = () => {
 	
 const confirmAction = () => {
 	if (modal.type === 'delete') {
-	  // Make an API request to delete the post
-	  // Replace the following line with the appropriate API request
+	  // 게시물을 삭제하기 위해 API 요청을 합니다
+	  // 다음 행을 적절한 API 요청으로 바꿉니다
 	  console.log('Deleting post');
 	} else if (modal.type === 'edit') {
-	  // Make an API request to edit the post
-	  // Replace the following line with the appropriate API request
+	  // 게시물 편집을 위한 API 요청 만들기
+	  // 다음 행을 적절한 API 요청으로 바꿉니다
 	  console.log('Editing post');
 	}
 	setModal({ type: '', isOpen: false });

@@ -11,10 +11,10 @@ const input = css`
     width: 100%;
 `;
 
-const Input = ( { type, placeholder, onChange, name, onClick, readOnly,value} ) => {
+const Input = ( { type, placeholder, onChange, name, onClick, readOnly,value, disabled} ) => {
     return (
         <>
-        <input css={input} type={type} placeholder={placeholder} onChange={onChange} name={name} onClick={onClick} readOnly={readOnly} value={value} />
+        <input css={input} type={type} placeholder={placeholder} onChange={onChange} name={name} onClick={onClick} readOnly={readOnly} value={value} disabled={disabled} />
         </>
     );
 };

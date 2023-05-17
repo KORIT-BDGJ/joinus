@@ -32,24 +32,37 @@ public class AuthenticationController {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationService authenticationService;
 	
+<<<<<<< HEAD
+=======
+	@ValidAspect
+>>>>>>> origin/front-ky
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult ) {
+		
+		//System.out.println(authenticationService.authenticate(loginReqDto));
 		return ResponseEntity.ok().body(authenticationService.authenticate(loginReqDto));
 	}
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@ValidAspect
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@Valid @RequestBody RegisterReqDto registerReqDto, BindingResult bindingResult) {
+<<<<<<< HEAD
+=======
+		//System.out.println(registerReqDto);
+>>>>>>> origin/front-ky
 		authenticationService.checkDuplicatedEmail(registerReqDto.getEmail());
 		authenticationService.register(registerReqDto);
 		return ResponseEntity.ok().body(true);
 	}
 	
+	//@CrossOrigin
+	@ValidAspect
 	@PostMapping("/oauth2/register")
 	public ResponseEntity<?> oauth2Register(
 			@RequestHeader(value="registerToken") String registerToken,
-			@RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto) {
+			@Valid @RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto,
+			BindingResult bindingResult) {
 		
 		boolean validated = jwtTokenProvider.validateToken(jwtTokenProvider.getToken(registerToken));
 		
@@ -57,6 +70,7 @@ public class AuthenticationController {
 			//토큰이 유효하지 않음
 			return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과하였습니다.");
 		}
+		authenticationService.checkDuplicatedEmail(oAuth2RegisterReqDto.getEmail());
 		
 		return ResponseEntity.ok(authenticationService.oAuth2Register(oAuth2RegisterReqDto));
 	}

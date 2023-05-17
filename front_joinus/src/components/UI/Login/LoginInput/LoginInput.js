@@ -30,7 +30,7 @@ const icon = css`
 
 
 
-const LoginInput = ({ type, placeholder, onChange, name, children, readOnly, value }) => {
+const LoginInput = ({ type, placeholder, onChange, name, children, readOnly, value, disabled }) => {
     return (
         <div css={loginInput}>
             <div css={ icon}>{ children }</div> 
@@ -41,6 +41,7 @@ const LoginInput = ({ type, placeholder, onChange, name, children, readOnly, val
                 name={name}
                 readOnly={readOnly}
                 value={value}
+                disabled={disabled} 
                 />
             
         </div>
