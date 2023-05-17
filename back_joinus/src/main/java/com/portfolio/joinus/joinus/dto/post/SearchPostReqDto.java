@@ -1,13 +1,12 @@
 package com.portfolio.joinus.joinus.dto.post;
 
-import java.util.List;
-
 import lombok.Data;
 
 @Data
 public class SearchPostReqDto {
 
 	private int page;
-	private String searchValue;
-	private List<Integer> searchIds;
+    private int regionId;
+    private int searchType;
+    private String searchValue;
 }

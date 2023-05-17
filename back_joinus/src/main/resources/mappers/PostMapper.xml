@@ -136,7 +136,8 @@
 	        	#{deadLine},
 	        	#{recruitsCount},
 	        	#{genderId},
-	        	#{text})
+	        	#{text}
+	        )
 	</insert>
 	
 	<select id="getPostList" parameterType="Integer" resultMap="PostMap">
@@ -163,6 +164,7 @@
             
             gt.gender_id,
 		    gt.gender_name
+		    
 		from 
             post_tb pt
             left outer join user_tb ut on(ut.user_id = pt.writer_id)
@@ -171,8 +173,34 @@
             left outer join region_tb rt on(rt.region_id = pt.region_id)
             left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
         where
-			pt.post_id = #{postId}
-		limit #{index}, 10;
+        	1 = 1
+        	<choose>
+        		<when test="searchType == 2">
+        			and pt.title like concat('%', #{searchValue}, '%')
+        		</when>
+        		<when test="searchType == 3">
+        		and uit.nickname like concat('%', #{searchValue}, '%')
+        		</when>
+        		<when test="searchType == 4">
+        		and pt.text like concat('%', #{searchValue}, '%')
+        		</when>
+        		<otherwise>
+        		<if test='searchValue != ""'>
+        			and (
+	        			pt.title like concat('%', #{searchValue}, '%')
+	        			or uit.nickname like concat('%', #{searchValue}, '%')
+	        			or pt.text like concat('%', #{searchValue}, '%')
+	        		)
+        		</if>
+        		</otherwise>
+        	</choose>
+        	
+        	<if test="regionId != 0">
+        		and rt.region_id = #{regionId}
+        	</if>
+        	
+    
+        limit #{index}, 10;	
 	</select>
 	
 	<select id="getTotalCount" parameterType="hashMap" resultType="Integer">

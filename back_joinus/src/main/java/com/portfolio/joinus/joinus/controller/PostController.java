@@ -40,4 +40,14 @@ public class PostController {
 	public ResponseEntity<?> getPostList(SearchPostReqDto searchPostReqDto) {
 		return ResponseEntity.ok().body(postService.getPostList(searchPostReqDto));
 	}
+	
+	@GetMapping("/categories")
+	public ResponseEntity<?> getcategories() {
+		return ResponseEntity.ok().body(postService.getSearchs());
+	}
+	
+	
+	
+	
+	
 }

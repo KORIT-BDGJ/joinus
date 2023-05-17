@@ -8,6 +8,7 @@ import com.portfolio.joinus.joinus.entity.Gender;
 import com.portfolio.joinus.joinus.entity.Level;
 import com.portfolio.joinus.joinus.entity.Region;
 import com.portfolio.joinus.joinus.entity.Search;
+import com.portfolio.joinus.joinus.entity.Sports;
 import com.portfolio.joinus.joinus.entity.State;
 import com.portfolio.joinus.joinus.repository.OptionRepository;
 
@@ -18,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 public class OptionService {
 	
 	private final OptionRepository optionRepository;
+	
+//	public List<Sports> getSports() {
+//		return optionRepository.getSports();
+//	}
 	
 	public List<Level> getLevels() {
 		return optionRepository.getLevels();

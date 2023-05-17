@@ -17,6 +17,12 @@ public class OptionController {
 	private final OptionService optionService;
 	
 	
+//	@GetMapping("/sports")
+//	public ResponseEntity<?> getSportss() {
+//		return ResponseEntity.ok(optionService.getSports());
+//		
+//	}
+	
 	@GetMapping("/levels")
 	public ResponseEntity<?> getLevels() {
 		return ResponseEntity.ok(optionService.getLevels());

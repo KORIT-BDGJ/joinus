@@ -11,6 +11,7 @@ import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
+import com.portfolio.joinus.joinus.dto.post.SearchRespDto;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,11 @@ public class PostService {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
-		map.put("searchIds", searchPostReqDto.getSearchIds());
+		map.put("regionId", searchPostReqDto.getRegionId());
+		map.put("searchType", searchPostReqDto.getSearchType());
 		map.put("searchValue", searchPostReqDto.getSearchValue());
+		
+		System.out.println(map);
 		
 		postRepository.getPostList(map).forEach(post -> {
 			list.add(post.toDto());
@@ -53,4 +57,16 @@ public class PostService {
 		
 		return responseMap;
 	}
+	
+	public List<SearchRespDto> getSearchs() {
+		List<SearchRespDto> list = new ArrayList<>();
+		
+		postRepository.getSearchs().forEach(search -> {
+			list.add(search.toDto());
+		});
+		
+		return list;
+	}
+	
+	
 }
