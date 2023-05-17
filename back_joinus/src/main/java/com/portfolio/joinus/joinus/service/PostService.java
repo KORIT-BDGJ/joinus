@@ -1,13 +1,9 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-=======
-import java.util.List;
->>>>>>> origin/조병철_작업
 
 import org.springframework.stereotype.Service;
 
@@ -64,12 +60,6 @@ public class PostService {
 		
 		return responseMap;
 	}
-	
-	public List<SearchRespDto> getSearchs() {
-		List<SearchRespDto> list = new ArrayList<>();
-		
-		postRepository.getSearchs().forEach(search -> {
-			list.add(search.toDto());
 
 	public List<ApplicantListRespDto> getApplicantListByPostId(int postId) {
 		

@@ -10,6 +10,7 @@ import AuthRoute from './components/UI/Routes/AuthRoute';
 import OAuth2Login from './pages/Login/OAuth2Login';
 import UserOAuth2Register from './pages/UserRegister/UserOAuth2Register';
 import OAuth2Merge from './pages/OAuth2Merge/OAuth2Merge';
+import PostRegister from './pages/Post/PostRegister/PostRegister';
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />
         <Route path='/auth/oauth2/register' element={<AuthRoute path={"/auth/oauth2/register"} element={<UserOAuth2Register />}/>} />
         <Route path='/auth/oauth2/merge' element={<AuthRoute path={"/auth/oauth2/merge"} element={<OAuth2Merge />}/>} />
-        {/* <Route path="/postregister" element={<PostRegister />} />
+        <Route path="/auth/post/register" element={<AuthRoute path={"/auth/post/register"} element={<PostRegister />}/>} />
+        {/*
         <Route path="/ownerpostlist" element={<OwnerPostList />} />
         <Route path="/hostpostlist" element={<HostPostList />} />
         <Route path="/ownerpostdetail" element={<OwnerPostDetail />} />

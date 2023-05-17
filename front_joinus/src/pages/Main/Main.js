@@ -194,7 +194,7 @@ const Main = () => {
                 ...searchParams
             },
             headers: {
-                "Content-Type":"application/json"
+                Authorization: localStorage.getItem("accessToken")
             }
         }
 
@@ -263,7 +263,7 @@ const Main = () => {
     }
 
     const createClickHandle = () => {
-        navigate("/postregister");
+        navigate("/auth/post/register");
     }
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>))

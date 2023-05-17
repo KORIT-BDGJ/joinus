@@ -225,6 +225,8 @@
 			<if test='searchValue != ""'>
 				and pt.post_id like concat("%", #{searchValue}, "%")
 			</if>
+	</select>
+	
 	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
 		select		    
 		    pt.post_id as postId,

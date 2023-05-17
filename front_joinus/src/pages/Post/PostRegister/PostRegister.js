@@ -173,6 +173,8 @@ const PostRegister = () => {
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
+    const queryClient = useQueryClient();
+
 
     const [ selectedOptions, setSelectedOptions ] = useState({
         selectedLevel: null,
@@ -209,15 +211,16 @@ const PostRegister = () => {
     // 작성버튼 확인 모달창
     // const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false); 
 
-    // const queryClient = useQueryClient();
     // if(queryClient.getQueryState("principal").status === "loading") {
     //     return <div>로딩중...</div>
     // }
 
     // const principalData = queryClient.getQueryData("principal").data;
-    // const roles = principalData.authorities.split(",");
 
     const sendPost = async () => {
+        // const principalData = queryClient.getQueryData("principal").data;
+        // const userId = principalData.userId;
+
         const data = {
             writerId: 1,
             title: titlePost,
@@ -235,12 +238,12 @@ const PostRegister = () => {
 
         const option = {
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                Authorization: localStorage.getItem("accessToken")
             }
         }
         try {
-            const response = await axios.post("http://localhost:8080/auth/post/register", JSON.stringify(data), option);
-            return response;
+            return await axios.post("http://localhost:8080/auth/post/register", JSON.stringify(data), option);
         } catch(error) {
             console.log(error);
         }
