@@ -11,6 +11,7 @@ import OAuth2Login from './pages/Login/OAuth2Login';
 import UserOAuth2Register from './pages/UserRegister/UserOAuth2Register';
 import OAuth2Merge from './pages/OAuth2Merge/OAuth2Merge';
 import PostRegister from './pages/Post/PostRegister/PostRegister';
+import ForgetPassword from './pages/Login/ForgetPassword';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path='/' element={<AuthRoute path={"/"} element={<></>}/>} />
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
+        <Route path="/forgot/password" element={<AuthRoute path={"/forgot/password"} element={<ForgetPassword />}/>} />
         <Route path="/user/modification" element={<AuthRoute  path={"/user/modification"} element={<UserInfo />} />} />
         <Route path="/main" element={<AuthRoute  path={"/main"} element={<Main />}/>} />
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />

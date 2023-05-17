@@ -54,6 +54,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			
 		}
 	}
+	
 	public void register(RegisterReqDto registerReqDto) {
 			
 			User userEntity = registerReqDto.toEntity();
@@ -129,6 +130,14 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	                        .build()
 	        );
 	    }
+	    
+	    
+	    public boolean checkEmail(String email) {
+	    	User userEntity = userRepository.findUserByEmail(email);
+	    	
+	    	return userEntity != null;
+	    }
+	    
 
 	    public boolean checkPassword(String email, String password) {
 			User userEntity = userRepository.findUserByEmail(email);

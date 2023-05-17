@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
+import com.portfolio.joinus.joinus.dto.auth.ForgetPasswordReqDto;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
+import com.portfolio.joinus.joinus.exception.CustomException;
+import com.portfolio.joinus.joinus.exception.ErrorMap;
 import com.portfolio.joinus.joinus.security.JwtTokenProvider;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
@@ -40,6 +42,8 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(authenticationService.authenticate(loginReqDto));
 	}
 	
+	
+
 	//@CrossOrigin
 	@ValidAspect
 	@PostMapping("/register")
@@ -80,6 +84,21 @@ public class AuthenticationController {
 		
 		
 		return ResponseEntity.ok(authenticationService.oAuth2ProviderMerge(oAuth2ProviderMergeReqDto));
+	}
+	
+	@PutMapping("/forget/password")
+	public ResponseEntity<?> findPassword(@RequestBody ForgetPasswordReqDto forgetPasswordReqDto ) {
+		
+		String email = forgetPasswordReqDto.getEmail();
+		
+		boolean emailExists = authenticationService.checkEmail(email);
+		
+		if(!emailExists) {
+			
+			return ResponseEntity.badRequest().body("일치하는 이메일 정보가 없습니다.");
+		}
+		System.out.println(emailExists);
+	    return ResponseEntity.ok(emailExists);
 	}
 	
 	@GetMapping("/authenticated")
