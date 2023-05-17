@@ -20,14 +20,15 @@ public class User {
 	private String password;
 	private String passwordConfirm;
 	private String name;
-	private String address; // 추가된 부분
-	private String gender; // 추가된 부분
+	private String address;
+	private String gender;
 	private String provider;
 	
 	private UserInfo userInfo;
 	private Point point;
 	
 	private List<Authority> authorities;
+	private List<OwnerPostList> ownerPostLists; // 추가된 부분
 	
 	public PrincipalUser toPrincipal() {
 		

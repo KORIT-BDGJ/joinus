@@ -8,6 +8,7 @@ import { MdOutlineSportsTennis } from 'react-icons/md';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
+import axios from 'axios';
 
 const container = css`
   display: flex;
@@ -118,42 +119,65 @@ const resetButton = css`
 `;
 
 const HostPostList = () => {
+  const [applicantPosts, setApplicantPosts] = useState([]);
+  const [attendPosts, setAttendPosts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:8080/api/applicant-posts')
+      .then((res) => {
+        setApplicantPosts(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    axios
+      .get('http://localhost:8080/api/attend-posts')
+      .then((res) => {
+        setAttendPosts(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+  
     // 신청 글 상태
-    const [applicantPosts, setApplicantPosts] = useState([
-        {
-            postId: 1,
-            sportsIcon: <FcSportsMode />,
-            postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
-            ownerNickname: '알림 관리1시간',
-            // date: '2021-05-06',
-            cancelButton: true,
-        },
-    ]);
+    // const [applicantPosts, setApplicantPosts] = useState([
+    //     {
+    //         postId: 1,
+    //         sportsIcon: <FcSportsMode />,
+    //         postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
+    //         ownerNickname: '알림 관리1시간',
+    //         // date: '2021-05-06',
+    //         cancelButton: true,
+    //     },
+    // ]);
     // 참여 완료한 글 상태
-    const [attendPosts, setAttendPosts] = useState([
-        {
-            postId: 4,
-            sportsIcon: <MdOutlineSportsTennis />,
-            postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
-            ownerNickname: '방장4',
-            date: '2021-05-11',
-            users: [
-                { userId: 5, username: '유저5', medalCount: 0 },
-                { userId: 6, username: '유저6', medalCount: 0 },
-            ],
-        },
-        {
-            postId: 5,
-            sportsIcon: <MdOutlineSportsTennis />,
-            postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
-            ownerNickname: '방장4',
-            date: '2021-05-12',
-            users: [
-                { userId: 7, username: '유저5', medalCount: 0 },
-                { userId: 8, username: '유저6', medalCount: 0 },
-            ],
-        },
-    ]);
+    // const [attendPosts, setAttendPosts] = useState([
+    //     {
+    //         postId: 4,
+    //         sportsIcon: <MdOutlineSportsTennis />,
+    //         postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
+    //         ownerNickname: '방장4',
+    //         date: '2021-05-11',
+    //         users: [
+    //             { userId: 5, username: '유저5', medalCount: 0 },
+    //             { userId: 6, username: '유저6', medalCount: 0 },
+    //         ],
+    //     },
+    //     {
+    //         postId: 5,
+    //         sportsIcon: <MdOutlineSportsTennis />,
+    //         postTitle: '알림 관리1시간, 8시간, 1일, 3일 동안 또는 다음 주까지 스누즈합니다.',
+    //         ownerNickname: '방장4',
+    //         date: '2021-05-12',
+    //         users: [
+    //             { userId: 7, username: '유저5', medalCount: 0 },
+    //             { userId: 8, username: '유저6', medalCount: 0 },
+    //         ],
+    //     },
+    // ]);
 
     // 모달 상태
     const [cancelModalOpen, setCancelModalOpen] = useState(false); // 신청 취소 모달 상태
