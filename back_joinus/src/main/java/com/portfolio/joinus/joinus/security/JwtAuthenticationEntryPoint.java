@@ -27,10 +27,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		
 //		System.out.println("Token authentication failed: " + authException.getMessage());
 
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE); 
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE); 
 		response.setStatus(HttpStatus.UNAUTHORIZED.value()); // 401 error
 		ErrorResponseDto<?> errorResponseDto = 
-				new ErrorResponseDto<AuthenticationException>("토큰 인증 실패",authException);
+				new ErrorResponseDto<AuthenticationException>("인증 실패", authException);
 		ObjectMapper objectMapper = new ObjectMapper(); 
 		
 		String responseJson = objectMapper.writeValueAsString(errorResponseDto); //객체를 넣으면 알아서 Json으로 변환

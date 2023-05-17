@@ -32,14 +32,15 @@ public class AuthenticationController {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationService authenticationService;
 	
-	
-	
+	@ValidAspect
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult ) {
+		
+		//System.out.println(authenticationService.authenticate(loginReqDto));
 		return ResponseEntity.ok().body(authenticationService.authenticate(loginReqDto));
 	}
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@ValidAspect
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@Valid @RequestBody RegisterReqDto registerReqDto, BindingResult bindingResult) {
@@ -49,7 +50,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(true);
 	}
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@ValidAspect
 	@PostMapping("/oauth2/register")
 	public ResponseEntity<?> oauth2Register(

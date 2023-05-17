@@ -281,12 +281,12 @@ const UserOAuth2Register = () => {
             <main css={ mainContainer }>
                 <div css={authForm}>
                     <label css={ inputLabel }>Name</label>
-                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name" value={registerUser.name} disabled={!nameFromOauth2}>
+                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name" value={registerUser.name} disabled={nameFromOauth2}>
                         <FiUser />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.name}</div>
                     <label css={ inputLabel }>Email</label>
-                    <LoginInput type="email" placeholder="Please enter your email" onChange={onChangeHandle} name="email" value={registerUser.email} disabled={!emailFromOauth2}>
+                    <LoginInput type="email" placeholder="Please enter your email" onChange={onChangeHandle} name="email" value={registerUser.email} disabled={emailFromOauth2}>
                         <HiOutlineMail />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.email}</div>

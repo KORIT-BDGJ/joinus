@@ -40,6 +40,7 @@ public class ValidationAop {
 				errorMap.put(error.getField(), error.getDefaultMessage());
 			});
 			
+			System.out.println(errorMap);
 			throw new CustomException("Validation Failed", errorMap);
 		}
 			return joinPoint.proceed();
