@@ -141,7 +141,7 @@ const Sidebar = () => {
             </header>
             <main css={main}>
                 <div>
-                <Link to="/userinfo"><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
+                <Link to="/user/modification"><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
                 </div>
                 <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
                 <Link to="/postregister"><ListButton title="운동 모집글 작성"></ListButton></Link>

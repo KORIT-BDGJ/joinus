@@ -13,6 +13,7 @@ import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing }
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 const container = css`
   max-width: 1200px;
@@ -284,6 +285,7 @@ const UserInfo = () => {
 
   return (
     <div css={container}>
+    <Sidebar></Sidebar>
         <header css={headerContainer}>
             <h1 css={title}>
               <div css={logoStyle}>
