@@ -1,18 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import React from 'react';
 import AlertModal from '../../../components/Modal/AlertModal';
 import { FcSportsMode } from 'react-icons/fc';
 import { MdOutlineSportsTennis } from 'react-icons/md';
+import Sidebar from './../../../components/Sidebar/Sidebar';
 
 const container = css`
   	display: flex;
   	flex-direction: column;
   	align-items: center;
   	padding: 30px 30px;
-    margin-bottom: 20px;
 `;
 
 const title = css` // 평가하기
@@ -43,7 +42,6 @@ const listItem = css`
     justify-content: space-between;
     padding: 20px;
     border-bottom: 1px solid #dbdbdb;
-
     &:last-child {
         border-bottom: none;
     }
@@ -119,7 +117,7 @@ const Review = () => {
     const [posts, setPosts] = useState([
         {
             postId: 1,
-            sportsIcon : <FcSportsMode />,
+            sportsIcon: <FcSportsMode />,
             ownerNickname: '방장1',
             date: '2021-05-06',
             editButton: true,
@@ -130,8 +128,8 @@ const Review = () => {
             ],
         },
         {
-            PostId: 2,
-            sportsIcon : <MdOutlineSportsTennis />,
+            postId: 2, 
+            sportsIcon: <MdOutlineSportsTennis />,
             ownerNickname: '방장2',
             date: '2021-05-08',
             editButton: true,
@@ -142,6 +140,7 @@ const Review = () => {
             ],
         },
     ]);
+    
 
     const [userType, setUserType] = useState(""); // 방장인지 일반 유저인지 구분하기 위한 상태
     
@@ -216,6 +215,7 @@ const Review = () => {
 
     return (
         <div css={container}> 
+        <Sidebar></Sidebar>
             <h1 css={title}>평가하기</h1>
             <ul css={list}>
             {posts.map((post) => (

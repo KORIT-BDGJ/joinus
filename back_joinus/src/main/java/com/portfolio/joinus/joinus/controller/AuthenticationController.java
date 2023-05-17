@@ -44,7 +44,6 @@ public class AuthenticationController {
 	@ValidAspect
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@Valid @RequestBody RegisterReqDto registerReqDto, BindingResult bindingResult) {
-		//System.out.println(registerReqDto);
 		authenticationService.checkDuplicatedEmail(registerReqDto.getEmail());
 		authenticationService.register(registerReqDto);
 		return ResponseEntity.ok().body(true);

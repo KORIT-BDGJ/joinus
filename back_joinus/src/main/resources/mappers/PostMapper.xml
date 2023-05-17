@@ -292,5 +292,16 @@
 		where
 			ct.post_id = #{postId}
 	</select>
+	<select id="getOwnerPostListByUserId" parameterType="int" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
+	    SELECT
+	        owner_post_list_id,
+	        user_info_id,
+	        post_list_id
+	    FROM
+	        owner_post_list_tb
+	    WHERE
+	        user_info_id = #{userId}
+	</select>
+	
 
 </mapper>

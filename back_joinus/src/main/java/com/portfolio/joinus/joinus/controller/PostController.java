@@ -35,7 +35,6 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.registePost(postReqDto));
 	}
 	
-	
 	@GetMapping("/post/list")
 	public ResponseEntity<?> getPostList(SearchPostReqDto searchPostReqDto) {
 		return ResponseEntity.ok().body(postService.getPostList(searchPostReqDto));
@@ -66,5 +65,6 @@ public class PostController {
 		System.out.println(postService.getCommentByPostId(postId));
 		return ResponseEntity.ok().body(postService.getCommentByPostId(postId));
 	}
+
 	
 }
