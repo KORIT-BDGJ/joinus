@@ -3,11 +3,13 @@ import { css } from '@emotion/react'
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { FaUserCircle } from 'react-icons/fa';
 
 const tableContainer = css`
     width: 100%;
 `
+
+
+
 
 const member = css`
     margin-top: 5px;
@@ -17,7 +19,7 @@ const member = css`
     justify-content: space-between;
 `;
 
-const applicantInfo = css`
+const attendInfo = css`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -43,60 +45,56 @@ const infoNickname = css`
     padding-left: 10px;
 `;
 
-const applicantButtonContainer = css`
+const attendButtonContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
         
 `;
 
-const applicantButton = css`
+const attendButton = css`
     background-color: white;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
     height: 30px;
-    margin-right: 5px;
-    cursor: pointer;
 `;
 
 
 
-const ApplicantList = ({ postId }) => {
+const AttendList = ({ postId }) => {
     const queryClient = useQueryClient();
 
 
 
+    const getAttendList= useQuery(["getAttendList"], async () => {
 
-    const getApplicantList= useQuery(["getApplicantList"], async () => {
-
-        const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`);
         return response;
     });
 
-    if(getApplicantList.isLoading) {
+    if(getAttendList.isLoading) {
         return <div>불러오는 중...</div>
     }
-    if(!getApplicantList.isLoading)
+    if(!getAttendList.isLoading)
     return (
         <div css={tableContainer}>
-            {getApplicantList.data.data.map(applicantData => {
+            {getAttendList.data.data.map(attendData => {
                 return (
-                    <div key={applicantData.userId}>
+                    <div key={attendData.userId}>
                         <div css={member}>
-                            <div css={applicantInfo}>
-                                <div css={infoImage}>{applicantData.image}</div>
-                                <div css={infoNickname}>{applicantData.nickName}</div>
+                            <div css={attendInfo}>
+                                <div css={infoImage}>{attendData.image}</div>
+                                <div css={infoNickname}>{attendData.nickName}</div>
                             </div>
-                            <div css={applicantButtonContainer}>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
+                            <div css={attendButtonContainer}>
+                                <button css={attendButton}>내보내기</button>
                             </div>
                         </div>
                     </div>
                 );
             })}
         </div>
-    );      
+      );      
 };
 
-export default ApplicantList;
+export default AttendList;

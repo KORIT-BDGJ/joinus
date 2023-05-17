@@ -34,7 +34,20 @@ public class PostController {
 	
 	@GetMapping("/post/{postId}/applicant/list")
 	public ResponseEntity<?> getApplicant(@PathVariable int postId) {
+		System.out.println(postService.getApplicantListByPostId(postId));
 		return ResponseEntity.ok().body(postService.getApplicantListByPostId(postId));
+	}
+	
+	@GetMapping("/post/{postId}/attend/list")
+	public ResponseEntity<?> getAttend(@PathVariable int postId) {
+		System.out.println(postService.getAttendListByPostId(postId));
+		return ResponseEntity.ok().body(postService.getAttendListByPostId(postId));
+	}
+	
+	@GetMapping("/post/{postId}/comment")
+	public ResponseEntity<?> getComment(@PathVariable int postId) {
+		System.out.println(postService.getCommentByPostId(postId));
+		return ResponseEntity.ok().body(postService.getCommentByPostId(postId));
 	}
 	
 }

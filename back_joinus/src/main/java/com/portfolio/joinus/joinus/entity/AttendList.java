@@ -1,6 +1,8 @@
 package com.portfolio.joinus.joinus.entity;
 
-import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
+
+
+import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ApplicantList {
+public class AttendList {
 	private int postId;
 	private int userId;
 	private String image;
@@ -22,8 +24,8 @@ public class ApplicantList {
 	private State state;
 	private Level level;
 	
-	public ApplicantListRespDto toDto() {
-		return ApplicantListRespDto.builder()
+	public AttendListRespDto toDto() {
+		return AttendListRespDto.builder()
 				.postId(postId)
 				.userId(userId)
 				.image(image)
@@ -32,5 +34,4 @@ public class ApplicantList {
 				.levelName(levelName)
 				.build();
 	}
-
 }
