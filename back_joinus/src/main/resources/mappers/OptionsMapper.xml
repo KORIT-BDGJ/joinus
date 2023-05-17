@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portfolio.joinus.joinus.repository.OptionRepository">
+
+	<select id="getLevels" resultType="com.portfolio.joinus.joinus.entity.Level">
+		select
+			level_id as levelId,
+			level_name as levelName
+		from
+			level_tb
+	</select>
+	
+	<select id="getStates" resultType="com.portfolio.joinus.joinus.entity.State">
+		select
+			state_id as stateId,
+			state_name as stateName
+		from
+			state_tb
+	</select>
+	
+	<select id="getRegions" resultType="com.portfolio.joinus.joinus.entity.Region">
+		select
+			region_id as regionId,
+			region_name as regionName
+		from
+			region_tb
+	</select>
+	
+	<select id="getGenders" resultType="com.portfolio.joinus.joinus.entity.Gender">
+		select
+			gender_id as genderId,
+			gender_name as genderName
+		from
+			gender_tb
+	</select>
+	
+	<select id="getSearchs" resultType="com.portfolio.joinus.joinus.entity.Search">
+		select
+			search_id as searchId,
+			search_name as searchName
+		from
+			search_tb
+	</select>
+
+</mapper>

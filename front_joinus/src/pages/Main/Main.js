@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { GiSoccerBall } from 'react-icons/gi';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import axios from "axios";
+import { useQuery } from "react-query";
 
 const mainContainer = css`
     padding: 10px;
@@ -62,9 +63,9 @@ const searchInput = css`
 
 const mainListBox = css`
     display: flex;
+    flex-direction: column;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
-    flex-wrap: wrap;
     height: 700px;
     overflow-y: auto;
 `;
@@ -110,6 +111,35 @@ const postMain = css`
     font-size: 28px;
 `;
 
+const informationLabel =css`
+    font-weight: 600;
+    cursor: pointer;
+`;
+
+const informationTextName = css`
+    width: 80px;
+    text-align: center;
+    border: none;
+    background-color: beige;
+    cursor: pointer;
+`;
+
+const informationDate = css`
+    width: 150px;
+    text-align: center;
+    border: none;
+    background-color: beige;
+    cursor: pointer;
+`;
+
+const informationCount = css`
+    width: 60px;
+    text-align: center;
+    border: none;
+    background-color: beige;
+    cursor: pointer;
+`;
+
 const pageButton = css`
     position: relative;
     display: flex;
@@ -127,29 +157,54 @@ const createButton = css`
     height: 40px;
 `;
 
-const options = {
-    countries: [
-        { value: 'busan', label: '부산' },
-        { value: 'seoul', label: '서울' },
-        { value: 'daegu', label: '대구' },
-        { value: 'daejeon', label: '대전' }
-      ],
-    searchCategorys: [
-        { value: 'title', label: '제목' },
-        { value: 'writer', label: '작성자' },
-        { value: 'story', label: '내용' }
-    ]
-};
-
 const Main = () => {
 
     const navigate = useNavigate();
+    const [ searchParams, setSearchParams ] = useState({
+        page: 1, 
+        regionId: 0,
+        searchType: 1,
+        searchValue: ""
+    });
+    const [ refresh, setRefresh ] = useState(true);
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
-    const [ selectedOptions, setSelectedOptions ] = useState({
-        selectedCountry: null,
-        selectedSearch: null
-    });  
+    const [ selectedOptions, setSelectedOptions ] = useState(
+        {
+            region: {value: 0, label: "전체"},
+            searchType: {value: 1, label: "전체"}
+        }
+    );
+
+    const getRegions = useQuery(["getRegions"], async () => {
+
+        const response = await axios.get("http://localhost:8080/auth/option/regions");
+        return response;
+    });
+
+    const getSearchs = useQuery(["getSearchs"], async () => {
+
+        const response = await axios.get("http://localhost:8080/auth/option/searchs");
+        return response;
+    });
+
+    const getPostList = useQuery(["getPostList"], async () => {
+        const option = {
+            params: {
+                ...searchParams
+            },
+            headers: {
+                "Content-Type":"application/json"
+            }
+        }
+
+        return await axios.get("http://localhost:8080/auth/post/list", option);
+    }, {
+        enabled: refresh,
+        onSuccess: () => {
+            setRefresh(false);
+        }
+    });
 
     const handleIconSelect = (IconComponent) => {
         if (!sportsModalIsOpen) {
@@ -167,14 +222,43 @@ const Main = () => {
         setSportsModalIsOpen(false);
     }
 
-    const handleOptionChange = (optionName) => (selectedOption) => {
-        setSelectedOptions((prevState) => ({
-            ...prevState,
-            [optionName]: selectedOption
-        }))
+    const handleOptionChange = (optionName) => (option) => {
+        if(optionName === "regionId") {
+            setSelectedOptions({
+                ...selectedOptions,
+                region: {
+                    ...option
+                }
+            });
+        }else if(optionName === "searchType") {
+            setSelectedOptions({
+                ...selectedOptions,
+                searchType: {
+                    ...option
+                }
+            });
+        }
+        setSearchParams({
+            ...searchParams,
+            [optionName]: option.value
+        });
+        setRefresh(true);
+    }
+
+    const searchValueOnChangeHandle = (e) => {
+        setSearchParams({
+            ...searchParams,
+            searchValue: e.target.value
+        });
+        setRefresh(true);
     }
 
     const listClickHandle = () => {
+        // if (currentUser.id == post.writer_id) {
+        //     navigate("/ownerpostdetail");
+        // } else {
+        //     navigate("/hostpostdetail");
+        // }
         navigate("/hostpostdetail");
     }
 
@@ -183,6 +267,55 @@ const Main = () => {
     }
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>))
+
+    const pagination = () => {
+
+        if(getPostList.isLoading) {
+            return <></>;
+        }
+
+        const nowPage = searchParams.page;
+
+        const lastPage = getPostList.data.data.totalCount % 10 === 0
+            ? getPostList.data.data.totalCount / 10
+            : Math.floor(getPostList.data.data.totalCount / 10) + 1;
+
+        const startIndex = nowPage % 5 === 0 ? nowPage - 4 : nowPage - (nowPage % 5) + 1;
+        const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
+
+        const pageNumbers = [];
+
+        for(let i = startIndex; i <= endIndex; i++) {
+            pageNumbers.push(i);
+        }
+
+        return (
+            <>
+                <button disabled={nowPage === 1} onClick={() => {
+                    setSearchParams({...searchParams, page: 1});
+                    setRefresh(true);
+                }}>&#60;&#60;</button>
+
+                <button disabled={nowPage === 1} onClick={() => {
+                    setSearchParams({...searchParams, page: nowPage - 1});
+                    setRefresh(true);
+                }}>&#60;</button>
+                {pageNumbers.map(page => (<button key={page} onClick={() => {
+                    setSearchParams({...searchParams, page});
+                    setRefresh(true);
+                }} disabled={page === nowPage}>{page}</button>))}
+                <button disabled={nowPage === lastPage} onClick={() => {
+                    setSearchParams({...searchParams, page: nowPage + 1});
+                    setRefresh(true);
+                }}>&#62;</button>
+
+                <button disabled={nowPage === lastPage} onClick={() => {
+                    setSearchParams({...searchParams, page: lastPage});
+                    setRefresh(true);
+                }}>&#62;&#62;</button>
+            </>
+        )
+    }   
 
     return (
         <div css={mainContainer}>
@@ -199,47 +332,67 @@ const Main = () => {
                     onClick={selectedIconClickHandle}
                 />}
                 <div css={selectIconbox}>
-                    <Select
-                        css={selectCountry}
-                        value={selectedOptions.selectedCountry}
-                        onChange={handleOptionChange('selectedCountry')}
-                        options={options.countries}
-                        placeholder="지역"
-                    />
+                    {getRegions.isLoading ? ""
+                        : <Select
+                            css={selectCountry}
+                            value={selectedOptions.region}
+                            onChange={handleOptionChange('regionId')}
+                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
+                            placeholder="지역"
+                        />}
                 </div>
                 <div css={inputBox}>
-                    <Select
-                        css={selectSearch}
-                        value={selectedOptions.selectedSearch}
-                        onChange={handleOptionChange('selectedSearch')}
-                        options={options.searchCategorys}
-                        placeholder="항목"
-                    />
-                    <input css={searchInput} type="text" placeholder="검색"/>
+                    {getSearchs.isLoading ? ""
+                        : <Select
+                            css={selectSearch}
+                            value={selectedOptions.searchType}
+                            onChange={handleOptionChange('searchType')}
+                            options={getSearchs.data.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
+                            placeholder="항목"
+                        />}
+                    <input css={searchInput} type="text" placeholder="검색" onChange={searchValueOnChangeHandle}/>
                 </div>
             </header>
             <div css={mainListBox}>
-                <div css={listContainer} onClick={listClickHandle}>
-                    <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
-                    <div css={postContent}>
-                        <header>2023.05.05</header>
-                        <main css={postMain}>모집 제목</main>
-                        <footer>모집유저이름/모집지역/모집시간/신청인원</footer>
-                    </div>
-                    {/* {posts.map((post) => (
-                        <div key={post.postId} css={listContainer} onClick={listClickHandle}>
+            {getPostList.isLoading ? ( 
+                "" 
+            ) : (
+                <>
+                    {getPostList.data.data.postList.map((post) =>(
+                        <div css={listContainer} onClick={listClickHandle}>
                             <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
                             <div css={postContent}>
-                                <header>{post.deadLine}</header>
+                                <header>방장: {post.writer}등록날짜</header>
                                 <main css={postMain}>{post.title}</main>
-                                <footer>{`${post.writerId}/${post.regionId}/${post.deadLine}/${post.recruitsCount}`}</footer>
+                                <footer>
+                                    <label css={informationLabel}>지역:</label>
+                                    <input css={informationTextName} type="text" value={post.regionName} readOnly />
+                                    <label css={informationLabel}>날짜:</label>
+                                    <input 
+                                        css={informationDate} 
+                                        type="text" 
+                                        value={new Date(post.deadLine).toLocaleString("ko-KR",{
+                                            month: "long",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit"
+                                        })} 
+                                        readOnly 
+                                    />
+                                    <label css={informationLabel}>성별:</label>
+                                    <input css={informationTextName} type="text" value={post.genderName} readOnly />
+                                    <label css={informationLabel}>인원:</label>
+                                    <input css={informationCount} type="text" value={post.recruitsCount} readOnly />
+                                    {/* <input css={informationCount} type="text" value={`${post.applicants}/${post.recruitsCount}`} readOnly /> */}
+                                </footer>
                             </div>
                         </div>
-                    ))} */}
-                </div>
+                    ))}
+                </>
+            )}
             </div>
             <div css={pageButton}>
-                <button>pagination</button>
+                {pagination()}
             </div>
                 <button css={createButton} onClick={createClickHandle}>
                     작성하기

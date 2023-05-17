@@ -123,32 +123,108 @@
 	</select>
 	
 	<insert id="registePost">
-		INSERT INTO post_tb (
-			writer_id, 
-			title, 
-			sports_id, 
-			level_id, 
-			state_id, 
-			region_id, 
-			deadline, 
-			recruits_count, 
-			gender_id, 
-			text
-		)
-    	VALUES (
-	        #{writerId},
-	        #{title},
-	        #{sportsId},
-	        #{levelId},
-	        #{stateId},
-	        #{regionId},
-	        #{deadLine},
-	        #{recruitsCount},
-	        #{genderId},
-	        #{text}
-    	)
+		insert into post_tb
+    	values 
+    		(
+    			0,
+	        	#{writerId},
+	        	#{title},
+	        	#{sportsId},
+	        	#{levelId},
+	        	#{stateId},
+	        	#{regionId},
+	        	#{deadLine},
+	        	#{recruitsCount},
+	        	#{genderId},
+	        	#{text}
+	        )
 	</insert>
 	
+	<select id="getPostList" parameterType="Integer" resultMap="PostMap">
+		select
+			pt.post_id,
+		    pt.writer_id,
+            pt.title,
+		    pt.sports_id,
+		    pt.region_id,
+            pt.deadline,
+            pt.recruits_count,
+            pt.gender_id,
+		    
+		    ut.user_id,
+		    
+		    uit.user_info_id,
+		    uit.nickname,
+		    
+		    spt.sports_id,
+		    spt.sports_name,
+            
+            rt.region_id,
+		    rt.region_name,
+            
+            gt.gender_id,
+		    gt.gender_name
+		    
+		from 
+            post_tb pt
+            left outer join user_tb ut on(ut.user_id = pt.writer_id)
+		    left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
+		    left outer join sports_tb spt on(spt.sports_id = pt.sports_id)
+            left outer join region_tb rt on(rt.region_id = pt.region_id)
+            left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
+        where
+        	1 = 1
+        	<choose>
+        		<when test="searchType == 2">
+        			and pt.title like concat('%', #{searchValue}, '%')
+        		</when>
+        		<when test="searchType == 3">
+        		and uit.nickname like concat('%', #{searchValue}, '%')
+        		</when>
+        		<when test="searchType == 4">
+        		and pt.text like concat('%', #{searchValue}, '%')
+        		</when>
+        		<otherwise>
+        		<if test='searchValue != ""'>
+        			and (
+	        			pt.title like concat('%', #{searchValue}, '%')
+	        			or uit.nickname like concat('%', #{searchValue}, '%')
+	        			or pt.text like concat('%', #{searchValue}, '%')
+	        		)
+        		</if>
+        		</otherwise>
+        	</choose>
+        	
+        	<if test="regionId != 0">
+        		and rt.region_id = #{regionId}
+        	</if>
+        	
+    
+        limit #{index}, 10;	
+	</select>
+	
+	<select id="getTotalCount" parameterType="hashMap" resultType="Integer">
+		select
+			count(*)
+		from
+			post_tb pt
+		    left outer join user_tb ut ON (ut.user_id = pt.writer_id)
+  			left outer join user_info_tb uit ON (uit.user_info_id = ut.user_id)
+  			left outer join sports_tb spt ON (spt.sports_id = pt.sports_id)
+  			left outer join region_tb rt ON (rt.region_id = pt.region_id)
+  			left outer join gender_tb gt ON (gt.gender_id = pt.gender_id)
+		where
+			1 = 1
+			<if test="searchIds != null">
+				and pt.search_id in  (
+					<foreach item="searchId" collection="searchIds" separator=",">
+						#{searchId}
+					</foreach>
+				)
+			</if>
+			<if test='searchValue != ""'>
+				and pt.post_id like concat("%", #{searchValue}, "%")
+			</if>
 	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
 		select		    
 		    pt.post_id as postId,

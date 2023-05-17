@@ -6,6 +6,7 @@ import ListButton from "./ListButton";
 import { BiHome, BiLogOut } from 'react-icons/bi';
 import { GrUserSettings } from 'react-icons/gr';
 import { Link } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 const sidebar = (isOpen) => css`
     position: absolute;
@@ -102,6 +103,8 @@ const Sidebar = () => {
 
     const [ isOpen, setIsOpen ] = useState(false);
 
+    const queryClient = useQueryClient();
+
     const sidebarOpenClickHandle = () => {
         if(!isOpen) {
             setIsOpen(true);
@@ -111,6 +114,20 @@ const Sidebar = () => {
     const sidebarCloseClickHandle = () => {
         setIsOpen(false);
     }
+
+    const logoutClickHandle = () => {
+        if(window.confirm("로그아웃 하시겠습니까?")) {
+            localStorage.removeItem("accessToken");
+            queryClient.invalidateQueries("principal");
+        }
+    }
+    
+    // if(queryClient.getQueryState("principal").status === "loading") {
+    //     return <div>로딩중...</div>
+    // }
+
+    // const principalData = queryClient.getQueryData("principal").data;
+    // const roles = principalData.authorities.split(",");
 
     return (
         <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle}>
@@ -132,7 +149,7 @@ const Sidebar = () => {
                 <Link to="/hostpostlist"><ListButton title="내 신청 보기"></ListButton></Link>
             </main>
             <footer css={footer}>
-                <ListButton title="Logout"><BiLogOut/></ListButton>
+                <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>
             </footer>
         </div>
     );

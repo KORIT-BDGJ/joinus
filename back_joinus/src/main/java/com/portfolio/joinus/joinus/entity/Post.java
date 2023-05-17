@@ -3,6 +3,7 @@ package com.portfolio.joinus.joinus.entity;
 import java.util.Date;
 
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
+import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,19 @@ public class Post {
 	private State state;
 	private Region region;
 	private Gender gender;
+	
+	public SearchPostRespDto toDto() {
+		return SearchPostRespDto.builder()
+				.postId(postId)
+				.writerNickName(user.getUserInfo().getNickName())
+				.title(title)
+				.sportsName(sports.getSportsName())
+				.regionName(region.getRegionName())
+				.genderName(gender.getGenderName())
+				.deadLine(deadLine)
+				.recruitsCount(recruitsCount)
+				.build();
+	}
 	
 	public GetPostRespDto toGetPostDto() {
 		return GetPostRespDto.builder()

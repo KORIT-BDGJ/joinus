@@ -33,7 +33,7 @@ const IconsModal = ({ onIconClick }) => {
     return (
         <>
             <GiSoccerKick css={sportsIcon} 
-                onClick={() => onIconClick(GiSoccerKick)} />
+                onClick={() => onIconClick(GiSoccerKick)}/>
             <GiBaseballBat css={sportsIcon} 
                 onClick={() => onIconClick(GiBaseballBat)} />
             <GiBasketballBasket css={sportsIcon} 
