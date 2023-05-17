@@ -3,11 +3,13 @@ import { css } from '@emotion/react'
 import React from 'react';
 import { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
-import { CgGym } from 'react-icons/cg';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
+import AttendList from '../../../components/UI/PostDetail/AttendList';
+import Comment from '../../../components/UI/PostDetail/Comment';
 
 
 const container = css`
@@ -32,6 +34,8 @@ const headerTitle = css`
     font-size: 25px;
     font-weight: 600;
 `;
+
+
 
 const attendButton = css`
     background-color: white;
@@ -100,19 +104,32 @@ const ownerMedal = css`
 
 const recruitInfo = css`
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
     padding: 10px;
     border: 1px solid #dbdbdb;
 `;
 const recruitInfoTitle = css`
-    margin: 0px 10px;
+    margin: 0px 10px 10px 10px;
     font-size: 20px;
     font-weight: 600;
 `;
+
+const recruitInfoContent = css`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+
 const recruitSports = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     margin: 0px 10px;
-    font-size: 30px;
+    font-size: 20px;
+
 `;
 const recruitRegion = css`
     margin: 0px 10px;
@@ -146,25 +163,34 @@ const applicant = css`
     padding: 10px;
     border: 1px solid #dbdbdb;
 `;
-const applicantHeader = css`
+
+const applicantList = (applicantShow) => css`
+    display: ${applicantShow ? "flex" : "none"};
+    flex-direction: column;
+`;
+
+const attendTitle = css`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 10px;
+    width: 100%;
+    padding-top: 10px;
     font-size: 20px;
     font-weight: 600;
 `;
-const applicantCount = css`
+
+const attendCount = css`
     display: flex;
     flex-direction: row;
+    
     height: 30px;
 `;
-const applicantButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
-    border-radius: 5px;
-    height: 30px;
-    cursor: pointer;
+
+const attendButtonContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+        
 `;
 
 const attendList = (attendShow) => css`
@@ -172,19 +198,38 @@ const attendList = (attendShow) => css`
     flex-direction: column;
 `;
 
-const applicantList = (applicantShow) => css`
-    display: ${applicantShow ? "flex" : "none"};
-    flex-direction: column;
+const applicantTitle = css`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 10px;
+    font-size: 20px;
+    font-weight: 600;
 `;
 
-const member = css`
-    margin-top: 5px;
+const applicantCount = css`
+    display: flex;
+    flex-direction: row;
+    
+    height: 30px;
+`;
+
+const applicantButtonContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+        
 `;
 
+const applicantButton = css`
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    height: 30px;
+    margin-right: 5px;
+    cursor: pointer;
+`;
 
 const detailFoot = css`
     border: 1px solid #dbdbdb;
@@ -206,12 +251,7 @@ const footMiddle = css`
     max-height: 100px;
     overflow-y: auto;
 `;
-const chatting = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 5px;
-`;
+
 const footBottom = css`
     display: flex;
     flex-direction: row;
@@ -237,6 +277,10 @@ const OwnerPostDetail = () => {
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
     const [ applicantShow, setApplicantShow ] = useState(false);
+    const applicantClickHandle = (e) => {
+        setApplicantShow(!applicantShow);
+    };
+    
 
     const detailClickHandle = (e) => {
         setDetailShow(!detailShow);
@@ -244,25 +288,31 @@ const OwnerPostDetail = () => {
     const attendClickHandle = (e) => {
         setAttendShow(!attendShow);
     };
-    const applicantClickHandle = (e) => {
-        setApplicantShow(!applicantShow);
-    };
 
+
+
+    
     const { postId } = useParams();
     const queryClient = useQueryClient();
-
+    
     const getPost = useQuery(["getPost"], async () => {
-
+        
         const response = await axios.get(`http://localhost:8080/post/${postId}`);
-        console.log(response)
         return response;
     });
 
     if(getPost.isLoading) {
         return <div>불러오는 중...</div>
     }
+    
+    const deadline = new Date(getPost.data.data.deadLine).toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+    });
 
-    if(!getPost.isLoading)
     return (
         
         <div css={container}>
@@ -279,136 +329,66 @@ const OwnerPostDetail = () => {
                     <div css={infoBox}>
                         <div css={ownerInfo}>방장정보 :</div>
                         <div css={ownerPicture}><FaUserCircle /></div>
-                        <div css={ownerNickname}>진정한헬창</div>
+                        <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
                     </div>
                     <button css={detailButton} onClick={detailClickHandle}>상세정보 버튼</button>
                 </div>
                 <div css={infoDetail(detailShow)}>
-                    <div css={ownerLevel}>레벨: 고급</div>
-                    <div css={ownerState}>상태: 가르쳐주고 싶어요</div>
-                    <div css={ownerMedal}>메달: 금메달</div>
+                    <div css={ownerLevel}>레벨: {getPost.data.data.levelName}</div>
+                    <div css={ownerState}>상태: {getPost.data.data.stateName}</div>
+                    <div css={ownerMedal}>메달: {getPost.data.data.writerNickName}</div>
                 </div>
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
-                    <div css={recruitSports}><CgGym /></div>
-                    <div css={recruitRegion}>지역: 부산</div>
-                    <div css={recruitTime}>5월5일 19:00시</div>
-                    <div css={recruitGender}>남성만</div>
+                    <div css={recruitInfoContent}>
+                        <div css={recruitSports}>{getPost.data.data.sportsName}</div>
+                        <div css={recruitRegion}>지역: {getPost.data.data.regionName}</div>
+                        <div css={recruitTime}>{deadline}</div>
+                        <div css={recruitGender}>모집성별: {getPost.data.data.genderName}</div>
+                    </div>
                 </div>
                 <div css={recruitText}>
                     <div css={recruitTextHeader}>
                         모집글 소개
                     </div>
                     <div css={recruitTextBody}>
-                        내용
+                        {getPost.data.data.text}
                     </div>
 
                 </div>
                 <div css={applicant}>
-                    <div css={applicantHeader}>
-                        <div css={applicantCount}>참여인원 정보 : (4/10)</div>
-                        <button css={applicantButton} onClick={attendClickHandle}>참여자 보기</button>
-                    </div>
-                    <div css={attendList(attendShow)}>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자1
+                    <div>
+                        <div css={applicantTitle}>
+                            <div css={applicantCount}>신청인원 정보 : (10)</div>
+                            <div css={applicantButtonContainer}>
+                                <button css={applicantButton} onClick={applicantClickHandle}>
+                                    신청자 보기
+                                </button>
                             </div>
-                            <button css={applicantButton}>내보내기</button>
                         </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자2
-                            </div>
-                            <button css={applicantButton}>내보내기</button>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자3
-                            </div>
-                            <button css={applicantButton}>내보내기</button>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자4
-                            </div>
-                            <button css={applicantButton}>내보내기</button>
-                        </div>
-                    </div>
-                    <div css={applicantHeader}>
-                        <div css={applicantCount}>신청인원 정보 : (4/10)</div>
-                        <button css={applicantButton} onClick={applicantClickHandle}>신청자 보기</button>
                     </div>
                     <div css={applicantList(applicantShow)}>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자1
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자2
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
+                        <ApplicantList postId={postId}/>
+                    </div>
+                    <div>
+                        <div css={attendTitle}>
+                            <div css={attendCount}>참석인원 정보: (4/{getPost.data.data.recruitsCount})</div>
+                            <div css={attendButtonContainer}>
+                                <button css={attendButton} onClick={attendClickHandle}>
+                                    참석자 보기
+                                </button>
                             </div>
                         </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자3
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
-                        <div css={member}>
-                            <div>
-                                <FaUserCircle /> 신청자4
-                            </div>
-                            <div>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
-                            </div>
-                        </div>
+                    </div>
+                    <div css={attendList(attendShow)}>
+                        <AttendList postId={postId}/>
                     </div>
                 </div>
             </div>
             <div css={detailFoot}>
                 <div css={footTop}>댓글</div>
                 <div css={footMiddle}>
-                    <div css={chatting}>
-                        <FaUserCircle /> 진정한헬창 : 수요일은 하체
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 헬린이 : 3대 200 참여 가능한가요?
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 김종국 : 오운완
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 진정한헬창 : 수요일은 하체
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 헬린이 : 3대 200 참여 가능한가요?
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 김종국 : 오운완
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 진정한헬창 : 수요일은 하체
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 헬린이 : 3대 200 참여 가능한가요?
-                    </div>
-                    <div css={chatting}>
-                        <FaUserCircle /> 김종국 : 오운완
-                    </div>
+                    <Comment postId={postId}/>
                 </div>
                 <div css={footBottom}>
                     <input css={footInput} placeholder="댓글을 입력하세요"/>

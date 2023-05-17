@@ -225,6 +225,72 @@
 			<if test='searchValue != ""'>
 				and pt.post_id like concat("%", #{searchValue}, "%")
 			</if>
+	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
+		select		    
+		    pt.post_id as postId,
+		    
+			ut.user_id as userId,
+			
+		    uit.image,
+			uit.nickname,
+		
+			lt.level_name as levelName,
+		
+			stt.state_name as stateName
+		
+		from 
+			post_applicant_list_tb papl
+		    left outer join post_tb pt on(pt.post_id = papl.post_id)
+			left outer join user_tb ut on(ut.user_id = papl.user_id)
+			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
+			left outer join state_tb stt on(stt.state_id = papl.state_id)
+			left outer join level_tb lt on(lt.level_id = papl.level_id)
+		where
+			papl.post_id = #{postId}
+	</select>
+	
+	<select id="getAttendListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.AttendList">
+		select		    
+		    pt.post_id as postId,
+		    
+			ut.user_id as userId,
+			
+		    uit.image,
+			uit.nickname,
+		
+			lt.level_name as levelName,
+		
+			stt.state_name as stateName
+		
+		from 
+			post_attend_list_tb patl
+		    left outer join post_tb pt on(pt.post_id = patl.post_id)
+			left outer join user_tb ut on(ut.user_id = patl.user_id)
+			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
+			left outer join state_tb stt on(stt.state_id = patl.state_id)
+			left outer join level_tb lt on(lt.level_id = patl.level_id)
+		where
+			patl.post_id = #{postId}
+	</select>
+	
+	<select id="getCommentByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.Comment">
+		select		    
+			ct.comment_id as commentId,
+		
+			ut.user_id as userId,
+			
+			uit.nickname,
+			uit.image,
+			
+			ct.comment
+		from 
+			comment_tb ct
+		    left outer join post_tb pt on(pt.post_id = ct.post_id)
+			left outer join user_tb ut on(ut.user_id = ct.user_id)
+			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
+
+		where
+			ct.post_id = #{postId}
 	</select>
 
 </mapper>

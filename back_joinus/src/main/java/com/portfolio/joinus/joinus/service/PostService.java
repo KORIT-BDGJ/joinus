@@ -1,12 +1,19 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+=======
+import java.util.List;
+>>>>>>> origin/조병철_작업
 
 import org.springframework.stereotype.Service;
 
+import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
+import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
+import com.portfolio.joinus.joinus.dto.post.CommentRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
@@ -63,10 +70,37 @@ public class PostService {
 		
 		postRepository.getSearchs().forEach(search -> {
 			list.add(search.toDto());
+
+	public List<ApplicantListRespDto> getApplicantListByPostId(int postId) {
+		
+		List<ApplicantListRespDto> list = new ArrayList<>();
+		
+		postRepository.getApplicantListByPostId(postId).forEach(applicantData -> {
+			list.add(applicantData.toDto());
 		});
 		
 		return list;
 	}
 	
+	public List<AttendListRespDto> getAttendListByPostId(int postId) {
+		
+		List<AttendListRespDto> list = new ArrayList<>();
+		
+		postRepository.getAttendListByPostId(postId).forEach(attendData -> {
+			list.add(attendData.toDto());
+		});
+		
+		return list;
+	}
 	
+	public List<CommentRespDto> getCommentByPostId(int postId) {
+		
+		List<CommentRespDto> list = new ArrayList<>();
+		
+		postRepository.getCommentByPostId(postId).forEach(commentData -> {
+			list.add(commentData.toDto());
+		});
+		
+		return list;
+	}
 }
