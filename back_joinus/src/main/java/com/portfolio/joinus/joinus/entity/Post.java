@@ -1,5 +1,6 @@
 package com.portfolio.joinus.joinus.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
@@ -27,6 +28,7 @@ public class Post {
 	private int recruitsCount;
 	private int genderId;
 	private String text;
+	private LocalDateTime registeDate;
 	
 	private User user;
 	private Sports sports;
@@ -45,6 +47,7 @@ public class Post {
 				.genderName(gender.getGenderName())
 				.deadLine(deadLine)
 				.recruitsCount(recruitsCount)
+				.registeDate(registeDate)
 				.build();
 	}
 	

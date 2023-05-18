@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Select from 'react-select';
@@ -158,7 +158,6 @@ const createButton = css`
 `;
 
 const Main = () => {
-
     const navigate = useNavigate();
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
@@ -261,13 +260,8 @@ const Main = () => {
         setRefresh(true);
     }
 
-    const listClickHandle = () => {
-        // if (currentUser.id == post.writer_id) {
-        //     navigate("/ownerpostdetail");
-        // } else {
-        //     navigate("/hostpostdetail");
-        // }
-        navigate("/hostpostdetail");
+    const listClickHandle = (postId) => {
+        navigate(`/post/${postId}`);
     }
 
     const createClickHandle = () => {
@@ -367,10 +361,10 @@ const Main = () => {
             ) : (
                 <>
                     {getPostList.data.data.postList.map((post) =>(
-                        <div css={listContainer} onClick={listClickHandle}>
+                        <div css={listContainer} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
                             <div css={postContent}>
-                                <header>방장: {post.writer}등록날짜</header>
+                                <header>방장: /{post.registeDate}</header>
                                 <main css={postMain}>{post.title}</main>
                                 <footer>
                                     <label css={informationLabel}>지역:</label>

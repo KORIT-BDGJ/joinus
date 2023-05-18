@@ -12,8 +12,9 @@ import Select from 'react-select';
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
 import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import axios from "axios";
+import { addMinutes } from "date-fns";
 
 const mainContainer = css`
     padding: 10px;
@@ -182,7 +183,10 @@ const PostRegister = () => {
     const [ gender, setGender ] = useState('1');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
-    const [ selectedDate, setSelectedDate ] = useState(new Date());
+    
+    const currentDate = new Date();
+    const [ selectedDate, setSelectedDate ] = useState(null);
+    const minSelectableDate = addMinutes(currentDate, 0);
 
 
     const [ selectedOptions, setSelectedOptions ] = useState({
@@ -198,6 +202,29 @@ const PostRegister = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
+
+    const postSubmit = useMutation(async () => {
+        const data = {
+            writerId: principal.data.data.userId,
+            title: titlePost,
+            sportsId: 1,
+            levelId: selectedOptions.selectedLevel.value,
+            stateId: selectedOptions.selectedStates.value,
+            regionId: selectedOptions.selectedCountry.value,
+            deadLine: selectedDate,
+            recruitsCount: count,
+            genderId: gender,
+            text: textPost
+        }
+        try {
+            const response = await axios.post("http://localhost:8080/post/register", data, option);
+            // navigate(`/post/${response.data}`);
+            return response;
+        } catch(error) {
+            return error;
+        }
+    
+    });
 
     const getLevels = useQuery(["getLevels"], async () => {
 
@@ -230,32 +257,9 @@ const PostRegister = () => {
         return <></>;
     }
 
-    const sendPost = async () => {
-
-        const data = {
-            writerId: principal.data.data.userId,
-            title: titlePost,
-            sportsId: 1,
-            levelId: selectedOptions.selectedLevel.value,
-            stateId: selectedOptions.selectedStates.value,
-            regionId: selectedOptions.selectedCountry.value,
-            deadLine: selectedDate,
-            recruitsCount: count,
-            genderId: gender,
-            text: textPost
-        }
-
-        console.log(data)
-
-        const option = {
-            headers: {
-                "Content-Type":"application/json",
-                Authorization: localStorage.getItem("accessToken")
-            }
-        }
-        return await axios.post("http://localhost:8080/post/register", JSON.stringify(data), option);
+    const sendPost = () => {
+        postSubmit.mutate();
     };
-
 
     const titleHandleChange = (e) => {
         setTitlePost(e.target.value);
@@ -266,6 +270,10 @@ const PostRegister = () => {
     }
 
     const createClickHandle = () => {
+        if (!titlePost || !selectedDate || !selectedOptions.selectedLevel || !selectedOptions.selectedStates || !selectedOptions.selectedCountry || !count || !gender || !textPost) {
+            alert("입력되지 않은 필수 항목이 있습니다.");
+            return;
+          }
        
         sendPost();
         navigate('/main');
@@ -369,10 +377,12 @@ const PostRegister = () => {
                     <div>
                         <DatePicker 
                             locale={ko} 
-                            selected={selectedDate} 
+                            selected={selectedDate}
                             onChange={date => setSelectedDate(date)}
                             showTimeSelect
+                            minDate={minSelectableDate}
                             dateFormat="yyyy년 MM월 dd일 HH시 mm분"
+                            placeholderText="날짜를 선택하시오."
                         />
                     </div>
                 </div>

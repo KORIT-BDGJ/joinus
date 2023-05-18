@@ -1,5 +1,6 @@
 package com.portfolio.joinus.joinus.dto.post;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Builder;
@@ -17,5 +18,6 @@ public class SearchPostRespDto {
 	private String genderName;
 	private Date deadLine;
 	private int recruitsCount;
+	private LocalDateTime registeDate;
 
 }

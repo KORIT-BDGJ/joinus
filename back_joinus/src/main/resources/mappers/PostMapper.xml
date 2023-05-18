@@ -14,6 +14,7 @@
 		<result property="recruitsCount" column="recruits_count"/>
 		<result property="genderId" column="gender_id"/>
 		<result property="text" column="text"/>
+		<result property="registeDate" column="registe_date"/>
 		<association property="user"  resultMap="UserMap"></association>
 		<association property="sports" resultMap="SportsMap"></association>
 		<association property="level" resultMap="LevelMap"></association>
@@ -122,7 +123,7 @@
 			pt.post_id = #{postId}
 	</select>
 	
-	<insert id="registePost">
+	<insert id="registePost" parameterType="com.portfolio.joinus.joinus.dto.post.PostReqDto" useGeneratedKeys="true" keyProperty="postId">
 		insert into post_tb
     	values 
     		(
@@ -136,7 +137,8 @@
 	        	#{deadLine},
 	        	#{recruitsCount},
 	        	#{genderId},
-	        	#{text}
+	        	#{text},
+	        	now()
 	        )
 	</insert>
 	
@@ -150,6 +152,7 @@
             pt.deadline,
             pt.recruits_count,
             pt.gender_id,
+            pt.registe_date,
 		    
 		    ut.user_id,
 		    
@@ -199,6 +202,7 @@
         		and rt.region_id = #{regionId}
         	</if>
         	
+    	order by pt.registe_date DESC
     
         limit #{index}, 10;	
 	</select>

@@ -33,7 +33,8 @@ public class PostController {
 	// 게시물 등록
 	@PostMapping("/post/register")
 	public ResponseEntity<?> registePost(@RequestBody PostReqDto postReqDto) {
-		return ResponseEntity.ok().body(postService.registePost(postReqDto));
+		postService.registePost(postReqDto);
+		return ResponseEntity.ok().body(postReqDto.getPostId());
 	}
 	
 	// 게시물 전체 조회
