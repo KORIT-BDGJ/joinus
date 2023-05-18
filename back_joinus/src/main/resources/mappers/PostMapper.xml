@@ -294,15 +294,22 @@
 		where
 			ct.post_id = #{postId}
 	</select>
-	<select id="getOwnerPostListByUserId" parameterType="int" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
+	<select id="getOwnerPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
 	    SELECT
-	        owner_post_list_id,
-	        user_info_id,
-	        post_list_id
+	        oplt.owner_post_list_id,
+	        
+	        pt.post_id,
+	        pt.title,
+	        
+	        ut.user_id
+
 	    FROM
-	        owner_post_list_tb
+	        owner_post_list_tb oplt
+		    left outer join post_tb pt on(pt.post_id = oplt.post_id)
+			left outer join user_tb ut on(ut.user_id = oplt.user_id)
+			
 	    WHERE
-	        user_info_id = #{userId}
+	        oplt.user_id = #{userId}
 	</select>
 	
 

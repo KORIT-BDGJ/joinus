@@ -1,11 +1,9 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import org.springframework.stereotype.Service;
 
@@ -13,10 +11,13 @@ import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 import com.portfolio.joinus.joinus.dto.post.CommentRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
+import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.SearchRespDto;
+import com.portfolio.joinus.joinus.entity.OwnerPostList;
+import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -105,4 +106,17 @@ public class PostService {
 		
 		return list;
 	}
+	
+	public List<OwnerPostListRespDto> getOwnerPostListByUserId(int userId) {
+		
+		List<OwnerPostListRespDto> list = new ArrayList<>();
+		
+		postRepository.getOwnerPostListByUserId(userId).forEach(ownerPostData -> {
+			list.add(ownerPostData.toDto());
+		});
+		
+		return list;
+	}
+	
+
 }

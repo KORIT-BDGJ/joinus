@@ -5,6 +5,8 @@ import React from 'react';
 import AlertModal from '../../../components/Modal/AlertModal';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { useQuery, useQueryClient } from 'react-query';
 
 const container = css`
   	display: flex;
@@ -69,66 +71,70 @@ const buttonLabel = css`
 `;
 
 const OwnerPostList = () => {
-	const [posts, setPosts] = useState([
-		// { id: 1, title: '첫번째 글', editButton: true, deleteButton: true },
-		// { id: 2, title: '첫번째 글', editButton: true, deleteButton: true },
-		// { id: 3, title: '첫번째 글', editButton: true, deleteButton: true },
+	const [posts, setPosts] = useState([]);
+	const { userId } = useParams();
+    const queryClient = useQueryClient();
 
-	]);
 
-	useEffect(() => {
-		axios.get('http://localhost:8080/api/posts') // 주소변경
-		  .then((res) => {
-			setPosts(res.data);
-		  })
-		  .catch((error) => {
-			console.error(error);
-		  });
-	  }, []);
+
+    const getOwnerPostList = useQuery(["getOwnerPostList"], async () => {
+        
+        const response = await axios.get(`http://localhost:8080/auth/post/${userId}/owner`);
+        return response;
+    });
+
+	if(OwnerPostList.isLoading) {
+        return <div>불러오는 중...</div>
+    }
+
+	console.log(getOwnerPostList);
+
+
+
+	//   const movePost = (id) => {
+	// 	console.log(`해당 상세페이지로 이동 ${id}`);
+	// 	// 상세 페이지로 이동하는 코드 작성
+	//   };
 	  
-    const movePost = (id) => { // 상세페이지로 이동
-		console.log(`해당 상세페이지로 이동 ${id}`);
-	};
     
-    const handleButtonClick = (type, id) => {
-		setModal({ type, isOpen: true });
-		if (type === 'edit') {
-		  // API 요청을 하여 지정된 ID의 게시물을 편집합니다
-		  // 다음 행을 적절한 API 요청으로 바꿉니다
-		  console.log(`Editing post: ${id}`);
-		} else if (type === 'delete') {
-		  // 지정된 ID의 게시물을 삭제하도록 API를 요청합니다
-		  // 다음 행을 적절한 API 요청으로 바꿉니다
-		  console.log(`Deleting post: ${id}`);
-		}
-	  };
+// 	  const handleButtonClick = (type, id) => {
+// 		setModal({ type, isOpen: true });
+// 		if (type === 'edit') {
+// 		  // 수정하기 버튼 클릭 시 실행할 코드 작성
+// 		  console.log(`Editing post: ${id}`);
+// 		} else if (type === 'delete') {
+// 		  // 삭제하기 버튼 클릭 시 실행할 코드 작성
+// 		  console.log(`Deleting post: ${id}`);
+// 		}
+// 	  };
+	  
 	  
 
-	const [modal, setModal] = useState({ type: '', isOpen: false });
+// 	const [modal, setModal] = useState({ type: '', isOpen: false });
 
-    const cancelAction = () => {
-	setModal({ type: '', isOpen: false });
-};
+//     const cancelAction = () => {
+// 	setModal({ type: '', isOpen: false });
+// };
 	
-const confirmAction = () => {
-	if (modal.type === 'delete') {
-	  // 게시물을 삭제하기 위해 API 요청을 합니다
-	  // 다음 행을 적절한 API 요청으로 바꿉니다
-	  console.log('Deleting post');
-	} else if (modal.type === 'edit') {
-	  // 게시물 편집을 위한 API 요청 만들기
-	  // 다음 행을 적절한 API 요청으로 바꿉니다
-	  console.log('Editing post');
-	}
-	setModal({ type: '', isOpen: false });
-  };
+// const confirmAction = () => {
+// 	if (modal.type === 'delete') {
+// 	  // 게시물을 삭제하기 위해 API 요청을 합니다
+// 	  // 다음 행을 적절한 API 요청으로 바꿉니다
+// 	  console.log('Deleting post');
+// 	} else if (modal.type === 'edit') {
+// 	  // 게시물 편집을 위한 API 요청 만들기
+// 	  // 다음 행을 적절한 API 요청으로 바꿉니다
+// 	  console.log('Editing post');
+// 	}
+// 	setModal({ type: '', isOpen: false });
+//   };
   
 
     return (
 		<div css={container}>
 			<Sidebar></Sidebar>
 			<h1 css={title}>내가 올린 글</h1>
-			<ul css={list}>
+			{/* <ul css={list}>
 			{posts.map((post) => (
 				<li key={post.id} css={listItem}>
 				<div>
@@ -159,7 +165,7 @@ const confirmAction = () => {
 					message={modal.type === 'delete' ? '삭제하시겠습니까?' : '수정하시겠습니까?'}
 				/>
 			  
-			)}
+			)} */}
 		</div>
 	);
 };
