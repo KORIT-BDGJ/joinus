@@ -7,7 +7,7 @@ import NicknameChangeModal from '../../components/Modal/NicknameChangeModal';
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddressChangeModal from '../../components/Modal/AddressChangeModal';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
@@ -192,6 +192,9 @@ const plusButton = css`
 
 
 const UserInfo = () => {
+
+  const { userId } = useParams();
+  console.log(userId); //41번 찍힘.
   const navigate = useNavigate();
   const fileInput = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -202,9 +205,10 @@ const UserInfo = () => {
   const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [plusVisible, setPlusVisible] = useState([true, true, true]);
-  const [nickname, setNickname] = useState('헬창남');
-  const [password , setPassword] = useState("1q2w3e4r5t");
-  const [address, setAddress] = useState("부산시 동래구 @@동");
+  const [nickname, setNickname] = useState();
+  const [password , setPassword] = useState();
+  const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
+  const [address, setAddress] = useState();
 
   const closeAddressChangeModal = () => {
     setIsAddressChangeModalOpen(!isAddressChangeModalOpen);
@@ -249,6 +253,7 @@ const UserInfo = () => {
 
   const updatePassword = (newPw) => {
     setPassword(newPw);
+    setMaskedPassword("⁕⁕⁕⁕⁕⁕⁕⁕");
   };
 
   const updateNickname = (newNickname) => {
@@ -314,7 +319,7 @@ const UserInfo = () => {
                     <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
-                    비밀번호 : {password}
+                    비밀번호 : {maskedPassword}
                     <button css={changeButton} onClick={closePwChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>

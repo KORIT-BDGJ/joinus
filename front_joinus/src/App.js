@@ -26,7 +26,7 @@ function App() {
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
         <Route path="/auth/forget/password" element={<AuthRoute path={"auth/forget/password"} element={<ForgetPassword />}/>} />
-        <Route path="/user/modification" element={<AuthRoute  path={"/user/modification"} element={<UserInfo />} />} />
+        <Route path="/user/:userId/modification" element={<AuthRoute  path={"/user/:userId/modification"} element={<UserInfo />} />} />
         <Route path="/main" element={<AuthRoute  path={"/main"} element={<Main />}/>} />
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />
         <Route path='/auth/oauth2/register' element={<AuthRoute path={"/auth/oauth2/register"} element={<UserOAuth2Register />}/>} />
