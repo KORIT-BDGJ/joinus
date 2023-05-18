@@ -27,7 +27,7 @@ const AuthRoute = ({ path, element}) => {
                     navigate("/main");
                 }    
             }else{
-                if(path.startsWith("/user") || path.startsWith("/main")){
+                if(path.startsWith("/user") || path.startsWith("/main") || path.startsWith("/post")){
                     navigate('/auth/login');
                 }
             }

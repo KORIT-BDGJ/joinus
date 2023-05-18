@@ -74,7 +74,7 @@ const ApplicantList = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`http://localhost:8080/auth/post/${postId}/applicant/list`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response;
     });
 

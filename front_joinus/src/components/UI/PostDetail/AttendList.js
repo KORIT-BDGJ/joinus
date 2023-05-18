@@ -73,7 +73,7 @@ const AttendList = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`http://localhost:8080/auth/post/${postId}/attend/list`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
         return response;
     });
 

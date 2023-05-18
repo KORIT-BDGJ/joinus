@@ -54,7 +54,7 @@ const Comment = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`http://localhost:8080/auth/post/${postId}/comment`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/comment`, option);
         return response;
     });
 

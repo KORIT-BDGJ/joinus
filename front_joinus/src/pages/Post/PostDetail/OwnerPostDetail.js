@@ -302,7 +302,7 @@ const OwnerPostDetail = () => {
             }
         }
         
-        const response = await axios.get(`http://localhost:8080/auth/post/${postId}`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
         return response;
     });
 

@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
 public class PostController {
 
 	private final PostService postService;
