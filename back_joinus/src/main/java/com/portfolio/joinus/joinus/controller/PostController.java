@@ -1,5 +1,7 @@
 package com.portfolio.joinus.joinus.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +59,14 @@ public class PostController {
 		System.out.println(postService.getCommentByPostId(postId));
 		return ResponseEntity.ok().body(postService.getCommentByPostId(postId));
 	}
+	
+	@GetMapping("/post/{userId}/owner")
+	public ResponseEntity<?> getOwnerPostList(@PathVariable int userId) {
+	     
+	    return ResponseEntity.ok().body(postService.getOwnerPostListByUserId(userId)) ;
+	}
+
+	
 
 	
 }
