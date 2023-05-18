@@ -10,7 +10,7 @@ import com.portfolio.joinus.joinus.service.OptionService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth/option")
+@RequestMapping("/option")
 @RequiredArgsConstructor
 public class OptionController {
 	

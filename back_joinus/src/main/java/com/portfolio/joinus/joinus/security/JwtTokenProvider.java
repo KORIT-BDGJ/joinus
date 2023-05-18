@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.portfolio.joinus.joinus.entity.User;
 import com.portfolio.joinus.joinus.exception.CustomException;
+import com.portfolio.joinus.joinus.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,6 +29,8 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
+	@Autowired
+	private UserRepository userRepository;
 	private final Key key;
 	
 	
@@ -126,39 +130,30 @@ public class JwtTokenProvider {
 		}
 		return null;
 	}
+	
 	public Claims getClaims(String token) {
 			
-			return Jwts.parserBuilder()
-					.setSigningKey(key)
-					.build()
-					.parseClaimsJws(token)
-					.getBody();
-		}
+		return Jwts.parserBuilder()
+				.setSigningKey(key)
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+	}
 		
 		
 		
 		
-		public Authentication getAuthentication(String accessToken) {
-			
-			Authentication authentication = null;
-			Claims claims = getClaims(accessToken);
-			
-			if(claims.get("auth") == null) {
-				throw new CustomException("AccessToken에 권한 정보가 없습니다.");
-			}
-			
-			List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-			
-			String auth = claims.get("auth").toString();
-			for(String role :auth.split(",")) {
-				authorities.add(new SimpleGrantedAuthority(role));
-			}
-			
-			
-			UserDetails userDetails = new User(claims.getSubject(),"",authorities);
-			
-			authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-			
-			return authentication;
+	public Authentication getAuthentication(String accessToken) {
+		
+		Authentication authentication = null;
+		Claims claims = getClaims(accessToken);
+		
+		User userEntity = userRepository.findUserByEmail(claims.get("email").toString());
+		
+		PrincipalUser principalUser = userEntity.toPrincipal();
+		
+		authentication = new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
+		
+		return authentication;
 	}
 }

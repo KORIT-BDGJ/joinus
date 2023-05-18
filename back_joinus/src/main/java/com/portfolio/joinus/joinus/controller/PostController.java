@@ -34,16 +34,12 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.registePost(postReqDto));
 	}
 	
+	// 게시물 전체 조회
 	@GetMapping("/post/list")
 	public ResponseEntity<?> getPostList(SearchPostReqDto searchPostReqDto) {
 		return ResponseEntity.ok().body(postService.getPostList(searchPostReqDto));
 	}
 	
-	@GetMapping("/categories")
-	public ResponseEntity<?> getcategories() {
-		return ResponseEntity.ok().body(postService.getSearchs());
-	}
-
 	@GetMapping("/post/{postId}/applicant/list")
 	public ResponseEntity<?> getApplicant(@PathVariable int postId) {
 		System.out.println(postService.getApplicantListByPostId(postId));

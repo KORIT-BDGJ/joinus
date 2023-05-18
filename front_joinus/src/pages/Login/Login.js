@@ -4,8 +4,6 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { FiLock, FiUser } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { refreshState } from '../../atoms/Auth/AuthAtoms';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { useMutation } from 'react-query';
 
@@ -181,7 +179,6 @@ const Login = () => {
     const navigate = useNavigate();
     const [loginUser, setLoginUser] = useState({ email:"",password:""});
     const [errorMessages, setErrorMessages] = useState({ email:"", password:"" });
-    const [refresh, setRefresh] = useRecoilState(refreshState);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -204,7 +201,6 @@ const Login = () => {
         onSuccess: (response) => {
             if(response.status === 200) {
                 localStorage.setItem("accessToken", response.data);
-                setRefresh(true);
                 navigate("/main");
             }
         }

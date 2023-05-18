@@ -1,12 +1,14 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +34,7 @@ import com.portfolio.joinus.joinus.exception.ErrorMap;
 import com.portfolio.joinus.joinus.repository.UserRepository;
 import com.portfolio.joinus.joinus.security.JwtTokenProvider;
 import com.portfolio.joinus.joinus.security.OAuth2Attribute;
+import com.portfolio.joinus.joinus.security.PrincipalUser;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -95,9 +98,19 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 		return jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken));
 	}
 	
-	public PrincipalRespDto getPrincipal(String accessToken) {
-		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
-		User userEntity = userRepository.findUserByEmail(claims.getSubject()); //email
+	public PrincipalRespDto getPrincipal() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
+		
+		User userEntity = userRepository.findUserByEmail(principalUser.getEmail()); //email
+		
+		StringBuilder authorities = new StringBuilder();
+		
+		principalUser.getAuthorities().forEach(authority -> {
+			authorities.append(authority.getAuthority() + ",");
+		});
+		
+		authorities.delete(authorities.length() - 1, authorities.length());
 		
 		return PrincipalRespDto.builder()
 	            .userId(userEntity.getUserId())
@@ -105,7 +118,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	            .name(userEntity.getName())
 	            .address(userEntity.getAddress()) // 추가된 부분
 	            .gender(userEntity.getGender()) // 추가된 부분
-	            .authorities((String)claims.get("auth"))
+	            .authorities(authorities.toString())
 	            .provider(userEntity.getProvider()) // 추가된 부분
 	            .build();
 	}

@@ -1,11 +1,9 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import org.springframework.stereotype.Service;
 
@@ -61,16 +59,6 @@ public class PostService {
 		responseMap.put("postList", list);
 		
 		return responseMap;
-	}
-	
-	public List<SearchRespDto> getSearchs() {
-		List<SearchRespDto> list = new ArrayList<>();
-		
-		postRepository.getSearchs().forEach(search -> {
-			list.add(search.toDto());
-		});
-		
-		return list;
 	}
 
 	public List<ApplicantListRespDto> getApplicantListByPostId(int postId) {

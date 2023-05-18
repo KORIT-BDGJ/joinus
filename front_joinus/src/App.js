@@ -6,16 +6,11 @@ import UserRegister from './pages/UserRegister/UserRegister';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import UserInfo from './pages/UserInfo/UserInfo';
 import Main from './pages/Main/Main';
-
 import PostRegister from './pages/Post/PostRegister/PostRegister';
 import OwnerPostList from './pages/Post/PostList/OwnerPostList';
 import HostPostList from './pages/Post/PostList/HostPostList';
 import OwnerPostDetail from './pages/Post/PostDetail/OwnerPostDetail';
-import HostPostDetail from './pages/Post/PostDetail/HostPostDetail';
 import Review from './pages/Post/Review/Review';
-
-import AuthRouteReactQuery from './components/UI/Routes/AuthRouteReactquery';
-
 import AuthRoute from './components/UI/Routes/AuthRoute';
 import OAuth2Login from './pages/Login/OAuth2Login';
 import UserOAuth2Register from './pages/UserRegister/UserOAuth2Register';
@@ -37,7 +32,7 @@ function App() {
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />
         <Route path='/auth/oauth2/register' element={<AuthRoute path={"/auth/oauth2/register"} element={<UserOAuth2Register />}/>} />
         <Route path='/auth/oauth2/merge' element={<AuthRoute path={"/auth/oauth2/merge"} element={<OAuth2Merge />}/>} />
-        <Route path="/postregister" element={<PostRegister />} />
+        <Route path="/post/register" element={<AuthRoute path={"/post/register"} element={<PostRegister />}/>} />
         <Route path="/ownerpostlist" element={<OwnerPostList />} />
         <Route path="/hostpostlist" element={<HostPostList />} />
         <Route path="/review" element={<Review />} />
