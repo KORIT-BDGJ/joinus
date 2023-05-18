@@ -9,13 +9,13 @@ import Main from './pages/Main/Main';
 import PostRegister from './pages/Post/PostRegister/PostRegister';
 import OwnerPostList from './pages/Post/PostList/OwnerPostList';
 import HostPostList from './pages/Post/PostList/HostPostList';
-import OwnerPostDetail from './pages/Post/PostDetail/OwnerPostDetail';
 import Review from './pages/Post/Review/Review';
 import AuthRoute from './components/UI/Routes/AuthRoute';
 import OAuth2Login from './pages/Login/OAuth2Login';
 import UserOAuth2Register from './pages/UserRegister/UserOAuth2Register';
 import OAuth2Merge from './pages/OAuth2Merge/OAuth2Merge';
 import ForgetPassword from './pages/Login/ForgetPassword';
+import PostDetail from './pages/Post/PostDetail/PostDetail';
 
 function App() {
   return (
@@ -35,7 +35,8 @@ function App() {
         <Route path="/ownerpostlist" element={<OwnerPostList />} />
         <Route path="/hostpostlist" element={<HostPostList />} />
         <Route path="/review" element={<Review />} />
-        <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<OwnerPostDetail />}/>} />
+        <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<PostDetail />}/>} />
+        <Route path="/post/:userId/owner" element={<AuthRoute path={"/post"} element={<OwnerPostList />}/>} />
       </Routes>
     </>
   );

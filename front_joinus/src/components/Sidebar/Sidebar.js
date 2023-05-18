@@ -142,8 +142,8 @@ const Sidebar = () => {
                 <Link to="/user/modification"><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
                 </div>
                 <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
-                <Link to="/postregister"><ListButton title="운동 모집글 작성"></ListButton></Link>
-                <Link to="/ownerpostlist"><ListButton title="내 모집글 보기"></ListButton></Link>
+                <Link to="/post/register"><ListButton title="운동 모집글 작성"></ListButton></Link>
+                <Link to="/post/1/owner"><ListButton title="내 모집글 보기"></ListButton></Link>
                 <Link to="/hostpostlist"><ListButton title="내 신청 보기"></ListButton></Link>
             </main>
             <footer css={footer}>
