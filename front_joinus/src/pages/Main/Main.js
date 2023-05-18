@@ -177,14 +177,22 @@ const Main = () => {
     );
 
     const getRegions = useQuery(["getRegions"], async () => {
-
-        const response = await axios.get("http://localhost:8080/option/regions");
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/regions", option);
         return response;
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
-
-        const response = await axios.get("http://localhost:8080/option/searchs");
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/searchs", option);
         return response;
     });
 
@@ -194,7 +202,7 @@ const Main = () => {
                 ...searchParams
             },
             headers: {
-                Authorization: localStorage.getItem("accessToken")
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
 

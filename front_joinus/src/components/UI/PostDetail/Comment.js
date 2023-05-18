@@ -50,7 +50,7 @@ const Comment = ({ postId }) => {
     const getComment= useQuery(["getComment"], async () => {
         const option = {
             headers: {
-                Authorization: localStorage.getItem("accessToken")
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
 

@@ -193,27 +193,33 @@ const PostRegister = () => {
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
     
+    const option = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    }
+
     const getLevels = useQuery(["getLevels"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/levels");
+        const response = await axios.get("http://localhost:8080/option/levels", option);
         return response;
     });
 
     const getStates = useQuery(["getStates"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/states");
+        const response = await axios.get("http://localhost:8080/option/states", option);
         return response;
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/regions");
+        const response = await axios.get("http://localhost:8080/option/regions", option);
         return response;
     });
 
     const getGenders = useQuery(["getGenders"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/genders");
+        const response = await axios.get("http://localhost:8080/option/genders", option);
         return response;
     });
 

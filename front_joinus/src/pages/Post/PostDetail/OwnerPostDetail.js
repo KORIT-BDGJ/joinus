@@ -293,12 +293,11 @@ const OwnerPostDetail = () => {
 
     
     const { postId } = useParams();
-    const queryClient = useQueryClient();
     
     const getPost = useQuery(["getPost"], async () => {
         const option = {
             headers: {
-                Authorization: localStorage.getItem("accessToken")
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
         

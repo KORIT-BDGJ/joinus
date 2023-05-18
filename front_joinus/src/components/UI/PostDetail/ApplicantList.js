@@ -62,15 +62,12 @@ const applicantButton = css`
 
 
 const ApplicantList = ({ postId }) => {
-    const queryClient = useQueryClient();
-
-
 
 
     const getApplicantList= useQuery(["getApplicantList"], async () => {
         const option = {
             headers: {
-                Authorization: localStorage.getItem("accessToken")
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
 

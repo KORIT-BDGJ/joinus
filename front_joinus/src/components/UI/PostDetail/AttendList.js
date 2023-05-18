@@ -69,7 +69,7 @@ const AttendList = ({ postId }) => {
     const getAttendList= useQuery(["getAttendList"], async () => {
         const option = {
             headers: {
-                Authorization: localStorage.getItem("accessToken")
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
 
