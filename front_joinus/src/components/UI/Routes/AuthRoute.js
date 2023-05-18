@@ -21,6 +21,7 @@ const AuthRoute = ({ path, element}) => {
         return await axios.get("http://localhost:8080/auth/authenticated", option);
     },{
         onSuccess: (response) => {
+            console.log(response);
             if(response.status === 200 && response.data){
                 setAuthState(true);
                 if(path.startsWith("/auth") || path === "/"){
@@ -32,12 +33,12 @@ const AuthRoute = ({ path, element}) => {
                 }
             }
         },
-        onError: () => {
-            setAuthState(false);
-            if(path.startsWith("/user") || path.startsWith("/main")){
-                navigate('/auth/login');
-            }
-        }
+        // onError: () => {
+        //     setAuthState(false);
+        //     if(path.startsWith("/user") || path.startsWith("/main")){
+        //         navigate('/auth/login');
+        //     }
+        // }
     });
 
     return element;

@@ -1,9 +1,10 @@
 package com.portfolio.joinus.joinus.dto.auth;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Builder
+
+@NoArgsConstructor
 @Data
 public class ForgetPasswordReqDto {
 	private String email;
