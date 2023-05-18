@@ -73,7 +73,7 @@ public class JwtTokenProvider {
 		
 		return Jwts.builder()
 				.setSubject("AccessToken")
-				.claim("email", authentication)
+				.claim("email", email)
 				.claim("auth", roles)
 				.setExpiration(tokenExpiresDate)
 				.signWith(key,SignatureAlgorithm.HS256)

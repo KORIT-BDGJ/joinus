@@ -107,7 +107,7 @@ public class AuthenticationController {
 	}
 	
 	@GetMapping("/principal")
-	public ResponseEntity<?> principal(String accessToken) {
+	public ResponseEntity<?> principal(@RequestHeader(value = "Authorization") String accessToken) {
 		return ResponseEntity.ok().body(authenticationService.getPrincipal(accessToken));
 	}
 }

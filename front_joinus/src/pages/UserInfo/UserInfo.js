@@ -243,7 +243,7 @@ const UserInfo = () => {
   };
 
   const handleModifyClick = () => {
-    navigate('/auth/main');
+    navigate('/main');
   };
 
   const updatePassword = (newPw) => {

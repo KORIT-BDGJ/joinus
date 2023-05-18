@@ -3,7 +3,7 @@ import { Global } from '@emotion/react';
 import { Reset } from './Styles/Global/reset';
 import Login from './pages/Login/Login';
 import UserRegister from './pages/UserRegister/UserRegister';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import UserInfo from './pages/UserInfo/UserInfo';
 import Main from './pages/Main/Main';
 import AuthRoute from './components/UI/Routes/AuthRoute';
@@ -17,11 +17,10 @@ function App() {
     <>
       <Global styles={ Reset } />
       <Routes>
-        
-        <Route path='/' element={<AuthRoute path={"/"} element={<></>}/>} />
+      <Route path="/" element={<Navigate to="/auth/login" />} />
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
-        <Route path="/forgot/password" element={<AuthRoute path={"/forgot/password"} element={<ForgetPassword />}/>} />
+        <Route path="/auth/forget/password" element={<AuthRoute path={"auth/forget/password"} element={<ForgetPassword />}/>} />
         <Route path="/user/modification" element={<AuthRoute  path={"/user/modification"} element={<UserInfo />} />} />
         <Route path="/main" element={<AuthRoute  path={"/main"} element={<Main />}/>} />
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />

@@ -59,7 +59,7 @@ const inputLabel = css`
     font-weight: 600;
 `;
 
-const forgotPassword = css`
+const forgetPassword = css`
     display: flex;
     justify-content: flex-end;
     align-content: center;
@@ -248,7 +248,7 @@ const Login = () => {
                         <FiLock />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
-                    <div css= { forgotPassword }><Link to="/forgot/password">Forgot Password?</Link></div>
+                    <div css= { forgetPassword }><Link to="/auth/forget/password">Forgot Password?</Link></div>
                     <button css={ loginButton } onClick={loginHandleSubmit}>로그인</button>
                 </div>
                 
@@ -278,7 +278,7 @@ const Login = () => {
                     <Link to="/auth/register">회원가입</Link>
                 </div>
                 <div css={userinfo}>
-                    <Link to="/auth/userinfo">유저정보</Link>
+                    <Link to="/user/modification">유저정보</Link>
                 </div>
             </footer>
             
