@@ -296,8 +296,13 @@ const OwnerPostDetail = () => {
     const queryClient = useQueryClient();
     
     const getPost = useQuery(["getPost"], async () => {
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
         
-        const response = await axios.get(`http://localhost:8080/post/${postId}`);
+        const response = await axios.get(`http://localhost:8080/auth/post/${postId}`, option);
         return response;
     });
 

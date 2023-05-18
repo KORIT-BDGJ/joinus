@@ -67,8 +67,13 @@ const AttendList = ({ postId }) => {
 
 
     const getAttendList= useQuery(["getAttendList"], async () => {
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
 
-        const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`);
+        const response = await axios.get(`http://localhost:8080/auth/post/${postId}/attend/list`, option);
         return response;
     });
 

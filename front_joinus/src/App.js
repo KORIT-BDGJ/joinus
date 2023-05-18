@@ -28,7 +28,7 @@ function App() {
     <>
       <Global styles={ Reset } />
       <Routes>
-        <Route path='/' element={<AuthRoute path={"/"} element={<></>}/>} />
+        <Route path='/' element={<AuthRoute path={"/"} element={<Login />}/>} />
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
         <Route path="/forgot/password" element={<AuthRoute path={"/forgot/password"} element={<ForgetPassword />}/>} />
@@ -41,7 +41,7 @@ function App() {
         <Route path="/ownerpostlist" element={<OwnerPostList />} />
         <Route path="/hostpostlist" element={<HostPostList />} />
         <Route path="/review" element={<Review />} />
-        <Route path="/auth/post/:postId" element={<AuthRoute path={"/auth/post/:postId"} element={<OwnerPostDetail />}/>} />
+        <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<OwnerPostDetail />}/>} />
       </Routes>
     </>
   );

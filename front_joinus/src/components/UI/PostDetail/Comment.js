@@ -48,8 +48,13 @@ const Comment = ({ postId }) => {
     const queryClient = useQueryClient();
 
     const getComment= useQuery(["getComment"], async () => {
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
 
-        const response = await axios.get(`http://localhost:8080/post/${postId}/comment`);
+        const response = await axios.get(`http://localhost:8080/auth/post/${postId}/comment`, option);
         return response;
     });
 

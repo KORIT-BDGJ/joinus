@@ -68,8 +68,13 @@ const ApplicantList = ({ postId }) => {
 
 
     const getApplicantList= useQuery(["getApplicantList"], async () => {
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
 
-        const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`);
+        const response = await axios.get(`http://localhost:8080/auth/post/${postId}/applicant/list`, option);
         return response;
     });
 
