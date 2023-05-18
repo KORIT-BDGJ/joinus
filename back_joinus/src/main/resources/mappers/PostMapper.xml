@@ -296,12 +296,12 @@
 	</select>
 	<select id="getOwnerPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
 	    SELECT
-	        oplt.owner_post_list_id,
+	        oplt.owner_post_list_id as ownerPostListId,
 	        
-	        pt.post_id,
+	        pt.post_id as postId,
 	        pt.title,
 	        
-	        ut.user_id
+	        ut.user_id as userId
 
 	    FROM
 	        owner_post_list_tb oplt
