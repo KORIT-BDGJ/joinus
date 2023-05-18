@@ -178,13 +178,13 @@ const Main = () => {
 
     const getRegions = useQuery(["getRegions"], async () => {
 
-        const response = await axios.get("http://localhost:8080/auth/option/regions");
+        const response = await axios.get("http://localhost:8080/option/regions");
         return response;
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
 
-        const response = await axios.get("http://localhost:8080/auth/option/searchs");
+        const response = await axios.get("http://localhost:8080/option/searchs");
         return response;
     });
 
@@ -198,7 +198,7 @@ const Main = () => {
             }
         }
 
-        return await axios.get("http://localhost:8080/auth/post/list", option);
+        return await axios.get("http://localhost:8080/post/list", option);
     }, {
         enabled: refresh,
         onSuccess: () => {
@@ -263,7 +263,7 @@ const Main = () => {
     }
 
     const createClickHandle = () => {
-        navigate("/auth/post/register");
+        navigate("/post/register");
     }
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>))

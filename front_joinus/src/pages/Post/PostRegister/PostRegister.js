@@ -166,6 +166,16 @@ const PostRegister = () => {
 
     const navigate = useNavigate();
 
+    const principal = useQuery(["principal"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/auth/principal", option);
+        return response;
+    });
+
     const [ titlePost, setTitlePost ] = useState("");
     const [ textPost, setTextPost ] = useState("");
     const [ count, setCount ] = useState(0);
@@ -173,7 +183,6 @@ const PostRegister = () => {
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
-    const queryClient = useQueryClient();
 
 
     const [ selectedOptions, setSelectedOptions ] = useState({
@@ -186,45 +195,41 @@ const PostRegister = () => {
     
     const getLevels = useQuery(["getLevels"], async () => {
 
-        const response = await axios.get("http://localhost:8080/auth/option/levels");
+        const response = await axios.get("http://localhost:8080/option/levels");
         return response;
     });
 
     const getStates = useQuery(["getStates"], async () => {
 
-        const response = await axios.get("http://localhost:8080/auth/option/states");
+        const response = await axios.get("http://localhost:8080/option/states");
         return response;
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
 
-        const response = await axios.get("http://localhost:8080/auth/option/regions");
+        const response = await axios.get("http://localhost:8080/option/regions");
         return response;
     });
 
     const getGenders = useQuery(["getGenders"], async () => {
 
-        const response = await axios.get("http://localhost:8080/auth/option/genders");
+        const response = await axios.get("http://localhost:8080/option/genders");
         return response;
     });
 
     // 작성버튼 확인 모달창
     // const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false); 
 
-    // if(queryClient.getQueryState("principal").status === "loading") {
-    //     return <div>로딩중...</div>
-    // }
-
-    // const principalData = queryClient.getQueryData("principal").data;
+    if(principal.isLoading) {
+        return <></>;
+    }
 
     const sendPost = async () => {
-        // const principalData = queryClient.getQueryData("principal").data;
-        // const userId = principalData.userId;
 
         const data = {
-            writerId: 1,
+            writerId: principal.data.data.userId,
             title: titlePost,
-            sportsId: selectedIcon.icons,
+            sportsId: 1,
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
@@ -242,11 +247,7 @@ const PostRegister = () => {
                 Authorization: localStorage.getItem("accessToken")
             }
         }
-        try {
-            return await axios.post("http://localhost:8080/auth/post/register", JSON.stringify(data), option);
-        } catch(error) {
-            console.log(error);
-        }
+        return await axios.post("http://localhost:8080/post/register", JSON.stringify(data), option);
     };
 
 

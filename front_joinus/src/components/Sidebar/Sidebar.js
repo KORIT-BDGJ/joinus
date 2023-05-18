@@ -6,7 +6,8 @@ import ListButton from "./ListButton";
 import { BiHome, BiLogOut } from 'react-icons/bi';
 import { GrUserSettings } from 'react-icons/gr';
 import { Link } from "react-router-dom";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
+import axios from "axios";
 
 const sidebar = (isOpen) => css`
     position: absolute;
@@ -103,8 +104,6 @@ const Sidebar = () => {
 
     const [ isOpen, setIsOpen ] = useState(false);
 
-    const queryClient = useQueryClient();
-
     const sidebarOpenClickHandle = () => {
         if(!isOpen) {
             setIsOpen(true);
@@ -118,7 +117,6 @@ const Sidebar = () => {
     const logoutClickHandle = () => {
         if(window.confirm("로그아웃 하시겠습니까?")) {
             localStorage.removeItem("accessToken");
-            queryClient.invalidateQueries("principal");
         }
     }
     

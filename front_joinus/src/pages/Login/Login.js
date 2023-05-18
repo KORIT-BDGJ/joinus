@@ -248,7 +248,7 @@ const Login = () => {
                         <FiLock />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.password}</div>
-                    <div css= { forgotPassword }><Link to="/forgot/password">Forgot Password?</Link></div>
+                    <div css= { forgotPassword }><Link to="/auth/forgot/password">Forgot Password?</Link></div>
                     <button css={ loginButton } onClick={loginHandleSubmit}>로그인</button>
                 </div>
                 

@@ -22,13 +22,13 @@ function App() {
         <Route path='/' element={<AuthRoute path={"/"} element={<></>}/>} />
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
-        <Route path="/forgot/password" element={<AuthRoute path={"/forgot/password"} element={<ForgetPassword />}/>} />
+        <Route path="/auth/forgot/password" element={<AuthRoute path={"/forgot/password"} element={<ForgetPassword />}/>} />
         <Route path="/user/modification" element={<AuthRoute  path={"/user/modification"} element={<UserInfo />} />} />
         <Route path="/main" element={<AuthRoute  path={"/main"} element={<Main />}/>} />
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />
         <Route path='/auth/oauth2/register' element={<AuthRoute path={"/auth/oauth2/register"} element={<UserOAuth2Register />}/>} />
         <Route path='/auth/oauth2/merge' element={<AuthRoute path={"/auth/oauth2/merge"} element={<OAuth2Merge />}/>} />
-        <Route path="/auth/post/register" element={<AuthRoute path={"/auth/post/register"} element={<PostRegister />}/>} />
+        <Route path="/post/register" element={<AuthRoute path={"/post/register"} element={<PostRegister />}/>} />
         {/*
         <Route path="/ownerpostlist" element={<OwnerPostList />} />
         <Route path="/hostpostlist" element={<HostPostList />} />
