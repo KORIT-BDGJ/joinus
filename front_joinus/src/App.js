@@ -9,7 +9,6 @@ import Main from './pages/Main/Main';
 import PostRegister from './pages/Post/PostRegister/PostRegister';
 import OwnerPostList from './pages/Post/PostList/OwnerPostList';
 import HostPostList from './pages/Post/PostList/HostPostList';
-import Review from './pages/Post/Review/Review';
 import AuthRoute from './components/UI/Routes/AuthRoute';
 import OAuth2Login from './pages/Login/OAuth2Login';
 import UserOAuth2Register from './pages/UserRegister/UserOAuth2Register';
@@ -32,11 +31,10 @@ function App() {
         <Route path='/auth/oauth2/register' element={<AuthRoute path={"/auth/oauth2/register"} element={<UserOAuth2Register />}/>} />
         <Route path='/auth/oauth2/merge' element={<AuthRoute path={"/auth/oauth2/merge"} element={<OAuth2Merge />}/>} />
         <Route path="/post/register" element={<AuthRoute path={"/post/register"} element={<PostRegister />}/>} />
-        <Route path="/ownerpostlist" element={<OwnerPostList />} />
         <Route path="/hostpostlist" element={<HostPostList />} />
-        <Route path="/review" element={<Review />} />
         <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<PostDetail />}/>} />
-        <Route path="/post/:userId/owner" element={<AuthRoute path={"/post"} element={<OwnerPostList />}/>} />
+        <Route path="/post/:userId/owner" element={<OwnerPostList />} />
+
       </Routes>
     </>
   );
