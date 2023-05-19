@@ -102,6 +102,16 @@ const footer = css`
 
 const Sidebar = () => {
 
+    const principal = useQuery(["principal"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/auth/principal", option);
+        return response;
+    });
+
     const [ isOpen, setIsOpen ] = useState(false);
 
     const sidebarOpenClickHandle = () => {
@@ -119,13 +129,14 @@ const Sidebar = () => {
             localStorage.removeItem("accessToken");
         }
     }
-    
-    // if(queryClient.getQueryState("principal").status === "loading") {
-    //     return <div>로딩중...</div>
-    // }
 
-    // const principalData = queryClient.getQueryData("principal").data;
-    // const roles = principalData.authorities.split(",");
+    if(principal.isLoading || principal.isError) {
+        return <></>;
+    }
+    
+    
+
+    
 
     return (
         <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle}>
@@ -139,7 +150,7 @@ const Sidebar = () => {
             </header>
             <main css={main}>
                 <div>
-                <Link to="/user/modification"><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
+                <Link to={`/user/${principal.data.data.userId}/modification`}><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
                 </div>
                 <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
                 <Link to="/post/register"><ListButton title="운동 모집글 작성"></ListButton></Link>

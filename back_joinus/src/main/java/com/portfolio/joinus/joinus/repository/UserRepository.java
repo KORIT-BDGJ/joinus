@@ -18,6 +18,8 @@ public interface UserRepository {
 	
 	public int registerAuthority(Authority authority);
 	
+	public int updatePassword(User user); 
+
 	public int updateProvider(User user);
 	
 	List<OwnerPostList> getOwnerPostListByUserId(int userId);

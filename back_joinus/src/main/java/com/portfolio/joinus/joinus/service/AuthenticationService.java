@@ -1,9 +1,9 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -26,6 +26,7 @@ import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PrincipalRespDto;
+import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
 import com.portfolio.joinus.joinus.entity.Authority;
 import com.portfolio.joinus.joinus.entity.User;
@@ -36,7 +37,6 @@ import com.portfolio.joinus.joinus.security.JwtTokenProvider;
 import com.portfolio.joinus.joinus.security.OAuth2Attribute;
 import com.portfolio.joinus.joinus.security.PrincipalUser;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -46,17 +46,8 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
+	  
 	
-	public void checkDuplicatedEmail(String email) {
-
-		User userEntity = userRepository.findUserByEmail(email);
-		if(userEntity != null) {
-			
-			throw new CustomException("Duplicated Email",
-					ErrorMap.builder().put("email", "사용중인 이메일입니다.").build());
-			
-		}
-	}
 	
 	public void register(RegisterReqDto registerReqDto) {
 			
@@ -151,6 +142,24 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    	return userEntity != null;
 	    }
 	    
+	    public boolean changePassword(PwChangeReqDto pwChangeReqDto) {
+	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	        String email = authentication.getName();
+
+	        User userEntity = userRepository.findUserByEmail(email);
+	        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+	        if (userEntity == null) {
+	    		throw new BadCredentialsException("Invalid user.");
+	    	}
+	        
+	        
+	        userEntity.setPassword(passwordEncoder.encode(pwChangeReqDto.getNewPassword()));
+	        userRepository.updatePassword(userEntity);
+	        
+	        return true;  // Return true to indicate success
+	    }
+
 
 	    public boolean checkPassword(String email, String password) {
 			User userEntity = userRepository.findUserByEmail(email);

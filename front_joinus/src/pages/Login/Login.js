@@ -206,7 +206,8 @@ const Login = () => {
         }
     });
     
-    const loginHandleSubmit = async() => {
+    const 
+    loginHandleSubmit = async() => {
         login.mutate(loginUser);
     }
 
@@ -272,9 +273,6 @@ const Login = () => {
             <footer css={footerStyles}>
                 <div css={register}>
                     <Link to="/auth/register">회원가입</Link>
-                </div>
-                <div css={userinfo}>
-                    <Link to="/user/modification">유저정보</Link>
                 </div>
             </footer>
             

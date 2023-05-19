@@ -18,8 +18,6 @@ import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
-import com.portfolio.joinus.joinus.exception.CustomException;
-import com.portfolio.joinus.joinus.exception.ErrorMap;
 import com.portfolio.joinus.joinus.security.JwtTokenProvider;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
@@ -99,6 +97,7 @@ public class AuthenticationController {
 		System.out.println(emailExists);
 	    return ResponseEntity.ok(emailExists);
 	}
+	
 	
 	@GetMapping("/authenticated")
 	public ResponseEntity<?> authenticated(@RequestHeader(value = "Authorization") String accessToken) {
