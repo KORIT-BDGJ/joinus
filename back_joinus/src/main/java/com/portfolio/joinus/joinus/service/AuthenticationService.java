@@ -46,7 +46,19 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
-	  
+	 
+	
+	
+	public void checkDuplicatedEmail(String email) {
+
+		User userEntity = userRepository.findUserByEmail(email);
+		if(userEntity != null) {
+			
+			throw new CustomException("Duplicated Email",
+					ErrorMap.builder().put("email", "사용중인 이메일입니다.").build());
+			
+		}
+	}
 	
 	
 	public void register(RegisterReqDto registerReqDto) {
