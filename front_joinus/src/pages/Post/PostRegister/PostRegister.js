@@ -218,7 +218,6 @@ const PostRegister = () => {
         }
         try {
             const response = await axios.post("http://localhost:8080/post/register", data, option);
-            // navigate(`/post/${response.data}`);
             return response;
         } catch(error) {
             return error;
@@ -270,13 +269,26 @@ const PostRegister = () => {
     }
 
     const createClickHandle = () => {
-        if (!titlePost || !selectedDate || !selectedOptions.selectedLevel || !selectedOptions.selectedStates || !selectedOptions.selectedCountry || !count || !gender || !textPost) {
-            alert("입력되지 않은 필수 항목이 있습니다.");
-            return;
-          }
-       
+        const requiredFields = [
+            { field: titlePost, message: "제목을 입력하세요." },
+            { field: selectedDate, message: "모집 날짜를 선택하세요." },
+            { field: selectedOptions.selectedLevel, message: "레벨을 선택하세요." },
+            { field: selectedOptions.selectedStates, message: "상태를 선택하세요." },
+            { field: selectedOptions.selectedCountry, message: "모집 지역을 선택하세요." },
+            { field: count, message: "모집 인원을 선택하세요." },
+            { field: gender, message: "모집 성별을 선택하세요." },
+            { field: textPost, message: "소개글을 입력하세요." }
+        ];
+
+        for (const { field, message } of requiredFields) {
+            if(!field) {
+                alert(message);
+                return;
+            }
+        }
+
         sendPost();
-        navigate('/main');
+        navigate("/main");
     }
 
     const handleIconSelect = (IconComponent) => {

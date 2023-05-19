@@ -104,6 +104,34 @@ const postContent = css`
     height: 100%;
 `;
 
+const postListHeader = css`
+    display: flex;
+    justify-content: space-between;
+    height: 19px;
+`;
+
+const headerNickName = css`
+    width: 100px;
+    text-align: center;
+    border: none;
+    background-color: beige;
+    cursor: pointer;
+`;
+
+const headerDateLabel = css`
+    margin-left: 10px;
+    font-weight: 600;
+    cursor: pointer;
+`;
+
+const headerDate = css`
+    width: 160px;
+    text-align: center;
+    border: none;
+    background-color: beige;
+    cursor: pointer;
+`;
+
 const postMain = css`
     display: flex;
     align-items: center;
@@ -159,6 +187,7 @@ const createButton = css`
 
 const Main = () => {
     const navigate = useNavigate();
+
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
@@ -174,6 +203,18 @@ const Main = () => {
             searchType: {value: 1, label: "전체"}
         }
     );
+
+    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+
+    // const principal = useQuery(["principal"], async () => {
+    //     const option = {
+    //         headers: {
+    //             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    //         }
+    //     }
+    //     const response = await axios.get("http://localhost:8080/auth/principal", option);
+    //     return response;
+    // });
 
     const getRegions = useQuery(["getRegions"], async () => {
         const option = {
@@ -212,6 +253,10 @@ const Main = () => {
             setRefresh(false);
         }
     });
+
+    // if(principal.isLoading) {
+    //     return <></>;
+    // }
 
     const handleIconSelect = (IconComponent) => {
         if (!sportsModalIsOpen) {
@@ -268,8 +313,6 @@ const Main = () => {
         navigate("/post/register");
     }
 
-    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>))
-
     const pagination = () => {
 
         if(getPostList.isLoading) {
@@ -287,34 +330,60 @@ const Main = () => {
 
         const pageNumbers = [];
 
+        const beforePage = nowPage > 1;
+        const afterPage = nowPage < lastPage;
+
         for(let i = startIndex; i <= endIndex; i++) {
             pageNumbers.push(i);
         }
 
+        const beforeFirstSetPage = () => {
+            const firstGoToPage = startIndex - 5 <= 0 ? 1 : startIndex - 5;
+            setSearchParams({ ...searchParams, page: firstGoToPage });
+            setRefresh(true);
+        }
+
+        const nextSetPage = () => {
+            const nextStartIndex = endIndex + 1;
+            const nextEndIndex = nextStartIndex + 4 <= lastPage ? nextStartIndex + 4 : lastPage;
+            setSearchParams({ ...searchParams, page: nextStartIndex });
+            setRefresh(true);
+        }
+
         return (
             <>
-                <button disabled={nowPage === 1} onClick={() => {
+                {/* <button disabled={nowPage === 1} onClick={() => {
                     setSearchParams({...searchParams, page: 1});
                     setRefresh(true);
-                }}>&#60;&#60;</button>
+                }}>&#60;&#60;</button> */}
+                {startIndex > 1 && (
+                <button disabled={startIndex <= 1} onClick={beforeFirstSetPage}>
+                    &#60;&#60;
+                </button>
+                )}
 
-                <button disabled={nowPage === 1} onClick={() => {
-                    setSearchParams({...searchParams, page: nowPage - 1});
-                    setRefresh(true);
-                }}>&#60;</button>
+                {beforePage && (
+                    <button disabled={nowPage === 1} onClick={() => {
+                        setSearchParams({...searchParams, page: nowPage - 1});
+                        setRefresh(true);
+                    }}>&#60;</button>
+                )}
+
                 {pageNumbers.map(page => (<button key={page} onClick={() => {
                     setSearchParams({...searchParams, page});
                     setRefresh(true);
                 }} disabled={page === nowPage}>{page}</button>))}
-                <button disabled={nowPage === lastPage} onClick={() => {
-                    setSearchParams({...searchParams, page: nowPage + 1});
-                    setRefresh(true);
-                }}>&#62;</button>
 
-                <button disabled={nowPage === lastPage} onClick={() => {
-                    setSearchParams({...searchParams, page: lastPage});
-                    setRefresh(true);
-                }}>&#62;&#62;</button>
+                {afterPage && (
+                    <button disabled={nowPage === lastPage} onClick={() => {
+                        setSearchParams({...searchParams, page: nowPage + 1});
+                        setRefresh(true);
+                    }}>&#62;</button>
+                )}
+
+                <button disabled={nowPage === lastPage} onClick={nextSetPage}>
+                    &#62;&#62;
+                </button>
             </>
         )
     }   
@@ -361,10 +430,25 @@ const Main = () => {
             ) : (
                 <>
                     {getPostList.data.data.postList.map((post) =>(
-                        <div css={listContainer} onClick={() => listClickHandle(post.postId)} >
+                        <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
                             <div css={postContent}>
-                                <header>방장: /{post.registeDate}</header>
+                                <header css={postListHeader}>
+                                    <label css={informationLabel} >작성자:{post.writerNickName}</label>
+                                    <input css={headerNickName} type="text" readOnly/>  
+                                    <label css={headerDateLabel} >작성일:</label>
+                                    <input 
+                                        css={headerDate} 
+                                        type="text" 
+                                        value={new Date(post.registeDate).toLocaleString("ko-KR",{
+                                        month: "long",
+                                        day: "numeric",
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                        })}
+                                        readOnly
+                                    />  
+                                </header>
                                 <main css={postMain}>{post.title}</main>
                                 <footer>
                                     <label css={informationLabel}>지역:</label>
