@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import Sidebar from '../../../components/Sidebar/Sidebar';
-import AlertModal from './../../../components/Modal/AlertModal';
+import { css } from "@emotion/react";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import Sidebar from "../../../components/Sidebar/Sidebar";
+import AlertModal from "./../../../components/Modal/AlertModal";
 
 const container = css`
   display: flex;
@@ -70,36 +70,51 @@ const buttonLabel = css`
 `;
 
 const OwnerPostList = () => {
-  const [modal, setModal] = useState({ type: '', isOpen: false, postId: null });
+  const [modal, setModal] = useState({ type: "", isOpen: false, postId: null });
   const navigate = useNavigate();
   const { userId } = useParams();
   const queryClient = useQueryClient();
 
-  const getOwnerPostList = useQuery(['getOwnerPostList'], async () => {
-    const option = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    };
+  const getOwnerPostList = useQuery(
+    ["getOwnerPostList"],
+    async () => {
+      const option = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      };
 
-    const response = await axios.get(`http://localhost:8080/post/${userId}/owner`, option);
-    return response.data;
-  });
+      const response = await axios.get(
+        `http://localhost:8080/post/${userId}/owner`,
+        option
+      );
 
+      console.log("getOwnerPostList response:", response.data); 
+
+      return response.data;
+    },
+    {
+      // Comment out the following line to disable automatic refetching
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const deleteMutation = useMutation(
     async (postId) => {
       const response = await axios.delete(`http://localhost:8080/post/${postId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+
+      console.log("deleteMutation response:", response.data); 
+
       return response;
     },
     {
       onSuccess: (data) => {
         if (data && data.data) {
-          queryClient.invalidateQueries('getOwnerPostList');
+          queryClient.invalidateQueries("getOwnerPostList");
         }
       },
     }
@@ -114,29 +129,19 @@ const OwnerPostList = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
+
+      console.log("editMutation successful");
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('getOwnerPostList');
+        queryClient.invalidateQueries("getOwnerPostList");
       },
     }
   );
-  
-
-
-
-  if (getOwnerPostList.isLoading) {
-    return <div>불러오는 중...</div>;
-  }
-
-  if (getOwnerPostList.isError) {
-    return <div>에러가 발생했습니다.</div>;
-  }
-
 
   const movePost = (postId) => {
     navigate(`/post/${postId}`);
@@ -147,47 +152,59 @@ const OwnerPostList = () => {
   };
 
   const cancelAction = () => {
-    setModal({ type: '', isOpen: false, postId: null });
+    setModal({ type: "", isOpen: false, postId: null });
   };
 
   const confirmAction = async () => {
-    if (modal.type === 'delete') {
+    if (modal.type === "delete") {
       await deleteMutation.mutateAsync(modal.postId);
-    } else if (modal.type === 'edit') {
+    } else if (modal.type === "edit") {
       await editMutation.mutateAsync(modal.postId);
     }
-    setModal({ type: '', isOpen: false, postId: null });
+    setModal({ type: "", isOpen: false, postId: null });
   };
 
   return (
     <div css={container}>
       <Sidebar />
       <h1 css={title}>내가 올린 글</h1>
-      <ul css={list}>
-        {getOwnerPostList.data.map((post) => (
-          <li key={post._id} css={listItem}>
-            <div>
-              <h2 css={postTitle} onClick={() => movePost(post._id)}>
-                {post.title}
-              </h2>
-            </div>
-            <div css={buttons}>
-              <button onClick={() => handleButtonClick('edit', post._id)}>
-                <span css={buttonLabel}>수정하기</span>
-              </button>
-              <button onClick={() => handleButtonClick('delete', post._id)}>
-                <span css={buttonLabel}>삭제하기</span>
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {getOwnerPostList.isLoading && <div>불러오는 중...</div>}
+      {getOwnerPostList.isError && <div>에러가 발생했습니다.</div>}
+      {!getOwnerPostList.isLoading && !getOwnerPostList.isError && (
+        <>
+          {getOwnerPostList.data && getOwnerPostList.data.length === 0 ? ( 
+            <div>게시물이 없습니다.</div>
+          ) : (
+            <ul css={list}>
+              {getOwnerPostList.data.map((post) => (
+                <li key={post._id} css={listItem}>
+                  <div>
+                    <h2 css={postTitle} onClick={() => movePost(post._id)}>
+                      {post.title}
+                    </h2>
+                  </div>
+                  <div css={buttons}>
+                    <button onClick={() => handleButtonClick("edit", post._id)}>
+                      <span css={buttonLabel}>수정하기</span>
+                    </button>
+                    <button onClick={() => handleButtonClick("delete", post._id)}>
+                      <span css={buttonLabel}>삭제하기</span>
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
       {modal.isOpen && (
         <AlertModal
           isModalOpen={modal.isOpen}
           confirmRemove={confirmAction}
           cancelRemove={cancelAction}
-          message={modal.type === 'delete' ? '삭제하시겠습니까?' : '수정하시겠습니까?'}
+          message={
+            modal.type === "delete" ? "삭제하시겠습니까?" : "수정하시겠습니까?"
+          }
         />
       )}
     </div>

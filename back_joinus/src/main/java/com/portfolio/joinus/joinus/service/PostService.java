@@ -107,6 +107,8 @@ public class PostService {
 		
 		return list;
 	}
+	// HostPostList
+	
 	
 
 }

@@ -59,12 +59,16 @@ public class PostController {
 		System.out.println(postService.getCommentByPostId(postId));
 		return ResponseEntity.ok().body(postService.getCommentByPostId(postId));
 	}
-	
+	// 내가 작성한 글 조회
 	@GetMapping("/post/{userId}/owner")
 	public ResponseEntity<?> getOwnerPostList(@PathVariable int userId) {
 	     
 	    return ResponseEntity.ok().body(postService.getOwnerPostListByUserId(userId)) ;
 	}
+	
+	// 내가 신청한 글 조회
+	
+	// 참여 완료한 글 조회
 
 	
 
