@@ -2,9 +2,10 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Sidebar from '../../../components/Sidebar/Sidebar';
+import AlertModal from './../../../components/Modal/AlertModal';
 
 const container = css`
   display: flex;
@@ -69,7 +70,8 @@ const buttonLabel = css`
 `;
 
 const OwnerPostList = () => {
-  const [posts, setPosts] = useState([]);
+  const [modal, setModal] = useState({ type: '', isOpen: false, postId: null });
+  const navigate = useNavigate();
   const { userId } = useParams();
   const queryClient = useQueryClient();
 
@@ -84,11 +86,78 @@ const OwnerPostList = () => {
     return response.data;
   });
 
+
+  const deleteMutation = useMutation(
+    async (postId) => {
+      const response = await axios.delete(`http://localhost:8080/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+      return response;
+    },
+    {
+      onSuccess: (data) => {
+        if (data && data.data) {
+          queryClient.invalidateQueries('getOwnerPostList');
+        }
+      },
+    }
+  );
+
+  const editMutation = useMutation(
+    async (postId) => {
+      await axios.put(
+        `http://localhost:8080/post/${postId}`,
+        {
+          // your edit data here
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('getOwnerPostList');
+      },
+    }
+  );
+  
+
+
+
   if (getOwnerPostList.isLoading) {
     return <div>불러오는 중...</div>;
   }
 
-  console.log(getOwnerPostList);
+  if (getOwnerPostList.isError) {
+    return <div>에러가 발생했습니다.</div>;
+  }
+
+
+  const movePost = (postId) => {
+    navigate(`/post/${postId}`);
+  };
+
+  const handleButtonClick = (type, postId) => {
+    setModal({ type, isOpen: true, postId });
+  };
+
+  const cancelAction = () => {
+    setModal({ type: '', isOpen: false, postId: null });
+  };
+
+  const confirmAction = async () => {
+    if (modal.type === 'delete') {
+      await deleteMutation.mutateAsync(modal.postId);
+    } else if (modal.type === 'edit') {
+      await editMutation.mutateAsync(modal.postId);
+    }
+    setModal({ type: '', isOpen: false, postId: null });
+  };
 
   return (
     <div css={container}>
@@ -96,25 +165,31 @@ const OwnerPostList = () => {
       <h1 css={title}>내가 올린 글</h1>
       <ul css={list}>
         {getOwnerPostList.data.map((post) => (
-          <li key={post.id} css={listItem}>
+          <li key={post._id} css={listItem}>
             <div>
-              <h2 css={postTitle}>{post.title}</h2>
+              <h2 css={postTitle} onClick={() => movePost(post._id)}>
+                {post.title}
+              </h2>
             </div>
             <div css={buttons}>
-              {post.editButton && (
-                <button>
-                  <span css={buttonLabel}>수정하기</span>
-                </button>
-              )}
-              {post.deleteButton && (
-                <button>
-                  <span css={buttonLabel}>삭제하기</span>
-                </button>
-              )}
+              <button onClick={() => handleButtonClick('edit', post._id)}>
+                <span css={buttonLabel}>수정하기</span>
+              </button>
+              <button onClick={() => handleButtonClick('delete', post._id)}>
+                <span css={buttonLabel}>삭제하기</span>
+              </button>
             </div>
           </li>
         ))}
       </ul>
+      {modal.isOpen && (
+        <AlertModal
+          isModalOpen={modal.isOpen}
+          confirmRemove={confirmAction}
+          cancelRemove={cancelAction}
+          message={modal.type === 'delete' ? '삭제하시겠습니까?' : '수정하시겠습니까?'}
+        />
+      )}
     </div>
   );
 };
