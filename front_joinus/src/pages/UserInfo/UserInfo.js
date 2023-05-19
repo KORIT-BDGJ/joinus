@@ -1,19 +1,21 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React, { useRef, useState } from 'react';
+import { css, keyframes } from '@emotion/react';
+import React, { useEffect, useRef, useState } from 'react';
 import PwChangeModal from '../../components/Modal/PwChangeModal';
 import SportsIconModal from '../../components/Modal/SportsIconModal';
 import NicknameChangeModal from '../../components/Modal/NicknameChangeModal';
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AddressChangeModal from '../../components/Modal/AddressChangeModal';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 import Sidebar from '../../components/Sidebar/Sidebar';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 const container = css`
   max-width: 1200px;
@@ -188,13 +190,21 @@ const plusButton = css`
   cursor: pointer;
 `;
 
+const arrowAnimation = keyframes`
+  0% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+`;
+
+const arrowSpanStyle = css`
+  animation: ${arrowAnimation} 1s infinite;
+`;
+
 
 
 
 const UserInfo = () => {
 
-  const { userId } = useParams();
-  console.log(userId); //41번 찍힘.
   const navigate = useNavigate();
   const fileInput = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -205,10 +215,35 @@ const UserInfo = () => {
   const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [plusVisible, setPlusVisible] = useState([true, true, true]);
-  const [nickname, setNickname] = useState();
+  const [nickname, setNickname] = useState(<><span> 변경 버튼을 눌러주세요 </span><span css={arrowSpanStyle}>👉🏻</span></>);
   const [password , setPassword] = useState();
   const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState("");
+  
+
+  
+  const principal = useQuery(["principal"], async () => {
+    const option = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    }
+    const response = await axios.get("http://localhost:8080/auth/principal", option);
+    return response;
+  });
+
+  useEffect(() => {
+    if (!principal.isLoading && principal.data.data.address && !address) {
+      setAddress(principal.data.data.address);
+    }
+  }, [principal, address]);
+
+  if(principal.isLoading) {
+    return <></>;
+  }
+
+ 
+
 
   const closeAddressChangeModal = () => {
     setIsAddressChangeModalOpen(!isAddressChangeModalOpen);
@@ -259,10 +294,16 @@ const UserInfo = () => {
   const updateNickname = (newNickname) => {
     setNickname(newNickname);
   };
-  
+
   const updateAddress = (newAddress) => {
     setAddress(newAddress);
   };
+
+  
+
+  
+
+ 
 
   const renderSportIcon = (sport, size) => {
     // 운동 아이콘 추가 시 확장 

@@ -70,6 +70,15 @@
 			user_id = #{userId}
 	</update>
 	
+	<update id="updatePassword">
+		update user_tb
+		set
+			password = #{password}
+		where
+			user_id = #{userId}
+	</update>
+	
+	
 	<select id="getOwnerPostListByUserId" parameterType="int" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
 	    SELECT
 	        owner_post_list_id,

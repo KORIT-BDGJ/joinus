@@ -154,7 +154,6 @@ const UserRegister = () => {
                 } else {
                     addr = data.jibunAddress;
                 }
-                console.log(addr);
                 setRegisterUser({ ...registerUser, address: addr });
             },
         }).open();
@@ -201,7 +200,7 @@ const UserRegister = () => {
             await axios.post("http://localhost:8080/auth/register", JSON.stringify(data), option);
             setErrorMessages({name: "", email: "", password: "" ,passwordConfirm: ""}); //빈값 ( 로그인 성공 시, error 메시지 뜨지않음 )
             alert("회원가입 성공!");
-            navigate("/main");
+            navigate("/auth/login");
             
         }catch (error) {
             if (error.response && error.response.data) {
@@ -213,7 +212,9 @@ const UserRegister = () => {
                     ...error.response.data.errorData,
                 });
             } else {
-                console.error('Unexpected error:', error);
+                if (!error.response || error.response.status !== 400) {
+                    console.error('Unexpected error:', error);
+                }
             }
         }
 
