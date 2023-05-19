@@ -8,7 +8,9 @@ import lombok.Data;
 @Data
 public class GetPostRespDto {
 	private int postId;
+	private int writerId;
 	private String writerNickName;
+	private String image;
 	private String title;
 	private String sportsName;
 	private String levelName;

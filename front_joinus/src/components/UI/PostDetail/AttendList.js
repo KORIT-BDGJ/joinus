@@ -61,10 +61,7 @@ const attendButton = css`
 
 
 
-const AttendList = ({ postId }) => {
-    const queryClient = useQueryClient();
-
-
+const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => {
 
     const getAttendList= useQuery(["getAttendList"], async () => {
         const option = {
@@ -75,6 +72,10 @@ const AttendList = ({ postId }) => {
 
         const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
         return response;
+    }, {
+        onSuccess: (response) => {
+            updateTotalAttendCount(response.data.length);
+        }
     });
 
     if(getAttendList.isLoading) {
@@ -92,7 +93,11 @@ const AttendList = ({ postId }) => {
                                 <div css={infoNickname}>{attendData.nickName}</div>
                             </div>
                             <div css={attendButtonContainer}>
-                                <button css={attendButton}>내보내기</button>
+                                {isCurrentUserAuthor && (
+                                    <>
+                                        <button css={attendButton}>내보내기</button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

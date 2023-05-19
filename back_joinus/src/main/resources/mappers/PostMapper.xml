@@ -4,7 +4,7 @@
 
 	<resultMap type="com.portfolio.joinus.joinus.entity.Post" id="PostMap">
 		<id property="postId" column="post_id"/>
-		<result property="writerId" column="write_id"/>
+		<result property="writerId" column="writer_id"/>
 		<result property="title" column="title"/>
 		<result property="sportsId" column="sports_id"/>
 		<result property="levelId" column="level_id"/>
@@ -94,6 +94,7 @@
 		    
 		    uit.user_info_id,
 		    uit.nickname,
+		    uit.image,
 		    
 		    spt.sports_id,
 		    spt.sports_name,

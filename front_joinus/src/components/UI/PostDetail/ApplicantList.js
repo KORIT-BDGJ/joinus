@@ -61,7 +61,7 @@ const applicantButton = css`
 
 
 
-const ApplicantList = ({ postId }) => {
+const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount }) => {
 
 
     const getApplicantList= useQuery(["getApplicantList"], async () => {
@@ -73,11 +73,19 @@ const ApplicantList = ({ postId }) => {
 
         const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response;
+    }, {
+        onSuccess: (response) => {
+            updateTotalApplicantCount(response.data.length);
+        }
     });
-
+    
     if(getApplicantList.isLoading) {
         return <div>불러오는 중...</div>
     }
+
+    console.log(isCurrentUserAuthor);
+    
+    
     if(!getApplicantList.isLoading)
     return (
         <div css={tableContainer}>
@@ -90,8 +98,12 @@ const ApplicantList = ({ postId }) => {
                                 <div css={infoNickname}>{applicantData.nickName}</div>
                             </div>
                             <div css={applicantButtonContainer}>
-                                <button css={applicantButton}>수락</button>
-                                <button css={applicantButton}>거절</button>
+                                {isCurrentUserAuthor && (
+                                    <>
+                                        <button css={applicantButton}>수락</button>
+                                        <button css={applicantButton}>거절</button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

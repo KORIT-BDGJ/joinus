@@ -72,8 +72,15 @@ const ownerInfo = css`
 `;
 
 const ownerPicture = css`
-    padding: 10px;
-    font-size: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #dbdbdb;
+    border-radius:  50%;
+    font-size: 13px;
 `;
 const ownerNickname = css`
     padding: 10px;
@@ -274,9 +281,25 @@ const footButton = css`
 `;
 
 const PostDetail = () => {
+    const principal = useQuery(["principal"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/auth/principal", option);
+        return response;
+    });
+
+
+
+
+
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
     const [ applicantShow, setApplicantShow ] = useState(false);
+    const [totalApplicantCount, setTotalApplicantCount] = useState(0);
+    const [totalAttendCount, setTotalAttendCount] = useState(0);
     const applicantClickHandle = (e) => {
         setApplicantShow(!applicantShow);
     };
@@ -300,14 +323,21 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        
         const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
         return response;
     });
 
+
+
     if(getPost.isLoading) {
         return <div>불러오는 중...</div>
     }
+
+    const userId = principal.data.data.userId;
+    const writerId = getPost.data.data.writerId;
+    const isCurrentUserAuthor = writerId === userId;
+
+   
     
     const deadline = new Date(getPost.data.data.deadLine).toLocaleString("ko-KR", {
         year: "numeric",
@@ -317,6 +347,16 @@ const PostDetail = () => {
         minute: "numeric",
     });
 
+    const updateTotalApplicantCount = (count) => {
+        setTotalApplicantCount(count);
+    };
+    
+    const updateTotalAttendCount = (count) => {
+        setTotalAttendCount(count);
+    };
+
+    
+
     return (
         
         <div css={container}>
@@ -324,18 +364,22 @@ const PostDetail = () => {
             <div css={detailHeader}>
                 <div css={headerTitle}>{getPost.data.data.title}</div>
                 <div>
-                    <button css={attendButton}>수정하기</button>
-                    <button css={attendButton}>삭제하기</button>
+                    {isCurrentUserAuthor && (
+                        <>
+                            <button css={attendButton}>수정하기</button>
+                            <button css={attendButton}>삭제하기</button>
+                        </>
+                    )}
                 </div>
             </div>
             <div css={detailBody}>
                 <div css={infoBasic}>
                     <div css={infoBox}>
                         <div css={ownerInfo}>방장정보 :</div>
-                        <div css={ownerPicture}><FaUserCircle /></div>
+                        <div css={ownerPicture}>{getPost.data.data.image}</div>
                         <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
                     </div>
-                    <button css={detailButton} onClick={detailClickHandle}>상세정보 버튼</button>
+                    <button css={detailButton} onClick={detailClickHandle}>방장 상세정보</button>
                 </div>
                 <div css={infoDetail(detailShow)}>
                     <div css={ownerLevel}>레벨: {getPost.data.data.levelName}</div>
@@ -363,7 +407,7 @@ const PostDetail = () => {
                 <div css={applicant}>
                     <div>
                         <div css={applicantTitle}>
-                            <div css={applicantCount}>신청인원 정보 : (10)</div>
+                            <div css={applicantCount}>신청인원 정보 : {totalApplicantCount}명 신청중</div>
                             <div css={applicantButtonContainer}>
                                 <button css={applicantButton} onClick={applicantClickHandle}>
                                     신청자 보기
@@ -372,11 +416,11 @@ const PostDetail = () => {
                         </div>
                     </div>
                     <div css={applicantList(applicantShow)}>
-                        <ApplicantList postId={postId}/>
+                        <ApplicantList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalApplicantCount={updateTotalApplicantCount}/>
                     </div>
                     <div>
                         <div css={attendTitle}>
-                            <div css={attendCount}>참석인원 정보: (4/{getPost.data.data.recruitsCount})</div>
+                            <div css={attendCount}>참석인원 정보: {getPost.data.data.recruitsCount}명 모집 / {totalAttendCount}명 참석중</div>
                             <div css={attendButtonContainer}>
                                 <button css={attendButton} onClick={attendClickHandle}>
                                     참석자 보기
@@ -385,7 +429,7 @@ const PostDetail = () => {
                         </div>
                     </div>
                     <div css={attendList(attendShow)}>
-                        <AttendList postId={postId}/>
+                        <AttendList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalAttendCount={updateTotalAttendCount}/>
                     </div>
                 </div>
             </div>

@@ -51,7 +51,9 @@ public class Post {
 	public GetPostRespDto toGetPostDto() {
 		return GetPostRespDto.builder()
 				.postId(postId)
+				.writerId(writerId)
 				.writerNickName(user.getUserInfo().getNickName())
+				.image(user.getUserInfo().getImage())
 				.title(title)
 				.sportsName(sports.getSportsName())
 				.levelName(level.getLevelName())
