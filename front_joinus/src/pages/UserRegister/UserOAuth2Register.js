@@ -161,7 +161,7 @@ const UserOAuth2Register = () => {
             } else {
                 addr = data.jibunAddress;
             }
-            console.log(addr);
+            
             setRegisterUser({ ...registerUser, address: addr });
         },
     }).open();

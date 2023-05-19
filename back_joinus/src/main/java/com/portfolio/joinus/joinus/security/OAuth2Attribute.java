@@ -62,11 +62,11 @@ public class OAuth2Attribute {
     }
 
    public Map<String, Object> convertToMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", name);
-        map.put("email", email);
-        map.put("provider", provider);
-
-        return map;
-    }
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("name", name);
+		    map.put("email", email);
+		    map.put("provider", provider);
+	
+		    return map;
+	}
 }

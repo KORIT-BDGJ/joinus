@@ -245,7 +245,7 @@ const PostRegister = () => {
             text: textPost
         }
 
-        console.log(data)
+       
 
         const option = {
             headers: {
