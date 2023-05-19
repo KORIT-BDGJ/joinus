@@ -268,6 +268,7 @@ const PostRegister = () => {
         setTextPost(e.target.value);
     }
 
+    // 운동 데이터 아직 못받아서 운동 안넣음
     const createClickHandle = () => {
         const requiredFields = [
             { field: titlePost, message: "제목을 입력하세요." },
