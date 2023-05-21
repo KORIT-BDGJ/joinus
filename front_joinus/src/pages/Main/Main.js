@@ -187,7 +187,6 @@ const createButton = css`
 
 const Main = () => {
     const navigate = useNavigate();
-
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,

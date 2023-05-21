@@ -131,7 +131,7 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
         }
     }
     const response = await axios.get("http://localhost:8080/auth/principal", option);
-    return response;
+    return response.data;
   });
 
   if(principal.isLoading) {
@@ -172,10 +172,10 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
           "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
         }
       };
-      //console.log(`Sending password: ${currentPw}`);
+      console.log(`Sending password: ${currentPw}`);
       const response = await axios.post('http://localhost:8080/account/check/password', 
         {
-          email: principal.data.data.email,
+          email: principal.data.email,
           oldPassword: currentPw
         }  
       ,options);
@@ -208,17 +208,6 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
 
   const handleSubmit = async () => {
     // 비밀번호 변경 로직 구현
-    if (currentPw === newPw) {
-      setNewPasswordError("기존 비밀번호와 새 비밀번호가 동일합니다. 다른 비밀번호를 선택해주세요.");
-      return;
-    }
-  
-    if(newPw !== confirmPw){
-      setNewPasswordError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-
     // 비밀번호 또는 비밀번호 확인란이 비어 있는 경우의 검사
     if(!newPw){
       alert("새 비밀번호를 입력해주세요.");
@@ -227,6 +216,14 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
   
     if(!confirmPw){
       alert("비밀번호 확인란을 비워둘 수 없습니다.");
+      return;
+    }
+    if(newPw !== confirmPw){
+      setNewPasswordError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    if (currentPw === newPw) {
+      setNewPasswordError("기존 비밀번호와 새 비밀번호가 동일합니다. 다른 비밀번호를 선택해주세요.");
       return;
     }
   
@@ -239,7 +236,7 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
     try {
       const response = await axios.put('http://localhost:8080/account/change/password', 
         {
-          email: principal.data.data.email,
+          email: principal.data.email,
           oldPassword: currentPw,
           newPassword: newPw
         }  
@@ -250,7 +247,11 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
         closeModal();
       }
     } catch (error) {
-      setNewPasswordError("비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+      if (error.response && error.response.status === 400) {
+        setNewPasswordError("비밀번호는 영문자, 숫자, 특수문자를 포함하여 8 ~ 16 글자로 작성하세요.");
+      } else {
+        setNewPasswordError("비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
 

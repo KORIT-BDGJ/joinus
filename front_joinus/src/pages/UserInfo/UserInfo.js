@@ -204,7 +204,16 @@ const arrowSpanStyle = css`
 
 
 const UserInfo = () => {
-
+  const principal = useQuery(["principal"], async () => {
+    const option = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    }
+    const response = await axios.get("http://localhost:8080/auth/principal", option);
+    return response.data;
+  });
+  
   const navigate = useNavigate();
   const fileInput = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -218,28 +227,11 @@ const UserInfo = () => {
   const [nickname, setNickname] = useState(<><span> 변경 버튼을 눌러주세요 </span><span css={arrowSpanStyle}>👉🏻</span></>);
   const [password , setPassword] = useState();
   const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(principal.data ? principal.data.address : '');
   
 
-  
-  const principal = useQuery(["principal"], async () => {
-    const option = {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-    }
-    const response = await axios.get("http://localhost:8080/auth/principal", option);
-    return response;
-  });
-
-  useEffect(() => {
-    if (!principal.isLoading && principal.data.data.address && !address) {
-      setAddress(principal.data.data.address);
-    }
-  }, [principal, address]);
-
-  if(principal.isLoading) {
-    return <></>;
+  if(principal.isLoading ) {
+    return <></>; // Or a loading spinner
   }
 
  
@@ -364,7 +356,7 @@ const UserInfo = () => {
                     <button css={changeButton} onClick={closePwChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
-                    주소 : {address}
+                    주소 : { address }
                     <button css={changeButton} onClick={closeAddressChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
