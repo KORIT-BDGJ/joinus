@@ -24,7 +24,7 @@ import com.portfolio.joinus.joinus.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth") 
 @RequiredArgsConstructor
 public class AuthenticationController {
 	
@@ -32,9 +32,9 @@ public class AuthenticationController {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationService authenticationService;
 	
-	@ValidAspect
+	//@ValidAspect
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult ) {
+	public ResponseEntity<?> login( @RequestBody LoginReqDto loginReqDto ) {
 		
 		//System.out.println(authenticationService.authenticate(loginReqDto));
 		return ResponseEntity.ok().body(authenticationService.authenticate(loginReqDto));

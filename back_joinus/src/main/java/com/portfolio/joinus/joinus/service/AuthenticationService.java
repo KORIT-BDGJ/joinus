@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
@@ -113,7 +114,10 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			authorities.append(authority.getAuthority() + ",");
 		});
 		
-		authorities.delete(authorities.length() - 1, authorities.length());
+		if (authorities.length() > 0) {
+	        authorities.delete(authorities.length() - 1, authorities.length());
+	    }
+		
 		
 		return PrincipalRespDto.builder()
 	            .userId(userEntity.getUserId())
@@ -153,6 +157,12 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    	
 	    	return userEntity != null;
 	    }
+	    public boolean checkPassword(String email, String password) {
+	    	User userEntity = userRepository.findUserByEmail(email);
+	    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    	
+	    	return passwordEncoder.matches(password, userEntity.getPassword());
+	    }
 	    
 	    public boolean changePassword(PwChangeReqDto pwChangeReqDto) {
 	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -171,14 +181,24 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	        
 	        return true;  // Return true to indicate success
 	    }
+	    
+	    public boolean changeAddress(AddressChangeReqDto addressChangeReqDto) {
+	    	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    	    String email = authentication.getName();
+
+	    	    User userEntity = userRepository.findUserByEmail(email);
+	    	    
+	    	    if (userEntity == null) {
+	    	        throw new BadCredentialsException("Invalid user.");
+	    	    }
+	    	    
+	    	    userEntity.setAddress(addressChangeReqDto.getNewAddress());
+	    	    userRepository.updateAddress(userEntity);
+	    	    
+	    	    return true;  // Return true to indicate success
+	    }
 
 
-	    public boolean checkPassword(String email, String password) {
-			User userEntity = userRepository.findUserByEmail(email);
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-			return passwordEncoder.matches(password, userEntity.getPassword());
-		}
 		
 		public int oAuth2ProviderMerge(OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
 			User userEntity = userRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());

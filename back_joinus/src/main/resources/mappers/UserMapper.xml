@@ -78,6 +78,14 @@
 			user_id = #{userId}
 	</update>
 	
+	<update id="updateAddress" >
+		update user_tb
+		set
+			address = #{address}
+		where
+			user_id = #{userId}
+	</update>
+	
 	
 	<select id="getOwnerPostListByUserId" parameterType="int" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
 	    SELECT

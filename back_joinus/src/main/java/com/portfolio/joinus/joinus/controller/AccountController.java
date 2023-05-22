@@ -1,12 +1,17 @@
 package com.portfolio.joinus.joinus.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
+import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.CheckPasswordReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
@@ -32,13 +37,20 @@ public class AccountController {
 	    // 200 상태 코드와 함께 false 값을 반환하도록 변경합니다.
 	    return ResponseEntity.ok().body(false);
 	}
-	
+	@ValidAspect
 	@PutMapping("/change/password")
-	public ResponseEntity<?> changePassword(@RequestBody PwChangeReqDto pwChangeReqDto){
+	public ResponseEntity<?> changePassword(@Valid @RequestBody PwChangeReqDto pwChangeReqDto , BindingResult bindingResult){
 		if(authenticationService.changePassword(pwChangeReqDto)) {
 			return ResponseEntity.ok().body(true);
 		}
 		return ResponseEntity.badRequest().body("Password change failed.");
 	}
 	
+	@PutMapping("/change/address")
+	public ResponseEntity<?> changeAddress( @RequestBody AddressChangeReqDto addressChangeReqDto, BindingResult bindingResult){
+	    if(authenticationService.changeAddress(addressChangeReqDto)) {
+	        return ResponseEntity.ok().body(true);
+	    }
+	    return ResponseEntity.badRequest().body("Address change failed.");
+	}
 }

@@ -5,7 +5,7 @@ import { GrFormClose } from 'react-icons/gr';
 import ListButton from "./ListButton";
 import { BiHome, BiLogOut } from 'react-icons/bi';
 import { GrUserSettings } from 'react-icons/gr';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 
@@ -101,6 +101,7 @@ const footer = css`
 `;
 
 const Sidebar = () => {
+    
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -109,7 +110,7 @@ const Sidebar = () => {
             }
         }
         const response = await axios.get("http://localhost:8080/auth/principal", option);
-        return response;
+        return response.data;
     });
 
     const [ isOpen, setIsOpen ] = useState(false);
@@ -141,13 +142,13 @@ const Sidebar = () => {
                 <div css={userIcon}>
                 </div>
                 <div css={userInfo}>
-                    진정한헬창
+                    {principal.data.email}
                 </div>
                 <div css={closeButton} onClick={sidebarCloseClickHandle}><GrFormClose /></div>
             </header>
             <main css={main}>
                 <div>
-                <Link to={`/user/${principal.data.data.userId}/modification`}><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
+                <Link to={`/user/${principal.data.userId}/modification`}><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
                 </div>
                 <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
                 <Link to="/post/register"><ListButton title="운동 모집글 작성"></ListButton></Link>
