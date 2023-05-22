@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { FiUser } from 'react-icons/fi';
 import axios from 'axios';
+import { useMutation } from 'react-query';
 
 const container = css`
     display: flex;
@@ -54,6 +55,16 @@ const ForgetPassword = () => {
         email: "",
     });
 
+    const checkEmail = useMutation(async(email) => {
+        const response = await axios.put("http://localhost:8080/auth/forget/password", { email });
+        return response;
+    });
+
+    const sendMail = useMutation(async(email) => {
+        const response = await axios.post("http://localhost:8080/auth/validation/send", { email });
+        return response;
+    });
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLoginUser({ ...loginUser, [name]:value });
@@ -61,39 +72,32 @@ const ForgetPassword = () => {
 
 
     const checkEmailSubmitHandle = async() => {
-
-      const registerData = {
-          email: loginUser.email, // 유저가 입력한 이메일 주소
-      };
-        
-      const option = {
-          headers: {
-              "Content-Type": "application/json",
-          },
-      };
-        
-      try {
-          const response = await axios.put("http://localhost:8080/auth/forget/password", JSON.stringify(registerData), option);
-        
-          if (response.status === 200) {
-              alert('일치하는 이메일 정보가 있습니다.');
-          }
-      } catch (error) {
-          if (error.response && error.response.data) {
-              if (error.response.status === 400) {
-                  alert('일치하는 이메일 정보가 없습니다.');
-              } else {
-                  setErrorMessages((prevErrorMessages) => ({
-                      ...prevErrorMessages,
-                      email: '',
-                      ...error.response.data.errorData,
-                  }));
-              }
-          } else {
-              console.error('Unexpected error:', error);
-          }
-      }
-  };
+        try {
+            const response = await checkEmail.mutateAsync(loginUser.email);
+          
+            if (response.status === 200) {
+                alert('일치하는 이메일 정보가 있습니다.');
+                const sendResponse = await sendMail.mutateAsync(loginUser.email);
+                if(sendResponse.status === 200) {
+                    alert('해당 이메일로 인증 메일을 발송하였습니다.');
+                }
+            }
+        } catch (error) {
+            if (error.response && error.response.data) {
+                if (error.response.status === 400) {
+                    alert('일치하는 이메일 정보가 없습니다.');
+                } else {
+                    setErrorMessages((prevErrorMessages) => ({
+                        ...prevErrorMessages,
+                        email: '',
+                        ...error.response.data.errorData,
+                    }));
+                }
+            } else {
+                console.error('Unexpected error:', error);
+            }
+        }
+    };
 
   return (
         <div css={container}>

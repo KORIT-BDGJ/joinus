@@ -1,5 +1,7 @@
 package com.portfolio.joinus.joinus.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -96,6 +98,13 @@ public class AuthenticationController {
 		}
 		System.out.println(emailExists);
 	    return ResponseEntity.ok(emailExists);
+	}
+	
+	@PostMapping("/validation/send")
+	public ResponseEntity<?> sendMail(@RequestBody Map<String, String> requestData){
+		System.out.println(requestData);
+		
+		return ResponseEntity.ok(authenticationService.validAndSendEmail(requestData.get("email")));
 	}
 	
 	
