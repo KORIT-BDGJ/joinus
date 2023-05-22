@@ -66,20 +66,13 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
         onSelect(IconComponent);
     }
 
-    // const getSports = useQuery(["getSports"], async () => {
-
-    //     const response = await axios.get("http://localhost:8080/auth/option/sports");
-    //     return response;
-    // });
-
     return (
         <div css={modalMainContainer(isOpen)}>
             <header css={modalMainHeader}>
                 <h1 css={modalMainTitle}>운동 종목 선택</h1>
             </header>
             <main css={modalMain}>
-                {/* <IconsModal onIconClick={handleIconClick}/> */}
-                <IconsModal onSelect={handleIconClick}/>
+                <IconsModal onIconClick={handleIconClick}/>
             </main>
             <footer css={modalMainButton}>
                 <button css={okButton} onClick={()=> {

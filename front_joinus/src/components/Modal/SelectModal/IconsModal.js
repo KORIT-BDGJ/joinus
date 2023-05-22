@@ -42,20 +42,20 @@ const sportsIcon = css`
 const IconsModal = ({ onIconClick }) => {
 
     const sportsIcons = [
-        {id: 1, name: 'soccer', icon: <GiSoccerKick size={32} /> },
-        {id: 2, name: 'baseball', icon: <GiBaseballBat size={32} /> },
-        {id: 3, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
-        {id: 4, name: 'fishing', icon: <GiBoatFishing size={32} /> },
-        {id: 5, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
-        {id: 6, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
+        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
+        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
+        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
         {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
-        {id: 8, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
-        {id: 9, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
-        {id: 10, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
-        {id: 11, name: 'running', icon: <FaRunning size={32} /> },
-        {id: 12, name: 'swimmer', icon: <FaSwimmer size={32} /> },
-        {id: 13, name: 'gym', icon: <CgGym size={32} /> },
-        {id: 14, name: 'cycle', icon: <IoMdBicycle size={32} /> },
+        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
+        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
         {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
         {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
         {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
@@ -66,6 +66,7 @@ const IconsModal = ({ onIconClick }) => {
 
     const handleIconClick = (icon) => {
         onIconClick(icon);
+
     }
 
     return (
@@ -73,7 +74,7 @@ const IconsModal = ({ onIconClick }) => {
             {sportsIcons.map((icon) => (
                 <div
                     key={icon.id}
-                    css={iconContainer}
+                    css={sportsIcon}
                     onClick={() => handleIconClick(icon)}
                 >
                     {icon.icon}

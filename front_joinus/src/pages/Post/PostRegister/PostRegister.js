@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiMale, BiMaleFemale } from 'react-icons/bi';
 import { BiFemale } from 'react-icons/bi';
 import DatePicker from "react-datepicker";
@@ -15,6 +15,13 @@ import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModif
 import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { addMinutes } from "date-fns";
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { CgGym } from 'react-icons/cg';
+import { IoMdBicycle } from 'react-icons/io';
+import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
+import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { GrGamepad } from 'react-icons/gr';
 
 const mainContainer = css`
     padding: 10px;
@@ -174,7 +181,7 @@ const PostRegister = () => {
             }
         }
         const response = await axios.get("http://localhost:8080/auth/principal", option);
-        return response;
+        return response.data;
     });
 
     const [ titlePost, setTitlePost ] = useState("");
@@ -196,6 +203,29 @@ const PostRegister = () => {
     });
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+
+    const sportsIcons = [
+        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
+        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
+        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
+        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
+        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
+        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+    ]
     
     const option = {
         headers: {
@@ -204,10 +234,13 @@ const PostRegister = () => {
     }
 
     const postSubmit = useMutation(async () => {
+
+        console.log(selectedIcon);
+
         const data = {
-            writerId: principal.data.data.userId,
+            writerId: principal.data.userId,
             title: titlePost,
-            sportsId: 1,
+            sportsId: selectedIcon,
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
@@ -216,6 +249,8 @@ const PostRegister = () => {
             genderId: gender,
             text: textPost
         }
+
+        console.log(data);
         try {
             const response = await axios.post("http://localhost:8080/post/register", data, option);
             return response;
@@ -226,9 +261,9 @@ const PostRegister = () => {
     });
 
     const getSports = useQuery(["getSports"], async () => {
+
         const response = await axios.get("http://localhost:8080/option/sports", option);
-        const sportsId = response.data.sports_id;
-        
+        return response.data;
     });
 
     const getLevels = useQuery(["getLevels"], async () => {
@@ -274,11 +309,11 @@ const PostRegister = () => {
         setTextPost(e.target.value);
     }
 
-    // 운동 데이터 아직 못받아서 운동 안넣음
     const createClickHandle = () => {
         const requiredFields = [
             { field: titlePost, message: "제목을 입력하세요." },
             { field: selectedDate, message: "모집 날짜를 선택하세요." },
+            { field: selectedIcon, message: "운동 종목을 선택하세요." },
             { field: selectedOptions.selectedLevel, message: "레벨을 선택하세요." },
             { field: selectedOptions.selectedStates, message: "상태를 선택하세요." },
             { field: selectedOptions.selectedCountry, message: "모집 지역을 선택하세요." },
@@ -299,17 +334,18 @@ const PostRegister = () => {
     }
 
     const handleIconSelect = (IconComponent) => {
-        if (!sportsModalIsOpen) {
-            return;
-        }
-
-        setSelectedIcon(<IconComponent css={sportIcon}/>);
+        // if(!sportsModalIsOpen) {
+        //     return;
+        // }
+        setSelectedIcon(IconComponent.id);
     }
 
     const selectedIconClickHandle = () => {
-        // setIcons(() => (selectedIcon));
-        setIcons(selectedIcon);
+        const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
+        setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+
     }
+        
 
     const onConfirm = () => {
         setSportsModalIsOpen(false);
@@ -352,13 +388,14 @@ const PostRegister = () => {
                     <div onClick={() => setSportsModalIsOpen(true)}>
                         {icons}
                     </div>
-                    {<SelectSportsModal 
-                        isOpen={sportsModalIsOpen} 
-                        setIsOpen={setSportsModalIsOpen} 
-                        onSelect={handleIconSelect} 
-                        onConfirm={onConfirm}
-                        onClick={selectedIconClickHandle}
-                    />}
+                    {getSports.isLoading ? ""
+                        : <SelectSportsModal 
+                            isOpen={sportsModalIsOpen} 
+                            setIsOpen={setSportsModalIsOpen} 
+                            onSelect={handleIconSelect} 
+                            onConfirm={onConfirm}
+                            onClick={selectedIconClickHandle}
+                        />}
                     <div css={selectLevelBox}>
                         {getLevels.isLoading ? "" 
                             : <Select

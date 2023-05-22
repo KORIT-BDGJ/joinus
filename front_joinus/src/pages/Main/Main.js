@@ -9,6 +9,13 @@ import { GiSoccerBall } from 'react-icons/gi';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { CgGym } from 'react-icons/cg';
+import { IoMdBicycle } from 'react-icons/io';
+import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
+import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { GrGamepad } from 'react-icons/gr';
 
 const mainContainer = css`
     padding: 10px;
@@ -89,11 +96,6 @@ const postIconBox = css`
     margin: 10px;
     width: 60px;
     height: 60px;
-`;
-
-const postIcon = css`
-    width: 100%;
-    height: 100%;
 `;
 
 const postContent = css`
@@ -219,6 +221,29 @@ const Main = () => {
         return response.data;
     });
 
+    const sportsIcons = [
+        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
+        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
+        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
+        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
+        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
+        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+    ]
+
     // useEffect(() => {
     //     if(principal.isSuccess) {
     //         const userPreferences = principal.data.preferneces; // 사용자의 선호 운동 데이터 (principal.data.선호운동)
@@ -278,6 +303,14 @@ const Main = () => {
         }
 
         setSelectedIcon(<IconComponent css={sportIcon}/>);
+    }
+
+    const renderPostIcon = (sportsId) => {
+        const matchedIcon = sportsIcons.find((icon) => icon.id === sportsId);
+        if (matchedIcon) {
+            return matchedIcon.icon;
+        }
+        return null;
     }
 
     const selectedIconClickHandle = () => {
@@ -441,7 +474,7 @@ const Main = () => {
                 <>
                     {getPostList.data.data.postList.map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
-                            <div css={postIconBox}><GiSoccerBall css={postIcon}/></div>
+                            <div css={postIconBox}>{post.sportsId && renderPostIcon(post.sportsId)}</div>
                             <div css={postContent}>
                                 <header css={postListHeader}>
                                     <label css={informationLabel} >작성자:{post.writerNickName}</label>
