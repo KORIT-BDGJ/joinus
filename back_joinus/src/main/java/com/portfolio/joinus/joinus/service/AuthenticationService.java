@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
@@ -30,7 +31,10 @@ import com.portfolio.joinus.joinus.dto.auth.PrincipalRespDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
 import com.portfolio.joinus.joinus.entity.Authority;
+import com.portfolio.joinus.joinus.entity.Point;
+import com.portfolio.joinus.joinus.entity.SportsLikes;
 import com.portfolio.joinus.joinus.entity.User;
+import com.portfolio.joinus.joinus.entity.UserInfo;
 import com.portfolio.joinus.joinus.exception.CustomException;
 import com.portfolio.joinus.joinus.exception.ErrorMap;
 import com.portfolio.joinus.joinus.repository.UserRepository;
@@ -61,18 +65,34 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 		}
 	}
 	
-	
+	@Transactional
 	public void register(RegisterReqDto registerReqDto) {
+		
 			
 			User userEntity = registerReqDto.toEntity();
 			userRepository.registerUser(userEntity);
+			String nickname = userEntity.getEmail().split("@")[0];
+			System.out.println(nickname);
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())
 					.roleId(1)
 					.build());
+			userRepository.registerPoint(Point.builder()
+					.userId(userEntity.getUserId())
+					.point(0)
+					.build());  
+			userRepository.registerUserInfo(UserInfo.builder()
+					.userId(userEntity.getUserId())
+					.image(null)
+					.nickName(nickname)
+					.build()); 
+			userRepository.registerSportsLikes(SportsLikes.builder()
+					.userId(userEntity.getUserId())
+					.SportsId(0)
+					.build());
 			
 	}
-	
+
 	public String authenticate(LoginReqDto loginReqDto) {
 			
 			//AuthenticationManagerBuilder가 알아보게 하기 위함 (입력한 email , password와 DB에 저장된 email, password를 비교)

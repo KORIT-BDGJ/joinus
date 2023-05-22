@@ -62,7 +62,7 @@ const userContainer = css`
 
 
 const userInfo = css`
-  width: 320px;
+  width: 380px;
   margin-top: 20px;
   font-size: 24px;
 `;
@@ -87,11 +87,17 @@ const subTitle = css`
 
 const userDetail = css`
   display: flex;
+  justify-content: space-between;  /* add this line */
   align-items: center;
   font-size: 15px;
   white-space: nowrap;
   overflow-wrap: break-word;
   padding: 10px;
+
+  span {
+    flex-grow: 1;
+    white-space: normal;
+  }
 `;
 
 const changeButton = css`
@@ -205,9 +211,9 @@ const minusButton = css`
   border: 2px solid #e74c3c;
   border-radius: 5px ;
   background-color: white;
-  color: black;
+  color: green;
   font-size: 20px;
- 
+  font-weight: 600;
   cursor: pointer;
 `;
 
@@ -247,7 +253,7 @@ const UserInfo = () => {
   const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [plusVisible, setPlusVisible] = useState([true, true, true]);
-  const [nickname, setNickname] = useState(<><span> 변경 버튼을 눌러주세요 </span><span css={arrowSpanStyle}>👉🏻</span></>);
+  const [nickname, setNickname] = useState("변경 버튼을 눌러주세요");
   const [password , setPassword] = useState();
   const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
   const [address, setAddress] = useState(principal.data ? principal.data.address : '');
@@ -325,6 +331,13 @@ const UserInfo = () => {
     setAddress(newAddress);
   };
 
+  const NicknameDisplay = ({ nickname }) => (
+    <>
+      <span>{nickname}</span>
+      <span css={arrowSpanStyle}>👉🏻</span>
+    </>
+  );
+
 
   const renderSportIcon = (sport, size) => {
     // 운동 아이콘 추가 시 확장 
@@ -377,15 +390,15 @@ const UserInfo = () => {
                   <h1 css={subTitle}>유저정보 </h1>
                   
                   <div css={userDetail}>
-                    닉네임 : {nickname}
+                    <span>닉네임 : <NicknameDisplay nickname={nickname} /></span>
                     <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
-                    비밀번호 : {maskedPassword}
+                    <span>비밀번호 : {maskedPassword}</span>
                     <button css={changeButton} onClick={closePwChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
-                    주소 : { address }
+                    <span>주소 : {address}</span>
                     <button css={changeButton} onClick={closeAddressChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
