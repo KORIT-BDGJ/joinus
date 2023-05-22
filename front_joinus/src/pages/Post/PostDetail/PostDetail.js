@@ -364,11 +364,13 @@ const PostDetail = () => {
             <div css={detailHeader}>
                 <div css={headerTitle}>{getPost.data.data.title}</div>
                 <div>
-                    {isCurrentUserAuthor && (
+                    {isCurrentUserAuthor ? (
                         <>
                             <button css={attendButton}>수정하기</button>
                             <button css={attendButton}>삭제하기</button>
                         </>
+                    ) : (
+                        <button css={attendButton}>신청하기</button>
                     )}
                 </div>
             </div>
