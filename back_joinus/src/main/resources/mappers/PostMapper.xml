@@ -317,5 +317,19 @@
 	        oplt.user_id = #{userId}
 	</select>
 	
+	<insert id="applyPost" parameterType="hashMap">
+		insert into post_applicant_list_tb
+		values (0, #{postId}, #{userId}, #{stateId}, #{levelId})
+	</insert>
+	
+	<delete id="cancelApplyPost" parameterType="hashMap">
+		delete
+		from
+			post_applicant_list_tb
+		where
+			post_id = #{postId}
+		and user_id = #{userId}
+	</delete>
+	
 
 </mapper>

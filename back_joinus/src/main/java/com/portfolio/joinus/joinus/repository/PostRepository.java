@@ -37,4 +37,7 @@ public interface PostRepository {
 	
 	// host_post_list_tb 에서 id로 attend_list 불러오기 
 	
+	public int applyPost(Map<String, Object> map);
+	public int cancelApplyPost(Map<String, Object> map);
+	
 }

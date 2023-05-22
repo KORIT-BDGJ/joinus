@@ -110,6 +110,23 @@ public class PostService {
 	}
 	// HostPostList
 	
+	public int applyPost(int postId, int userId, int stateId, int levelId) {
+	      Map<String, Object> map = new HashMap<>();
+	      map.put("postId", postId);
+	      map.put("userId", userId);
+	      map.put("stateId", stateId);
+	      map.put("levelId", levelId);
+	      
+	      return postRepository.applyPost(map);
+	}
+	
+	public int cancelApplyPost(int postId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", postId);
+		map.put("userId", userId);
+		
+		return postRepository.cancelApplyPost(map);
+	}
 	
 
 }
