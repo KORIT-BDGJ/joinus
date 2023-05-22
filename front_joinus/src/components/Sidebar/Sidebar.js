@@ -130,12 +130,9 @@ const Sidebar = () => {
         }
     }
 
-    if(principal.isLoading || principal.isError) {
+    if(principal.isLoading) {
         return <></>;
     }
-    
-    
-
     
 
     return (

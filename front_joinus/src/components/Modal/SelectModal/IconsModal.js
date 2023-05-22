@@ -9,6 +9,16 @@ import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing }
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 
+const iconContainer = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    cursor: pointer;
+    margin: 5px;
+    padding: 10px;
+    background-color: rgba(0, 255, 0, 0.2);
+`;
 
 const sportsIcon = css`
     display: flex;
@@ -30,9 +40,46 @@ const sportsIcon = css`
 `;
 
 const IconsModal = ({ onIconClick }) => {
+
+    const sportsIcons = [
+        {id: 1, name: 'soccer', icon: <GiSoccerKick size={32} /> },
+        {id: 2, name: 'baseball', icon: <GiBaseballBat size={32} /> },
+        {id: 3, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
+        {id: 4, name: 'fishing', icon: <GiBoatFishing size={32} /> },
+        {id: 5, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
+        {id: 6, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
+        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
+        {id: 9, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
+        {id: 10, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
+        {id: 11, name: 'running', icon: <FaRunning size={32} /> },
+        {id: 12, name: 'swimmer', icon: <FaSwimmer size={32} /> },
+        {id: 13, name: 'gym', icon: <CgGym size={32} /> },
+        {id: 14, name: 'cycle', icon: <IoMdBicycle size={32} /> },
+        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
+        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+    ]
+
+    const handleIconClick = (icon) => {
+        onIconClick(icon);
+    }
+
     return (
         <>
-            <GiSoccerKick css={sportsIcon} 
+            {sportsIcons.map((icon) => (
+                <div
+                    key={icon.id}
+                    css={iconContainer}
+                    onClick={() => handleIconClick(icon)}
+                >
+                    {icon.icon}
+                </div>
+            ))}
+            {/* <GiSoccerKick css={sportsIcon} 
                 onClick={() => onIconClick(GiSoccerKick)}/>
             <GiBaseballBat css={sportsIcon} 
                 onClick={() => onIconClick(GiBaseballBat)} />
@@ -71,7 +118,7 @@ const IconsModal = ({ onIconClick }) => {
             <RiBilliardsFill css={sportsIcon} 
                 onClick={() => onIconClick(RiBilliardsFill)} />
             <GrGamepad css={sportsIcon} 
-                onClick={() => onIconClick(GrGamepad)} />
+                onClick={() => onIconClick(GrGamepad)} /> */}
         </>
     );
 };

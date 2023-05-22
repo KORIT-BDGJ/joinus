@@ -78,7 +78,8 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
                 <h1 css={modalMainTitle}>운동 종목 선택</h1>
             </header>
             <main css={modalMain}>
-                <IconsModal onIconClick={handleIconClick}/>
+                {/* <IconsModal onIconClick={handleIconClick}/> */}
+                <IconsModal onSelect={handleIconClick}/>
             </main>
             <footer css={modalMainButton}>
                 <button css={okButton} onClick={()=> {

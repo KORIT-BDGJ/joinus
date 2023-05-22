@@ -20,9 +20,9 @@ public class OptionService {
 	
 	private final OptionRepository optionRepository;
 	
-//	public List<Sports> getSports() {
-//		return optionRepository.getSports();
-//	}
+	public List<Sports> getSports() {
+		return optionRepository.getSports();
+	}
 	
 	public List<Level> getLevels() {
 		return optionRepository.getLevels();

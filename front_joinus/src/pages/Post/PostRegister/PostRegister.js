@@ -225,6 +225,12 @@ const PostRegister = () => {
     
     });
 
+    const getSports = useQuery(["getSports"], async () => {
+        const response = await axios.get("http://localhost:8080/option/sports", option);
+        const sportsId = response.data.sports_id;
+        
+    });
+
     const getLevels = useQuery(["getLevels"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/levels", option);
@@ -301,7 +307,8 @@ const PostRegister = () => {
     }
 
     const selectedIconClickHandle = () => {
-        setIcons(() => (selectedIcon))
+        // setIcons(() => (selectedIcon));
+        setIcons(selectedIcon);
     }
 
     const onConfirm = () => {
