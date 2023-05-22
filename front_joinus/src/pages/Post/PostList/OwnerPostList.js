@@ -89,34 +89,12 @@ const OwnerPostList = () => {
         option
       );
 
-      console.log("getOwnerPostList response:", response.data); 
+      console.log("getOwnerPostList response:", response.data);
 
       return response.data;
     },
     {
-      // Comment out the following line to disable automatic refetching
       refetchOnWindowFocus: false,
-    }
-  );
-
-  const deleteMutation = useMutation(
-    async (postId) => {
-      const response = await axios.delete(`http://localhost:8080/post/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-
-      console.log("deleteMutation response:", response.data); 
-
-      return response;
-    },
-    {
-      onSuccess: (data) => {
-        if (data && data.data) {
-          queryClient.invalidateQueries("getOwnerPostList");
-        }
-      },
     }
   );
 
@@ -143,10 +121,31 @@ const OwnerPostList = () => {
     }
   );
 
+  const deleteMutation = useMutation(
+    async (postId) => {
+      const response = await axios.delete(`http://localhost:8080/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      console.log("deleteMutation response:", response.data);
+
+      return response;
+    },
+    {
+      onSuccess: (data) => {
+        if (data && data.data) {
+          queryClient.invalidateQueries("getOwnerPostList");
+        }
+      },
+    }
+  );
+
   const movePost = (postId) => {
     navigate(`/post/${postId}`);
   };
-
+  
   const handleButtonClick = (type, postId) => {
     setModal({ type, isOpen: true, postId });
   };
@@ -172,27 +171,28 @@ const OwnerPostList = () => {
       {getOwnerPostList.isError && <div>에러가 발생했습니다.</div>}
       {!getOwnerPostList.isLoading && !getOwnerPostList.isError && (
         <>
-          {getOwnerPostList.data && getOwnerPostList.data.length === 0 ? ( 
+          {getOwnerPostList.data && getOwnerPostList.data.length === 0 ? (
             <div>게시물이 없습니다.</div>
           ) : (
             <ul css={list}>
               {getOwnerPostList.data.map((post) => (
-                <li key={post._id} css={listItem}>
+                <li key={post.postId} css={listItem}>
                   <div>
-                    <h2 css={postTitle} onClick={() => movePost(post._id)}>
+                    <h2 css={postTitle} onClick={() => movePost(post.postId)}>
                       {post.title}
                     </h2>
                   </div>
                   <div css={buttons}>
-                    <button onClick={() => handleButtonClick("edit", post._id)}>
+                    <button onClick={() => handleButtonClick("edit", post.postId)}>
                       <span css={buttonLabel}>수정하기</span>
                     </button>
-                    <button onClick={() => handleButtonClick("delete", post._id)}>
+                    <button onClick={() => handleButtonClick("delete", post.postId)}>
                       <span css={buttonLabel}>삭제하기</span>
                     </button>
                   </div>
                 </li>
               ))}
+
             </ul>
           )}
         </>
