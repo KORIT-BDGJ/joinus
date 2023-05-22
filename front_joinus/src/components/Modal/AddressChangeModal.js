@@ -121,6 +121,13 @@ const AddressChangeModal = ({ closeModal, updateAddress }) => {
   
 
   const handleSubmit = async () => {
+
+    if (!newAddress){
+      alert("주소를 공란으로 둘 수 없습니다.");
+      return;
+    }
+
+
     const options = {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("accessToken")}`

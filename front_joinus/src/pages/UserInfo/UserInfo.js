@@ -12,10 +12,12 @@ import AddressChangeModal from '../../components/Modal/AddressChangeModal';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
 import { RiBilliardsFill } from 'react-icons/ri';
+import { HiOutlineMinusCircle } from 'react-icons/hi';
 import { GrGamepad } from 'react-icons/gr';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { BiCommentMinus } from 'react-icons/bi';
 
 const container = css`
   max-width: 1200px;
@@ -176,9 +178,10 @@ const circle = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   margin: 20px;
-  width: 60px;
-  height: 60px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   border: 2px solid #333;
 `;
@@ -189,6 +192,25 @@ const plusButton = css`
   color: #00B894;
   cursor: pointer;
 `;
+
+const minusButton = css`
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 20px;
+  border: 2px solid #e74c3c;
+  border-radius: 5px ;
+  background-color: white;
+  color: black;
+  font-size: 20px;
+ 
+  cursor: pointer;
+`;
+
 
 const arrowAnimation = keyframes`
   0% { transform: translateX(0); }
@@ -211,6 +233,7 @@ const UserInfo = () => {
         }
     }
     const response = await axios.get("http://localhost:8080/auth/principal", option);
+    setAddress(response.data.address);
     return response.data;
   });
   
@@ -274,6 +297,17 @@ const UserInfo = () => {
     setSelectedIndex(index);
   };
 
+
+  const handleMinusClick = (e, index) => {
+    e.stopPropagation();
+    const newSports = [...selectedSports];
+    newSports[index] = null;
+    setSelectedSports(newSports);
+    const newPlusVisible = [...plusVisible];
+    newPlusVisible[index] = true;
+    setPlusVisible(newPlusVisible);
+  };
+
   const handleModifyClick = () => {
     navigate('/main');
   };
@@ -291,11 +325,6 @@ const UserInfo = () => {
     setAddress(newAddress);
   };
 
-  
-
-  
-
- 
 
   const renderSportIcon = (sport, size) => {
     // 운동 아이콘 추가 시 확장 
@@ -368,15 +397,24 @@ const UserInfo = () => {
               <h1 css={dcTitle}>선호 운동</h1>
               <div css={circleContainer}>
                 <div css={circle} data-index={0} onClick={handleCircleClick}>
-                  {renderSportIcon(selectedSports[0] ,30)}
+                  {selectedSports[0] && (
+                    <div css={minusButton} onClick={(e) => handleMinusClick(e, 0)}>－</div>
+                  )}
+                  {renderSportIcon(selectedSports[0] ,80)}
                   {plusVisible[0] && <div css={plusButton}>+</div>}
                 </div>
                 <div css={circle} data-index={1} onClick={handleCircleClick}>
-                  {renderSportIcon(selectedSports[1], 30)}
+                  {selectedSports[1] && (
+                    <div css={minusButton} onClick={(e) => handleMinusClick(e, 1)}>－</div>
+                  )}
+                  {renderSportIcon(selectedSports[1] ,80)}
                   {plusVisible[1] && <div css={plusButton}>+</div>}
                 </div>
                 <div css={circle} data-index={2} onClick={handleCircleClick}>
-                  {renderSportIcon(selectedSports[2], 30)}
+                  {selectedSports[2] && (
+                    <div css={minusButton} onClick={(e) => handleMinusClick(e, 2)}>－</div>
+                  )}
+                  {renderSportIcon(selectedSports[2] ,80)}
                   {plusVisible[2] && <div css={plusButton}>+</div>}
                 </div>
               </div>
