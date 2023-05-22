@@ -10,6 +10,7 @@ import axios from 'axios';
 import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 import AttendList from '../../../components/UI/PostDetail/AttendList';
 import Comment from '../../../components/UI/PostDetail/Comment';
+import ApplyPost from '../../../components/UI/PostDetail/ApplyPost';
 
 
 const container = css`
@@ -364,11 +365,13 @@ const PostDetail = () => {
             <div css={detailHeader}>
                 <div css={headerTitle}>{getPost.data.data.title}</div>
                 <div>
-                    {isCurrentUserAuthor && (
+                    {isCurrentUserAuthor ? (
                         <>
                             <button css={attendButton}>수정하기</button>
                             <button css={attendButton}>삭제하기</button>
                         </>
+                    ) : (
+                        <ApplyPost postId={postId}/>
                     )}
                 </div>
             </div>
