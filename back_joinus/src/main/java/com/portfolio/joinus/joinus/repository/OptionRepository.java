@@ -14,7 +14,7 @@ import com.portfolio.joinus.joinus.entity.State;
 @Mapper
 public interface OptionRepository {
 	
-//	public List<Sports> getSports();
+	public List<Sports> getSports();
 	public List<Level> getLevels();
 	public List<State> getStates();
 	public List<Region> getRegions();

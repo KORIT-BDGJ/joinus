@@ -66,12 +66,6 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
         onSelect(IconComponent);
     }
 
-    // const getSports = useQuery(["getSports"], async () => {
-
-    //     const response = await axios.get("http://localhost:8080/auth/option/sports");
-    //     return response;
-    // });
-
     return (
         <div css={modalMainContainer(isOpen)}>
             <header css={modalMainHeader}>

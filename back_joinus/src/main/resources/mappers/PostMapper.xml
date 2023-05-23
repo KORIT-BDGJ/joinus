@@ -199,6 +199,10 @@
         		</otherwise>
         	</choose>
         	
+        	<if test="sportsId != 0">
+        		and spt.sports_id = #{sportsId}
+        	</if>
+        	
         	<if test="regionId != 0">
         		and rt.region_id = #{regionId}
         	</if>

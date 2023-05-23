@@ -17,11 +17,11 @@ public class OptionController {
 	private final OptionService optionService;
 	
 	
-//	@GetMapping("/sports")
-//	public ResponseEntity<?> getSportss() {
-//		return ResponseEntity.ok(optionService.getSports());
-//		
-//	}
+	@GetMapping("/sports")
+	public ResponseEntity<?> getSportss() {
+		return ResponseEntity.ok(optionService.getSports());
+		
+	}
 	
 	@GetMapping("/levels")
 	public ResponseEntity<?> getLevels() {

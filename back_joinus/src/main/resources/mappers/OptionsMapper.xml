@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.portfolio.joinus.joinus.repository.OptionRepository">
 
+	<select id="getSports" resultType="com.portfolio.joinus.joinus.entity.Sports">
+		select
+			sports_id as sportsId,
+			sports_name as sportsName
+		from
+			sports_tb
+	</select>
+
 	<select id="getLevels" resultType="com.portfolio.joinus.joinus.entity.Level">
 		select
 			level_id as levelId,

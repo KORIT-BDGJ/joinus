@@ -130,13 +130,11 @@ const Sidebar = () => {
             localStorage.removeItem("accessToken");
         }
     }
-    
+
+
     if(principal.isLoading || principal.isError) {
         return <></>;
     }
-    
-    
-
     
 
     return (

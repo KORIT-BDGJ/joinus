@@ -6,6 +6,7 @@ import lombok.Data;
 public class SearchPostReqDto {
 
 	private int page;
+	private int sportsId;
     private int regionId;
     private int searchType;
     private String searchValue;
