@@ -9,6 +9,7 @@ import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.entity.ApplicantList;
 import com.portfolio.joinus.joinus.entity.AttendList;
 import com.portfolio.joinus.joinus.entity.Comment;
+import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Post;
 
@@ -34,7 +35,8 @@ public interface PostRepository {
 	// owner_post_list_tb 에서 id로 list 불러오기
 	public List<OwnerPostList> getOwnerPostListByUserId(int userId);
 	// host_post_list_tb 에서 id로 applicant_list 불러오기
-	
+	public List<HostPostList> getMyApplicantPostListByUserId(int userId);
 	// host_post_list_tb 에서 id로 attend_list 불러오기 
+	public List<HostPostList> getMyAttendPostListByUserId(int userId);
 	
 }

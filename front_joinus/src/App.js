@@ -31,9 +31,9 @@ function App() {
         <Route path='/auth/oauth2/register' element={<AuthRoute path={"/auth/oauth2/register"} element={<UserOAuth2Register />}/>} />
         <Route path='/auth/oauth2/merge' element={<AuthRoute path={"/auth/oauth2/merge"} element={<OAuth2Merge />}/>} />
         <Route path="/post/register" element={<AuthRoute path={"/post/register"} element={<PostRegister />}/>} />
-        <Route path="/hostpostlist" element={<HostPostList />} />
         <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<PostDetail />}/>} />
         <Route path="/post/:userId/owner" element={<OwnerPostList />} />
+        <Route path="/post/:userId/host" element={<HostPostList />} />
 
       </Routes>
     </>

@@ -1,20 +1,14 @@
 package com.portfolio.joinus.joinus.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
-import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,19 +36,19 @@ public class PostController {
 	public ResponseEntity<?> getPostList(SearchPostReqDto searchPostReqDto) {
 		return ResponseEntity.ok().body(postService.getPostList(searchPostReqDto));
 	}
-	
+	// 게시글 신청자 목록 조회
 	@GetMapping("/post/{postId}/applicant/list")
 	public ResponseEntity<?> getApplicant(@PathVariable int postId) {
 		System.out.println(postService.getApplicantListByPostId(postId));
 		return ResponseEntity.ok().body(postService.getApplicantListByPostId(postId));
 	}
-	
+	// 게시글 참여자 목록 조회
 	@GetMapping("/post/{postId}/attend/list")
 	public ResponseEntity<?> getAttend(@PathVariable int postId) {
 		System.out.println(postService.getAttendListByPostId(postId));
 		return ResponseEntity.ok().body(postService.getAttendListByPostId(postId));
 	}
-	
+	// 게시글 댓글 목록 조회
 	@GetMapping("/post/{postId}/comment")
 	public ResponseEntity<?> getComment(@PathVariable int postId) {
 		System.out.println(postService.getCommentByPostId(postId));
@@ -67,9 +61,16 @@ public class PostController {
 	    return ResponseEntity.ok().body(postService.getOwnerPostListByUserId(userId)) ;
 	}
 	
-	// 내가 신청한 글 조회
-	
-	// 참여 완료한 글 조회
+	// 내가 신청한 게시글 목록 조회
+	@GetMapping("/post/{userId}/myapplicant/list")
+	public ResponseEntity<?> getMyApplicantPostList(@PathVariable int userId) {
+	    return ResponseEntity.ok().body(postService.getMyApplicantPostListByUserId(userId));
+	}
+	// 참여 완료한 게시글 목록 조회
+	@GetMapping("/post/{userId}/myattend/list")
+	public ResponseEntity<?> getMyAttendPostList(@PathVariable int userId) {
+	    return ResponseEntity.ok().body(postService.getMyAttendPostListByUserId(userId));
+	}
 
 	
 

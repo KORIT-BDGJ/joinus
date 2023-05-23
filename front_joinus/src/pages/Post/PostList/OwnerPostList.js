@@ -192,7 +192,6 @@ const OwnerPostList = () => {
                   </div>
                 </li>
               ))}
-
             </ul>
           )}
         </>

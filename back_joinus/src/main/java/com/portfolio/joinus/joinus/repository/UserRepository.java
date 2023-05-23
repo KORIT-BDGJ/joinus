@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.joinus.joinus.entity.Authority;
+import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.User;
 
@@ -14,7 +15,7 @@ public interface UserRepository {
 	public User findUserByEmail(String email);
 	
 	// 유저 등록
-	public int registerUser (User user);
+	public int registerUser(User user);
 	
 	public int registerAuthority(Authority authority);
 	
@@ -23,4 +24,6 @@ public interface UserRepository {
 	public int updateProvider(User user);
 	
 	List<OwnerPostList> getOwnerPostListByUserId(int userId);
+	
+	List<HostPostList> getApplicantPostListByUserId(int userId);
 }

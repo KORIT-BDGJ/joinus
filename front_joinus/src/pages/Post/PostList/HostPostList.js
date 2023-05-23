@@ -6,6 +6,8 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
+import { FcSportsMode } from 'react-icons/fc';
+import { MdOutlineSportsTennis } from 'react-icons/md';
 
 const container = css`
   display: flex;
@@ -134,6 +136,8 @@ const HostPostList = () => {
   });
   const [starCount, setStarCount] = useState({});
   const [starCountState, setStarCountState] = useState({});
+
+  
 
   useEffect(() => {
     axios
