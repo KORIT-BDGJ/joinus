@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.joinus.joinus.entity.Authority;
+import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Point;
 import com.portfolio.joinus.joinus.entity.SportsLikes;
@@ -42,4 +43,6 @@ public interface UserRepository {
     public int registerSportsLikes(SportsLikes sportsLikes);
 	
 	List<OwnerPostList> getOwnerPostListByUserId(int userId);
+	
+	List<HostPostList> getApplicantPostListByUserId(int userId);
 }

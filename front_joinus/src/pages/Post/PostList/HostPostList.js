@@ -6,6 +6,8 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 const container = css`
   display: flex;
@@ -116,8 +118,8 @@ const resetButton = css`
 `;
 
 const HostPostList = () => {
-  const [applicantPosts, setApplicantPosts] = useState([]);
-  const [attendPosts, setAttendPosts] = useState([]);
+  const [myApplicantPosts, setMyApplicantPosts] = useState([]);
+  const [myAttendPosts, setMyAttendPosts] = useState([]);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [evaluateModalOpen, setEvaluateModalOpen] = useState({
     type: '',
@@ -135,25 +137,49 @@ const HostPostList = () => {
   const [starCount, setStarCount] = useState({});
   const [starCountState, setStarCountState] = useState({});
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:8080/api/applicant-posts')
-      .then((res) => {
-        setApplicantPosts(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const { userId } = useParams();
+  const getHostPostList = useQuery(
+    ["getHostPostList"],
+    async () => {
+      const option = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      };
 
-    axios
-      .get('http://localhost:8080/api/attend-posts')
-      .then((res) => {
-        setAttendPosts(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+      const response = await axios.get(
+        `http://localhost:8080/post/${userId}/host`,
+        option
+      );
+
+      console.log("getHostPostList response:", response.data);
+
+      return response.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:8080/api/applicant-posts')
+  //     .then((res) => {
+  //       setMyApplicantPosts(res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+
+  //   axios
+  //     .get('http://localhost:8080/api/attend-posts')
+  //     .then((res) => {
+  //       setMyAttendPosts(res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
 
   const openCancelModal = (id) => {
     setCancelPostId(id);
@@ -175,7 +201,7 @@ const HostPostList = () => {
   };
 
   const handleButtonClick = (type, postId) => {
-    const selectedPost = attendPosts.find((post) => post.postId === postId);
+    const selectedPost = myAttendPosts.find((post) => post.postId === postId);
     setEvaluateUsers(selectedPost.users);
     setEvaluateModalOpen({ type, isOpen: true, postId });
   };
@@ -257,7 +283,7 @@ const HostPostList = () => {
       [key]: 0,
     });
 
-    setAttendPosts((prevPosts) =>
+    setMyAttendPosts((prevPosts) =>
       prevPosts.map((post) => {
         if (post.postId === postId) {
           return {
@@ -290,7 +316,7 @@ const HostPostList = () => {
       <div>
         <h1 css={title}>내가 신청한 글</h1>
         <ul css={list}>
-          {applicantPosts.map((post) => (
+          {myApplicantPosts.map((post) => (
             <li key={post.postId} css={listItem}>
               <div css={postInfo}>
                 <div css={iconWrapper}>{post.sportsIcon}</div>
@@ -313,7 +339,7 @@ const HostPostList = () => {
       <div>
         <h1 css={title}>참여 완료한 글</h1>
         <ul css={list}>
-          {attendPosts.map((post, index) => (
+          {myAttendPosts.map((post, index) => (
             <div key={index} css={listItem}>
               <div css={postInfo}>
                 <div css={iconWrapper}>{post.sportsIcon}</div>

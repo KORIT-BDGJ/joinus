@@ -320,6 +320,32 @@
 	    WHERE
 	        oplt.user_id = #{userId}
 	</select>
+	<select id="getMyApplicantPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
+		select
+			hplt.host_post_list_id as hostPostListId,
+			
+			ut.user_id as userId
+			pt.post_id as postId,
+			pt.title,
+		
+		from
+			host_post_list_tb hplt
+			left outer join post_tb pt on(pt.post_id = hplt.post_id)
+			left outer join user_tb ut on(ut.user_id = hplt.user_id)
+	</select>
+	<select id="getMyAttendPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
+		select
+			hplt.host_post_list_id as hostPostListId,
+			
+			ut.user_id as userId
+			pt.post_id as postId,
+			pt.title,
+		
+		from
+			host_post_list_tb hplt
+			left outer join post_tb pt on(pt.post_id = hplt.post_id)
+			left outer join user_tb ut on(ut.user_id = hplt.user_id)
+	</select>
 	
 	<insert id="applyPost" parameterType="hashMap">
 		insert into post_applicant_list_tb
