@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SportsLikes {
+	private int userId;
 	private int SportsId;
 	private String SportsName;
 }

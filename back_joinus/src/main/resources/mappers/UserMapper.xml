@@ -62,6 +62,34 @@
 		insert into authority_tb
 		values (0, #{userId}, #{roleId})
 	</insert>
+	
+	<insert id="registerPoint" 
+    parameterType="com.portfolio.joinus.joinus.entity.Point"
+    useGeneratedKeys="true"
+    keyProperty="userId">
+    insert into point_tb
+    values (0, #{userId}, 0)
+	</insert>
+	
+	<insert id="registerUserInfo" 
+	    parameterType="com.portfolio.joinus.joinus.entity.UserInfo"
+	    useGeneratedKeys="true"
+	    keyProperty="userId">
+	    insert into user_info_tb
+	    values (0, #{userId}, '', #{nickName})
+	</insert>
+	
+	<insert id="registerSportsLikes" 
+	    parameterType="com.portfolio.joinus.joinus.entity.SportsLikes"
+	    useGeneratedKeys="true"
+	    keyProperty="userId">
+	    insert into sports_likes_tb
+	    values (0, #{userId}, 0)
+	</insert>
+	
+	
+	
+	
 	<update id="updateProvider">
 		update user_tb
 		set
@@ -74,6 +102,14 @@
 		update user_tb
 		set
 			password = #{password}
+		where
+			user_id = #{userId}
+	</update>
+	
+	<update id="updateAddress" >
+		update user_tb
+		set
+			address = #{address}
 		where
 			user_id = #{userId}
 	</update>

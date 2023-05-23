@@ -2,7 +2,13 @@ package com.portfolio.joinus.joinus.service;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,8 +26,10 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
@@ -29,7 +37,10 @@ import com.portfolio.joinus.joinus.dto.auth.PrincipalRespDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
 import com.portfolio.joinus.joinus.entity.Authority;
+import com.portfolio.joinus.joinus.entity.Point;
+import com.portfolio.joinus.joinus.entity.SportsLikes;
 import com.portfolio.joinus.joinus.entity.User;
+import com.portfolio.joinus.joinus.entity.UserInfo;
 import com.portfolio.joinus.joinus.exception.CustomException;
 import com.portfolio.joinus.joinus.exception.ErrorMap;
 import com.portfolio.joinus.joinus.repository.UserRepository;
@@ -46,7 +57,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
-	 
+    private final JavaMailSender javaMailSender; 
 	
 	
 	public void checkDuplicatedEmail(String email) {
@@ -60,18 +71,34 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 		}
 	}
 	
-	
+	@Transactional
 	public void register(RegisterReqDto registerReqDto) {
+		
 			
 			User userEntity = registerReqDto.toEntity();
 			userRepository.registerUser(userEntity);
+			String nickname = userEntity.getEmail().split("@")[0];
+			System.out.println(nickname);
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())
 					.roleId(1)
 					.build());
+			userRepository.registerPoint(Point.builder()
+					.userId(userEntity.getUserId())
+					.point(0)
+					.build());  
+			userRepository.registerUserInfo(UserInfo.builder()
+					.userId(userEntity.getUserId())
+					.image(null)
+					.nickName(nickname)
+					.build()); 
+			userRepository.registerSportsLikes(SportsLikes.builder()
+					.userId(userEntity.getUserId())
+					.SportsId(0)
+					.build());
 			
 	}
-	
+
 	public String authenticate(LoginReqDto loginReqDto) {
 			
 			//AuthenticationManagerBuilder가 알아보게 하기 위함 (입력한 email , password와 DB에 저장된 email, password를 비교)
@@ -113,7 +140,10 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			authorities.append(authority.getAuthority() + ",");
 		});
 		
-		authorities.delete(authorities.length() - 1, authorities.length());
+		if (authorities.length() > 0) {
+	        authorities.delete(authorities.length() - 1, authorities.length());
+	    }
+		
 		
 		return PrincipalRespDto.builder()
 	            .userId(userEntity.getUserId())
@@ -147,11 +177,52 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	        );
 	    }
 	    
-	    
 	    public boolean checkEmail(String email) {
 	    	User userEntity = userRepository.findUserByEmail(email);
 	    	
 	    	return userEntity != null;
+	    }
+	    
+	    
+	    public boolean validAndSendEmail(String email) {
+	    	User userEntity = userRepository.findUserByEmail(email);
+	    	
+	    	if(userEntity == null) {
+	    		throw new CustomException("User not found for the provided email");
+	    	}
+	    	
+	    	MimeMessage message = javaMailSender.createMimeMessage();
+	    	
+	    	try {
+				MimeMessageHelper helper = new MimeMessageHelper(message,false,"utf-8");
+				helper.setSubject("Joinus 비밀번호 찾기 메일입니다.");
+				helper.setFrom("lky110408@gmail.com");
+				helper.setTo(email);
+				String token = UUID.randomUUID().toString().replaceAll("-", "");
+				message.setContent(
+				        "<div style=\"display: flex; flex-direction: column; align-items: center;\">"
+				        + "<h1>비밀 번호 찾기</h1>"
+				        + "<p>비밀번호를 변경하려면 아래의 버튼을 클릭하세요.</p>"
+				        + "<a href=\"http://localhost:3000/auth/forget/password/" + token + "\" style=\"display: inline-block; padding: 10px 20px; color: #FFF; background-color: #007BFF; text-decoration: none;\">비밀번호 변경하기</a>"
+				        + "</div>", "text/html; charset=\"utf-8\"");
+				javaMailSender.send(message); 
+			} catch (MessagingException e) {
+				e.printStackTrace();
+				throw new CustomException("Failed to send the email", ErrorMap.builder().put("message", e.getMessage()).build());
+			} catch (Exception e) {
+				throw new CustomException("An unknown error occurred", ErrorMap.builder().put("message", e.getMessage()).build());
+			}
+	    	return true;
+	    }
+	    
+	    
+	    
+	    
+	    public boolean checkPassword(String email, String password) {
+	    	User userEntity = userRepository.findUserByEmail(email);
+	    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    	
+	    	return passwordEncoder.matches(password, userEntity.getPassword());
 	    }
 	    
 	    public boolean changePassword(PwChangeReqDto pwChangeReqDto) {
@@ -171,14 +242,24 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	        
 	        return true;  // Return true to indicate success
 	    }
+	    
+	    public boolean changeAddress(AddressChangeReqDto addressChangeReqDto) {
+	    	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    	    String email = authentication.getName();
+
+	    	    User userEntity = userRepository.findUserByEmail(email);
+	    	    
+	    	    if (userEntity == null) {
+	    	        throw new BadCredentialsException("Invalid user.");
+	    	    }
+	    	    
+	    	    userEntity.setAddress(addressChangeReqDto.getNewAddress());
+	    	    userRepository.updateAddress(userEntity);
+	    	    
+	    	    return true;  // Return true to indicate success
+	    }
 
 
-	    public boolean checkPassword(String email, String password) {
-			User userEntity = userRepository.findUserByEmail(email);
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-			return passwordEncoder.matches(password, userEntity.getPassword());
-		}
 		
 		public int oAuth2ProviderMerge(OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
 			User userEntity = userRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());

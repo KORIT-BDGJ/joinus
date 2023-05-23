@@ -266,7 +266,7 @@ const UserRegister = () => {
                             <FaRegAddressCard />
                         </LoginInput>
                         <button css={searchButton} onClick={searchAddress}>
-                                <FaSearch />
+                            <FaSearch />
                         </button>
                     </div>
                     <label css={inputLabel}>성별</label>

@@ -1,5 +1,7 @@
 package com.portfolio.joinus.joinus.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import com.portfolio.joinus.joinus.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth") 
 @RequiredArgsConstructor
 public class AuthenticationController {
 	
@@ -32,9 +34,9 @@ public class AuthenticationController {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationService authenticationService;
 	
-	@ValidAspect
+	//@ValidAspect
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult ) {
+	public ResponseEntity<?> login( @RequestBody LoginReqDto loginReqDto ) {
 		
 		//System.out.println(authenticationService.authenticate(loginReqDto));
 		return ResponseEntity.ok().body(authenticationService.authenticate(loginReqDto));
@@ -96,6 +98,13 @@ public class AuthenticationController {
 		}
 		System.out.println(emailExists);
 	    return ResponseEntity.ok(emailExists);
+	}
+	
+	@PostMapping("/validation/send")
+	public ResponseEntity<?> sendMail(@RequestBody Map<String, String> requestData){
+		System.out.println(requestData);
+		
+		return ResponseEntity.ok(authenticationService.validAndSendEmail(requestData.get("email")));
 	}
 	
 	

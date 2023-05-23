@@ -187,7 +187,6 @@ const createButton = css`
 
 const Main = () => {
     const navigate = useNavigate();
-
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
@@ -204,17 +203,32 @@ const Main = () => {
         }
     );
 
+    // 검색 기본값 설정 코드
+    // const [defaultSearchValue, setDefaultSearchValue] = useState("");
+    // const [defaultRegionId, setDefaultRegionId] = useState(0);
+
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
-    // const principal = useQuery(["principal"], async () => {
-    //     const option = {
-    //         headers: {
-    //             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    //         }
+    const principal = useQuery(["principal"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/auth/principal", option);
+        return response.data;
+    });
+
+    // useEffect(() => {
+    //     if(principal.isSuccess) {
+    //         const userPreferences = principal.data.preferneces; // 사용자의 선호 운동 데이터 (principal.data.선호운동)
+    //         const defaultSearchValue = userPreferences.join(", "); // 선호 운동 데이터를 쉼표로 구분하여 문자열로 변환
+    //         setDefaultSearchValue(defaultSearchValue);
+
+    //         const userRegionId = principal.data.regionId; // 사용자의 지역 데이터
+    //         setDefaultRegionId(userRegionId);
     //     }
-    //     const response = await axios.get("http://localhost:8080/auth/principal", option);
-    //     return response;
-    // });
+    // }, [principal.isSuccess, principal.data]);
 
     const getRegions = useQuery(["getRegions"], async () => {
         const option = {
@@ -254,9 +268,9 @@ const Main = () => {
         }
     });
 
-    // if(principal.isLoading) {
-    //     return <></>;
-    // }
+    if(principal.isLoading) {
+        return <></>;
+    }
 
     const handleIconSelect = (IconComponent) => {
         if (!sportsModalIsOpen) {
@@ -352,10 +366,6 @@ const Main = () => {
 
         return (
             <>
-                {/* <button disabled={nowPage === 1} onClick={() => {
-                    setSearchParams({...searchParams, page: 1});
-                    setRefresh(true);
-                }}>&#60;&#60;</button> */}
                 {startIndex > 1 && (
                 <button disabled={startIndex <= 1} onClick={beforeFirstSetPage}>
                     &#60;&#60;
