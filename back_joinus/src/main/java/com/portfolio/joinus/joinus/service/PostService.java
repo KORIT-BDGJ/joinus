@@ -50,8 +50,6 @@ public class PostService {
 		map.put("searchType", searchPostReqDto.getSearchType());
 		map.put("searchValue", searchPostReqDto.getSearchValue());
 		
-		System.out.println(map);
-		
 		postRepository.getPostList(map).forEach(post -> {
 			list.add(post.toDto());
 		});
@@ -110,6 +108,7 @@ public class PostService {
 	}
 	// HostPostList
 	
+	// 참석하기
 	public int applyPost(int postId, int userId, int stateId, int levelId) {
 	      Map<String, Object> map = new HashMap<>();
 	      map.put("postId", postId);
@@ -120,12 +119,23 @@ public class PostService {
 	      return postRepository.applyPost(map);
 	}
 	
+	// 참석취소
 	public int cancelApplyPost(int postId, int userId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("postId", postId);
 		map.put("userId", userId);
 		
 		return postRepository.cancelApplyPost(map);
+	}
+	
+	// 댓글작성
+	public int commentSubmit(int postId, Object userId, Object comment) {
+	      Map<String, Object> map = new HashMap<>();
+	      map.put("postId", postId);
+	      map.put("userId", userId);
+	      map.put("comment", comment);
+	      
+	      return postRepository.commentSubmit(map);
 	}
 	
 

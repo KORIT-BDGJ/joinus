@@ -55,10 +55,6 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.getAttendListByPostId(postId));
 	}
 	
-	@GetMapping("/post/{postId}/comment")
-	public ResponseEntity<?> getComment(@PathVariable int postId) {
-		return ResponseEntity.ok().body(postService.getCommentByPostId(postId));
-	}
 	// 내가 작성한 글 조회
 	@GetMapping("/post/{userId}/owner")
 	public ResponseEntity<?> getOwnerPostList(@PathVariable int userId) {
@@ -70,6 +66,7 @@ public class PostController {
 	
 	// 참여 완료한 글 조회
 
+	//손님으로 방입장 후 신청버튼 클릭시 신청자 목록
 	@PostMapping("post/apply/{postId}")
 	public ResponseEntity<?> applyPost(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
 		System.out.println(requestMap);
@@ -77,9 +74,22 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.applyPost(postId,  requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
 	}
 	
-   @DeleteMapping("post/cancle/apply/{postId}")
-   public ResponseEntity<?> cancelApplyPost(@PathVariable int postId, @RequestParam int userId) {
-	   return ResponseEntity.ok().body(postService.cancelApplyPost(postId, userId));
-   }
+	//신청취소버튼 클릭시 신청자 목록에서 삭제
+    @DeleteMapping("post/cancle/apply/{postId}")
+    public ResponseEntity<?> cancelApplyPost(@PathVariable int postId, @RequestParam int userId) {
+	    return ResponseEntity.ok().body(postService.cancelApplyPost(postId, userId));
+    }
+    
+    //댓글 불러오기
+	@GetMapping("/post/{postId}/comment")
+	public ResponseEntity<?> getComment(@PathVariable int postId) {
+		return ResponseEntity.ok().body(postService.getCommentByPostId(postId));
+	}
+    
+    //댓글작성
+	@PostMapping("/post/{postId}/comment/submit")
+	public ResponseEntity<?> commentSubmit(@PathVariable int postId, @RequestBody Map<String, Object> requestMap) {
+		return ResponseEntity.ok().body(postService.commentSubmit(postId, requestMap.get("userId"), requestMap.get("comment")));
+	}
 	
 }

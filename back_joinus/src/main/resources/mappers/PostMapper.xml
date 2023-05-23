@@ -331,5 +331,10 @@
 		and user_id = #{userId}
 	</delete>
 	
+	<insert id="commentSubmit" parameterType="hashMap">
+		insert into comment_tb
+		values (0, #{postId}, #{userId}, #{comment})
+	</insert>
+	
 
 </mapper>

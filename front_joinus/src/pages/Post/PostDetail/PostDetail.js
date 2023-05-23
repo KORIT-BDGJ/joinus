@@ -244,41 +244,12 @@ const detailFoot = css`
     margin-bottom: 5px;
     padding: 10px;
 `;
-const footTop = css`
+const footHeader = css`
     margin-top: 10px;
     width: 100%;
     font-size: 20px;
     font-weight: 600;
 
-`;
-const footMiddle = css`
-    margin-top: 10px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    max-height: 100px;
-    overflow-y: auto;
-`;
-
-const footBottom = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 10px 0px;
-    width: 100%;
-    
-`;
-const footInput = css`
-    width: 91%;
-    height: 30px;
-`;
-
-const footButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
-    border-radius: 5px;
-    height: 30px;
-    margin-left: 10px;
 `;
 
 const PostDetail = () => {
@@ -437,13 +408,9 @@ const PostDetail = () => {
                 </div>
             </div>
             <div css={detailFoot}>
-                <div css={footTop}>댓글</div>
-                <div css={footMiddle}>
+                <div css={footHeader}>댓글</div>
+                <div>
                     <Comment postId={postId}/>
-                </div>
-                <div css={footBottom}>
-                    <input css={footInput} placeholder="댓글을 입력하세요"/>
-                    <button css={footButton}>작성</button>
                 </div>
             </div>
         </div>

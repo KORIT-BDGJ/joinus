@@ -39,5 +39,6 @@ public interface PostRepository {
 	
 	public int applyPost(Map<String, Object> map);
 	public int cancelApplyPost(Map<String, Object> map);
+	public int commentSubmit(Map<String, Object> map);
 	
 }
