@@ -12,6 +12,7 @@ public class GetPostRespDto {
 	private String writerNickName;
 	private String image;
 	private String title;
+	private int sportsId;
 	private String sportsName;
 	private String levelName;
 	private String stateName;

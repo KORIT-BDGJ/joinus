@@ -13,6 +13,7 @@ public class SearchPostRespDto {
 	private int postId;
 	private String writerNickName;
 	private String title;
+	private int sportsId;
 	private String sportsName;
 	private String regionName;
 	private String genderName;

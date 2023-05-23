@@ -91,6 +91,9 @@ const listContainer = css`
 `;
 
 const postIconBox = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 1px solid #999;
     border-radius: 50%;
     margin: 10px;
@@ -192,6 +195,7 @@ const Main = () => {
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
+        sprotsId: null,
         searchType: 1,
         searchValue: ""
     });
@@ -255,8 +259,21 @@ const Main = () => {
     //     }
     // }, [principal.isSuccess, principal.data]);
 
+    const getSports = useQuery(["getSports"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/sports", option);
+        return response.data;
+    });
+
     const getRegions = useQuery(["getRegions"], async () => {
         const option = {
+            params: {
+                ...searchParams
+            },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
@@ -285,7 +302,8 @@ const Main = () => {
             }
         }
 
-        return await axios.get("http://localhost:8080/post/list", option);
+        const response = await axios.get("http://localhost:8080/post/list", option);
+        return response;
     }, {
         enabled: refresh,
         onSuccess: () => {
@@ -298,23 +316,17 @@ const Main = () => {
     }
 
     const handleIconSelect = (IconComponent) => {
-        if (!sportsModalIsOpen) {
-            return;
-        }
 
-        setSelectedIcon(<IconComponent css={sportIcon}/>);
-    }
-
-    const renderPostIcon = (sportsId) => {
-        const matchedIcon = sportsIcons.find((icon) => icon.id === sportsId);
-        if (matchedIcon) {
-            return matchedIcon.icon;
-        }
-        return null;
+        setSelectedIcon(IconComponent.id);
+        setSearchParams((prevState) => ({
+            ...prevState,
+            sportsId: IconComponent.id
+        }));
     }
 
     const selectedIconClickHandle = () => {
-        setIcons(() => (selectedIcon))
+        const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
+        setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
     }
 
     const onConfirm = () => {
@@ -438,13 +450,16 @@ const Main = () => {
                 <div css={selectIconbox} onClick={() => setSportsModalIsOpen(true)}>
                     {icons}
                 </div>
-                {<SelectSportsModal 
-                    isOpen={sportsModalIsOpen} 
-                    setIsOpen={setSportsModalIsOpen} 
-                    onSelect={handleIconSelect} 
-                    onConfirm={onConfirm}
-                    onClick={selectedIconClickHandle}
-                />}
+                {getSports.isLoading ? ""
+                    : <SelectSportsModal 
+                        isOpen={sportsModalIsOpen} 
+                        setIsOpen={setSportsModalIsOpen} 
+                        onSelect={handleIconSelect} 
+                        onConfirm={onConfirm}
+                        onClick={selectedIconClickHandle}
+                        selectedIconId={selectedIcon}
+                    />
+                }
                 <div css={selectIconbox}>
                     {getRegions.isLoading ? ""
                         : <Select
@@ -474,7 +489,9 @@ const Main = () => {
                 <>
                     {getPostList.data.data.postList.map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
-                            <div css={postIconBox}>{post.sportsId && renderPostIcon(post.sportsId)}</div>
+                            <div css={postIconBox}>
+                                {sportsIcons.filter(sportIcon => sportIcon.id === parseInt(!!post.sportsId ? post.sportsId : 1))[0].icon}
+                            </div>
                             <div css={postContent}>
                                 <header css={postListHeader}>
                                     <label css={informationLabel} >작성자:{post.writerNickName}</label>

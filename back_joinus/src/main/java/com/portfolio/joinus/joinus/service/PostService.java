@@ -46,6 +46,7 @@ public class PostService {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
+		map.put("sportsId", searchPostReqDto.getSportsId());
 		map.put("regionId", searchPostReqDto.getRegionId());
 		map.put("searchType", searchPostReqDto.getSearchType());
 		map.put("searchValue", searchPostReqDto.getSearchValue());

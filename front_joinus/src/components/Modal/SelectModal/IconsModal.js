@@ -9,17 +9,6 @@ import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing }
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 
-const iconContainer = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    cursor: pointer;
-    margin: 5px;
-    padding: 10px;
-    background-color: rgba(0, 255, 0, 0.2);
-`;
-
 const sportsIcon = css`
     display: flex;
     justify-content: center;
