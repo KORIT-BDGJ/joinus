@@ -26,7 +26,7 @@ const ApplyPost = ({ postId }) => {
             }
         }
         return await axios.post(`http://localhost:8080/post/apply/${postId}`, JSON.stringify({
-            userId: queryClient.getQueryData("principal").data.userId,
+            userId: queryClient.getQueryData("principal").userId,
             stateId: "1",
             levelId: "1"
         }), option);
@@ -39,7 +39,7 @@ const ApplyPost = ({ postId }) => {
     const cancelApplyPost = useMutation(async (postId) => {
         const option = {
             params: {
-                userId: queryClient.getQueryData("principal").data.userId
+                userId: queryClient.getQueryData("principal").userId
             },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -57,7 +57,7 @@ const ApplyPost = ({ postId }) => {
         return <div>불러오는 중...</div>
     }
 
-    const currentUserID = queryClient.getQueryData("principal").data.userId;
+    const currentUserID = queryClient.getQueryData("principal").userId;
     const isCurrentUserApplied = getApplicantList.data.data.some(applicantData => applicantData.userId === currentUserID);
 
     return (

@@ -113,8 +113,5 @@ public class AuthenticationController {
 		return ResponseEntity.ok(jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken)));
 	}
 	
-	@GetMapping("/principal")
-	public ResponseEntity<?> principal() {
-		return ResponseEntity.ok().body(authenticationService.getPrincipal());
-	}
+	
 }

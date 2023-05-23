@@ -98,7 +98,7 @@ const Comment = ({ postId }) => {
             }
         }
         return await axios.post(`http://localhost:8080/post/${postId}/comment/submit`, JSON.stringify({
-            userId: queryClient.getQueryData("principal").data.userId,
+            userId: queryClient.getQueryData("principal").userId,
             comment: comment
         }), option);
     }, {

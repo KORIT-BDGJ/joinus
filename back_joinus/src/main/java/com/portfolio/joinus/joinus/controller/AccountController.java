@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,5 +53,10 @@ public class AccountController {
 	        return ResponseEntity.ok().body(true);
 	    }
 	    return ResponseEntity.badRequest().body("Address change failed.");
+	}
+	
+	@GetMapping("/principal")
+	public ResponseEntity<?> principal() {
+		return ResponseEntity.ok().body(authenticationService.getPrincipal());
 	}
 }

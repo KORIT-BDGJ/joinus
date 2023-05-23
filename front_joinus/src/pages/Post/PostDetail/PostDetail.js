@@ -259,13 +259,9 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/auth/principal", option);
-        return response;
+        const response = await axios.get("http://localhost:8080/account/principal", option);
+        return response.data;
     });
-
-
-
-
 
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
@@ -299,13 +295,15 @@ const PostDetail = () => {
         return response;
     });
 
-
+    if(principal.isLoading) {
+        return <div>불러오는 중...</div>
+    }
 
     if(getPost.isLoading) {
         return <div>불러오는 중...</div>
     }
 
-    const userId = principal.data.data.userId;
+    const userId = principal.data.userId;
     const writerId = getPost.data.data.writerId;
     const isCurrentUserAuthor = writerId === userId;
 

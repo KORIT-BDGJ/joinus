@@ -25,7 +25,7 @@ const AuthRouteReactQuery = ({ path, element }) => {
           queryKey: ["principal"],
           queryFn: async () => {
             const accessToken = localStorage.getItem("accessToken");
-            const response = await axios.get("http://localhost:8080/auth/principal", {
+            const response = await axios.get("http://localhost:8080/account/principal", {
               params: { accessToken },
             });
             return response;

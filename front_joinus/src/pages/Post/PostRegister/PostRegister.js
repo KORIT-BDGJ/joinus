@@ -180,7 +180,7 @@ const PostRegister = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/auth/principal", option);
+        const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     });
 

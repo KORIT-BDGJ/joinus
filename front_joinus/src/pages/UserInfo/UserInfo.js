@@ -238,7 +238,7 @@ const UserInfo = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("http://localhost:8080/auth/principal", option);
+    const response = await axios.get("http://localhost:8080/account/principal", option);
     setAddress(response.data.address);
     setNickname(response.data.email.split('@')[0]);
     return response.data;
