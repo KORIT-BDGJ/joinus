@@ -365,6 +365,10 @@
 		insert into comment_tb
 		values (0, #{postId}, #{userId}, #{comment})
 	</insert>
+	<insert id="saveOwnerPostList" parameterType="com.portfolio.joinus.joinus.entity.OwnerPostList">
+	    insert into owner_post_list_tb (owner_post_list_id, post_id, user_id)
+	    values (#{ownerPostListId}, #{postId}, #{userId})
+	</insert>
 	
 
 </mapper>

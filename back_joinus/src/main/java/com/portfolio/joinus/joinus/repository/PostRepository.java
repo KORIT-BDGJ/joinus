@@ -32,6 +32,8 @@ public interface PostRepository {
 	public List<AttendList> getAttendListByPostId(int postId);
 	// comment_tb에서 id로 불러오기
 	public List<Comment> getCommentByPostId(int postId);
+	// owner_post_list_tb에 데이터 저장
+	public void saveOwnerPostList(OwnerPostList ownerPostList);
 	// owner_post_list_tb 에서 id로 list 불러오기
 	public List<OwnerPostList> getOwnerPostListByUserId(int userId);
 	// host_post_list_tb 에서 id로 applicant_list 불러오기
