@@ -184,11 +184,11 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    }
 	    
 	    
-	    public int validAndSendEmail(String email) {
+	    public boolean validAndSendEmail(String email) {
 	    	User userEntity = userRepository.findUserByEmail(email);
 	    	
 	    	if(userEntity == null) {
-	    		return 2;
+	    		throw new CustomException("User not found for the provided email");
 	    	}
 	    	
 	    	MimeMessage message = javaMailSender.createMimeMessage();
@@ -203,16 +203,16 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 				        "<div style=\"display: flex; flex-direction: column; align-items: center;\">"
 				        + "<h1>비밀 번호 찾기</h1>"
 				        + "<p>비밀번호를 변경하려면 아래의 버튼을 클릭하세요.</p>"
-				        + "<a href=\"http://localhost:3000/auth/forgot/password/new/" + token + "\" style=\"display: inline-block; padding: 10px 20px; color: #FFF; background-color: #007BFF; text-decoration: none;\">비밀번호 변경하기</a>"
+				        + "<a href=\"http://localhost:3000/auth/forget/password/" + token + "\" style=\"display: inline-block; padding: 10px 20px; color: #FFF; background-color: #007BFF; text-decoration: none;\">비밀번호 변경하기</a>"
 				        + "</div>", "text/html; charset=\"utf-8\"");
 				javaMailSender.send(message); 
 			} catch (MessagingException e) {
 				e.printStackTrace();
-				return 3;
+				throw new CustomException("Failed to send the email", ErrorMap.builder().put("message", e.getMessage()).build());
 			} catch (Exception e) {
-				return 4;
+				throw new CustomException("An unknown error occurred", ErrorMap.builder().put("message", e.getMessage()).build());
 			}
-	    	return 1;
+	    	return true;
 	    }
 	    
 	    

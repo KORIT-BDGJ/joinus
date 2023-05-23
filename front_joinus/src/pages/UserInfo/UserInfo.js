@@ -240,8 +240,11 @@ const UserInfo = () => {
     }
     const response = await axios.get("http://localhost:8080/auth/principal", option);
     setAddress(response.data.address);
+    setNickname(response.data.email.split('@')[0]);
     return response.data;
   });
+
+
   
   const navigate = useNavigate();
   const fileInput = useRef(null);
@@ -253,10 +256,10 @@ const UserInfo = () => {
   const [selectedSports, setSelectedSports] = useState(Array(3).fill(null));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [plusVisible, setPlusVisible] = useState([true, true, true]);
-  const [nickname, setNickname] = useState("변경 버튼을 눌러주세요");
+  const [nickname, setNickname] = useState("");
   const [password , setPassword] = useState();
   const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
-  const [address, setAddress] = useState(principal.data ? principal.data.address : '');
+  const [address, setAddress] = useState("");
   
 
   if(principal.isLoading ) {
@@ -331,12 +334,12 @@ const UserInfo = () => {
     setAddress(newAddress);
   };
 
-  const NicknameDisplay = ({ nickname }) => (
-    <>
-      <span>{nickname}</span>
-      <span css={arrowSpanStyle}>👉🏻</span>
-    </>
-  );
+  // const NicknameDisplay = ({ nickname }) => (
+  //   <>
+  //     <span>{nickname}</span>
+  //     <span css={arrowSpanStyle}>👉🏻</span>
+  //   </>
+  // );
 
 
   const renderSportIcon = (sport, size) => {
@@ -390,7 +393,7 @@ const UserInfo = () => {
                   <h1 css={subTitle}>유저정보 </h1>
                   
                   <div css={userDetail}>
-                    <span>닉네임 : <NicknameDisplay nickname={nickname} /></span>
+                    <span>닉네임 : {nickname}</span>
                     <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
