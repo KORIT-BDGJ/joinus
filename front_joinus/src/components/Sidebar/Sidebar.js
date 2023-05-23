@@ -154,8 +154,8 @@ const Sidebar = () => {
                 </div>
                 <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
                 <Link to="/post/register"><ListButton title="운동 모집글 작성"></ListButton></Link>
-                <Link to="/post/1/owner"><ListButton title="내 모집글 보기"></ListButton></Link>
-                <Link to="/hostpostlist"><ListButton title="내 신청 보기"></ListButton></Link>
+                <Link to={`/post/${principal.data.data.userId}/owner`}><ListButton title="내 모집글 보기"></ListButton></Link>
+                <Link to={`/post/${principal.data.data.userId}/host`}><ListButton title="내 신청 보기"></ListButton></Link>
             </main>
             <footer css={footer}>
                 <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>
