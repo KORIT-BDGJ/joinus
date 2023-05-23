@@ -94,8 +94,8 @@ const postIconBox = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #999;
-    border-radius: 50%;
+    /* border: 1px solid #999; */
+    /* border-radius: 50%; */
     margin: 10px;
     width: 60px;
     height: 60px;
@@ -181,6 +181,27 @@ const pageButton = css`
     padding: 15px;
 `;
 
+const goToPageButton = css`
+    border: none;
+    border-radius: 50%;
+    margin: 0 1px;
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #96ffff;
+    }
+    &:active {
+        background-color: #1eddff;
+    }
+`;
+
+const nowPageButton = css`
+    background-color: #1eddff;
+`;
+
 const createButton = css`
     position: absolute;
     border-radius: 6px;
@@ -195,7 +216,7 @@ const Main = () => {
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
-        sprotsId: null,
+        sprotsId: 0,
         searchType: 1,
         searchValue: ""
     });
@@ -209,10 +230,6 @@ const Main = () => {
         }
     );
 
-    // 검색 기본값 설정 코드
-    // const [defaultSearchValue, setDefaultSearchValue] = useState("");
-    // const [defaultRegionId, setDefaultRegionId] = useState(0);
-
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
     const principal = useQuery(["principal"], async () => {
@@ -223,6 +240,17 @@ const Main = () => {
         }
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const sportsIcons = [
@@ -248,25 +276,26 @@ const Main = () => {
         {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
     ]
 
-    // useEffect(() => {
-    //     if(principal.isSuccess) {
-    //         const userPreferences = principal.data.preferneces; // 사용자의 선호 운동 데이터 (principal.data.선호운동)
-    //         const defaultSearchValue = userPreferences.join(", "); // 선호 운동 데이터를 쉼표로 구분하여 문자열로 변환
-    //         setDefaultSearchValue(defaultSearchValue);
-
-    //         const userRegionId = principal.data.regionId; // 사용자의 지역 데이터
-    //         setDefaultRegionId(userRegionId);
-    //     }
-    // }, [principal.isSuccess, principal.data]);
-
     const getSports = useQuery(["getSports"], async () => {
         const option = {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
+
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
@@ -279,7 +308,18 @@ const Main = () => {
             }
         }
         const response = await axios.get("http://localhost:8080/option/regions", option);
-        return response;
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
@@ -289,7 +329,18 @@ const Main = () => {
             }
         }
         const response = await axios.get("http://localhost:8080/option/searchs", option);
-        return response;
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getPostList = useQuery(["getPostList"], async () => {
@@ -303,12 +354,23 @@ const Main = () => {
         }
 
         const response = await axios.get("http://localhost:8080/post/list", option);
-        return response;
+        return response.data;
     }, {
         enabled: refresh,
         onSuccess: () => {
             setRefresh(false);
         }
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     if(principal.isLoading) {
@@ -316,22 +378,25 @@ const Main = () => {
     }
 
     const handleIconSelect = (IconComponent) => {
-
         setSelectedIcon(IconComponent.id);
         setSearchParams((prevState) => ({
             ...prevState,
-            sportsId: IconComponent.id
+            sportsId: IconComponent.id,
+            page: 1
         }));
     }
 
     const selectedIconClickHandle = () => {
         const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
         setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        // setSearchParams((prevState) => ({
+        //     ...prevState,
+        //     sportsId: selectedSportsIcon,
+        //     page: 1
+        // }));
+        setRefresh(true);
     }
 
-    const onConfirm = () => {
-        setSportsModalIsOpen(false);
-    }
 
     const handleOptionChange = (optionName) => (option) => {
         if(optionName === "regionId") {
@@ -351,7 +416,8 @@ const Main = () => {
         }
         setSearchParams({
             ...searchParams,
-            [optionName]: option.value
+            [optionName]: option.value,
+            page: 1
         });
         setRefresh(true);
     }
@@ -380,9 +446,9 @@ const Main = () => {
 
         const nowPage = searchParams.page;
 
-        const lastPage = getPostList.data.data.totalCount % 10 === 0
-            ? getPostList.data.data.totalCount / 10
-            : Math.floor(getPostList.data.data.totalCount / 10) + 1;
+        const lastPage = getPostList.data.totalCount % 10 === 0
+            ? getPostList.data.totalCount / 10
+            : Math.floor(getPostList.data.totalCount / 10) + 1;
 
         const startIndex = nowPage % 5 === 0 ? nowPage - 4 : nowPage - (nowPage % 5) + 1;
         const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
@@ -404,7 +470,6 @@ const Main = () => {
 
         const nextSetPage = () => {
             const nextStartIndex = endIndex + 1;
-            const nextEndIndex = nextStartIndex + 4 <= lastPage ? nextStartIndex + 4 : lastPage;
             setSearchParams({ ...searchParams, page: nextStartIndex });
             setRefresh(true);
         }
@@ -412,33 +477,64 @@ const Main = () => {
         return (
             <>
                 {startIndex > 1 && (
-                <button disabled={startIndex <= 1} onClick={beforeFirstSetPage}>
-                    &#60;&#60;
-                </button>
+                    <button 
+                        css={goToPageButton} 
+                        disabled={startIndex <= 1} 
+                        onClick={beforeFirstSetPage}
+                    >
+                        &#60;&#60;
+                    </button>
                 )}
 
                 {beforePage && (
-                    <button disabled={nowPage === 1} onClick={() => {
-                        setSearchParams({...searchParams, page: nowPage - 1});
-                        setRefresh(true);
-                    }}>&#60;</button>
+                    <button 
+                        css={goToPageButton} 
+                        disabled={nowPage === 1} 
+                        onClick={() => {
+                            setSearchParams({...searchParams, page: nowPage - 1});
+                            setRefresh(true);
+                        }}
+                    >
+                        &#60;
+                    </button>
                 )}
 
-                {pageNumbers.map(page => (<button key={page} onClick={() => {
-                    setSearchParams({...searchParams, page});
-                    setRefresh(true);
-                }} disabled={page === nowPage}>{page}</button>))}
+                {pageNumbers.map(page => (
+                    <button 
+                        css={[goToPageButton, page === nowPage && nowPageButton]} 
+                        key={page} 
+                        onClick={() => {
+                            setSearchParams({...searchParams, page});
+                            setRefresh(true);
+                        }} 
+                        disabled={page === nowPage}
+                    >
+                        {page}
+                    </button>
+                ))}
 
                 {afterPage && (
-                    <button disabled={nowPage === lastPage} onClick={() => {
-                        setSearchParams({...searchParams, page: nowPage + 1});
-                        setRefresh(true);
-                    }}>&#62;</button>
+                    <button 
+                        css={goToPageButton} 
+                        disabled={nowPage === lastPage} 
+                        onClick={() => {
+                            setSearchParams({...searchParams, page: nowPage + 1});
+                            setRefresh(true);
+                        }}
+                    >
+                        &#62;
+                    </button>
                 )}
 
-                <button disabled={nowPage === lastPage} onClick={nextSetPage}>
-                    &#62;&#62;
-                </button>
+                {afterPage && nowPage + 5 <= lastPage && (
+                    <button 
+                        css={goToPageButton} 
+                        disabled={nowPage === lastPage} 
+                        onClick={nextSetPage}
+                    >
+                        &#62;&#62;
+                    </button>
+                )}
             </>
         )
     }   
@@ -455,9 +551,7 @@ const Main = () => {
                         isOpen={sportsModalIsOpen} 
                         setIsOpen={setSportsModalIsOpen} 
                         onSelect={handleIconSelect} 
-                        onConfirm={onConfirm}
                         onClick={selectedIconClickHandle}
-                        selectedIconId={selectedIcon}
                     />
                 }
                 <div css={selectIconbox}>
@@ -466,7 +560,7 @@ const Main = () => {
                             css={selectCountry}
                             value={selectedOptions.region}
                             onChange={handleOptionChange('regionId')}
-                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
+                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
                             placeholder="지역"
                         />}
                 </div>
@@ -476,7 +570,7 @@ const Main = () => {
                             css={selectSearch}
                             value={selectedOptions.searchType}
                             onChange={handleOptionChange('searchType')}
-                            options={getSearchs.data.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
+                            options={getSearchs.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
                             placeholder="항목"
                         />}
                     <input css={searchInput} type="text" placeholder="검색" onChange={searchValueOnChangeHandle}/>
@@ -487,7 +581,8 @@ const Main = () => {
                 "" 
             ) : (
                 <>
-                    {getPostList.data.data.postList.map((post) =>(
+                    {getPostList.data.postList.filter((post) => new Date(post.deadLine) > new Date())
+                    .map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}>
                                 {sportsIcons.filter(sportIcon => sportIcon.id === parseInt(!!post.sportsId ? post.sportsId : 1))[0].icon}
@@ -529,7 +624,6 @@ const Main = () => {
                                     <input css={informationTextName} type="text" value={post.genderName} readOnly />
                                     <label css={informationLabel}>인원:</label>
                                     <input css={informationCount} type="text" value={post.recruitsCount} readOnly />
-                                    {/* <input css={informationCount} type="text" value={`${post.applicants}/${post.recruitsCount}`} readOnly /> */}
                                 </footer>
                             </div>
                         </div>

@@ -182,6 +182,17 @@ const PostRegister = () => {
         }
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const [ titlePost, setTitlePost ] = useState("");
@@ -258,37 +269,102 @@ const PostRegister = () => {
             return error;
         }
     
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSports = useQuery(["getSports"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getLevels = useQuery(["getLevels"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/levels", option);
-        return response;
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getStates = useQuery(["getStates"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/states", option);
-        return response;
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/regions", option);
-        return response;
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getGenders = useQuery(["getGenders"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/genders", option);
-        return response;
-    });
+        return response.data;
+    },{
+        onError: (error) => {
+          // 인증에 실패했을 때의 처리를 추가합니다.
+          if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+          }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
+      });
 
     // 작성버튼 확인 모달창
     // const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false); 
@@ -334,9 +410,6 @@ const PostRegister = () => {
     }
 
     const handleIconSelect = (IconComponent) => {
-        // if(!sportsModalIsOpen) {
-        //     return;
-        // }
         setSelectedIcon(IconComponent.id);
     }
 
@@ -346,11 +419,6 @@ const PostRegister = () => {
 
     }
         
-
-    const onConfirm = () => {
-        setSportsModalIsOpen(false);
-    }
-
     const handleOptionChange = (optionName) => (selectedOption) => {
         setSelectedOptions((prevState) => ({
             ...prevState,
@@ -393,7 +461,6 @@ const PostRegister = () => {
                             isOpen={sportsModalIsOpen} 
                             setIsOpen={setSportsModalIsOpen} 
                             onSelect={handleIconSelect} 
-                            onConfirm={onConfirm}
                             onClick={selectedIconClickHandle}
                         />}
                     <div css={selectLevelBox}>
@@ -402,7 +469,7 @@ const PostRegister = () => {
                                 css={selectLevel}
                                 value={selectedOptions.selectedLevel}
                                 onChange={handleOptionChange('selectedLevel')}
-                                options={getLevels.data.data.map(level => ({"value": level.levelId, "label": level.levelName}))}
+                                options={getLevels.data.map(level => ({"value": level.levelId, "label": level.levelName}))}
                                 placeholder="레벨 선택"
                             />}
                         
@@ -413,7 +480,7 @@ const PostRegister = () => {
                                 css={selectUserStatus}
                                 value={selectedOptions.selectedStates}
                                 onChange={handleOptionChange('selectedStates')}
-                                options={getStates.data.data.map(state => ({"value": state.stateId, "label": state.stateName}))}
+                                options={getStates.data.map(state => ({"value": state.stateId, "label": state.stateName}))}
                                 placeholder="운동 방식 선택!"
                             />}
                     </div>
@@ -425,7 +492,7 @@ const PostRegister = () => {
                             css={selectCountry}
                             value={selectedOptions.selectedCountry}
                             onChange={handleOptionChange('selectedCountry')}
-                            options={getRegions.data.data.map(region => ({"value": region.regionId, "label": region.regionName}))}
+                            options={getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))}
                             placeholder="지역을 고르시오."
                         />}
                 </div>
@@ -456,7 +523,7 @@ const PostRegister = () => {
                 <div css={postContainer}>
                     <p css={postTitle}>모집 성별 선택</p>
                     <div css={buttonContainer}>
-                        {getGenders.isLoading ? "" : getGenders.data.data.map((genderOption) => (
+                        {getGenders.isLoading ? "" : getGenders.data.map((genderOption) => (
                             <label css={buttonRadioBox} key={genderOption.genderId}>
                                 <input
                                     css={buttonRadio}
