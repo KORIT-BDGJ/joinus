@@ -232,19 +232,27 @@ const arrowSpanStyle = css`
 
 
 const UserInfo = () => {
+  
   const principal = useQuery(["principal"], async () => {
     const option = {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      }
     }
     const response = await axios.get("http://localhost:8080/account/principal", option);
     setAddress(response.data.address);
-    setNickname(response.data.email.split('@')[0]);
+    setNickname(response.data.nickName);
     return response.data;
   });
 
+  
 
+  useEffect(() => {
+    if (principal && principal.data) {
+      setAddress(principal.data.address);
+      setNickname(principal.data.nickName);
+    }
+  }, [principal]);
   
   const navigate = useNavigate();
   const fileInput = useRef(null);
@@ -257,10 +265,11 @@ const UserInfo = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [plusVisible, setPlusVisible] = useState([true, true, true]);
   const [nickname, setNickname] = useState("");
+  const [address, setAddress] = useState(""); 
   const [password , setPassword] = useState();
   const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
-  const [address, setAddress] = useState("");
-  
+
+
 
   if(principal.isLoading ) {
     return <></>; // Or a loading spinner

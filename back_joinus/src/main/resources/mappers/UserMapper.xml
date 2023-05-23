@@ -12,6 +12,7 @@
 		<result property="provider" column="provider" />
 		<result property="address" column="address" />
 		<result property="gender" column="gender" />
+		<association property="userInfo" javaType="com.portfolio.joinus.joinus.entity.UserInfo" resultMap="userInfoMap"></association>
 		<collection property="authorities" javaType="list" resultMap="authorityMap" />
 	</resultMap>
 	<resultMap type="com.portfolio.joinus.joinus.entity.Authority" id="authorityMap">
@@ -25,6 +26,15 @@
 		<id property="roleId" column="role_id" />
 		<result property="roleName" column="role_name" />
 	</resultMap>
+	
+	<resultMap type="com.portfolio.joinus.joinus.entity.UserInfo" id="userInfoMap">
+		<id property="userInfoId" column="user_info_id" />
+		<result property="userId" column="user_id"/>
+		<result property="image" column="image"/>
+		<result property="nickName" column="nickname"/>
+	
+	</resultMap>
+	
 
 	<select id="findUserByEmail" resultMap="userMap">
 		select
@@ -41,11 +51,16 @@
 			at.role_id,
 			
 			rt.role_id,
-			rt.role_name
+			rt.role_name,
+			
+			ui.user_info_id,
+			ui.image,
+			ui.nickname
 		from
 			user_tb ut
 			left outer join authority_tb at on(at.user_id = ut.user_id)
 			left outer join role_tb rt on(rt.role_id = at.role_id)
+			left outer join user_info_tb ui on(ui.user_id = ut.user_id)
 		where
 			ut.email = #{email}
 	</select>

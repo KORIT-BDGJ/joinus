@@ -24,6 +24,7 @@ public class User {
 	private String gender;
 	private String provider;
 	
+	
 	private UserInfo userInfo;
 	private Point point;
 	
@@ -47,6 +48,8 @@ public class User {
 				.gender(gender)
 				.authorities(authorities)
 				.provider(provider)
+				.nickName(userInfo.getNickName())
+				.image(userInfo.getImage())
 				.build();
 	}
 }

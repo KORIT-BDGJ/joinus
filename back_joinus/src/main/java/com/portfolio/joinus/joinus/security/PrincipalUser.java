@@ -31,6 +31,8 @@ public class PrincipalUser implements UserDetails {
     private String gender;
     private List<Authority> authorities;
     private String provider;
+    private String image;
+	private String nickName;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

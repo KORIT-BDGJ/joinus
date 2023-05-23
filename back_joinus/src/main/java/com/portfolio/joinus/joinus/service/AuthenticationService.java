@@ -78,7 +78,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			User userEntity = registerReqDto.toEntity();
 			userRepository.registerUser(userEntity);
 			String nickname = userEntity.getEmail().split("@")[0];
-			System.out.println(nickname);
+		
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())
 					.roleId(1)
@@ -153,6 +153,8 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	            .gender(userEntity.getGender()) // 추가된 부분
 	            .authorities(authorities.toString())
 	            .provider(userEntity.getProvider()) // 추가된 부분
+	            .image(userEntity.getUserInfo().getImage())
+	            .nickName(userEntity.getUserInfo().getNickName())
 	            .build();
 	}
 	 @Override

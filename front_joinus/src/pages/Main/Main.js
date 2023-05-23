@@ -215,15 +215,33 @@ const Main = () => {
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
-    const principal = useQuery(["principal"], async () => {
-        const option = {
+    const principal = useQuery(
+        ["principal"],
+        async () => {
+          const option = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          };
+          const response = await axios.get(
+            "http://localhost:8080/account/principal",
+            option
+          );
+          
+          return response.data;
+        },
+        {
+          onError: (error) => {
+            // 인증에 실패했을 때의 처리를 추가합니다.
+            if (error.response?.status === 401) {
+              
+              console.error('Error fetching principal:', error);
             }
+          },
+          // 토큰이 존재할 때만 쿼리를 활성화합니다.
+          enabled: !!localStorage.getItem("accessToken"),
         }
-        const response = await axios.get("http://localhost:8080/account/principal", option);
-        return response.data;
-    });
+    );
 
     const sportsIcons = [
         {id: 1, name: 'gym', icon: <CgGym size={32} /> },
@@ -267,6 +285,18 @@ const Main = () => {
         }
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
+    }
+    ,
+    {
+        onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+        }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
@@ -279,7 +309,18 @@ const Main = () => {
             }
         }
         const response = await axios.get("http://localhost:8080/option/regions", option);
-        return response;
+        return response.data;
+    },
+    {
+        onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+        }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
@@ -289,7 +330,18 @@ const Main = () => {
             }
         }
         const response = await axios.get("http://localhost:8080/option/searchs", option);
-        return response;
+        return response.data;
+    },
+    {
+        onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+        }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getPostList = useQuery(["getPostList"], async () => {
@@ -303,12 +355,23 @@ const Main = () => {
         }
 
         const response = await axios.get("http://localhost:8080/post/list", option);
-        return response;
+        return response.data;
     }, {
         enabled: refresh,
         onSuccess: () => {
             setRefresh(false);
         }
+    },
+    {
+        onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+        }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
     });
 
     if(principal.isLoading) {
@@ -380,9 +443,9 @@ const Main = () => {
 
         const nowPage = searchParams.page;
 
-        const lastPage = getPostList.data.data.totalCount % 10 === 0
-            ? getPostList.data.data.totalCount / 10
-            : Math.floor(getPostList.data.data.totalCount / 10) + 1;
+        const lastPage = getPostList.data.totalCount % 10 === 0
+            ? getPostList.data.totalCount / 10
+            : Math.floor(getPostList.data.totalCount / 10) + 1;
 
         const startIndex = nowPage % 5 === 0 ? nowPage - 4 : nowPage - (nowPage % 5) + 1;
         const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
@@ -466,7 +529,7 @@ const Main = () => {
                             css={selectCountry}
                             value={selectedOptions.region}
                             onChange={handleOptionChange('regionId')}
-                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
+                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
                             placeholder="지역"
                         />}
                 </div>
@@ -476,7 +539,7 @@ const Main = () => {
                             css={selectSearch}
                             value={selectedOptions.searchType}
                             onChange={handleOptionChange('searchType')}
-                            options={getSearchs.data.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
+                            options={getSearchs.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
                             placeholder="항목"
                         />}
                     <input css={searchInput} type="text" placeholder="검색" onChange={searchValueOnChangeHandle}/>
@@ -487,7 +550,7 @@ const Main = () => {
                 "" 
             ) : (
                 <>
-                    {getPostList.data.data.postList.map((post) =>(
+                    {getPostList.data.postList.map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}>
                                 {sportsIcons.filter(sportIcon => sportIcon.id === parseInt(!!post.sportsId ? post.sportsId : 1))[0].icon}
