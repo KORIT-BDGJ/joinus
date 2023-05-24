@@ -16,16 +16,29 @@ import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-ico
 import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
+import { GrPowerReset } from 'react-icons/gr';
 
 const mainContainer = css`
     padding: 10px;
 `;
 
 const header = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 100px;
+`;
+
+const resetButton = css`
+    position: absolute;
+    top: 0;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    cursor: pointer;
 `;
 
 const selectIconbox = css`
@@ -165,6 +178,10 @@ const informationDate = css`
     cursor: pointer;
 `;
 
+const finalDeadLine = css`
+    background-color: red;
+`;
+
 const informationCount = css`
     width: 60px;
     text-align: center;
@@ -229,6 +246,8 @@ const Main = () => {
             searchType: {value: 1, label: "전체"}
         }
     );
+
+    const [ searchInputValue, setSearchInputValue ] = useState("");
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
@@ -389,11 +408,6 @@ const Main = () => {
     const selectedIconClickHandle = () => {
         const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
         setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
-        // setSearchParams((prevState) => ({
-        //     ...prevState,
-        //     sportsId: selectedSportsIcon,
-        //     page: 1
-        // }));
         setRefresh(true);
     }
 
@@ -423,9 +437,30 @@ const Main = () => {
     }
 
     const searchValueOnChangeHandle = (e) => {
+
+        const value = e.target.value;
+        setSearchInputValue(value);
         setSearchParams({
             ...searchParams,
-            searchValue: e.target.value
+            searchValue: value
+        });
+        setRefresh(true);
+    }
+
+    const resetSearchClickHandle = () => {
+        setIcons(<FcSportsMode css={sportIcon} />);
+        setSearchInputValue("");
+        setSelectedOptions({
+            region: {value: 0, label: "전체"},
+            searchType: {value: 1, label: "전체"}
+        });
+        setSearchParams({
+            ...searchParams,
+            page: 1, 
+            regionId: 0,
+            sportsId: 0,
+            searchType: 1,
+            searchValue: ""
         });
         setRefresh(true);
     }
@@ -543,6 +578,7 @@ const Main = () => {
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
+                <button css={resetButton} onClick={resetSearchClickHandle}><GrPowerReset /></button>
                 <div css={selectIconbox} onClick={() => setSportsModalIsOpen(true)}>
                     {icons}
                 </div>
@@ -573,7 +609,12 @@ const Main = () => {
                             options={getSearchs.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
                             placeholder="항목"
                         />}
-                    <input css={searchInput} type="text" placeholder="검색" onChange={searchValueOnChangeHandle}/>
+                    <input 
+                        css={searchInput} 
+                        type="text" 
+                        placeholder="검색"
+                        value={searchInputValue}
+                        onChange={searchValueOnChangeHandle}/>
                 </div>
             </header>
             <div css={mainListBox}>
@@ -581,7 +622,8 @@ const Main = () => {
                 "" 
             ) : (
                 <>
-                    {getPostList.data.postList.filter((post) => new Date(post.deadLine) > new Date())
+                    {getPostList.data.postList
+                    .filter((post) => new Date(post.deadLine) > new Date())
                     .map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}>
@@ -610,7 +652,10 @@ const Main = () => {
                                     <input css={informationTextName} type="text" value={post.regionName} readOnly />
                                     <label css={informationLabel}>날짜:</label>
                                     <input 
-                                        css={informationDate} 
+                                        css={[
+                                            informationDate, 
+                                            new Date(post.deadLine).getDate() - new Date().getDate() === 1 && finalDeadLine
+                                        ]} 
                                         type="text" 
                                         value={new Date(post.deadLine).toLocaleString("ko-KR",{
                                             month: "long",

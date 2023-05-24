@@ -9,7 +9,7 @@ import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing }
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 
-const sportsIcon = css`
+const sportsIcon = (onIconClick) => css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,11 +19,11 @@ const sportsIcon = css`
     padding: 10px;
 
     &:hover {
-    background-color: rgba(0, 255, 0, 0.2);
+    background-color: #63cc63;
     }
   
     &:active {
-    border: 2px solid green;
+    background-color: #5EC75E;
     
     }
 `;
@@ -69,46 +69,6 @@ const IconsModal = ({ onIconClick }) => {
                     {icon.icon}
                 </div>
             ))}
-            {/* <GiSoccerKick css={sportsIcon} 
-                onClick={() => onIconClick(GiSoccerKick)}/>
-            <GiBaseballBat css={sportsIcon} 
-                onClick={() => onIconClick(GiBaseballBat)} />
-            <GiBasketballBasket css={sportsIcon} 
-                onClick={() => onIconClick(GiBasketballBasket)} />
-            <GiBoatFishing css={sportsIcon} 
-                onClick={() => onIconClick(GiBoatFishing)} />
-            <GiMountainClimbing css={sportsIcon} 
-                onClick={() => onIconClick(GiMountainClimbing)} />
-            <GiBowlingStrike css={sportsIcon} 
-                onClick={() => onIconClick(GiBowlingStrike)} />
-            <GiTennisRacket css={sportsIcon} 
-                onClick={() => onIconClick(GiTennisRacket)} />
-            <GiMountainRoad css={sportsIcon} 
-                onClick={() => onIconClick(GiMountainRoad)} />
-            <FaTableTennis css={sportsIcon} 
-                onClick={() => onIconClick(FaTableTennis)} />
-            <FaVolleyballBall css={sportsIcon} 
-                onClick={() => onIconClick(FaVolleyballBall)} />
-            <FaRunning css={sportsIcon} 
-                onClick={() => onIconClick(FaRunning)} />
-            <FaSwimmer css={sportsIcon} 
-                onClick={() => onIconClick(FaSwimmer)} />
-            <CgGym css={sportsIcon} 
-                onClick={() => onIconClick(CgGym)} />
-            <IoMdBicycle css={sportsIcon} 
-                onClick={() => onIconClick(IoMdBicycle)} />
-            <MdGolfCourse css={sportsIcon} 
-                onClick={() => onIconClick(MdGolfCourse)} />
-            <MdOutlineSkateboarding css={sportsIcon} 
-                onClick={() => onIconClick(MdOutlineSkateboarding)} />
-            <MdOutlineScubaDiving css={sportsIcon} 
-                onClick={() => onIconClick(MdOutlineScubaDiving)} />
-            <MdSurfing css={sportsIcon} 
-                onClick={() => onIconClick(MdSurfing)} />
-            <RiBilliardsFill css={sportsIcon} 
-                onClick={() => onIconClick(RiBilliardsFill)} />
-            <GrGamepad css={sportsIcon} 
-                onClick={() => onIconClick(GrGamepad)} /> */}
         </>
     );
 };
