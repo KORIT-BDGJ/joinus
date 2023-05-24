@@ -16,6 +16,7 @@ import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
+import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 
@@ -36,8 +37,8 @@ public class PostService {
 
         // owner_post_list_tb에 데이터 저장
         OwnerPostList ownerPostList = OwnerPostList.builder()
-            .ownerPostListId(0) 
-            .postId(postReqDto.getPostId()) 
+            .ownerPostListId(0)
+            .postId(postReqDto.getPostId())
             .userId(postReqDto.getWriterId())
             .build();
         saveOwnerPostList(ownerPostList);
@@ -113,6 +114,17 @@ public class PostService {
 
         return list;
     }
+    
+    public List<HostPostListRespDto> getHostPostListByUserId(int userId) {
+        List<HostPostListRespDto> list = new ArrayList<>();
+
+        postRepository.getHostPostListByUserId(userId).forEach(hostPostData -> {
+            list.add(hostPostData.toDto());
+        });
+
+        return list;
+    }
+
 
     public List<HostPostListRespDto> getMyApplicantPostListByUserId(int userId) {
         List<HostPostListRespDto> list = new ArrayList<>();
@@ -141,7 +153,23 @@ public class PostService {
         map.put("stateId", stateId);
         map.put("levelId", levelId);
 
-        return postRepository.applyPost(map);
+        int result = postRepository.applyPost(map);
+
+        if (result > 0) {
+            // host_post_list_tb에 데이터 저장
+            HostPostList hostPostList = HostPostList.builder()
+                .hostPostListId(0)
+                .postId(postId)
+                .userId(userId)
+                .build();
+            saveMyApplicantPostList(hostPostList);
+        }
+
+        return result;
+    }
+
+    public int saveMyApplicantPostList(HostPostList hostPostList) {
+        return postRepository.saveMyApplicantPostList(hostPostList);
     }
 
     public int cancelApplyPost(int postId, int userId) {

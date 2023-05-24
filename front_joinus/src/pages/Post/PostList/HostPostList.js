@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
+
+
 const container = css`
   display: flex;
   flex-direction: column;
@@ -138,15 +140,15 @@ const HostPostList = () => {
   const [starCountState, setStarCountState] = useState({});
 
   const { userId } = useParams();
+  const option = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  };
+
   const getHostPostList = useQuery(
     ["getHostPostList"],
     async () => {
-      const option = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      };
-
       const response = await axios.get(
         `http://localhost:8080/post/${userId}/host`,
         option
@@ -161,25 +163,25 @@ const HostPostList = () => {
     }
   );
 
-  // useEffect(() => {
-  //   axios
-  //     .get('http://localhost:8080/api/applicant-posts')
-  //     .then((res) => {
-  //       setMyApplicantPosts(res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/post/${userId}/myapplicant`, option)
+      .then((res) => {
+        setMyApplicantPosts(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-  //   axios
-  //     .get('http://localhost:8080/api/attend-posts')
-  //     .then((res) => {
-  //       setMyAttendPosts(res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+    // axios
+    //   .get(`http://localhost:8080/post/${userId}/myattend`, option)
+    //   .then((res) => {
+    //     setMyAttendPosts(res.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+  }, []);
 
   const openCancelModal = (id) => {
     setCancelPostId(id);
@@ -321,7 +323,7 @@ const HostPostList = () => {
               <div css={postInfo}>
                 <div css={iconWrapper}>{post.sportsIcon}</div>
                 <h1 css={postTitle} onClick={() => movePost(post.postId)}>
-                  {post.postTitle}
+                  {post.title}
                 </h1>
                 <div css={buttons}>
                   {post.cancelButton && (
@@ -335,6 +337,7 @@ const HostPostList = () => {
           ))}
         </ul>
       </div>
+
 
       <div>
         <h1 css={title}>참여 완료한 글</h1>

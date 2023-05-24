@@ -30,19 +30,33 @@ public interface PostRepository {
 	
 	// post_attend_list_tb에서 id로 list 불러오기
 	public List<AttendList> getAttendListByPostId(int postId);
+	
 	// comment_tb에서 id로 불러오기
 	public List<Comment> getCommentByPostId(int postId);
+	
 	// owner_post_list_tb에 데이터 저장
-	public void saveOwnerPostList(OwnerPostList ownerPostList);
+	public int saveOwnerPostList(OwnerPostList ownerPostList);
+	
 	// owner_post_list_tb 에서 id로 list 불러오기
 	public List<OwnerPostList> getOwnerPostListByUserId(int userId);
+	
+	// host_post_list_tb 에 데이터 저장
+	public int saveMyApplicantPostList(HostPostList hostPostList);
+	
+	public List<HostPostList> getHostPostListByUserId(int userId);
+	
 	// host_post_list_tb 에서 id로 applicant_list 불러오기
 	public List<HostPostList> getMyApplicantPostListByUserId(int userId);
+	
+	// host_post_list_tb 에 데이터 저장
+	public int saveMyAttendPostListByUserId(HostPostList hostPostList);
+	
 	// host_post_list_tb 에서 id로 attend_list 불러오기 
 	public List<HostPostList> getMyAttendPostListByUserId(int userId);
+	
+	
 	
 	public int applyPost(Map<String, Object> map);
 	public int cancelApplyPost(Map<String, Object> map);
 	public int commentSubmit(Map<String, Object> map);
-	
 }
