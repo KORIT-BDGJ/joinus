@@ -16,4 +16,5 @@ public class PrincipalRespDto {
     //맞는지 모르겠음
     private String image;
 	private String nickName;
+	private int point;
 }

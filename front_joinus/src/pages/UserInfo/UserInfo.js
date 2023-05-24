@@ -12,12 +12,11 @@ import AddressChangeModal from '../../components/Modal/AddressChangeModal';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
 import { RiBilliardsFill } from 'react-icons/ri';
-import { HiOutlineMinusCircle } from 'react-icons/hi';
 import { GrGamepad } from 'react-icons/gr';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { BiCommentMinus } from 'react-icons/bi';
+import UploadImage from '../../components/Upload/UploadImage';
 
 const container = css`
   max-width: 1200px;
@@ -218,16 +217,23 @@ const minusButton = css`
 `;
 
 
-const arrowAnimation = keyframes`
-  0% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
-  100% { transform: translateX(0); }
-`;
+// const arrowAnimation = keyframes`
+//   0% { transform: translateY(0); }
+//   50% { transform: translateY(10px); }
+//   100% { transform: translateY(0); }
+// `;
 
-const arrowSpanStyle = css`
-  animation: ${arrowAnimation} 1s infinite;
-`;
-
+// const arrowSpanStyle = css`
+//   display: inline-block;
+//   animation: ${arrowAnimation} 1s infinite;
+// `;
+// const actionContainer = css`
+//   position: absolute;
+//   right: 0;
+//   bottom: 690px;
+//   padding-right: 40px;
+//   font-size: 12px;
+// `;
 
 
 
@@ -242,20 +248,20 @@ const UserInfo = () => {
     const response = await axios.get("http://localhost:8080/account/principal", option);
     setAddress(response.data.address);
     setNickname(response.data.nickName);
+    setPoint(response.data.point);
     return response.data;
   });
-
-  
 
   useEffect(() => {
     if (principal && principal.data) {
       setAddress(principal.data.address);
       setNickname(principal.data.nickName);
+      setPoint(principal.data.point);
     }
   }, [principal]);
   
   const navigate = useNavigate();
-  const fileInput = useRef(null);
+ 
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isNicknameChangeModalOpen, setIsNicknameChangeModalOpen] = useState(false);
   const [isPwChangeModalOpen, setIsPwChangeModalOpen] = useState(false);
@@ -267,6 +273,7 @@ const UserInfo = () => {
   const [nickname, setNickname] = useState("");
   const [address, setAddress] = useState(""); 
   const [password , setPassword] = useState();
+  const [point, setPoint] = useState();
   const [maskedPassword, setMaskedPassword] = useState("⁕⁕⁕⁕⁕⁕⁕⁕");
 
 
@@ -274,8 +281,6 @@ const UserInfo = () => {
   if(principal.isLoading ) {
     return <></>; // Or a loading spinner
   }
-
- 
 
 
   const closeAddressChangeModal = () => {
@@ -343,13 +348,6 @@ const UserInfo = () => {
     setAddress(newAddress);
   };
 
-  // const NicknameDisplay = ({ nickname }) => (
-  //   <>
-  //     <span>{nickname}</span>
-  //     <span css={arrowSpanStyle}>👉🏻</span>
-  //   </>
-  // );
-
 
   const renderSportIcon = (sport, size) => {
     // 운동 아이콘 추가 시 확장 
@@ -387,20 +385,21 @@ const UserInfo = () => {
         </header>
         <main css={mainContainer}>
             <div css={userContainer}>
-                <div css={imageBox} onClick={onClickHandle}>
-                
-                {previewUrl ? (
-                    <img css={imagePreview} src={previewUrl} alt="profile" />
-                ) : (
-                    <span>이미지를 업로드해주세요</span>
-                )}
-                </div>
-                
-                <input type="file" ref={fileInput} style={{ display: 'none' }} onChange={onChangeHandle} />
+            <UploadImage
+              onChangeHandle={onChangeHandle}
+              onClickHandle={onClickHandle}
+              previewUrl={previewUrl}
+              imageBoxStyle={imageBox}
+              imagePreviewStyle={imagePreview}
+            />
                 <div css={userInfo}>
                     
                   <h1 css={subTitle}>유저정보 </h1>
                   
+                    {/* <div css={actionContainer}> 
+                      <span>변경 버튼을 클릭하세요 !</span>
+                      <span css={arrowSpanStyle}>👇🏻</span>
+                    </div> */}
                   <div css={userDetail}>
                     <span>닉네임 : {nickname}</span>
                     <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
@@ -414,7 +413,7 @@ const UserInfo = () => {
                     <button css={changeButton} onClick={closeAddressChangeModal}>변경</button>
                   </div>
                   <div css={userDetail}>
-                    획득 메달 : 🥇
+                  <span>획득 점수 : {point}</span> 
                   </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.CheckPasswordReqDto;
+import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
@@ -53,6 +54,12 @@ public class AccountController {
 	        return ResponseEntity.ok().body(true);
 	    }
 	    return ResponseEntity.badRequest().body("Address change failed.");
+	}
+	
+	@ValidAspect
+	@PutMapping("/change/nickname")
+	public ResponseEntity<?> changeNickname(@Valid @RequestBody NicknameChangeReqDto nicknameChangeReqDto , BindingResult bindingResult) {
+        return ResponseEntity.ok().body(authenticationService.changeNickname(nicknameChangeReqDto));
 	}
 	
 	@GetMapping("/principal")

@@ -68,8 +68,8 @@ public class AuthenticationController {
 			return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과하였습니다.");
 		}
 		authenticationService.checkDuplicatedEmail(oAuth2RegisterReqDto.getEmail());
-		
-		return ResponseEntity.ok(authenticationService.oAuth2Register(oAuth2RegisterReqDto));
+		authenticationService.oAuth2Register(oAuth2RegisterReqDto);
+		return ResponseEntity.ok(true);
 	}
 	
 	@PutMapping("/oauth2/merge")

@@ -134,31 +134,29 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
     return response.data;
   });
 
-  if(principal.isLoading) {
-    return <></>;
-  }
-
+  
   const handleCurrentPwChange = (e) => {
     setCurrentPw(e.target.value);
   };
-
+  
   const handleNewPwChange = (e) => {
     setNewPw(e.target.value);
   };
-
+  
   const handleConfirmPwChange = (e) => {
     setConfirmPw(e.target.value);
   };
-
+  
   const handleInputFocus = () => {
     setError('');
     setInputActiveState(true);
   };
-
+  
   const handleInputBlur = () => {
     setInputErrorState(false);
   };
-
+  
+ 
 
   const handleConfirm = async () => {
     if (!currentPw) {
@@ -254,6 +252,10 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
       }
     }
   };
+
+  if(principal.isLoading) {
+    return <></>;
+  }
 
   return (
     <div css={modalContainer}>

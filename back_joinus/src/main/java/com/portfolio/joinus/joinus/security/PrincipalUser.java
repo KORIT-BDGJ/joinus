@@ -25,7 +25,6 @@ public class PrincipalUser implements UserDetails {
 	private int userId;
     private String email;
     private String password;
-    private String passwordConfirm;
     private String name;
     private String address;
     private String gender;
@@ -33,6 +32,7 @@ public class PrincipalUser implements UserDetails {
     private String provider;
     private String image;
 	private String nickName;
+	private int point;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
