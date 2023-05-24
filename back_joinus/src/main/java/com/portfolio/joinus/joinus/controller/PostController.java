@@ -75,6 +75,7 @@ public class PostController {
 	//손님으로 방입장 후 신청버튼 클릭시 신청자 목록
 	@PostMapping("post/apply/{postId}")
 	public ResponseEntity<?> applyPost(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
+		System.out.println(requestMap);
 		return ResponseEntity.ok().body(postService.applyPost(postId,  requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
 	}
 	
@@ -117,8 +118,6 @@ public class PostController {
     //신청자 수락
 	@PostMapping("/post/{postId}/applicant/accept")
 	public ResponseEntity<?> applicantAccept(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
-		System.out.println(postId);
-		System.out.println(requestMap.get("userId"));
 		return ResponseEntity.ok().body(postService.applicantAccept(postId, requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
 	}
 }

@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
+import ApplicantSelectStateLevelModal from '../../Modal/ApplicantSelectStateLevelModal';
 
 const applyPostButton = css`
     background-color: white;
@@ -21,7 +22,14 @@ const applyPostButton = css`
 
 const ApplyPost = ({ postId }) => {
     const queryClient = useQueryClient();
-
+    const [ applyStateId, setApplyStateId ] = useState("");
+    const [ applyLevelId, setApplyLevelId ] = useState("");
+    const [isStateLevelChangeModalOpen, setIsStateLevelChangeModalOpen] = useState(false);
+    
+    const opneStateLevelChangeModal = () => {
+        setIsStateLevelChangeModalOpen(!isStateLevelChangeModalOpen);
+    }
+    
     const getApplicantList= useQuery(["getApplicantList"], async () => {
         const option = {
             headers: {
@@ -33,7 +41,7 @@ const ApplyPost = ({ postId }) => {
         return response;
     });
 
-    const applyPost = useMutation(async (postId) => {
+    const applyPost = useMutation(async (postId, applyStateId, applyLevelId) => {
 
         const option = {
             headers: {
@@ -43,8 +51,8 @@ const ApplyPost = ({ postId }) => {
         }
         return await axios.post(`http://localhost:8080/post/apply/${postId}`, JSON.stringify({
             userId: queryClient.getQueryData("principal").userId,
-            stateId: "1",
-            levelId: "1"
+            stateId: applyStateId,
+            levelId: applyLevelId
         }), option);
     }, {
         onSuccess: () => {
@@ -73,6 +81,13 @@ const ApplyPost = ({ postId }) => {
         return <div>불러오는 중...</div>
     }
 
+    const updateStateId = (newStateId) => {
+        setApplyStateId(newStateId);
+    };
+    const updateLevelId = (newLevelId) => {
+        setApplyLevelId(newLevelId);
+    };
+
     const currentUserID = queryClient.getQueryData("principal").userId;
     const isCurrentUserApplied = getApplicantList.data.data.some(applicantData => applicantData.userId === currentUserID);
 
@@ -81,8 +96,12 @@ const ApplyPost = ({ postId }) => {
           {isCurrentUserApplied ? (
             <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate(postId) }}>취소</button>
           ) : (
-            <button css={applyPostButton} onClick={() => { applyPost.mutate(postId) }}>신청</button>
+            <button css={applyPostButton} onClick={opneStateLevelChangeModal}>신청</button>
+            // <button css={applyPostButton} onClick={() => { applyPost.mutate(postId) }}>신청</button>
           )}
+            <footer>
+                {isStateLevelChangeModalOpen && <ApplicantSelectStateLevelModal modalState={opneStateLevelChangeModal} updateStateId={updateStateId} updateLevelId={updateLevelId} postId={postId} applyPost={applyPost}/>}
+            </footer>
         </div>
     );
 };
