@@ -43,6 +43,11 @@ const attendButton = css`
     border: 1px solid #dbdbdb;
     border-radius: 5px;
     height: 30px;
+    cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
 `;
 
 const detailBody = css`
@@ -92,6 +97,10 @@ const detailButton = css`
     border-radius: 5px;
     height: 30px;
     cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
 `;
 
 const infoDetail = (detailShow) => css`
@@ -237,6 +246,10 @@ const applicantButton = css`
     height: 30px;
     margin-right: 5px;
     cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
 `;
 
 const detailFoot = css`

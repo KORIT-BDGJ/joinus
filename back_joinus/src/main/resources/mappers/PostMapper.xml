@@ -366,5 +366,37 @@
 		values (0, #{postId}, #{userId}, #{comment})
 	</insert>
 	
+	<delete id="commentDelete" parameterType="hashMap">
+		delete
+		from
+			comment_tb
+		where
+			post_id = #{postId}
+		and comment_id = #{commentId}
+	</delete>
+	
+	<delete id="attendDelete" parameterType="hashMap">
+		delete
+		from
+			post_attend_list_tb
+		where
+			post_id = #{postId}
+		and user_id = #{userId}
+	</delete>
+	
+	<delete id="applicantDelete" parameterType="hashMap">
+		delete
+		from
+			post_applicant_list_tb
+		where
+			post_id = #{postId}
+		and user_id = #{userId}
+	</delete>
+	
+	<insert id="applicantAccept" parameterType="hashMap">
+		insert post_attend_list_tb
+		values (0, #{postId}, #{userId}, #{stateId}, #{levelId})
+	</insert>
+	
 
 </mapper>

@@ -75,8 +75,6 @@ public class PostController {
 	//손님으로 방입장 후 신청버튼 클릭시 신청자 목록
 	@PostMapping("post/apply/{postId}")
 	public ResponseEntity<?> applyPost(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
-		System.out.println(requestMap);
-		System.out.println(postId);
 		return ResponseEntity.ok().body(postService.applyPost(postId,  requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
 	}
 	
@@ -98,4 +96,29 @@ public class PostController {
 		return ResponseEntity.ok().body(postService.commentSubmit(postId, requestMap.get("userId"), requestMap.get("comment")));
 	}
 	
+	//댓글삭제
+	@DeleteMapping("/post/{postId}/comment/delete")
+	public ResponseEntity<?> commentDelete(@PathVariable int postId, @RequestParam int commentId) {
+		return ResponseEntity.ok().body(postService.commentDelete(postId, commentId));
+	}
+	
+	//참석자 내보내기
+	@DeleteMapping("/post/{postId}/attend/delete")
+	public ResponseEntity<?> attendDelete(@PathVariable int postId, @RequestParam int userId) {
+		return ResponseEntity.ok().body(postService.attendDelete(postId, userId));
+	}
+	
+	//신청자 내보내기
+	@DeleteMapping("/post/{postId}/applicant/delete")
+	public ResponseEntity<?> applicantDelete(@PathVariable int postId, @RequestParam int userId) {
+		return ResponseEntity.ok().body(postService.applicantDelete(postId, userId));
+	}
+	
+    //신청자 수락
+	@PostMapping("/post/{postId}/applicant/accept")
+	public ResponseEntity<?> applicantAccept(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
+		System.out.println(postId);
+		System.out.println(requestMap.get("userId"));
+		return ResponseEntity.ok().body(postService.applicantAccept(postId, requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
+	}
 }

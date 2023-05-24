@@ -1,7 +1,23 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import axios from 'axios';
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
+
+const applyPostButton = css`
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
+`;
+
 
 const ApplyPost = ({ postId }) => {
     const queryClient = useQueryClient();
@@ -63,9 +79,9 @@ const ApplyPost = ({ postId }) => {
     return (
         <div>
           {isCurrentUserApplied ? (
-            <button onClick={() => { cancelApplyPost.mutate(postId) }}>취소</button>
+            <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate(postId) }}>취소</button>
           ) : (
-            <button onClick={() => { applyPost.mutate(postId) }}>신청</button>
+            <button css={applyPostButton} onClick={() => { applyPost.mutate(postId) }}>신청</button>
           )}
         </div>
     );

@@ -2,14 +2,11 @@
 import { css } from '@emotion/react'
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const tableContainer = css`
     width: 100%;
 `
-
-
-
 
 const member = css`
     margin-top: 5px;
@@ -57,11 +54,18 @@ const attendButton = css`
     border: 1px solid #dbdbdb;
     border-radius: 5px;
     height: 30px;
+    cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
 `;
 
 
 
 const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => {
+    const [ attendUserId, setAttendUserId ] = useState("");
+    const queryClient = useQueryClient();
 
     const getAttendList= useQuery(["getAttendList"], async () => {
         const option = {
@@ -78,6 +82,27 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
         }
     });
 
+    const attendDelete = useMutation(async ({ postId, attendUserId }) => {
+        const option = {
+            params: {
+                userId: attendUserId
+            },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        return await axios.delete(`http://localhost:8080/post/${postId}/attend/delete`, option);
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries("getAttendList");
+        }
+        
+    });
+
+    const deleteAttendUser = (userId) => {
+        attendDelete.mutate({ postId, attendUserId: userId });
+    };
+
     if(getAttendList.isLoading) {
         return <div>불러오는 중...</div>
     }
@@ -86,7 +111,8 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
         <div css={tableContainer}>
             {getAttendList.data.data.map(attendData => {
                 return (
-                    <div key={attendData.userId}>
+                    <div key={attendData.userId} >
+
                         <div css={member}>
                             <div css={attendInfo}>
                                 <div css={infoImage}>{attendData.image}</div>
@@ -95,7 +121,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                             <div css={attendButtonContainer}>
                                 {isCurrentUserAuthor && (
                                     <>
-                                        <button css={attendButton}>내보내기</button>
+                                        <button css={attendButton} onClick={() => deleteAttendUser(attendData.userId)}>내보내기</button>
                                     </>
                                 )}
                             </div>

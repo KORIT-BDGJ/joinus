@@ -2,8 +2,7 @@
 import { css } from '@emotion/react'
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
-import { FaUserCircle } from 'react-icons/fa';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const tableContainer = css`
     width: 100%;
@@ -57,11 +56,17 @@ const applicantButton = css`
     height: 30px;
     margin-right: 5px;
     cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
 `;
 
 
 
 const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount }) => {
+    const [ applicantUserId, setApplicantUserId ] = useState("");
+    const queryClient = useQueryClient();
 
 
     const getApplicantList= useQuery(["getApplicantList"], async () => {
@@ -78,13 +83,54 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
             updateTotalApplicantCount(response.data.length);
         }
     });
+
+    const applicantAccept = useMutation(async ({ postId, applicantUserId }) => {
+        const option = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization : `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        return await axios.post(`http://localhost:8080/post/${postId}/applicant/accept`, JSON.stringify({
+            userId: applicantUserId,
+            stateId: "3",
+            levelId: "3"
+        }), option);
+    }, {
+        onSuccess: () => {
+            queryClient.fetchQuery("getAttendList");
+            queryClient.fetchQuery("getApplicantList");
+        },
+    });
+
+    const applicantDelete = useMutation(async ({ postId, applicantUserId }) => {
+        const option = {
+            params: {
+                userId: applicantUserId
+            },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        return await axios.delete(`http://localhost:8080/post/${postId}/applicant/delete`, option);
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries("getApplicantList");
+        }
+        
+    });
+
+    const deleteApplicantUser = (userId) => {
+        applicantDelete.mutate({ postId, applicantUserId: userId });
+    };
+
+    const acceptApplicantUser = (userId) => {
+        applicantAccept.mutate({ postId, applicantUserId: userId });
+    };
     
     if(getApplicantList.isLoading) {
         return <div>불러오는 중...</div>
     }
-
-    console.log(isCurrentUserAuthor);
-    
     
     if(!getApplicantList.isLoading)
     return (
@@ -100,8 +146,8 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                             <div css={applicantButtonContainer}>
                                 {isCurrentUserAuthor && (
                                     <>
-                                        <button css={applicantButton}>수락</button>
-                                        <button css={applicantButton}>거절</button>
+                                        <button css={applicantButton} onClick={() => acceptApplicantUser(applicantData.userId)}>수락</button>
+                                        <button css={applicantButton} onClick={() => deleteApplicantUser(applicantData.userId)}>거절</button>
                                     </>
                                 )}
                             </div>

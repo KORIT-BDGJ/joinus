@@ -156,5 +156,43 @@ public class PostService {
 	      return postRepository.commentSubmit(map);
 	}
 	
+	// 댓글삭제
+	public int commentDelete(int postId, int commentId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", postId);
+		map.put("commentId", commentId);
+		
+		return postRepository.commentDelete(map);
+	}
+	
+	// 참석자 내보내기
+	public int attendDelete(int postId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", postId);
+		map.put("userId", userId);
+		
+		return postRepository.attendDelete(map);
+	}
+	
+	// 신청자 내보내기
+	public int applicantDelete(int postId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", postId);
+		map.put("userId", userId);
+		
+		return postRepository.applicantDelete(map);
+	}
+	
+	// 신청자 받기
+	public int applicantAccept(int postId, int userId, int stateId, int levelId) {
+	      Map<String, Object> map = new HashMap<>();
+	      map.put("postId", postId);
+	      map.put("userId", userId);
+	      map.put("stateId", stateId);
+	      map.put("levelId", levelId);
+	      
+	      return postRepository.applicantAccept(map);
+	}
+	
 
 }
