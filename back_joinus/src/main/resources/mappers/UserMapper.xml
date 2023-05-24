@@ -157,6 +157,14 @@
 	        user_id = #{userId}
 	</update>
 	
+	<update id="updateImage" >
+	    update user_info_tb
+	    set
+	        image = #{image}
+	    where
+	        user_id = #{userId}
+	</update>
+	
 	
 	<select id="getOwnerPostListByUserId" parameterType="int" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
 	    SELECT

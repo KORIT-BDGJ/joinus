@@ -1,22 +1,22 @@
 /** @jsxImportSource @emotion/react */
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import PwChangeModal from '../../components/Modal/PwChangeModal';
-import SportsIconModal from '../../components/Modal/SportsIconModal';
-import NicknameChangeModal from '../../components/Modal/NicknameChangeModal';
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
+import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
+import { GrGamepad } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
+import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import AddressChangeModal from '../../components/Modal/AddressChangeModal';
-import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
-import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
-import { RiBilliardsFill } from 'react-icons/ri';
-import { GrGamepad } from 'react-icons/gr';
+import NicknameChangeModal from '../../components/Modal/NicknameChangeModal';
+import PwChangeModal from '../../components/Modal/PwChangeModal';
+import SportsIconModal from '../../components/Modal/SportsIconModal';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import { useQuery } from 'react-query';
-import axios from 'axios';
-import UploadImage from '../../components/Upload/UploadImage';
+
 
 const container = css`
   max-width: 1200px;
@@ -217,26 +217,6 @@ const minusButton = css`
 `;
 
 
-// const arrowAnimation = keyframes`
-//   0% { transform: translateY(0); }
-//   50% { transform: translateY(10px); }
-//   100% { transform: translateY(0); }
-// `;
-
-// const arrowSpanStyle = css`
-//   display: inline-block;
-//   animation: ${arrowAnimation} 1s infinite;
-// `;
-// const actionContainer = css`
-//   position: absolute;
-//   right: 0;
-//   bottom: 690px;
-//   padding-right: 40px;
-//   font-size: 12px;
-// `;
-
-
-
 const UserInfo = () => {
   
   const principal = useQuery(["principal"], async () => {
@@ -249,6 +229,7 @@ const UserInfo = () => {
     setAddress(response.data.address);
     setNickname(response.data.nickName);
     setPoint(response.data.point);
+    //setProfileImgURL("http://localhost:8080/image/profile/" + response.data.profileImg);
     return response.data;
   });
 
@@ -259,10 +240,35 @@ const UserInfo = () => {
       setPoint(principal.data.point);
     }
   }, [principal]);
+
+  const profileImgSubmit = useMutation(async() => {
+
+    const formData = new FormData();
+    formData.append("profileImgFile", imgFile);
+
+    const option = {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-type": "multipart/form-data"
+      }
+    }
+
+    const response = await axios.post("http://localhost:8080/account/profile/img", formData, option);
+    return response;
+
+  },{
+    onSuccess: () => {
+            principal.refetch();
+      }
+  });
+
+
   
+  const [ imgFile, setImgFile ] = useState();
+  const fileRef = useRef();
+  const [ profileImgURL, setProfileImgURL ] = useState();
+
   const navigate = useNavigate();
- 
-  const [previewUrl, setPreviewUrl] = useState(null);
   const [isNicknameChangeModalOpen, setIsNicknameChangeModalOpen] = useState(false);
   const [isPwChangeModalOpen, setIsPwChangeModalOpen] = useState(false);
   const [isAddressChangeModalOpen, setIsAddressChangeModalOpen] = useState(false);
@@ -298,19 +304,21 @@ const UserInfo = () => {
     setIsSportsIconModalOpen(!isSportsIconModalOpen);
   }
 
-  const onChangeHandle = (e) => {
+  const profileImgFileChangeHandle = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
-        setPreviewUrl(reader.result);
+        setProfileImgURL(reader.result);
+        setImgFile(selectedFile);  // 이미지 파일을 상태에 설정
+        profileImgSubmit.mutate();  // 이미지 파일 업로드를 시작
       };
       reader.readAsDataURL(selectedFile);
     }
   };
 
-  const onClickHandle = () => {
-    fileInput.current.click();
+  const profileImgChangeHandle = () => {
+    fileRef.current.click();
   };
 
 
@@ -375,87 +383,85 @@ const UserInfo = () => {
 
   return (
     <div css={container}>
-    <Sidebar></Sidebar>
-        <header css={headerContainer}>
-            <h1 css={title}>
-              <div css={logoStyle}>
-
-              </div>
-            </h1>
-        </header>
-        <main css={mainContainer}>
-            <div css={userContainer}>
-            <UploadImage
-              onChangeHandle={onChangeHandle}
-              onClickHandle={onClickHandle}
-              previewUrl={previewUrl}
-              imageBoxStyle={imageBox}
-              imagePreviewStyle={imagePreview}
-            />
-                <div css={userInfo}>
-                    
-                  <h1 css={subTitle}>유저정보 </h1>
-                  
-                    {/* <div css={actionContainer}> 
-                      <span>변경 버튼을 클릭하세요 !</span>
-                      <span css={arrowSpanStyle}>👇🏻</span>
-                    </div> */}
-                  <div css={userDetail}>
-                    <span>닉네임 : {nickname}</span>
-                    <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
-                  </div>
-                  <div css={userDetail}>
-                    <span>비밀번호 : {maskedPassword}</span>
-                    <button css={changeButton} onClick={closePwChangeModal}>변경</button>
-                  </div>
-                  <div css={userDetail}>
-                    <span>주소 : {address}</span>
-                    <button css={changeButton} onClick={closeAddressChangeModal}>변경</button>
-                  </div>
-                  <div css={userDetail}>
-                  <span>획득 점수 : {point}</span> 
-                  </div>
-                </div>
-            </div>
-            <div css={detailContainer}>
-              <h1 css={dcTitle}>선호 운동</h1>
-              <div css={circleContainer}>
-                <div css={circle} data-index={0} onClick={handleCircleClick}>
-                  {selectedSports[0] && (
-                    <div css={minusButton} onClick={(e) => handleMinusClick(e, 0)}>－</div>
-                  )}
-                  {renderSportIcon(selectedSports[0] ,80)}
-                  {plusVisible[0] && <div css={plusButton}>+</div>}
-                </div>
-                <div css={circle} data-index={1} onClick={handleCircleClick}>
-                  {selectedSports[1] && (
-                    <div css={minusButton} onClick={(e) => handleMinusClick(e, 1)}>－</div>
-                  )}
-                  {renderSportIcon(selectedSports[1] ,80)}
-                  {plusVisible[1] && <div css={plusButton}>+</div>}
-                </div>
-                <div css={circle} data-index={2} onClick={handleCircleClick}>
-                  {selectedSports[2] && (
-                    <div css={minusButton} onClick={(e) => handleMinusClick(e, 2)}>－</div>
-                  )}
-                  {renderSportIcon(selectedSports[2] ,80)}
-                  {plusVisible[2] && <div css={plusButton}>+</div>}
-                </div>
-              </div>
-            </div>
-        </main>
-        <footer>
-          <div css={footerContainer}>
-            <button css={modifyButton} onClick={handleModifyClick}>수정</button>
+      <Sidebar />
+      <header css={headerContainer}>
+        <h1 css={title}>
+          <div css={logoStyle}></div>
+        </h1>
+      </header>
+      <main css={mainContainer}>
+        <div css={userContainer}>
+          <div css={imageBox} onClick={profileImgChangeHandle}>
+            {profileImgURL ? (
+              <img css={imagePreview} src={profileImgURL} alt="profile" />
+            ) : (
+              <span>이미지를 업로드해주세요</span>
+            )}
           </div>
-        </footer>
-        {isAddressChangeModalOpen && <AddressChangeModal closeModal={closeAddressChangeModal} updateAddress={updateAddress} />}
-        {isNicknameChangeModalOpen && <NicknameChangeModal closeModal={closeNicknameChangeModal} updateNickname={updateNickname} />}
-        {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} updatePassword={updatePassword} />}
-        {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} plusVisible={plusVisible}
-    setPlusVisible={setPlusVisible} />}
+          <input 
+            type="file" 
+            ref={fileRef} 
+            style={{ display: 'none' }} 
+            onChange={profileImgFileChangeHandle} 
+          />
+          <div css={userInfo}>
+            <h1 css={subTitle}>유저정보 </h1>
+            <div css={userDetail}>
+              <span>닉네임 : {nickname}</span>
+              <button css={changeButton} onClick={closeNicknameChangeModal}>변경</button>
+            </div>
+            <div css={userDetail}>
+              <span>비밀번호 : {maskedPassword}</span>
+              <button css={changeButton} onClick={closePwChangeModal}>변경</button>
+            </div>
+            <div css={userDetail}>
+              <span>주소 : {address}</span>
+              <button css={changeButton} onClick={closeAddressChangeModal}>변경</button>
+            </div>
+            <div css={userDetail}>
+              <span>획득 점수 : {point}</span> 
+            </div>
+          </div>
+        </div>
+        <div css={detailContainer}>
+          <h1 css={dcTitle}>선호 운동</h1>
+          <div css={circleContainer}>
+            <div css={circle} data-index={0} onClick={handleCircleClick}>
+              {selectedSports[0] && (
+                <div css={minusButton} onClick={(e) => handleMinusClick(e, 0)}>－</div>
+              )}
+              {renderSportIcon(selectedSports[0] ,80)}
+              {plusVisible[0] && <div css={plusButton}>+</div>}
+            </div>
+            <div css={circle} data-index={1} onClick={handleCircleClick}>
+              {selectedSports[1] && (
+                <div css={minusButton} onClick={(e) => handleMinusClick(e, 1)}>－</div>
+              )}
+              {renderSportIcon(selectedSports[1] ,80)}
+              {plusVisible[1] && <div css={plusButton}>+</div>}
+            </div>
+            <div css={circle} data-index={2} onClick={handleCircleClick}>
+              {selectedSports[2] && (
+                <div css={minusButton} onClick={(e) => handleMinusClick(e, 2)}>－</div>
+              )}
+              {renderSportIcon(selectedSports[2] ,80)}
+              {plusVisible[2] && <div css={plusButton}>+</div>}
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <div css={footerContainer}>
+          <button css={modifyButton} onClick={handleModifyClick}>수정</button>
+        </div>
+      </footer>
+      {isAddressChangeModalOpen && <AddressChangeModal closeModal={closeAddressChangeModal} updateAddress={updateAddress} />}
+      {isNicknameChangeModalOpen && <NicknameChangeModal closeModal={closeNicknameChangeModal} updateNickname={updateNickname} />}
+      {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} updatePassword={updatePassword} />}
+      {isSportsIconModalOpen && <SportsIconModal closeModal ={closeSportsIconModal} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} plusVisible={plusVisible} setPlusVisible={setPlusVisible} />}
     </div>
   );
+  
 };
 
 export default UserInfo;

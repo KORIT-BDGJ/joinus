@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
@@ -65,5 +67,11 @@ public class AccountController {
 	@GetMapping("/principal")
 	public ResponseEntity<?> principal() {
 		return ResponseEntity.ok().body(authenticationService.getPrincipal());
+	}
+	
+	@PostMapping("/profile/img")
+	public ResponseEntity<?> updateProfileImg(@RequestPart MultipartFile profileImgFile){
+		//System.out.println(profileImgFile.getOriginalFilename());
+		return ResponseEntity.ok(authenticationService.updateImage(profileImgFile));
 	}
 }

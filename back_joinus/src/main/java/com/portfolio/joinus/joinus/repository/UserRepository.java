@@ -27,6 +27,8 @@ public interface UserRepository {
 	
 	public int updateNickname(UserInfo userInfo);
 	
+	public int updateImage(User user);
+	
 	
 	
 	

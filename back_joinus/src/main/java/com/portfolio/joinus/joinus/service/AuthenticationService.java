@@ -1,15 +1,18 @@
 package com.portfolio.joinus.joinus.service;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,6 +34,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
@@ -58,6 +62,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
+	
+	@Value("${file.path}")
+	private String filePath;
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -329,6 +336,34 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			return userRepository.updateProvider(userEntity);
 			
 		
+		}
+		
+		public int updateImage(MultipartFile profileImgFile) {
+			String originFileName = profileImgFile.getOriginalFilename();
+			String extension = originFileName.substring(originFileName.lastIndexOf("."));
+			String tempFileName = UUID.randomUUID().toString().replaceAll("-", "") + extension;
+			UserInfo userInfo = new UserInfo();
+			userInfo.setImage(tempFileName);
+			Path uploadPath = Paths.get(filePath + "profile/" + tempFileName);
+			
+			try {
+				Files.write(uploadPath, profileImgFile.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			PrincipalUser principalUser= (PrincipalUser) SecurityContextHolder
+					.getContext()
+					.getAuthentication()
+					.getPrincipal();
+
+
+
+			return userRepository.updateImage(User.builder()
+								.userId(principalUser.getUserId())
+								.userInfo(userInfo)
+								.build());
+						
 		}
 	
 }
