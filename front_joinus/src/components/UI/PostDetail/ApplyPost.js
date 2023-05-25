@@ -26,9 +26,9 @@ const ApplyPost = ({ postId }) => {
     const [ applyLevelId, setApplyLevelId ] = useState("");
     const [isStateLevelChangeModalOpen, setIsStateLevelChangeModalOpen] = useState(false);
     
-    const opneStateLevelChangeModal = () => {
-        setIsStateLevelChangeModalOpen(!isStateLevelChangeModalOpen);
-    }
+    const openStateLevelChangeModal = () => {
+        setIsStateLevelChangeModalOpen(true);
+    };
     
     const getApplicantList= useQuery(["getApplicantList"], async () => {
         const option = {
@@ -40,8 +40,10 @@ const ApplyPost = ({ postId }) => {
         const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response;
     });
+    console.log(applyStateId)
+    console.log(applyLevelId)
 
-    const applyPost = useMutation(async (postId, applyStateId, applyLevelId) => {
+    const applyPost = useMutation(async () => {
 
         const option = {
             headers: {
@@ -60,7 +62,7 @@ const ApplyPost = ({ postId }) => {
         }
     });
 
-    const cancelApplyPost = useMutation(async (postId) => {
+    const cancelApplyPost = useMutation(async () => {
         const option = {
             params: {
                 userId: queryClient.getQueryData("principal").userId
@@ -90,17 +92,21 @@ const ApplyPost = ({ postId }) => {
 
     const currentUserID = queryClient.getQueryData("principal").userId;
     const isCurrentUserApplied = getApplicantList.data.data.some(applicantData => applicantData.userId === currentUserID);
+    
+    const closeStateLevelChangeModal = () => {
+        setIsStateLevelChangeModalOpen(false);
+        applyPost.mutate();
+    };
 
     return (
         <div>
           {isCurrentUserApplied ? (
-            <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate(postId) }}>취소</button>
+            <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate() }}>취소</button>
           ) : (
-            <button css={applyPostButton} onClick={opneStateLevelChangeModal}>신청</button>
-            // <button css={applyPostButton} onClick={() => { applyPost.mutate(postId) }}>신청</button>
+            <button css={applyPostButton} onClick={openStateLevelChangeModal}>신청</button>
           )}
             <footer>
-                {isStateLevelChangeModalOpen && <ApplicantSelectStateLevelModal modalState={opneStateLevelChangeModal} updateStateId={updateStateId} updateLevelId={updateLevelId} postId={postId} applyPost={applyPost}/>}
+                {isStateLevelChangeModalOpen && <ApplicantSelectStateLevelModal modalState={closeStateLevelChangeModal} updateStateId={updateStateId} updateLevelId={updateLevelId} postId={postId}/>}
             </footer>
         </div>
     );

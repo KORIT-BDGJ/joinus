@@ -266,6 +266,20 @@ const footHeader = css`
 `;
 
 const PostDetail = () => {
+    const [ detailShow, setDetailShow ] = useState(false);
+    const [ attendShow, setAttendShow ] = useState(false);
+    const [ applicantShow, setApplicantShow ] = useState(false);
+    const [totalApplicantCount, setTotalApplicantCount] = useState(0);
+    const [totalAttendCount, setTotalAttendCount] = useState(0);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editedTitle, setEditedTitle] = useState("");
+    const [editedLevel, setEditedLevel] = useState("");
+    const [editedState, setEditedState] = useState("");
+    const [editedMedal, setEditedMedal] = useState("");
+    const [editedSports, setEditedSports] = useState("");
+    const [editedRegion, setEditedRegion] = useState("");
+    const [editedGender, setEditedGender] = useState("");
+
     const principal = useQuery(["principal"], async () => {
         const option = {
             headers: {
@@ -276,14 +290,30 @@ const PostDetail = () => {
         return response.data;
     });
 
-    const [ detailShow, setDetailShow ] = useState(false);
-    const [ attendShow, setAttendShow ] = useState(false);
-    const [ applicantShow, setApplicantShow ] = useState(false);
-    const [totalApplicantCount, setTotalApplicantCount] = useState(0);
-    const [totalAttendCount, setTotalAttendCount] = useState(0);
+
     const applicantClickHandle = (e) => {
         setApplicantShow(!applicantShow);
     };
+
+    const enableEditMode = () => {
+        setIsEditMode(true);
+        setEditedTitle(getPost.data.data.title);
+        setEditedLevel(getPost.data.data.levelName);
+        setEditedState(getPost.data.data.stateName);
+        setEditedMedal(getPost.data.data.writerNickName);
+        setEditedSports(getPost.data.data.sportsName);
+        setEditedRegion(getPost.data.data.regionName);
+        setEditedGender(getPost.data.data.genderName);
+    };
+
+    const saveChanges = () => {
+        // Perform the logic to save the edited data, such as making an API request
+        // You can use the edited variables (e.g., editedTitle, editedLevel, etc.) to send the updated data
+        // Once the changes are saved, you can exit the edit mode
+        setIsEditMode(false);
+    };
+
+
     
 
     const detailClickHandle = (e) => {
@@ -345,7 +375,9 @@ const PostDetail = () => {
         <div css={container}>
             <Sidebar></Sidebar>
             <div css={detailHeader}>
-                <div css={headerTitle}>{getPost.data.data.title}</div>
+                <div css={headerTitle}>
+                    {getPost.data.data.title}
+                </div>
                 <div>
                     {isCurrentUserAuthor ? (
                         <>
