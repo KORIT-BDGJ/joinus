@@ -146,7 +146,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 		
 		
 		User userEntity = userRepository.findUserByEmail(principalUser.getEmail()); //email
-		System.out.println(userEntity);
+		//System.out.println(userEntity);
 		StringBuilder authorities = new StringBuilder();
 		
 		principalUser.getAuthorities().forEach(authority -> {
@@ -345,7 +345,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			UserInfo userInfo = new UserInfo();
 			userInfo.setImage(tempFileName);
 			Path uploadPath = Paths.get(filePath + "profile/" + tempFileName);
-			
+			System.out.println(uploadPath);
 			try {
 				Files.write(uploadPath, profileImgFile.getBytes());
 			} catch (IOException e) {

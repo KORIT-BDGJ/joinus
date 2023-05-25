@@ -108,7 +108,7 @@ const SportsIconModal = ({
   setPlusVisible,
 }) => {
   const [selectedSport, setSelectedSport] = useState(null);
-
+ 
   
 
   const handleSportSelect = (e) => {
@@ -117,7 +117,7 @@ const SportsIconModal = ({
   };
 
   const handleConfirm = () => {
-    console.log(selectedSport);
+    //console.log(selectedSport);
     if (selectedSport !== null) {
       setSelectedSports((prevSports) => {
         const newSports = [...prevSports];
@@ -143,6 +143,8 @@ const SportsIconModal = ({
       : sportsIcon;
   };
 
+ 
+
   return (
     <div css={modalOverlay}>
       <div css={modalContent}>
@@ -154,11 +156,11 @@ const SportsIconModal = ({
           />
         </div>
         <div css={modalButtonContainer}>
-          <button onClick={closeModal} css={modalCancelButton}>
-            취소
-          </button>
-          <button onClick={handleConfirm} css={modalConfirmButton}>
+          <button onClick={handleConfirm} css={modalCancelButton}>
             확인
+          </button>
+          <button onClick={closeModal} css={modalConfirmButton}>
+            취소
           </button>
         </div>
       </div>

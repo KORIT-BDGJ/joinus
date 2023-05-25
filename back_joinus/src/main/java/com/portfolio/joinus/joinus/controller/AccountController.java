@@ -70,8 +70,8 @@ public class AccountController {
 	}
 	
 	@PostMapping("/profile/img")
-	public ResponseEntity<?> updateProfileImg(@RequestPart MultipartFile profileImgFile){
-		//System.out.println(profileImgFile.getOriginalFilename());
+	public ResponseEntity<?> updateImage(@RequestPart MultipartFile profileImgFile){
+		System.out.println(profileImgFile.getOriginalFilename());
 		return ResponseEntity.ok(authenticationService.updateImage(profileImgFile));
 	}
 }

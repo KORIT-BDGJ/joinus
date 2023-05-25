@@ -160,7 +160,7 @@
 	<update id="updateImage" >
 	    update user_info_tb
 	    set
-	        image = #{image}
+	        image = #{userInfo.image}
 	    where
 	        user_id = #{userId}
 	</update>

@@ -47,12 +47,20 @@ const userIcon = css`
     align-items: center;
     margin-right: 10px;
     border-radius: 50%;
+    border: 2px solid #dbdbdb;
     width: 60px;
     height: 60px;
-    background-color: #713fff;
+    background-color: white;
     color: white;
     font-size: 30px;
     font-weight: 600;
+`;
+
+const imgIcon = css`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const userInfo = css`
@@ -163,10 +171,19 @@ const Sidebar = () => {
     return (
         <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle}>
             <header css={header}>
-                <div css={userIcon}>
-                </div>
+            <div css={userIcon}>
+            {principal.data.image ? (
+                <img
+                css={imgIcon}
+                src={"http://localhost:8080/image/profile/" + principal.data.image}
+                alt="Profile Image"
+                />
+            ) : (
+                <span>{principal.data.nickName}</span>
+            )}
+            </div>
                 <div css={userInfo}>
-                    {principal.data.email}
+                    {principal.data.nickName}
                 </div>
                 <div css={closeButton} onClick={sidebarCloseClickHandle}><GrFormClose /></div>
             </header>
