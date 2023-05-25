@@ -669,7 +669,9 @@ const Main = () => {
                                     <input 
                                         css={[
                                             informationDate, 
-                                            new Date(post.deadLine) > new Date() && new Date(post.deadLine) <= getNextServerTime() && finalDeadLine
+                                            new Date(post.deadLine) > new Date() && 
+                                            new Date(post.deadLine) <= getNextServerTime() && 
+                                            finalDeadLine
                                         ]} 
                                         type="text" 
                                         value={new Date(post.deadLine).toLocaleString("ko-KR",{
