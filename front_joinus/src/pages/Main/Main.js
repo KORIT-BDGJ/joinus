@@ -107,8 +107,6 @@ const postIconBox = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid #999; */
-    /* border-radius: 50%; */
     margin: 10px;
     width: 60px;
     height: 60px;
@@ -273,26 +271,26 @@ const Main = () => {
     });
 
     const sportsIcons = [
-        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
-        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
-        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
-        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
-        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
-        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
-        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
-        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
-        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
-        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
-        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
-        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
-        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
-        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
-        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
-        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
-        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
-        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
-        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
-        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+        {id: 1, name: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, name: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, name: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, name: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, name: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: "게임", icon: <GrGamepad size={32} /> }
     ]
 
     const getSports = useQuery(["getSports"], async () => {
@@ -396,6 +394,22 @@ const Main = () => {
         return <></>;
     }
 
+    const getNextServerTime = () => {
+        const currentDate = new Date();
+        const nextDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+        let nextServerTime;
+      
+        if (currentDate.getHours() < 12) {
+          // 현재 시간이 오전인 경우
+          nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
+        } else {
+          // 현재 시간이 오후인 경우
+          nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
+        }
+      
+        return nextServerTime;
+      }
+
     const handleIconSelect = (IconComponent) => {
         setSelectedIcon(IconComponent.id);
         setSearchParams((prevState) => ({
@@ -471,7 +485,7 @@ const Main = () => {
 
     const createClickHandle = () => {
         navigate("/post/register");
-    }
+    }    
 
     const pagination = () => {
 
@@ -579,7 +593,7 @@ const Main = () => {
             <Sidebar></Sidebar>
             <header css={header}>
                 <button css={resetButton} onClick={resetSearchClickHandle}><GrPowerReset /></button>
-                <div css={selectIconbox} onClick={() => setSportsModalIsOpen(true)}>
+                <div css={selectIconbox} onClick={(e) => setSportsModalIsOpen(true)}>
                     {icons}
                 </div>
                 {getSports.isLoading ? ""
@@ -623,7 +637,6 @@ const Main = () => {
             ) : (
                 <>
                     {getPostList.data.postList
-                    .filter((post) => new Date(post.deadLine) > new Date())
                     .map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}>
@@ -654,7 +667,7 @@ const Main = () => {
                                     <input 
                                         css={[
                                             informationDate, 
-                                            new Date(post.deadLine).getDate() - new Date().getDate() === 1 && finalDeadLine
+                                            new Date(post.deadLine) > new Date() && new Date(post.deadLine) <= getNextServerTime() && finalDeadLine
                                         ]} 
                                         type="text" 
                                         value={new Date(post.deadLine).toLocaleString("ko-KR",{

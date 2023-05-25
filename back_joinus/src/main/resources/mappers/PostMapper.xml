@@ -178,6 +178,7 @@
             left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
         where
         	1 = 1
+        	and pt.deadline &gt; now()
         	<choose>
         		<when test="searchType == 2">
         			and pt.title like concat('%', #{searchValue}, '%')
@@ -224,6 +225,7 @@
   			left outer join gender_tb gt ON (gt.gender_id = pt.gender_id)
 		where
 			1 = 1
+			and pt.deadline &gt; now()
 			<if test="searchIds != null">
 				and pt.search_id in  (
 					<foreach item="searchId" collection="searchIds" separator=",">

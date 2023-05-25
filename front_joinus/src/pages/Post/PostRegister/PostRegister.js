@@ -67,6 +67,18 @@ const postInput = css`
     border-bottom: 1px solid #eee;
 `;
 
+const errorMessage = css`
+    display: none;
+    margin-top: 5px;
+    font-size: 10px;
+    color: red;
+
+    &:active {
+        display: block;
+    }
+
+`;
+
 const selectLevelBox = css`
     display: flex;
     justify-content: center;
@@ -216,26 +228,26 @@ const PostRegister = () => {
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
     const sportsIcons = [
-        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
-        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
-        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
-        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
-        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
-        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
-        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
-        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
-        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
-        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
-        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
-        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
-        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
-        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
-        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
-        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
-        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
-        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
-        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
-        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+        {id: 1, name: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, name: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, name: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, name: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, name: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: "게임", icon: <GrGamepad size={32} /> }
     ]
     
     const option = {
@@ -245,8 +257,6 @@ const PostRegister = () => {
     }
 
     const postSubmit = useMutation(async () => {
-
-        console.log(selectedIcon);
 
         const data = {
             writerId: principal.data.userId,
@@ -366,12 +376,13 @@ const PostRegister = () => {
         enabled: !!localStorage.getItem("accessToken"),
       });
 
-    // 작성버튼 확인 모달창
-    // const [ submitModalIsOpen, setSubmitModalIsOpen ] = useState(false); 
-
     if(principal.isLoading) {
         return <></>;
     }
+
+    const validateInput = (input) => {
+        return /^[A-Za-z가-힣\s\.,?!@#$%^&*()\-_+=<>:;{}[\]|\\/]+$/g.test(input);
+    };
 
     const sendPost = () => {
         postSubmit.mutate();
@@ -403,6 +414,16 @@ const PostRegister = () => {
                 alert(message);
                 return;
             }
+        }
+
+        if (!validateInput(titlePost)) {
+            alert("올바르지 않은 형식입니다! 다시 입력하세요.");
+            return;
+        }
+
+        if (!validateInput(textPost)) {
+            alert("올바르지 않은 형식입니다! 다시 입력하세요.");
+            return;
         }
 
         sendPost();
@@ -547,7 +568,6 @@ const PostRegister = () => {
             </main>
                 <div css={buttonBox}>
                     <button css={modifyButton} onClick={createClickHandle} >작성</button>
-                    {/* <SelectModifyModal isOpen={submitModalIsOpen} setIsOpen={setSubmitModalIsOpen}/> */}
                     <button css={cancelButton} onClick={cancelClickHandle}>취소</button>
                 </div>
                 
