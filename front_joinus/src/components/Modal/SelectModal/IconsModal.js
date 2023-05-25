@@ -9,7 +9,7 @@ import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing }
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 
-const sportsIcon = css`
+const sportsIcon = () => css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,11 +19,11 @@ const sportsIcon = css`
     padding: 10px;
 
     &:hover {
-    background-color: rgba(0, 255, 0, 0.2);
+    background-color: #63cc63;
     }
   
     &:active {
-    border: 2px solid green;
+    background-color: #5EC75E;
     
     }
 `;
@@ -31,26 +31,26 @@ const sportsIcon = css`
 const IconsModal = ({ onIconClick }) => {
 
     const sportsIcons = [
-        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
-        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
-        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
-        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
-        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
-        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
-        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
-        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
-        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
-        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
-        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
-        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
-        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
-        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
-        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
-        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
-        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
-        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
-        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
-        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+        {id: 1, name: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, name: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, name: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, name: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, name: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: "게임", icon: <GrGamepad size={32} /> }
     ]
 
     const handleIconClick = (icon) => {
@@ -69,46 +69,6 @@ const IconsModal = ({ onIconClick }) => {
                     {icon.icon}
                 </div>
             ))}
-            {/* <GiSoccerKick css={sportsIcon} 
-                onClick={() => onIconClick(GiSoccerKick)}/>
-            <GiBaseballBat css={sportsIcon} 
-                onClick={() => onIconClick(GiBaseballBat)} />
-            <GiBasketballBasket css={sportsIcon} 
-                onClick={() => onIconClick(GiBasketballBasket)} />
-            <GiBoatFishing css={sportsIcon} 
-                onClick={() => onIconClick(GiBoatFishing)} />
-            <GiMountainClimbing css={sportsIcon} 
-                onClick={() => onIconClick(GiMountainClimbing)} />
-            <GiBowlingStrike css={sportsIcon} 
-                onClick={() => onIconClick(GiBowlingStrike)} />
-            <GiTennisRacket css={sportsIcon} 
-                onClick={() => onIconClick(GiTennisRacket)} />
-            <GiMountainRoad css={sportsIcon} 
-                onClick={() => onIconClick(GiMountainRoad)} />
-            <FaTableTennis css={sportsIcon} 
-                onClick={() => onIconClick(FaTableTennis)} />
-            <FaVolleyballBall css={sportsIcon} 
-                onClick={() => onIconClick(FaVolleyballBall)} />
-            <FaRunning css={sportsIcon} 
-                onClick={() => onIconClick(FaRunning)} />
-            <FaSwimmer css={sportsIcon} 
-                onClick={() => onIconClick(FaSwimmer)} />
-            <CgGym css={sportsIcon} 
-                onClick={() => onIconClick(CgGym)} />
-            <IoMdBicycle css={sportsIcon} 
-                onClick={() => onIconClick(IoMdBicycle)} />
-            <MdGolfCourse css={sportsIcon} 
-                onClick={() => onIconClick(MdGolfCourse)} />
-            <MdOutlineSkateboarding css={sportsIcon} 
-                onClick={() => onIconClick(MdOutlineSkateboarding)} />
-            <MdOutlineScubaDiving css={sportsIcon} 
-                onClick={() => onIconClick(MdOutlineScubaDiving)} />
-            <MdSurfing css={sportsIcon} 
-                onClick={() => onIconClick(MdSurfing)} />
-            <RiBilliardsFill css={sportsIcon} 
-                onClick={() => onIconClick(RiBilliardsFill)} />
-            <GrGamepad css={sportsIcon} 
-                onClick={() => onIconClick(GrGamepad)} /> */}
         </>
     );
 };

@@ -16,16 +16,29 @@ import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-ico
 import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
+import { GrPowerReset } from 'react-icons/gr';
 
 const mainContainer = css`
     padding: 10px;
 `;
 
 const header = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 100px;
+`;
+
+const resetButton = css`
+    position: absolute;
+    top: 0;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    cursor: pointer;
 `;
 
 const selectIconbox = css`
@@ -94,8 +107,6 @@ const postIconBox = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #999;
-    border-radius: 50%;
     margin: 10px;
     width: 60px;
     height: 60px;
@@ -165,6 +176,10 @@ const informationDate = css`
     cursor: pointer;
 `;
 
+const finalDeadLine = css`
+    background-color: red;
+`;
+
 const informationCount = css`
     width: 60px;
     text-align: center;
@@ -181,6 +196,27 @@ const pageButton = css`
     padding: 15px;
 `;
 
+const goToPageButton = css`
+    border: none;
+    border-radius: 50%;
+    margin: 0 1px;
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #96ffff;
+    }
+    &:active {
+        background-color: #1eddff;
+    }
+`;
+
+const nowPageButton = css`
+    background-color: #1eddff;
+`;
+
 const createButton = css`
     position: absolute;
     border-radius: 6px;
@@ -195,7 +231,7 @@ const Main = () => {
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
-        sprotsId: null,
+        sprotsId: 0,
         searchType: 1,
         searchValue: ""
     });
@@ -209,9 +245,7 @@ const Main = () => {
         }
     );
 
-    // 검색 기본값 설정 코드
-    // const [defaultSearchValue, setDefaultSearchValue] = useState("");
-    // const [defaultRegionId, setDefaultRegionId] = useState(0);
+    const [ searchInputValue, setSearchInputValue ] = useState("");
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
@@ -241,41 +275,43 @@ const Main = () => {
           // 토큰이 존재할 때만 쿼리를 활성화합니다.
           enabled: !!localStorage.getItem("accessToken"),
         }
-    );
+        const response = await axios.get("http://localhost:8080/account/principal", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
 
     const sportsIcons = [
-        {id: 1, name: 'gym', icon: <CgGym size={32} /> },
-        {id: 2, name: 'running', icon: <FaRunning size={32} /> },
-        {id: 3, name: 'soccer', icon: <GiSoccerKick size={32} /> },
-        {id: 4, name: 'baseball', icon: <GiBaseballBat size={32} /> },
-        {id: 5, name: 'basketball', icon: <GiBasketballBasket size={32} /> },
-        {id: 6, name: 'swimmer', icon: <FaSwimmer size={32} /> },
-        {id: 7, name: 'tennis', icon: <GiTennisRacket size={32} /> },
-        {id: 8, name: 'climmer', icon: <GiMountainClimbing size={32} /> },
-        {id: 9, name: 'cycle', icon: <IoMdBicycle size={32} /> },
-        {id: 10, name: 'mountainroad', icon: <GiMountainRoad size={32} /> },
-        {id: 11, name: 'fishing', icon: <GiBoatFishing size={32} /> },
-        {id: 12, name: 'bowling', icon: <GiBowlingStrike size={32} /> },
-        {id: 13, name: 'tabletennis', icon: <FaTableTennis size={32} /> },
-        {id: 14, name: 'volleyball', icon: <FaVolleyballBall size={32} /> },
-        {id: 15, name: 'golf', icon: <MdGolfCourse size={32} /> },
-        {id: 16, name: 'skateboarding', icon: <MdOutlineSkateboarding size={32} /> },
-        {id: 17, name: 'scubadiving', icon: <MdOutlineScubaDiving size={32} /> },
-        {id: 18, name: 'surfing', icon: <MdSurfing size={32} /> },
-        {id: 19, name: 'billiards', icon: <RiBilliardsFill size={32} /> },
-        {id: 20, name: 'game', icon: <GrGamepad size={32} /> }
+        {id: 1, name: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, name: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, name: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, name: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, name: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: "게임", icon: <GrGamepad size={32} /> }
     ]
-
-    // useEffect(() => {
-    //     if(principal.isSuccess) {
-    //         const userPreferences = principal.data.preferneces; // 사용자의 선호 운동 데이터 (principal.data.선호운동)
-    //         const defaultSearchValue = userPreferences.join(", "); // 선호 운동 데이터를 쉼표로 구분하여 문자열로 변환
-    //         setDefaultSearchValue(defaultSearchValue);
-
-    //         const userRegionId = principal.data.regionId; // 사용자의 지역 데이터
-    //         setDefaultRegionId(userRegionId);
-    //     }
-    // }, [principal.isSuccess, principal.data]);
 
     const getSports = useQuery(["getSports"], async () => {
         const option = {
@@ -283,20 +319,20 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
+
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
-    }
-    ,
+    },
     {
-        onError: (error) => {
+      onError: (error) => {
         // 인증에 실패했을 때의 처리를 추가합니다.
         if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
+          
+          console.error('Error fetching principal:', error);
         }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
@@ -312,15 +348,15 @@ const Main = () => {
         return response.data;
     },
     {
-        onError: (error) => {
+      onError: (error) => {
         // 인증에 실패했을 때의 처리를 추가합니다.
         if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
+          
+          console.error('Error fetching principal:', error);
         }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
@@ -333,15 +369,15 @@ const Main = () => {
         return response.data;
     },
     {
-        onError: (error) => {
+      onError: (error) => {
         // 인증에 실패했을 때의 처리를 추가합니다.
         if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
+          
+          console.error('Error fetching principal:', error);
         }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getPostList = useQuery(["getPostList"], async () => {
@@ -363,38 +399,52 @@ const Main = () => {
         }
     },
     {
-        onError: (error) => {
+      onError: (error) => {
         // 인증에 실패했을 때의 처리를 추가합니다.
         if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
+          
+          console.error('Error fetching principal:', error);
         }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
     });
 
     if(principal.isLoading) {
         return <></>;
     }
 
-    const handleIconSelect = (IconComponent) => {
+    const getNextServerTime = () => {
+        const currentDate = new Date();
+        const nextDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+        let nextServerTime;
+      
+        if (currentDate.getHours() < 12) {
+          // 현재 시간이 오전인 경우
+          nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
+        } else {
+          // 현재 시간이 오후인 경우
+          nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
+        }
+      
+        return nextServerTime;
+      }
 
+    const handleIconSelect = (IconComponent) => {
         setSelectedIcon(IconComponent.id);
         setSearchParams((prevState) => ({
             ...prevState,
-            sportsId: IconComponent.id
+            sportsId: IconComponent.id,
+            page: 1
         }));
     }
 
     const selectedIconClickHandle = () => {
         const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
         setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        setRefresh(true);
     }
 
-    const onConfirm = () => {
-        setSportsModalIsOpen(false);
-    }
 
     const handleOptionChange = (optionName) => (option) => {
         if(optionName === "regionId") {
@@ -414,15 +464,37 @@ const Main = () => {
         }
         setSearchParams({
             ...searchParams,
-            [optionName]: option.value
+            [optionName]: option.value,
+            page: 1
         });
         setRefresh(true);
     }
 
     const searchValueOnChangeHandle = (e) => {
+
+        const value = e.target.value;
+        setSearchInputValue(value);
         setSearchParams({
             ...searchParams,
-            searchValue: e.target.value
+            searchValue: value
+        });
+        setRefresh(true);
+    }
+
+    const resetSearchClickHandle = () => {
+        setIcons(<FcSportsMode css={sportIcon} />);
+        setSearchInputValue("");
+        setSelectedOptions({
+            region: {value: 0, label: "전체"},
+            searchType: {value: 1, label: "전체"}
+        });
+        setSearchParams({
+            ...searchParams,
+            page: 1, 
+            regionId: 0,
+            sportsId: 0,
+            searchType: 1,
+            searchValue: ""
         });
         setRefresh(true);
     }
@@ -433,7 +505,7 @@ const Main = () => {
 
     const createClickHandle = () => {
         navigate("/post/register");
-    }
+    }    
 
     const pagination = () => {
 
@@ -467,7 +539,6 @@ const Main = () => {
 
         const nextSetPage = () => {
             const nextStartIndex = endIndex + 1;
-            const nextEndIndex = nextStartIndex + 4 <= lastPage ? nextStartIndex + 4 : lastPage;
             setSearchParams({ ...searchParams, page: nextStartIndex });
             setRefresh(true);
         }
@@ -475,33 +546,64 @@ const Main = () => {
         return (
             <>
                 {startIndex > 1 && (
-                <button disabled={startIndex <= 1} onClick={beforeFirstSetPage}>
-                    &#60;&#60;
-                </button>
+                    <button 
+                        css={goToPageButton} 
+                        disabled={startIndex <= 1} 
+                        onClick={beforeFirstSetPage}
+                    >
+                        &#60;&#60;
+                    </button>
                 )}
 
                 {beforePage && (
-                    <button disabled={nowPage === 1} onClick={() => {
-                        setSearchParams({...searchParams, page: nowPage - 1});
-                        setRefresh(true);
-                    }}>&#60;</button>
+                    <button 
+                        css={goToPageButton} 
+                        disabled={nowPage === 1} 
+                        onClick={() => {
+                            setSearchParams({...searchParams, page: nowPage - 1});
+                            setRefresh(true);
+                        }}
+                    >
+                        &#60;
+                    </button>
                 )}
 
-                {pageNumbers.map(page => (<button key={page} onClick={() => {
-                    setSearchParams({...searchParams, page});
-                    setRefresh(true);
-                }} disabled={page === nowPage}>{page}</button>))}
+                {pageNumbers.map(page => (
+                    <button 
+                        css={[goToPageButton, page === nowPage && nowPageButton]} 
+                        key={page} 
+                        onClick={() => {
+                            setSearchParams({...searchParams, page});
+                            setRefresh(true);
+                        }} 
+                        disabled={page === nowPage}
+                    >
+                        {page}
+                    </button>
+                ))}
 
                 {afterPage && (
-                    <button disabled={nowPage === lastPage} onClick={() => {
-                        setSearchParams({...searchParams, page: nowPage + 1});
-                        setRefresh(true);
-                    }}>&#62;</button>
+                    <button 
+                        css={goToPageButton} 
+                        disabled={nowPage === lastPage} 
+                        onClick={() => {
+                            setSearchParams({...searchParams, page: nowPage + 1});
+                            setRefresh(true);
+                        }}
+                    >
+                        &#62;
+                    </button>
                 )}
 
-                <button disabled={nowPage === lastPage} onClick={nextSetPage}>
-                    &#62;&#62;
-                </button>
+                {afterPage && nowPage + 5 <= lastPage && (
+                    <button 
+                        css={goToPageButton} 
+                        disabled={nowPage === lastPage} 
+                        onClick={nextSetPage}
+                    >
+                        &#62;&#62;
+                    </button>
+                )}
             </>
         )
     }   
@@ -510,7 +612,8 @@ const Main = () => {
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
-                <div css={selectIconbox} onClick={() => setSportsModalIsOpen(true)}>
+                <button css={resetButton} onClick={resetSearchClickHandle}><GrPowerReset /></button>
+                <div css={selectIconbox} onClick={(e) => setSportsModalIsOpen(true)}>
                     {icons}
                 </div>
                 {getSports.isLoading ? ""
@@ -518,9 +621,7 @@ const Main = () => {
                         isOpen={sportsModalIsOpen} 
                         setIsOpen={setSportsModalIsOpen} 
                         onSelect={handleIconSelect} 
-                        onConfirm={onConfirm}
                         onClick={selectedIconClickHandle}
-                        selectedIconId={selectedIcon}
                     />
                 }
                 <div css={selectIconbox}>
@@ -542,7 +643,12 @@ const Main = () => {
                             options={getSearchs.data.map(search => ({"value": search.searchId, "label": search.searchName}))}
                             placeholder="항목"
                         />}
-                    <input css={searchInput} type="text" placeholder="검색" onChange={searchValueOnChangeHandle}/>
+                    <input 
+                        css={searchInput} 
+                        type="text" 
+                        placeholder="검색"
+                        value={searchInputValue}
+                        onChange={searchValueOnChangeHandle}/>
                 </div>
             </header>
             <div css={mainListBox}>
@@ -550,7 +656,8 @@ const Main = () => {
                 "" 
             ) : (
                 <>
-                    {getPostList.data.postList.map((post) =>(
+                    {getPostList.data.postList
+                    .map((post) =>(
                         <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
                             <div css={postIconBox}>
                                 {sportsIcons.filter(sportIcon => sportIcon.id === parseInt(!!post.sportsId ? post.sportsId : 1))[0].icon}
@@ -578,7 +685,10 @@ const Main = () => {
                                     <input css={informationTextName} type="text" value={post.regionName} readOnly />
                                     <label css={informationLabel}>날짜:</label>
                                     <input 
-                                        css={informationDate} 
+                                        css={[
+                                            informationDate, 
+                                            new Date(post.deadLine) > new Date() && new Date(post.deadLine) <= getNextServerTime() && finalDeadLine
+                                        ]} 
                                         type="text" 
                                         value={new Date(post.deadLine).toLocaleString("ko-KR",{
                                             month: "long",
@@ -592,7 +702,6 @@ const Main = () => {
                                     <input css={informationTextName} type="text" value={post.genderName} readOnly />
                                     <label css={informationLabel}>인원:</label>
                                     <input css={informationCount} type="text" value={post.recruitsCount} readOnly />
-                                    {/* <input css={informationCount} type="text" value={`${post.applicants}/${post.recruitsCount}`} readOnly /> */}
                                 </footer>
                             </div>
                         </div>

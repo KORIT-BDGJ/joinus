@@ -2,8 +2,6 @@
 import { css } from '@emotion/react';
 import React from 'react';
 import IconsModal from './IconsModal';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 
 const modalMainContainer = (isOpen) => css`
     display: ${isOpen ? "block" : "none"};

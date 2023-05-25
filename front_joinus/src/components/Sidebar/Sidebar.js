@@ -109,7 +109,7 @@ const footer = css`
 `;
 
 const Sidebar = () => {
-   
+    
     const queryClient = useQueryClient(); // 쿼리를 무효화시키기 위해 사용합니다.
 
     const principal = useQuery(
@@ -138,7 +138,20 @@ const Sidebar = () => {
           // 토큰이 존재할 때만 쿼리를 활성화합니다.
           enabled: !!localStorage.getItem("accessToken"),
         }
-    );
+        const response = await axios.get("http://localhost:8080/account/principal", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
 
     const [ isOpen, setIsOpen ] = useState(false);
 
