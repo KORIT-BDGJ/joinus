@@ -20,7 +20,7 @@ const sidebar = (isOpen) => css`
     height: 800px;
     z-index: 999;
     box-shadow: -1px 0px 5px #dbdbdb;
-    transition: left 1s ease;
+    transition: left 0.5s ease;
     background-color: white;
     
     ${isOpen ? "" : `
@@ -71,13 +71,6 @@ const userInfo = css`
     font-weight: 600;
 `;
 
-const userNickName = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
-    border: 1px solid #999;
-`;
 
 const closeButton = css`
     position: absolute;
