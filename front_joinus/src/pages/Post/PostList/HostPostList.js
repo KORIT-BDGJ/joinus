@@ -7,21 +7,21 @@ import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 const container = css`
-    display: flex; // 가로정렬
-    flex-direction: column; // 세로정렬
-    align-items: center; // 가로정렬
-    padding: 30px; // 안쪽여백
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 30px; 
 `;
 
 const title = css`
-    display: flex; // 가로정렬
-    justify-content: center; // 중앙정렬
-    align-items: center; // 세로정렬
-    margin: 10px; // 바깥여백
-    padding: 10px; // 안쪽여백
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    margin: 10px; 
+    padding: 10px; 
     font-size: 34px; 
     font-weight: 600;
 `;
@@ -135,6 +135,11 @@ const HostPostList = () => {
     });
     const [starCount, setStarCount] = useState({});
     const [starCountState, setStarCountState] = useState({});
+    const navigate = useNavigate();
+
+    const movePost = (postId) => {
+        navigate(`/post/${postId}`);
+    };
 
     const { userId } = useParams();
     const option = {
@@ -143,7 +148,7 @@ const HostPostList = () => {
         },
     };
     
-    const { data: currentUser, isLoading: currentUserLoading, isError: currentUserError } = useQuery(
+    const currentUserQuery = useQuery(
         'currentUser',
         async () => {
             const response = await axios.get('http://localhost:8080/account/principal', option);
@@ -154,30 +159,23 @@ const HostPostList = () => {
             refetchOnWindowFocus: false,
         }
     );
-
     
     const getHostPostList = useQuery(
-        ['getHostPostList', userId],
+        'getHostPostList',
         async () => {
-            const option = {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                },
-            };
-
             const response = await axios.get(`http://localhost:8080/post/${userId}/host`, option);
-
-            console.log('getHostPostList response:', response.data);
-
             return response.data;
         },
         {
-            enabled: Boolean(currentUser.data),
+            enabled: Boolean(currentUserQuery.data),
             refetchOnWindowFocus: false,
+            onSuccess: (data) => {
+                setMyAttendPosts(data);
+            },
         }
     );
-
     
+    const currentUser = currentUserQuery.data; // Access the data property if it exists
 
     useEffect(() => {
         axios
@@ -214,9 +212,7 @@ const HostPostList = () => {
         setCancelModalOpen(false);
     };
 
-    const movePost = (postId) => {
-        Navigate(`/post/${postId}`);
-    };
+   
 
     const handleButtonClick = (type, postId) => {
         const selectedPost = myAttendPosts.find((post) => post.postId === postId);
@@ -328,13 +324,7 @@ const HostPostList = () => {
     const inactiveStar = <AiOutlineStar />;
     const activeStar = <AiFillStar />;
 
-    if (currentUserLoading || getHostPostList.isLoading) {
-        return <div>Loading...</div>;
-    }
 
-    if (currentUserError || getHostPostList.isError) {
-        return <div>Error occurred while fetching data.</div>;
-    }
 
     return (
         <div css={container}>
