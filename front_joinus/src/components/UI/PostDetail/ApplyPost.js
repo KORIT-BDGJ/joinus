@@ -40,8 +40,6 @@ const ApplyPost = ({ postId }) => {
         const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response;
     });
-    console.log(applyStateId)
-    console.log(applyLevelId)
 
     const applyPost = useMutation(async () => {
 
@@ -71,7 +69,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://localhost:8080/post/cancle/apply/${postId}`, option);
+        return await axios.delete(`http://localhost:8080/post/cancel/apply/${postId}`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getApplicantList");

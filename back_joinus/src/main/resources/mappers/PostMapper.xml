@@ -242,7 +242,9 @@
 			uit.image,
 			uit.nickname,
 			lt.level_name AS levelName,
-			stt.state_name AS stateName
+			lt.level_id AS levelId,
+			stt.state_name AS stateName,
+			stt.state_id AS stateId
 		FROM 
 			post_applicant_list_tb papl
 			LEFT OUTER JOIN post_tb pt ON (pt.post_id = papl.post_id)

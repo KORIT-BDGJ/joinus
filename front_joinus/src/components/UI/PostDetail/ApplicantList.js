@@ -34,6 +34,13 @@ const infoImage = css`
     font-size: 10px;
 `;
 
+const imgIcon = css`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const infoNickname = css`
     display: flex;
     flex-direction: row;
@@ -66,6 +73,8 @@ const applicantButton = css`
 
 const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount }) => {
     const [ applicantUserId, setApplicantUserId ] = useState("");
+    const [ applicantStateId, setApplicantStateId ] = useState("");
+    const [ applicantLevelId, setApplicantLevelId ] = useState("");
     const queryClient = useQueryClient();
 
 
@@ -84,7 +93,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
         }
     });
 
-    const applicantAccept = useMutation(async ({ postId, applicantUserId }) => {
+    const applicantAccept = useMutation(async ({ postId, applicantUserId, applicantStateId, applicantLevelId }) => {
         const option = {
             headers: {
                 "Content-Type": "application/json",
@@ -93,8 +102,8 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
         }
         return await axios.post(`http://localhost:8080/post/${postId}/applicant/accept`, JSON.stringify({
             userId: applicantUserId,
-            stateId: "3",
-            levelId: "3"
+            stateId: applicantStateId,
+            levelId: applicantLevelId
         }), option);
     }, {
         onSuccess: () => {
@@ -124,14 +133,17 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
         applicantDelete.mutate({ postId, applicantUserId: userId });
     };
 
-    const acceptApplicantUser = (userId) => {
-        applicantAccept.mutate({ postId, applicantUserId: userId });
+    const acceptApplicantUser = (userId, stateId, levelId) => {
+        console.log(userId, stateId, levelId)
+        applicantAccept.mutate({ postId, applicantUserId: userId, applicantStateId: stateId, applicantLevelId: levelId });
     };
     
     if(getApplicantList.isLoading) {
         return <div>불러오는 중...</div>
     }
     
+    console.log(getApplicantList.data.data)
+
     if(!getApplicantList.isLoading)
     return (
         <div css={tableContainer}>
@@ -140,13 +152,27 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                     <div key={applicantData.userId}>
                         <div css={member}>
                             <div css={applicantInfo}>
-                                <div css={infoImage}>{applicantData.image}</div>
+                                <div css={infoImage}>
+                                {queryClient.getQueryData("principal").data.image ? (
+                                    <img
+                                        css={imgIcon}
+                                        src={"http://localhost:8080/image/profile/" + queryClient.getQueryData("principal").data.image}
+                                        alt="Profile Image"
+                                    />
+                                ) : (
+                                    <span>{queryClient.getQueryData("principal").data.nickName}</span>
+                                )}
+                                </div>
                                 <div css={infoNickname}>{applicantData.nickName}</div>
                             </div>
                             <div css={applicantButtonContainer}>
                                 {isCurrentUserAuthor && (
                                     <>
-                                        <button css={applicantButton} onClick={() => acceptApplicantUser(applicantData.userId)}>수락</button>
+                                        <button
+                                        css={applicantButton}
+                                        onClick={() => acceptApplicantUser(applicantData.userId, applicantData.stateId, applicantData.levelId)}>
+                                        수락
+                                        </button>
                                         <button css={applicantButton} onClick={() => deleteApplicantUser(applicantData.userId)}>거절</button>
                                     </>
                                 )}

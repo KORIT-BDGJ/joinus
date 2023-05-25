@@ -88,6 +88,14 @@ const ownerPicture = css`
     border-radius:  50%;
     font-size: 13px;
 `;
+
+const imgIcon = css`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const ownerNickname = css`
     padding: 10px;
 `;
@@ -393,7 +401,17 @@ const PostDetail = () => {
                 <div css={infoBasic}>
                     <div css={infoBox}>
                         <div css={ownerInfo}>방장정보 :</div>
-                        <div css={ownerPicture}>{getPost.data.data.image}</div>
+                        <div css={ownerPicture}>
+                            {principal.data.image ? (
+                                <img
+                                    css={imgIcon}
+                                    src={"http://localhost:8080/image/profile/" + principal.data.image}
+                                    alt="Profile Image"
+                                />
+                            ) : (
+                                <span>{principal.data.nickName}</span>
+                            )}
+                        </div>
                         <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
                     </div>
                     <button css={detailButton} onClick={detailClickHandle}>방장 상세정보</button>

@@ -15,7 +15,9 @@ public class ApplicantList {
 	private String image;
 	private String nickName;
 	private String stateName;
+	private int stateId;
 	private String levelName;
+	private int levelId;
 	
 	private User user;
 	private Post post;
@@ -29,7 +31,9 @@ public class ApplicantList {
 				.image(image)
 				.nickName(nickName)
 				.stateName(stateName)
+				.stateId(stateId)
 				.levelName(levelName)
+				.levelId(levelId)
 				.build();
 	}
 

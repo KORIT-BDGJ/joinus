@@ -153,8 +153,6 @@ const Sidebar = () => {
             localStorage.removeItem("accessToken");
         }
     }
-
-    console.log(principal);
     
     if(principal.isLoading || principal.isError) {
         return <></>;
