@@ -40,10 +40,10 @@ public interface PostRepository {
 	// owner_post_list_tb 에서 id로 list 불러오기
 	public List<OwnerPostList> getOwnerPostListByUserId(int userId);
 	
+	public List<HostPostList> getHostPostListByUserId(int userId);
+	
 	// host_post_list_tb 에 데이터 저장
 	public int saveMyApplicantPostList(HostPostList hostPostList);
-	
-	public List<HostPostList> getHostPostListByUserId(int userId);
 	
 	// host_post_list_tb 에서 id로 applicant_list 불러오기
 	public List<HostPostList> getMyApplicantPostListByUserId(int userId);
