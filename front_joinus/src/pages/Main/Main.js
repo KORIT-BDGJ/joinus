@@ -253,41 +253,23 @@ const Main = () => {
         ["principal"],
         async () => {
           const option = {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          };
-          const response = await axios.get(
-            "http://localhost:8080/account/principal",
-            option
-          );
-          
-          return response.data;
-        },
-        {
-          onError: (error) => {
-            // 인증에 실패했을 때의 처리를 추가합니다.
-            if (error.response?.status === 401) {
-              
-              console.error('Error fetching principal:', error);
-            }
-          },
-          // 토큰이 존재할 때만 쿼리를 활성화합니다.
-          enabled: !!localStorage.getItem("accessToken"),
-        }
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+            };
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
+        },
+        {
+        onError: (error) => {
         // 인증에 실패했을 때의 처리를 추가합니다.
         if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
+            
+            console.error('Error fetching principal:', error);
         }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
     });
 
     const sportsIcons = [
