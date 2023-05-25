@@ -28,9 +28,9 @@
 		<result property="name" column="name"/>
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
-		<result property="adress" column="adress"/>
+		<result property="address" column="address"/>
 		<result property="gender" column="gender"/>
-		<result property="provider" column="provier"/>
+		<result property="provider" column="provider"/>
 		<association property="userInfo"  resultMap="UserInfoMap"></association>
 		<association property="point"  resultMap="PointMap"></association>
 	</resultMap>
@@ -41,7 +41,6 @@
 		<result property="image" column="image"/>
 		<result property="nickName" column="nickname"/>
 		<result property="pointId" column="point_id"/>
-		
 	</resultMap>
 
 	<resultMap type="com.portfolio.joinus.joinus.entity.Point" id="PointMap">
@@ -49,8 +48,6 @@
 		<result property="userId" column="user_id"/>
 		<result property="point" column="point"/>
 	</resultMap>	
-	
-	
 	
 	<resultMap type="com.portfolio.joinus.joinus.entity.Sports" id="SportsMap">
 		<id property="sportsId" column="sports_id"/>
@@ -78,292 +75,296 @@
 	</resultMap>
 
 	<select id="getPost" parameterType="Integer" resultMap="PostMap">
-		select
+		SELECT
 			pt.post_id,
-		    pt.writer_id,
-            pt.title,
-		    pt.sports_id,
-		    pt.level_id,
-		    pt.state_id,
-		    pt.region_id,
-            pt.deadline,
-            pt.recruits_count,
-            pt.gender_id,
-            pt.text,
-		    
-		    ut.user_id,
-		    
-		    uit.user_info_id,
-		    uit.nickname,
-		    uit.image,
-		    
-		    spt.sports_id,
-		    spt.sports_name,
-		    
-		    lt.level_id,
-		    lt.level_name,
-            
-            stt.state_id,
-		    stt.state_name,
-            
-            rt.region_id,
-		    rt.region_name,
-            
-            gt.gender_id,
-		    gt.gender_name
-		from 
-            post_tb pt
-            left outer join user_tb ut on(ut.user_id = pt.writer_id)
-		    left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
-		    left outer join sports_tb spt on(spt.sports_id = pt.sports_id)
-		    left outer join level_tb lt on(lt.level_id = pt.level_id)
-            left outer join state_tb stt on(stt.state_id = pt.state_id)
-            left outer join region_tb rt on(rt.region_id = pt.region_id)
-            left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
-		where
+			pt.writer_id,
+			pt.title,
+			pt.sports_id,
+			pt.level_id,
+			pt.state_id,
+			pt.region_id,
+			pt.deadline,
+			pt.recruits_count,
+			pt.gender_id,
+			pt.text,
+			
+			ut.user_id,
+			
+			uit.user_info_id,
+			uit.nickname,
+			uit.image,
+			
+			spt.sports_id,
+			spt.sports_name,
+			
+			lt.level_id,
+			lt.level_name,
+			
+			stt.state_id,
+			stt.state_name,
+			
+			rt.region_id,
+			rt.region_name,
+			
+			gt.gender_id,
+			gt.gender_name
+		FROM 
+			post_tb pt
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN sports_tb spt ON (spt.sports_id = pt.sports_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = pt.level_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = pt.state_id)
+			LEFT OUTER JOIN region_tb rt ON (rt.region_id = pt.region_id)
+			LEFT OUTER JOIN gender_tb gt ON (gt.gender_id = pt.gender_id)
+		WHERE
 			pt.post_id = #{postId}
 	</select>
 	
 	<insert id="registePost" parameterType="com.portfolio.joinus.joinus.dto.post.PostReqDto" useGeneratedKeys="true" keyProperty="postId">
-		insert into post_tb
-    	values 
-    		(
-    			0,
-	        	#{writerId},
-	        	#{title},
-	        	#{sportsId},
-	        	#{levelId},
-	        	#{stateId},
-	        	#{regionId},
-	        	#{deadLine},
-	        	#{recruitsCount},
-	        	#{genderId},
-	        	#{text},
-	        	now()
-	        )
+		INSERT INTO post_tb
+		VALUES 
+		(
+			0,
+			#{writerId},
+			#{title},
+			#{sportsId},
+			#{levelId},
+			#{stateId},
+			#{regionId},
+			#{deadLine},
+			#{recruitsCount},
+			#{genderId},
+			#{text},
+			NOW()
+		)
 	</insert>
 	
 	<select id="getPostList" parameterType="Integer" resultMap="PostMap">
-		select
+		SELECT
 			pt.post_id,
-		    pt.writer_id,
-            pt.title,
-		    pt.sports_id,
-		    pt.region_id,
-            pt.deadline,
-            pt.recruits_count,
-            pt.gender_id,
-            pt.registe_date,
-		    
-		    ut.user_id,
-		    
-		    uit.user_info_id,
-		    uit.nickname,
-		    
-		    spt.sports_id,
-		    spt.sports_name,
-            
-            rt.region_id,
-		    rt.region_name,
-            
-            gt.gender_id,
-		    gt.gender_name
-		    
-		from 
-            post_tb pt
-            left outer join user_tb ut on(ut.user_id = pt.writer_id)
-		    left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
-		    left outer join sports_tb spt on(spt.sports_id = pt.sports_id)
-            left outer join region_tb rt on(rt.region_id = pt.region_id)
-            left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
-        where
-        	1 = 1
-        	<choose>
-        		<when test="searchType == 2">
-        			and pt.title like concat('%', #{searchValue}, '%')
-        		</when>
-        		<when test="searchType == 3">
-        		and uit.nickname like concat('%', #{searchValue}, '%')
-        		</when>
-        		<when test="searchType == 4">
-        		and pt.text like concat('%', #{searchValue}, '%')
-        		</when>
-        		<otherwise>
-        		<if test='searchValue != ""'>
-        			and (
-	        			pt.title like concat('%', #{searchValue}, '%')
-	        			or uit.nickname like concat('%', #{searchValue}, '%')
-	        			or pt.text like concat('%', #{searchValue}, '%')
-	        		)
-        		</if>
-        		</otherwise>
-        	</choose>
-        	
-        	<if test="sportsId != 0">
-        		and spt.sports_id = #{sportsId}
-        	</if>
-        	
-        	<if test="regionId != 0">
-        		and rt.region_id = #{regionId}
-        	</if>
-        	
-    	order by pt.registe_date DESC
-    
-        limit #{index}, 10;	
+			pt.writer_id,
+			pt.title,
+			pt.sports_id,
+			pt.region_id,
+			pt.deadline,
+			pt.recruits_count,
+			pt.gender_id,
+			pt.registe_date,
+			
+			ut.user_id,
+			
+			uit.user_info_id,
+			uit.nickname,
+			
+			spt.sports_id,
+			spt.sports_name,
+			
+			rt.region_id,
+			rt.region_name,
+			
+			gt.gender_id,
+			gt.gender_name
+		FROM 
+			post_tb pt
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN sports_tb spt ON (spt.sports_id = pt.sports_id)
+			LEFT OUTER JOIN region_tb rt ON (rt.region_id = pt.region_id)
+			LEFT OUTER JOIN gender_tb gt ON (gt.gender_id = pt.gender_id)
+		WHERE
+			1 = 1
+			<choose>
+				<when test="searchType == 2">
+					AND pt.title LIKE CONCAT('%', #{searchValue}, '%')
+				</when>
+				<when test="searchType == 3">
+					AND uit.nickname LIKE CONCAT('%', #{searchValue}, '%')
+				</when>
+				<when test="searchType == 4">
+					AND pt.text LIKE CONCAT('%', #{searchValue}, '%')
+				</when>
+				<otherwise>
+					<if test="searchValue != ''">
+						AND (
+							pt.title LIKE CONCAT('%', #{searchValue}, '%')
+							OR uit.nickname LIKE CONCAT('%', #{searchValue}, '%')
+							OR pt.text LIKE CONCAT('%', #{searchValue}, '%')
+						)
+					</if>
+				</otherwise>
+			</choose>
+			
+			<if test="sportsId != 0">
+				AND spt.sports_id = #{sportsId}
+			</if>
+			
+			<if test="regionId != 0">
+				AND rt.region_id = #{regionId}
+			</if>
+			
+		ORDER BY pt.registe_date DESC
+		LIMIT #{index}, 10
 	</select>
 	
 	<select id="getTotalCount" parameterType="hashMap" resultType="Integer">
-		select
-			count(*)
-		from
+		SELECT
+			COUNT(*)
+		FROM
 			post_tb pt
-		    left outer join user_tb ut ON (ut.user_id = pt.writer_id)
-  			left outer join user_info_tb uit ON (uit.user_info_id = ut.user_id)
-  			left outer join sports_tb spt ON (spt.sports_id = pt.sports_id)
-  			left outer join region_tb rt ON (rt.region_id = pt.region_id)
-  			left outer join gender_tb gt ON (gt.gender_id = pt.gender_id)
-		where
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN sports_tb spt ON (spt.sports_id = pt.sports_id)
+			LEFT OUTER JOIN region_tb rt ON (rt.region_id = pt.region_id)
+			LEFT OUTER JOIN gender_tb gt ON (gt.gender_id = pt.gender_id)
+		WHERE
 			1 = 1
 			<if test="searchIds != null">
-				and pt.search_id in  (
+				AND pt.search_id IN (
 					<foreach item="searchId" collection="searchIds" separator=",">
 						#{searchId}
 					</foreach>
 				)
 			</if>
-			<if test='searchValue != ""'>
-				and pt.post_id like concat("%", #{searchValue}, "%")
+			<if test="searchValue != ''">
+				AND pt.post_id LIKE CONCAT('%', #{searchValue}, '%')
 			</if>
 	</select>
 	
 	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
-		select		    
-		    pt.post_id as postId,
-		    
-			ut.user_id as userId,
-			
-		    uit.image,
+		SELECT
+			pt.post_id AS postId,
+			ut.user_id AS userId,
+			uit.image,
 			uit.nickname,
-		
-			lt.level_name as levelName,
-		
-			stt.state_name as stateName
-		
-		from 
+			lt.level_name AS levelName,
+			stt.state_name AS stateName
+		FROM 
 			post_applicant_list_tb papl
-		    left outer join post_tb pt on(pt.post_id = papl.post_id)
-			left outer join user_tb ut on(ut.user_id = papl.user_id)
-			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
-			left outer join state_tb stt on(stt.state_id = papl.state_id)
-			left outer join level_tb lt on(lt.level_id = papl.level_id)
-		where
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = papl.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = papl.user_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = papl.state_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = papl.level_id)
+		WHERE
 			papl.post_id = #{postId}
 	</select>
 	
 	<select id="getAttendListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.AttendList">
-		select		    
-		    pt.post_id as postId,
-		    
-			ut.user_id as userId,
-			
-		    uit.image,
+		SELECT
+			pt.post_id AS postId,
+			ut.user_id AS userId,
+			uit.image,
 			uit.nickname,
-		
-			lt.level_name as levelName,
-		
-			stt.state_name as stateName
-		
-		from 
+			lt.level_name AS levelName,
+			stt.state_name AS stateName
+		FROM 
 			post_attend_list_tb patl
-		    left outer join post_tb pt on(pt.post_id = patl.post_id)
-			left outer join user_tb ut on(ut.user_id = patl.user_id)
-			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
-			left outer join state_tb stt on(stt.state_id = patl.state_id)
-			left outer join level_tb lt on(lt.level_id = patl.level_id)
-		where
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = patl.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = patl.user_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
+		WHERE
 			patl.post_id = #{postId}
 	</select>
 	
 	<select id="getCommentByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.Comment">
-		select		    
-			ct.comment_id as commentId,
-		
-			ut.user_id as userId,
-			
+		SELECT		    
+			ct.comment_id AS commentId,
+			ut.user_id AS userId,
 			uit.nickname,
 			uit.image,
-			
 			ct.comment
-		from 
+		FROM 
 			comment_tb ct
-		    left outer join post_tb pt on(pt.post_id = ct.post_id)
-			left outer join user_tb ut on(ut.user_id = ct.user_id)
-			left outer join user_info_tb uit on(uit.user_info_id = ut.user_id)
-
-		where
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = ct.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = ct.user_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+		WHERE
 			ct.post_id = #{postId}
 	</select>
+	
 	<select id="getOwnerPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
 	    SELECT
-	        oplt.owner_post_list_id as ownerPostListId,
-	        
-	        pt.post_id as postId,
+	        oplt.owner_post_list_id AS ownerPostListId,
+	        pt.post_id AS postId,
 	        pt.title,
-	        
-	        ut.user_id as userId
-
+	        ut.user_id AS userId
 	    FROM
 	        owner_post_list_tb oplt
-		    left outer join post_tb pt on(pt.post_id = oplt.post_id)
-			left outer join user_tb ut on(ut.user_id = oplt.user_id)
-			
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = oplt.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = oplt.user_id)
 	    WHERE
 	        oplt.user_id = #{userId}
 	</select>
-	<select id="getMyApplicantPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
-		select
-			hplt.host_post_list_id as hostPostListId,
-			
-			ut.user_id as userId
-			pt.post_id as postId,
-			pt.title,
-		
-		from
-			host_post_list_tb hplt
-			left outer join post_tb pt on(pt.post_id = hplt.post_id)
-			left outer join user_tb ut on(ut.user_id = hplt.user_id)
+	
+	<select id="getHostPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
+	    SELECT
+	        hplt.host_post_list_id AS hostPostListId,
+	        ut.user_id AS userId,
+	        pt.post_id AS postId,
+	        pt.title
+	    FROM
+	        host_post_list_tb hplt
+	        LEFT OUTER JOIN post_tb pt ON (pt.post_id = hplt.post_id)
+	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
+	    WHERE
+	        ut.user_id = #{userId}
 	</select>
-	<select id="getMyAttendPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
-		select
-			hplt.host_post_list_id as hostPostListId,
-			
-			ut.user_id as userId
-			pt.post_id as postId,
-			pt.title,
-		
-		from
+	
+	
+	<select id="getMyApplicantPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
+		SELECT
+			hplt.host_post_list_id AS hostPostListId,
+			ut.user_id AS userId,
+			pt.post_id AS postId,
+			pt.title
+		FROM
 			host_post_list_tb hplt
-			left outer join post_tb pt on(pt.post_id = hplt.post_id)
-			left outer join user_tb ut on(ut.user_id = hplt.user_id)
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = hplt.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
+	</select>
+	
+	<select id="getMyAttendPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
+		SELECT
+			hplt.host_post_list_id AS hostPostListId,
+			ut.user_id AS userId,
+			pt.post_id AS postId,
+			pt.title
+		FROM
+			host_post_list_tb hplt
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = hplt.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
 	</select>
 	
 	<insert id="applyPost" parameterType="hashMap">
-		insert into post_applicant_list_tb
-		values (0, #{postId}, #{userId}, #{stateId}, #{levelId})
+		INSERT INTO post_applicant_list_tb
+		VALUES (0, #{postId}, #{userId}, #{stateId}, #{levelId})
 	</insert>
 	
 	<delete id="cancelApplyPost" parameterType="hashMap">
-		delete
-		from
+		DELETE
+		FROM
 			post_applicant_list_tb
-		where
+		WHERE
 			post_id = #{postId}
-		and user_id = #{userId}
+			AND user_id = #{userId}
 	</delete>
 	
 	<insert id="commentSubmit" parameterType="hashMap">
-		insert into comment_tb
-		values (0, #{postId}, #{userId}, #{comment})
+		INSERT INTO comment_tb
+		VALUES (0, #{postId}, #{userId}, #{comment})
+	</insert>
+	
+	<insert id="saveOwnerPostList" parameterType="com.portfolio.joinus.joinus.entity.OwnerPostList">
+	    INSERT INTO owner_post_list_tb (owner_post_list_id, post_id, user_id)
+	    VALUES (#{ownerPostListId}, #{postId}, #{userId})
+	</insert>
+	
+	<insert id="saveMyApplicantPostList" parameterType="com.portfolio.joinus.joinus.entity.HostPostList">
+	    INSERT INTO host_post_list_tb (host_post_list_id, post_id, user_id)
+	    VALUES (#{hostPostListId}, #{postId}, #{userId})
 	</insert>
 	
 	<delete id="commentDelete" parameterType="hashMap">
