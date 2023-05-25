@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.CheckPasswordReqDto;
+import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
@@ -55,8 +58,20 @@ public class AccountController {
 	    return ResponseEntity.badRequest().body("Address change failed.");
 	}
 	
+	@ValidAspect
+	@PutMapping("/change/nickname")
+	public ResponseEntity<?> changeNickname(@Valid @RequestBody NicknameChangeReqDto nicknameChangeReqDto , BindingResult bindingResult) {
+        return ResponseEntity.ok().body(authenticationService.changeNickname(nicknameChangeReqDto));
+	}
+	
 	@GetMapping("/principal")
 	public ResponseEntity<?> principal() {
 		return ResponseEntity.ok().body(authenticationService.getPrincipal());
+	}
+	
+	@PostMapping("/profile/img")
+	public ResponseEntity<?> updateImage(@RequestPart MultipartFile profileImgFile){
+		System.out.println(profileImgFile.getOriginalFilename());
+		return ResponseEntity.ok(authenticationService.updateImage(profileImgFile));
 	}
 }

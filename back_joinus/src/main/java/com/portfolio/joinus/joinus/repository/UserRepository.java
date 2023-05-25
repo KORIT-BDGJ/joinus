@@ -17,11 +17,17 @@ public interface UserRepository {
 	
 	public User findUserByEmail(String email);
 	
+	public UserInfo findByNickname(String nickName);
+	
 	public int updatePassword(User user); 
 	
 	public int updateAddress(User user);
 
 	public int updateProvider(User user);
+	
+	public int updateNickname(UserInfo userInfo);
+	
+	public int updateImage(User user);
 	
 	
 	

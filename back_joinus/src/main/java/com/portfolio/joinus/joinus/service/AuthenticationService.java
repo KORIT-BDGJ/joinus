@@ -1,12 +1,18 @@
 package com.portfolio.joinus.joinus.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,9 +34,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
+import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PrincipalRespDto;
@@ -54,6 +62,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
+	
+	@Value("${file.path}")
+	private String filePath;
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -78,7 +89,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			User userEntity = registerReqDto.toEntity();
 			userRepository.registerUser(userEntity);
 			String nickname = userEntity.getEmail().split("@")[0];
-			System.out.println(nickname);
+		
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())
 					.roleId(1)
@@ -132,8 +143,10 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 		
-		User userEntity = userRepository.findUserByEmail(principalUser.getEmail()); //email
 		
+		
+		User userEntity = userRepository.findUserByEmail(principalUser.getEmail()); //email
+		//System.out.println(userEntity);
 		StringBuilder authorities = new StringBuilder();
 		
 		principalUser.getAuthorities().forEach(authority -> {
@@ -144,7 +157,6 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	        authorities.delete(authorities.length() - 1, authorities.length());
 	    }
 		
-		
 		return PrincipalRespDto.builder()
 	            .userId(userEntity.getUserId())
 	            .email(userEntity.getEmail())
@@ -153,6 +165,9 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	            .gender(userEntity.getGender()) // 추가된 부분
 	            .authorities(authorities.toString())
 	            .provider(userEntity.getProvider()) // 추가된 부분
+	            .image(userEntity.getUserInfo().getImage())
+	            .nickName(userEntity.getUserInfo().getNickName())
+	            .point(userEntity.getPoint().getPoint())
 	            .build();
 	}
 	 @Override
@@ -165,16 +180,31 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 
 	        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), Attributes, "email");
 	    }
-
-	    public int oAuth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {
+	 
+	 
+	 	@Transactional
+	    public void oAuth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {
 	        User userEntity = oAuth2RegisterReqDto.toEntity();
 	        userRepository.registerUser(userEntity);
-	        return userRepository.registerAuthority(
-	                Authority.builder()
-	                        .userId(userEntity.getUserId())
-	                        .roleId(1)
-	                        .build()
-	        );
+	        String nickname = userEntity.getEmail().split("@")[0];
+			
+			userRepository.registerAuthority(Authority.builder()
+					.userId(userEntity.getUserId())
+					.roleId(1)
+					.build());
+			userRepository.registerPoint(Point.builder()
+					.userId(userEntity.getUserId())
+					.point(0)
+					.build());  
+			userRepository.registerUserInfo(UserInfo.builder()
+					.userId(userEntity.getUserId())
+					.image(null)
+					.nickName(nickname)
+					.build()); 
+			userRepository.registerSportsLikes(SportsLikes.builder()
+					.userId(userEntity.getUserId())
+					.SportsId(0)
+					.build());
 	    }
 	    
 	    public boolean checkEmail(String email) {
@@ -244,23 +274,52 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    }
 	    
 	    public boolean changeAddress(AddressChangeReqDto addressChangeReqDto) {
-	    	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    	    String email = authentication.getName();
+    	 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	    String email = authentication.getName();
 
-	    	    User userEntity = userRepository.findUserByEmail(email);
-	    	    
-	    	    if (userEntity == null) {
-	    	        throw new BadCredentialsException("Invalid user.");
-	    	    }
-	    	    
-	    	    userEntity.setAddress(addressChangeReqDto.getNewAddress());
-	    	    userRepository.updateAddress(userEntity);
-	    	    
-	    	    return true;  // Return true to indicate success
+    	    User userEntity = userRepository.findUserByEmail(email);
+    	    
+    	    if (userEntity == null) {
+    	        throw new BadCredentialsException("Invalid user.");
+    	    }
+    	    
+    	    userEntity.setAddress(addressChangeReqDto.getNewAddress());
+    	    userRepository.updateAddress(userEntity);
+    	    
+    	    return true;  // Return true to indicate success
 	    }
+	    
+	    public boolean changeNickname(NicknameChangeReqDto nicknameChangeReqDto) {
+	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	        String email = authentication.getName();
 
+	        User userEntity = userRepository.findUserByEmail(email);
 
-		
+	        if (userEntity == null) {
+	            throw new BadCredentialsException("유효하지 않은 사용자입니다.");
+	        }
+
+	        UserInfo userInfo = userEntity.getUserInfo();
+	        if (userInfo == null) {
+	            throw new RuntimeException("사용자의 정보(UserInfo)를 찾을 수 없습니다: " + email);
+	        }
+	        
+	        
+	        // 중복 닉네임 체크
+	        UserInfo existingNickname = userRepository.findByNickname(nicknameChangeReqDto.getNewNickname());
+	        if (existingNickname != null && existingNickname.getUserInfoId() != userInfo.getUserInfoId()) {
+	        	Map<String, String> errorMap = new HashMap<>();
+	        	errorMap.put("newNickname", "이미 사용 중인 닉네임입니다.");
+	            throw new CustomException("Validation Failed", errorMap);
+	        }
+
+	        userInfo.setNickName(nicknameChangeReqDto.getNewNickname()); 
+	        userRepository.updateNickname(userInfo); 
+
+	        return true;
+	    }
+	    
+
 		public int oAuth2ProviderMerge(OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
 			User userEntity = userRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());
 			
@@ -277,6 +336,34 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			return userRepository.updateProvider(userEntity);
 			
 		
+		}
+		
+		public int updateImage(MultipartFile profileImgFile) {
+			String originFileName = profileImgFile.getOriginalFilename();
+			String extension = originFileName.substring(originFileName.lastIndexOf("."));
+			String tempFileName = UUID.randomUUID().toString().replaceAll("-", "") + extension;
+			UserInfo userInfo = new UserInfo();
+			userInfo.setImage(tempFileName);
+			Path uploadPath = Paths.get(filePath + "profile/" + tempFileName);
+			System.out.println(uploadPath);
+			try {
+				Files.write(uploadPath, profileImgFile.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			PrincipalUser principalUser= (PrincipalUser) SecurityContextHolder
+					.getContext()
+					.getAuthentication()
+					.getPrincipal();
+
+
+
+			return userRepository.updateImage(User.builder()
+								.userId(principalUser.getUserId())
+								.userInfo(userInfo)
+								.build());
+						
 		}
 	
 }

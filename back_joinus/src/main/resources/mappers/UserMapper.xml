@@ -12,6 +12,8 @@
 		<result property="provider" column="provider" />
 		<result property="address" column="address" />
 		<result property="gender" column="gender" />
+		<association property="userInfo" javaType="com.portfolio.joinus.joinus.entity.UserInfo" resultMap="userInfoMap"></association>
+		<association property="point" javaType="com.portfolio.joinus.joinus.entity.Point" resultMap="pointMap"></association>
 		<collection property="authorities" javaType="list" resultMap="authorityMap" />
 	</resultMap>
 	<resultMap type="com.portfolio.joinus.joinus.entity.Authority" id="authorityMap">
@@ -25,6 +27,19 @@
 		<id property="roleId" column="role_id" />
 		<result property="roleName" column="role_name" />
 	</resultMap>
+	
+	<resultMap type="com.portfolio.joinus.joinus.entity.UserInfo" id="userInfoMap">
+		<id property="userInfoId" column="user_info_id" />
+		<result property="userId" column="user_id"/>
+		<result property="image" column="image"/>
+		<result property="nickName" column="nickname"/>
+	</resultMap>
+	<resultMap type="com.portfolio.joinus.joinus.entity.Point" id="pointMap">
+	    <id property="pointId" column="point_id" />
+	    <result property="userId" column="user_id" />
+	    <result property="point" column="point" />
+	</resultMap>
+	
 
 	<select id="findUserByEmail" resultMap="userMap">
 		select
@@ -41,14 +56,34 @@
 			at.role_id,
 			
 			rt.role_id,
-			rt.role_name
+			rt.role_name,
+			
+			ui.user_info_id,
+			ui.image,
+			ui.nickname,
+			
+			pt.point_id,
+			pt.user_id,
+			pt.point
+			
 		from
 			user_tb ut
 			left outer join authority_tb at on(at.user_id = ut.user_id)
 			left outer join role_tb rt on(rt.role_id = at.role_id)
+			left outer join user_info_tb ui on(ui.user_id = ut.user_id)
+			left outer join point_tb pt on(pt.user_id = ut.user_id)
 		where
 			ut.email = #{email}
 	</select>
+	
+	<select id="findByNickname" resultMap="userInfoMap">
+        SELECT 
+        	* 
+       	FROM 
+       		user_info_tb 
+     	WHERE 
+    		nickname = #{nickName}
+    </select>
 	
 	<insert id="registerUser" 
 	parameterType="com.portfolio.joinus.joinus.entity.User"
@@ -112,6 +147,22 @@
 			address = #{address}
 		where
 			user_id = #{userId}
+	</update>
+	
+	<update id="updateNickname" >
+	    update user_info_tb
+	    set
+	        nickname = #{nickName}
+	    where
+	        user_id = #{userId}
+	</update>
+	
+	<update id="updateImage" >
+	    update user_info_tb
+	    set
+	        image = #{userInfo.image}
+	    where
+	        user_id = #{userId}
 	</update>
 	
 	

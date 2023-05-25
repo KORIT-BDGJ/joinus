@@ -18,11 +18,11 @@ public class User {
 	private int userId;
 	private String email;
 	private String password;
-	private String passwordConfirm;
 	private String name;
 	private String address;
 	private String gender;
 	private String provider;
+	
 	
 	private UserInfo userInfo;
 	private Point point;
@@ -41,12 +41,14 @@ public class User {
 				.userId(userId)
 				.email(email)
 				.password(password)
-				.passwordConfirm(passwordConfirm)
 				.name(name)
 				.address(address)
 				.gender(gender)
 				.authorities(authorities)
 				.provider(provider)
+				.nickName(userInfo.getNickName())
+				.image(userInfo.getImage())
+				.point(point.getPoint())
 				.build();
 	}
 }

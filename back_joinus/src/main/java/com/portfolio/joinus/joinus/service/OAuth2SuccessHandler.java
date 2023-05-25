@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             String address = ""; // 주소 초기화
             String gender = ""; // 성별 초기화
 
-        // 카카오인 경우 이름, 주소, 성별 초기
+        // 카카오인 경우 이름, 주소, 성별 초기화
         if("kakao".equals(provider)) {
         	name = "";
         	address = "";

@@ -13,4 +13,8 @@ public class PrincipalRespDto {
     private String gender; // 추가된 부분
     private String authorities;
     private String provider; // 추가된 부분
+    //맞는지 모르겠음
+    private String image;
+	private String nickName;
+	private int point;
 }

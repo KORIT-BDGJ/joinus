@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class UserInfo {
 	private int userInfoId;
 	private int userId;
-	private String emailSplit;
 	private String image;
 	private String nickName;
 }

@@ -5,7 +5,7 @@ import { GrFormClose } from 'react-icons/gr';
 import ListButton from "./ListButton";
 import { BiHome, BiLogOut } from 'react-icons/bi';
 import { GrUserSettings } from 'react-icons/gr';
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 
@@ -47,12 +47,20 @@ const userIcon = css`
     align-items: center;
     margin-right: 10px;
     border-radius: 50%;
+    border: 2px solid #dbdbdb;
     width: 60px;
     height: 60px;
-    background-color: #713fff;
+    background-color: white;
     color: white;
     font-size: 30px;
     font-weight: 600;
+`;
+
+const imgIcon = css`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const userInfo = css`
@@ -101,17 +109,36 @@ const footer = css`
 `;
 
 const Sidebar = () => {
-    
+   
+    const queryClient = useQueryClient(); // 쿼리를 무효화시키기 위해 사용합니다.
 
-    const principal = useQuery(["principal"], async () => {
-        const option = {
+    const principal = useQuery(
+        ["principal"],
+        async () => {
+          const option = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          };
+          const response = await axios.get(
+            "http://localhost:8080/account/principal",
+            option
+          );
+          
+          return response.data;
+        },
+        {
+          onError: (error) => {
+            // 인증에 실패했을 때의 처리를 추가합니다.
+            if (error.response?.status === 401) {
+              
+              console.error('Error fetching principal:', error);
             }
+          },
+          // 토큰이 존재할 때만 쿼리를 활성화합니다.
+          enabled: !!localStorage.getItem("accessToken"),
         }
-        const response = await axios.get("http://localhost:8080/account/principal", option);
-        return response.data;
-    });
+    );
 
     const [ isOpen, setIsOpen ] = useState(false);
 
@@ -127,23 +154,36 @@ const Sidebar = () => {
 
     const logoutClickHandle = () => {
         if(window.confirm("로그아웃 하시겠습니까?")) {
+            queryClient.invalidateQueries('principal');
             localStorage.removeItem("accessToken");
         }
     }
 
-
+    console.log(principal);
+    
     if(principal.isLoading || principal.isError) {
         return <></>;
     }
+
+    // setResponseData(principal.data.data ? principal.data.data : principal.data);
     
 
     return (
         <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle}>
             <header css={header}>
-                <div css={userIcon}>
-                </div>
+            <div css={userIcon}>
+            {principal.data.image ? (
+                <img
+                css={imgIcon}
+                src={"http://localhost:8080/image/profile/" + principal.data.image}
+                alt="Profile Image"
+                />
+            ) : (
+                <span>{principal.data.nickName}</span>
+            )}
+            </div>
                 <div css={userInfo}>
-                    {principal.data.email}
+                    {principal.data.nickName}
                 </div>
                 <div css={closeButton} onClick={sidebarCloseClickHandle}><GrFormClose /></div>
             </header>
