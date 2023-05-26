@@ -142,8 +142,8 @@ const Sidebar = () => {
 
     const logoutClickHandle = () => {
         if(window.confirm("로그아웃 하시겠습니까?")) {
-            queryClient.invalidateQueries('principal');
             localStorage.removeItem("accessToken");
+            window.location.replace("/auth/login");
         }
     }
     
