@@ -7,7 +7,7 @@ import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-ico
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { GrGamepad } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
-import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSunnySnowing, MdSurfing } from 'react-icons/md';
+import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -220,8 +220,38 @@ const minusButton = css`
   cursor: pointer;
 `;
 
+const animationStyles = (start, end) => ({
+  '@keyframes slide': {
+    '0%': { transform: `translateX(${start}px)` },
+    '100%': { transform: `translateX(${end}px)` },
+  },
+  animationName: 'slide',
+  animationDuration: '1s',
+  animationIterationCount: 'infinite',
+  animationDirection: 'alternate',
+});
+
+
+const emojiContainer = css`
+  position: absolute;
+  bottom: 23px;
+  right: 15px;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0.7;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+`;
+
+const emoji = css`
+  ${animationStyles(-10, 0)}
+  display: inline-block;
+`;
+
 
 const UserInfo = () => {
+  
   
   const [ imgFile, setImgFile ] = useState();
   const fileRef = useRef();
@@ -474,7 +504,12 @@ const UserInfo = () => {
       </main>
       <footer>
         <div css={footerContainer}>
-          <button css={modifyButton} onClick={handleModifyClick}>확인</button>
+          <button css={modifyButton} onClick={handleModifyClick}>수정</button>
+          <div css={emojiContainer}>
+            <span css={emoji}>👈🏻</span> 
+            <span>선호 운동은 수정 버튼을 눌러서 등록해주세요.</span>
+
+          </div>
         </div>
       </footer>
       {isAddressChangeModalOpen && <AddressChangeModal closeModal={closeAddressChangeModal} updateAddress={updateAddress} />}

@@ -1,4 +1,6 @@
 
+/** @jsxImportSource @emotion/react */
+
 import React from 'react';
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
@@ -155,7 +157,7 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect}) => {
                 data-sport="20"
                 onClick= {handleSportSelect}
                 css={sportsIconActive('20')}
-                title="game"
+                title="게임"
             />
         </>
     );
