@@ -127,16 +127,16 @@ public class PostService {
 
         int totalCount = postRepository.getTotalCount(map);
         
-        int totalPages = (int) Math.ceil((double) totalCount / 10);
-        if(totalPages == 0) {
-        	totalPages = 1;
-        } else if(totalPages > 1 && totalPages * 10 > totalCount) {
-        	totalPages = (int) Math.ceil((double) totalCount / 10);
-        }
+//        int totalPages = (int) Math.ceil((double) totalCount / 10);
+//        if(totalPages == 0) {
+//        	totalPages = 1;
+//        } else if(totalPages > 1 && totalPages * 10 > totalCount) {
+//        	totalPages = (int) Math.ceil((double) totalCount / 10);
+//        }
 
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("totalCount", totalCount);
-        responseMap.put("totalPages", totalPages);
+//        responseMap.put("totalPages", totalPages);
         responseMap.put("postList", list);
 
         return responseMap;

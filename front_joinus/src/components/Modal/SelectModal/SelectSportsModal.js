@@ -40,15 +40,18 @@ const modalMain = css`
 `;
 
 const sportsIcon = css`
-  font-size: 50px;
-  margin: 10px;
-  cursor: pointer;
-  padding: 10px;
+    font-size: 50px;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px;
+
     &:hover {
-    background-color: rgba(0, 255, 0, 0.2);
+    background-color: #63cc63;
     }
+  
     &:active {
-    border: 2px solid green;
+    background-color: #5EC75E;
+    
     }
 `;
 
@@ -81,11 +84,10 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
     }
 
     const sportsIconActive = (sport) => {
-        return selectedSport === sport
+        return selectedSport === sport.id
           ? css`
               ${sportsIcon};
-              background-color: rgba(0, 255, 0, 0.2);
-              border-radius: 0;
+              background-color: #5EC75E;
             `
           : sportsIcon;
       };
