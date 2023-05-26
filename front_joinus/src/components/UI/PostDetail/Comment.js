@@ -40,6 +40,13 @@ const infoImage = css`
     font-size: 5px;
 `;
 
+const imgIcon = css`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const infoNickname = css`
     display: flex;
     flex-direction: row;
@@ -196,7 +203,17 @@ const Comment = ({ postId }) => {
                     return (
                         <div css={chatting} key={commentData.commentId}>
                             <div css={chattingHeader}>
-                                <div css={infoImage}>{commentData.image}</div>
+                                <div css={infoImage}>
+                                {commentData.image ? (
+                                        <img
+                                            css={imgIcon}
+                                            src={"http://localhost:8080/image/profile/" + commentData.image}
+                                            alt="Profile Image"
+                                        />
+                                    ) : (
+                                        <span>{commentData.nickName}</span>
+                                    )}
+                                </div>
                                 <div css={infoNickname}>{commentData.nickName} :</div>
                             </div>
                                 {commentData.userId === userId ? (

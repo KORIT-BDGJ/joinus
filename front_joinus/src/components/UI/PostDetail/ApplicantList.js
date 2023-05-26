@@ -153,14 +153,14 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                         <div css={member}>
                             <div css={applicantInfo}>
                                 <div css={infoImage}>
-                                {queryClient.getQueryData("principal").data.image ? (
+                                {applicantData.image ? (
                                     <img
                                         css={imgIcon}
-                                        src={"http://localhost:8080/image/profile/" + queryClient.getQueryData("principal").data.image}
+                                        src={"http://localhost:8080/image/profile/" + applicantData.image}
                                         alt="Profile Image"
                                     />
                                 ) : (
-                                    <span>{queryClient.getQueryData("principal").data.nickName}</span>
+                                    <span>{applicantData.nickName}</span>
                                 )}
                                 </div>
                                 <div css={infoNickname}>{applicantData.nickName}</div>

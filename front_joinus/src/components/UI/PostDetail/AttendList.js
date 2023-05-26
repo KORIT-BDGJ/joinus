@@ -22,6 +22,13 @@ const attendInfo = css`
     align-items: center;
 `;
 
+const imgIcon = css`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const infoImage = css`
     display: flex;
     flex-direction: row;
@@ -115,7 +122,17 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
 
                         <div css={member}>
                             <div css={attendInfo}>
-                                <div css={infoImage}>{attendData.image}</div>
+                                <div css={infoImage}>
+                                    {attendData.image ? (
+                                        <img
+                                            css={imgIcon}
+                                            src={"http://localhost:8080/image/profile/" + attendData.image}
+                                            alt="Profile Image"
+                                        />
+                                    ) : (
+                                        <span>{attendData.nickName}</span>
+                                    )}
+                                </div>
                                 <div css={infoNickname}>{attendData.nickName}</div>
                             </div>
                             <div css={attendButtonContainer}>
