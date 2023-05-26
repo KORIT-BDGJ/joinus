@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -371,12 +371,7 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/post/list", option);
         return response.data;
-    }, {
-        enabled: refresh,
-        onSuccess: () => {
-            setRefresh(false);
-        }
-    },
+    }, 
     {
       onError: (error) => {
         // 인증에 실패했을 때의 처리를 추가합니다.

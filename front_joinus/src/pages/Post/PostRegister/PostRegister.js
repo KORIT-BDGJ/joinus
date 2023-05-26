@@ -12,7 +12,7 @@ import Select from 'react-select';
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
 import SelectModifyModal from "../../../components/Modal/SelectModal/SelectModifyModal";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { addMinutes } from "date-fns";
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
@@ -65,18 +65,6 @@ const postInput = css`
     height: 50px;
     border: none;
     border-bottom: 1px solid #eee;
-`;
-
-const errorMessage = css`
-    display: none;
-    margin-top: 5px;
-    font-size: 10px;
-    color: red;
-
-    &:active {
-        display: block;
-    }
-
 `;
 
 const selectLevelBox = css`
@@ -185,7 +173,7 @@ const cancelButton = css`
 const PostRegister = () => {
 
     const navigate = useNavigate();
-
+    const queryClient = useQueryClient();
     const principal = useQuery(["principal"], async () => {
         const option = {
             headers: {
@@ -273,6 +261,8 @@ const PostRegister = () => {
 
         try {
             const response = await axios.post("http://localhost:8080/post/register", data, option);
+            
+            navigate("/main");
             return response;
         } catch(error) {
             return error;
@@ -379,14 +369,6 @@ const PostRegister = () => {
         return <></>;
     }
 
-    const validateInput = (input) => {
-        return /^[A-Za-z가-힣\s\.,?!@#$%^&*()\-_+=<>:;{}[\]|\\/]+$/g.test(input);
-    };
-
-    const sendPost = () => {
-        postSubmit.mutate();
-    };
-
     const titleHandleChange = (e) => {
         setTitlePost(e.target.value);
     }
@@ -414,19 +396,7 @@ const PostRegister = () => {
                 return;
             }
         }
-
-        if (!validateInput(titlePost)) {
-            alert("올바르지 않은 형식입니다! 다시 입력하세요.");
-            return;
-        }
-
-        if (!validateInput(textPost)) {
-            alert("올바르지 않은 형식입니다! 다시 입력하세요.");
-            return;
-        }
-
-        sendPost();
-        navigate("/main");
+        postSubmit.mutate();
     }
 
     const handleIconSelect = (IconComponent) => {
