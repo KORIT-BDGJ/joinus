@@ -23,6 +23,7 @@ public class PostReqDto {
 	private int recruitsCount;
 	private int genderId;
 	private String text;
+	
 	private LocalDateTime registeDate;
 	
 	

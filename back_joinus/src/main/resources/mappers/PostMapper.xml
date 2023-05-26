@@ -223,16 +223,34 @@
 		WHERE
 			1 = 1
 			and pt.deadline &gt; now()
-			<if test="searchIds != null">
-				AND pt.search_id IN (
-					<foreach item="searchId" collection="searchIds" separator=",">
-						#{searchId}
-					</foreach>
-				)
-			</if>
-			<if test="searchValue != ''">
-				AND pt.post_id LIKE CONCAT('%', #{searchValue}, '%')
-			</if>
+			<choose>
+        		<when test="searchType == 2">
+        			and pt.title like concat('%', #{searchValue}, '%')
+        		</when>
+        		<when test="searchType == 3">
+        		and uit.nickname like concat('%', #{searchValue}, '%')
+        		</when>
+        		<when test="searchType == 4">
+        		and pt.text like concat('%', #{searchValue}, '%')
+        		</when>
+        		<otherwise>
+        		<if test='searchValue != ""'>
+        			and (
+	        			pt.title like concat('%', #{searchValue}, '%')
+	        			or uit.nickname like concat('%', #{searchValue}, '%')
+	        			or pt.text like concat('%', #{searchValue}, '%')
+	        		)
+        		</if>
+        		</otherwise>
+        	</choose>
+        	
+        	<if test="sportsId != 0">
+        		and spt.sports_id = #{sportsId}
+        	</if>
+        	
+        	<if test="regionId != 0">
+        		and rt.region_id = #{regionId}
+        	</if>
 	</select>
 	
 	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">

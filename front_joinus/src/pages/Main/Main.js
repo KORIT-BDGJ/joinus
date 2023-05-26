@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Select from 'react-select';
-import { GiSoccerBall } from 'react-icons/gi';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -249,14 +248,12 @@ const Main = () => {
 
     const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
 
-    const principal = useQuery(
-        ["principal"],
-        async () => {
-          const option = {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                },
-            };
+    const principal = useQuery(["principal"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        };
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
         },
@@ -669,7 +666,9 @@ const Main = () => {
                                     <input 
                                         css={[
                                             informationDate, 
-                                            new Date(post.deadLine) > new Date() && new Date(post.deadLine) <= getNextServerTime() && finalDeadLine
+                                            new Date(post.deadLine) > new Date() && 
+                                            new Date(post.deadLine) <= getNextServerTime() && 
+                                            finalDeadLine
                                         ]} 
                                         type="text" 
                                         value={new Date(post.deadLine).toLocaleString("ko-KR",{

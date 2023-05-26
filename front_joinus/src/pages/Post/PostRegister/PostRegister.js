@@ -271,7 +271,6 @@ const PostRegister = () => {
             text: textPost
         }
 
-        console.log(data);
         try {
             const response = await axios.post("http://localhost:8080/post/register", data, option);
             return response;
