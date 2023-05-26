@@ -99,7 +99,6 @@ const modalCancelButton = css`
 `;
 
 
-
 const SportsIconModal = ({
   closeModal,
   selectedIndex,
@@ -108,8 +107,6 @@ const SportsIconModal = ({
   setPlusVisible,
 }) => {
   const [selectedSport, setSelectedSport] = useState(null);
- 
-  
 
   const handleSportSelect = (e) => {
     const selectedSport = e.currentTarget.getAttribute('data-sport');
@@ -117,7 +114,6 @@ const SportsIconModal = ({
   };
 
   const handleConfirm = () => {
-    //console.log(selectedSport);
     if (selectedSport !== null) {
       setSelectedSports((prevSports) => {
         const newSports = [...prevSports];
@@ -134,6 +130,7 @@ const SportsIconModal = ({
   };
 
   const sportsIconActive = (sport) => {
+
     return selectedSport === sport
       ? css`
           ${sportsIcon};

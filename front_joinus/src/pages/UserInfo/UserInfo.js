@@ -7,7 +7,7 @@ import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-ico
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { GrGamepad } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
-import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSunnySnowing, MdSurfing } from 'react-icons/md';
+import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -220,8 +220,38 @@ const minusButton = css`
   cursor: pointer;
 `;
 
+const animationStyles = (start, end) => ({
+  '@keyframes slide': {
+    '0%': { transform: `translateX(${start}px)` },
+    '100%': { transform: `translateX(${end}px)` },
+  },
+  animationName: 'slide',
+  animationDuration: '1s',
+  animationIterationCount: 'infinite',
+  animationDirection: 'alternate',
+});
+
+
+const emojiContainer = css`
+  position: absolute;
+  bottom: 23px;
+  right: 15px;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0.7;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+`;
+
+const emoji = css`
+  ${animationStyles(-10, 0)}
+  display: inline-block;
+`;
+
 
 const UserInfo = () => {
+  
   
   const [ imgFile, setImgFile ] = useState();
   const fileRef = useRef();
@@ -350,11 +380,20 @@ const UserInfo = () => {
 
  
   const handleMinusClick = (e, index) => {
-  e.stopPropagation();
-  setSelectedSports(prev => [...prev.slice(0, index), null, ...prev.slice(index + 1)]);
-
-  // 아이콘을 제거한 후 해당 위치의 '+' 버튼을 다시 활성화
-  setPlusVisible(prev => [...prev.slice(0, index), true, ...prev.slice(index + 1)]);
+    e.stopPropagation();
+    
+    setSelectedSports(prev => {
+      const newSports = [...prev];
+      newSports.splice(index, 1);
+      newSports.push(null);
+      return newSports;
+    });
+  
+    setPlusVisible(prev => {
+      const newPlusVisible = [...prev];
+      newPlusVisible[index] = true;
+      return newPlusVisible;
+    });
   };
   const handleModifyClick = () => {
     navigate('/main');
@@ -378,29 +417,30 @@ const UserInfo = () => {
 
   const renderSportIcon = (sport, size, index) => {
     
-    if (sport === "soccer") return <GiSoccerKick size={size} />;
-    if (sport === "baseball") return <GiBaseballBat size={size} />;
-    if (sport === "basketball") return <GiBasketballBasket size={size} />;
-    if (sport === "health") return <CgGym size={size} />;
-    if (sport === "climbing") return <GiMountainClimbing size={size} />;
-    if (sport === "riding") return <IoMdBicycle size={size} />;
-    if (sport === "golf") return <MdGolfCourse size={size} />;
-    if (sport === "fishing") return <GiBoatFishing size={size} />;
-    if (sport === "tennis") return <GiTennisRacket size={size} />;
-    if (sport === "mountain") return <GiMountainRoad size={size} />;
-    if (sport === "bowling") return <GiBowlingStrike size={size} />;
-    if (sport === "tabletennis") return <FaTableTennis size={size} />;
-    if (sport === "volleyball") return <FaVolleyballBall size={size} />;
-    if (sport === "running") return <FaRunning size={size} />;
-    if (sport === "swimming") return <FaSwimmer size={size} />;
-    if (sport === "surfing") return <MdSurfing size={size} />;
-    if (sport === "scubadiving") return <MdOutlineScubaDiving size={size} />;
-    if (sport === "skateboarding") return <MdOutlineSkateboarding size={size} />;
-    if (sport === "billiard") return <RiBilliardsFill size={size} />;
-    if (sport === "game") return <GrGamepad size={size} />;
+    if (sport === "3") return <GiSoccerKick size={size} />;
+    if (sport === "1") return <CgGym size={size} />;
+    if (sport === "4") return <GiBaseballBat size={size} />;
+    if (sport === "5") return <GiBasketballBasket size={size} />;
+    if (sport === "8") return <GiMountainClimbing size={size} />;
+    if (sport === "9") return <IoMdBicycle size={size} />;
+    if (sport === "15") return <MdGolfCourse size={size} />;
+    if (sport === "11") return <GiBoatFishing size={size} />;
+    if (sport === "7") return <GiTennisRacket size={size} />;
+    if (sport === "10") return <GiMountainRoad size={size} />;
+    if (sport === "12") return <GiBowlingStrike size={size} />;
+    if (sport === "13") return <FaTableTennis size={size} />;
+    if (sport === "14") return <FaVolleyballBall size={size} />;
+    if (sport === "2") return <FaRunning size={size} />;
+    if (sport === "6") return <FaSwimmer size={size} />;
+    if (sport === "18") return <MdSurfing size={size} />;
+    if (sport === "17") return <MdOutlineScubaDiving size={size} />;
+    if (sport === "16") return <MdOutlineSkateboarding size={size} />;
+    if (sport === "19") return <RiBilliardsFill size={size} />;
+    if (sport === "20") return <GrGamepad size={size} />;
   };
-
- console.log(selectedSports)
+  
+ const convertedSports = selectedSports.map(sport => parseInt(sport));
+ console.log(convertedSports)
 
   return (
     <div css={container}>
@@ -464,7 +504,12 @@ const UserInfo = () => {
       </main>
       <footer>
         <div css={footerContainer}>
-          <button css={modifyButton} onClick={handleModifyClick}>확인</button>
+          <button css={modifyButton} onClick={handleModifyClick}>수정</button>
+          <div css={emojiContainer}>
+            <span css={emoji}>👈🏻</span> 
+            <span>선호 운동은 수정 버튼을 눌러서 등록해주세요.</span>
+
+          </div>
         </div>
       </footer>
       {isAddressChangeModalOpen && <AddressChangeModal closeModal={closeAddressChangeModal} updateAddress={updateAddress} />}
