@@ -111,7 +111,7 @@
 	    useGeneratedKeys="true"
 	    keyProperty="userId">
 	    insert into user_info_tb
-	    values (0, #{userId},'default.jpg', #{nickName})
+	    values (0, #{userId}, 'default.jpg', #{nickName})
 	</insert>
 	
 	<insert id="registerSportsLikes" 

@@ -376,8 +376,6 @@ const PostDetail = () => {
         setTotalAttendCount(count);
     };
 
-    
-
     return (
         
         <div css={container}>
@@ -402,14 +400,14 @@ const PostDetail = () => {
                     <div css={infoBox}>
                         <div css={ownerInfo}>방장정보 :</div>
                         <div css={ownerPicture}>
-                            {principal.data.image ? (
+                            {getPost.data.data.image ? (
                                 <img
                                     css={imgIcon}
-                                    src={"http://localhost:8080/image/profile/" + principal.data.image}
+                                    src={"http://localhost:8080/image/profile/" + getPost.data.data.image}
                                     alt="Profile Image"
                                 />
                             ) : (
-                                <span>{principal.data.nickName}</span>
+                                <span>{getPost.data.data.writerNickName}</span>
                             )}
                         </div>
                         <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
