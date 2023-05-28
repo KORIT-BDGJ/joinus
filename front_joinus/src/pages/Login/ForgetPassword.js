@@ -5,6 +5,7 @@ import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { FiUser } from 'react-icons/fi';
 import axios from 'axios';
 import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 const container = css`
     display: flex;
@@ -52,6 +53,7 @@ const confirmButton = css`
 
 
 const ForgetPassword = () => {
+
     const [loginUser, setLoginUser] = useState({ email:"",password:""});
     const [errorMessages, setErrorMessages] = useState({
         email: "",

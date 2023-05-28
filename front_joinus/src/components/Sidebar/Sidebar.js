@@ -125,7 +125,7 @@ const Sidebar = () => {
         }
       },
       // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
+    //   enabled: !!localStorage.getItem("accessToken"),
     });
 
     const [ isOpen, setIsOpen ] = useState(false);

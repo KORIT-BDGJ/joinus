@@ -100,9 +100,7 @@ const AddressChangeModal = ({ closeModal, updateAddress }) => {
     return response.data;
   });
 
-  if(principal.isLoading) {
-    return <></>;
-  }
+  
 
   const searchAddress = () => {
     new window.daum.Postcode({
@@ -155,6 +153,10 @@ const AddressChangeModal = ({ closeModal, updateAddress }) => {
       }
     }
   };
+
+  if(principal.isLoading) {
+    return <></>;
+  }
 
   return (
     <div css={modalContainer}>

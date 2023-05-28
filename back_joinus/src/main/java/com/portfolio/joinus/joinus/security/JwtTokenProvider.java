@@ -105,6 +105,17 @@ public class JwtTokenProvider {
 				.compact();
 	}
 	
+	public String generatePasswordResetToken(String email) {
+		Date tokenExpiresDate = new Date(new Date().getTime() + (1000*60*10));
+		return  Jwts.builder()
+		        .setSubject("TemporaryToken")
+		        .claim("email", email)
+		        .setExpiration(tokenExpiresDate)
+		        .signWith(key,SignatureAlgorithm.HS256)
+		        .compact();
+	}
+	
+	
 	
 	
 	

@@ -18,6 +18,7 @@ import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.CheckPasswordReqDto;
 import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
+import com.portfolio.joinus.joinus.dto.auth.PwResetReqDto;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,19 @@ public class AccountController {
 			return ResponseEntity.ok().body(true);
 		}
 		return ResponseEntity.badRequest().body("Password change failed.");
+	}
+	
+	@ValidAspect
+	@PostMapping("/reset/password")
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody PwResetReqDto pwResetReqDto) {
+
+	    boolean isPasswordReset = authenticationService.resetPassword(pwResetReqDto);
+
+	    if(isPasswordReset) {
+	        return ResponseEntity.ok().body("Password reset successful.");
+	    } else {
+	        return ResponseEntity.badRequest().body("Password reset failed.");
+	    }
 	}
 	
 	@PutMapping("/change/address")

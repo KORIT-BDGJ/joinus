@@ -15,6 +15,7 @@ import UserOAuth2Register from './pages/UserRegister/UserOAuth2Register';
 import OAuth2Merge from './pages/OAuth2Merge/OAuth2Merge';
 import ForgetPassword from './pages/Login/ForgetPassword';
 import PostDetail from './pages/Post/PostDetail/PostDetail';
+import ResetPassword from './pages/Login/ResetPassword';
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
         <Route path="/" element={<Navigate to="/auth/login" />} />
         <Route path='/auth/login' element={<AuthRoute path={"/auth/login"} element={<Login />}/>} />
         <Route path="/auth/register" element={<AuthRoute path={"/auth/register"} element={<UserRegister />}/>} />
-        <Route path="/auth/forget/password" element={<AuthRoute path={"auth/forget/password"} element={<ForgetPassword />}/>} />
+        <Route path="/auth/forget/password" element={<AuthRoute path={"/auth/forget/password"} element={<ForgetPassword />}/>} />
+        <Route path="/auth/forget/password/:temporaryToken" element={<AuthRoute path={"/auth/forget/password/:temporaryToken"} element={<ResetPassword />}/>} />
         <Route path="/user/:userId/modification" element={<AuthRoute  path={"/user/:userId/modification"} element={<UserInfo />} />} />
         <Route path="/main" element={<AuthRoute  path={"/main"} element={<Main />}/>} />
         <Route path='/auth/oauth2/login' element={<AuthRoute path={"/auth/oauth2/login"} element={<OAuth2Login />}/>} />
