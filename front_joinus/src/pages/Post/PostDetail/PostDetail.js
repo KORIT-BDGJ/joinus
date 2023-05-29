@@ -281,12 +281,14 @@ const PostDetail = () => {
     const [totalAttendCount, setTotalAttendCount] = useState(0);
     const [isEditMode, setIsEditMode] = useState(false);
     const [editedTitle, setEditedTitle] = useState("");
+    const [editedText, setEditedText] = useState("");
     const [editedLevel, setEditedLevel] = useState("");
     const [editedState, setEditedState] = useState("");
     const [editedMedal, setEditedMedal] = useState("");
     const [editedSports, setEditedSports] = useState("");
     const [editedRegion, setEditedRegion] = useState("");
     const [editedGender, setEditedGender] = useState("");
+
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -306,23 +308,8 @@ const PostDetail = () => {
     const enableEditMode = () => {
         setIsEditMode(true);
         setEditedTitle(getPost.data.data.title);
-        setEditedLevel(getPost.data.data.levelName);
-        setEditedState(getPost.data.data.stateName);
-        setEditedMedal(getPost.data.data.writerNickName);
-        setEditedSports(getPost.data.data.sportsName);
-        setEditedRegion(getPost.data.data.regionName);
-        setEditedGender(getPost.data.data.genderName);
+        setEditedText(getPost.data.data.text);
     };
-
-    const saveChanges = () => {
-        // Perform the logic to save the edited data, such as making an API request
-        // You can use the edited variables (e.g., editedTitle, editedLevel, etc.) to send the updated data
-        // Once the changes are saved, you can exit the edit mode
-        setIsEditMode(false);
-    };
-
-
-    
 
     const detailClickHandle = (e) => {
         setDetailShow(!detailShow);
@@ -345,6 +332,33 @@ const PostDetail = () => {
         const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
         return response;
     });
+
+    const saveChanges = async () => {
+        // Perform the logic to save the edited data, such as making an API request
+        // You can use the edited variables (e.g., editedTitle, editedText) to send the updated data
+      
+        // Example API request to update the post
+        const updatedPost = {
+          ...getPost.data.data,
+          title: editedTitle,
+          text: editedText
+        };
+      
+        const option = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        };
+      
+        try {
+          await axios.put(`http://localhost:8080/post/${postId}`, updatedPost, option);
+          // Assuming the API call is successful, you can exit the edit mode
+          setIsEditMode(false);
+        } catch (error) {
+          // Handle any error that occurred during the API request
+          console.error(error);
+        }
+    };
 
     if(principal.isLoading) {
         return <div>불러오는 중...</div>
@@ -382,13 +396,34 @@ const PostDetail = () => {
             <Sidebar></Sidebar>
             <div css={detailHeader}>
                 <div css={headerTitle}>
-                    {getPost.data.data.title}
+                    {isEditMode ? (
+                        <>
+                            <input
+                            type="text"
+                            value={editedTitle}
+                            onChange={(e) => setEditedTitle(e.target.value)}
+                            />
+                        </>
+                        ) : (
+                        <>
+                            <div>{getPost.data.data.title}</div>
+                        </>
+                    )}
                 </div>
                 <div>
                     {isCurrentUserAuthor ? (
                         <>
-                            <button css={attendButton}>수정하기</button>
-                            <button css={attendButton}>삭제하기</button>
+                            {isEditMode ? (
+                                <>
+                                    <button onClick={saveChanges}>저장하기</button>
+                                    <button>취소하기</button>
+                                </>
+                                ) : (
+                                <>
+                                    <button css={attendButton} onClick={enableEditMode}>수정하기</button>
+                                    <button css={attendButton}>삭제하기</button>
+                                </>
+                            )}
                         </>
                     ) : (
                         <ApplyPost postId={postId}/>
@@ -433,7 +468,19 @@ const PostDetail = () => {
                         모집글 소개
                     </div>
                     <div css={recruitTextBody}>
-                        {getPost.data.data.text}
+                        {isEditMode ? (
+                            <>
+                                <textarea
+                                value={editedText}
+                                onChange={(e) => setEditedText(e.target.value)}
+                                ></textarea>
+                            </>
+                            ) : (
+                            <>
+                                <div>{getPost.data.data.text}</div>
+                            </>
+                        )}
+                        
                     </div>
 
                 </div>

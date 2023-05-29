@@ -141,8 +141,6 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
     if(getApplicantList.isLoading) {
         return <div>불러오는 중...</div>
     }
-    
-    console.log(getApplicantList.data.data)
 
     if(!getApplicantList.isLoading)
     return (
