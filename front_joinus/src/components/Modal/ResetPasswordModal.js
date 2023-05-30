@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
@@ -51,6 +51,7 @@ const input = css`
   font-size: 16px;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
+  outline: none;
 `;
 
 const buttonContainer = css`
@@ -83,25 +84,41 @@ const errorMessage = css`
   margin-bottom: 5px;
 `;
 
-const ResetPasswordModal = () => {
+const inputFocused = css`
+  border: 3px solid #2ecc71;
+`;
+
+const ResetPasswordModal = ({ setIsOpen , setResetSuccess }) => {
+ 
+  const [ isLoad, setIsLoad ] = useState(true);
   const { temporaryToken } = useParams();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [newPasswordError, setNewPasswordError] = useState('');
+  const [newPasswordFocused, setNewPasswordFocused] = useState(false);
+  const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false);
 
-  const principal = useQuery(["principal"], async () => {
+  const checkToken = useQuery(["checkToken"], async () => {
     const option = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      params : {
+        token: temporaryToken
       }
     }
-    const response = await axios.get("http://localhost:8080/account/principal", option);
-    return response.data;
+    try {
+      const response = await axios.get("http://localhost:8080/auth/forget/password/token", option);
+      return response.data
+    } catch (error) {
+      alert(error.response.data.message);
+      window.location.replace("http://localhost:3000/auth/login");
+      return error;
+    }
+  }, {
+    enabled: isLoad,
+    onSuccess: () => {
+      setIsLoad(false);
+    }
   });
- 
-
-  console.log(temporaryToken);
- 
+  
 
   const handleChangeNewPassword = (e) => {
     setNewPassword(e.target.value);
@@ -126,26 +143,22 @@ const ResetPasswordModal = () => {
       setNewPasswordError('비밀번호가 일치하지 않습니다.');
       return;
     }
-
-    const options = {
-      headers: {
-        Authorization: `Bearer ${temporaryToken}`,
-      },
-    };
-
     try {
+      
       const response = await axios.put(
-        'http://localhost:8080/account/reset/password',
+        'http://localhost:8080/auth/reset/password',
         {
-          email: principal.data.email,
+          temporaryToken: temporaryToken,
+          email: checkToken.data,
           newPassword: newPassword,
-        },
-        options
+        }
       );
-
+      
+      
       if (response.status === 200) {
         alert('비밀번호가 성공적으로 변경되었습니다.');
-        // Add your close modal logic here
+        window.location.replace("http://localhost:3000/auth/login");
+        
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -162,7 +175,12 @@ const ResetPasswordModal = () => {
 
   const handleCancel = () => {
     alert('만료된 페이지입니다.');
+    window.location.replace("http://localhost:3000/auth/login");
   };
+
+  if(checkToken.isLoading){
+    return <></>;
+  }
 
   return (
     <div css={modalContainer}>
@@ -171,21 +189,25 @@ const ResetPasswordModal = () => {
         <div css={inputWrapper}>
           <label css={label}>새 비밀번호</label>
           <input
-            css={input}
+            css={[input, newPasswordFocused && inputFocused]}
             type="password"
             placeholder="새 비밀번호"
             value={newPassword}
             onChange={handleChangeNewPassword}
+            onFocus={() => setNewPasswordFocused(true)}
+            onBlur={() => setNewPasswordFocused(false)}
           />
         </div>
         <div css={inputWrapper}>
           <label css={label}>새 비밀번호 확인</label>
           <input
-            css={input}
+            css={[input, confirmPasswordFocused && inputFocused]}
             type="password"
             placeholder="새 비밀번호 확인"
             value={confirmPassword}
             onChange={handleChangeConfirmPassword}
+            onFocus={() => setConfirmPasswordFocused(true)}
+            onBlur={() => setConfirmPasswordFocused(false)}
           />
           {newPasswordError && <div css={errorMessage}>{newPasswordError}</div>}
         </div>

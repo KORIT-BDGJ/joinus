@@ -133,6 +133,7 @@ const UserOAuth2Register = () => {
   const emailFromOauth2 = searchParams.get('email');
   const nameFromOauth2  = searchParams.get('name');
   const provider = searchParams.get('provider');
+  const [ isNameError, setIsNameError ] = useState(false);
 
   const [registerUser, setRegisterUser] = useState({
     name: nameFromOauth2,
@@ -238,33 +239,34 @@ const UserOAuth2Register = () => {
       ...registerUser,
     };
     
-    const option = {
-      headers: {
-         "Content-Type" : "application/json",
-        registerToken: `Bearer ${registerToken}`,
-      },
-    };
+    oauth2Register.mutate(registerData);
+    // const option = {
+    //   headers: {
+    //      "Content-Type" : "application/json",
+    //     registerToken: `Bearer ${registerToken}`,
+    //   },
+    // };
 
-    try {
-      const response = await axios.post('http://localhost:8080/auth/oauth2/register', JSON.stringify(registerData), option);
+    // try {
+    //   const response = await axios.post('http://localhost:8080/auth/oauth2/register', JSON.stringify(registerData), option);
 
-      if (response.status === 200) {
-        alert('회원가입 완료.');
-        window.location.replace('/auth/login');
-      }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        setErrorMessages({
-          name: '',
-          email: '',
-          password: '',
-          passwordConfirm: '',
-          ...error.response.data.errorData,
-        });
-      } else {
-        console.error('Unexpected error:', error);
-      }
-    }
+    //   if (response.status === 200) {
+    //     alert('회원가입 완료.');
+    //     window.location.replace('/auth/login');
+    //   }
+    // } catch (error) {
+    //   if (error.response && error.response.data) {
+    //     setErrorMessages({
+    //       name: '',
+    //       email: '',
+    //       password: '',
+    //       passwordConfirm: '',
+    //       ...error.response.data.errorData,
+    //     });
+    //   } else {
+    //     console.error('Unexpected error:', error);
+    //   }
+    // }
   };
 
 
@@ -281,7 +283,7 @@ const UserOAuth2Register = () => {
             <main css={ mainContainer }>
                 <div css={authForm}>
                     <label css={ inputLabel }>Name</label>
-                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name" value={registerUser.name} disabled={nameFromOauth2}>
+                    <LoginInput type="text" placeholder="Please enter your name" onChange={onChangeHandle} name ="name" value={registerUser.name} disabled={nameFromOauth2 && !isNameError}>
                         <FiUser />
                     </LoginInput>
                     <div css={errorMsg}>{errorMessages.name}</div>

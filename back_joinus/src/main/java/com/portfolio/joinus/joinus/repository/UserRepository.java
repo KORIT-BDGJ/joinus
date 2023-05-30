@@ -1,6 +1,7 @@
 package com.portfolio.joinus.joinus.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,6 +30,9 @@ public interface UserRepository {
 	
 	public int updateImage(User user);
 	
+	public int createPasswordToken(Map<String, Object> map);
+	
+	public String checkForgotToken(String token);
 	
 	
 	

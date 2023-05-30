@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import LoginInput from '../../components/UI/Login/LoginInput/LoginInput';
 import { FiUser } from 'react-icons/fi';
 import axios from 'axios';
-import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
 const container = css`
     display: flex;
@@ -115,6 +113,8 @@ const ForgetPassword = () => {
             <footer>
 
             </footer>
+
+            
              
         </div>
   );

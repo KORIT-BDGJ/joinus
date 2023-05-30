@@ -89,7 +89,8 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			
 			User userEntity = registerReqDto.toEntity();
 			userRepository.registerUser(userEntity);
-			String nickname = userEntity.getEmail().split("@")[0];
+			String nickname = userEntity.getEmail();
+//			userEntity.getEmail().split("@")[0];
 		
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())
@@ -187,7 +188,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    public void oAuth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {
 	        User userEntity = oAuth2RegisterReqDto.toEntity();
 	        userRepository.registerUser(userEntity);
-	        String nickname = userEntity.getEmail().split("@")[0];
+	        String nickname = userEntity.getEmail();
 			
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())
@@ -236,7 +237,8 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 				        + "<p>비밀번호를 변경하려면 아래의 버튼을 클릭하세요.</p>"
 				        + "<a href=\"http://localhost:3000/auth/forget/password/" + temporaryToken + "\" style=\"display: inline-block; padding: 10px 20px; color: #FFF; background-color: #007BFF; text-decoration: none;\">비밀번호 변경하기</a>"
 				        + "</div>", "text/html; charset=\"utf-8\"");
-				javaMailSender.send(message); 
+				javaMailSender.send(message);
+				createPasswordToken(email, temporaryToken);
 			} catch (MessagingException e) {
 				e.printStackTrace();
 				throw new CustomException("Failed to send the email", ErrorMap.builder().put("message", e.getMessage()).build());
@@ -246,7 +248,20 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    	return true;
 	    }
 	    
+	    private int createPasswordToken(String email, String temporaryToken) {
+	    	Map<String, Object> map = new HashMap<>();
+	    	map.put("email", email);
+	    	map.put("temporaryToken", temporaryToken);
+	    	return userRepository.createPasswordToken(map);
+	    }
 	    
+	    public String checkForgotToken(String token) {
+	    	String email = userRepository.checkForgotToken(token);
+	    	if(email == null) {
+	    		throw new CustomException("인증시간이 만료되었습니다.");
+	    	}
+	    	return email;
+	    }
 	    
 	    
 	    public boolean checkPassword(String email, String password) {
@@ -275,17 +290,20 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    }
 	    
 	    public boolean resetPassword(PwResetReqDto pwResetReqDto) {
-	      
+		      
 	        String newPassword = pwResetReqDto.getNewPassword();
-
-	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	        String email = authentication.getName();
+	        String email = pwResetReqDto.getEmail();
+	        String temporaryToken = pwResetReqDto.getTemporaryToken();
 
 	        User userEntity = userRepository.findUserByEmail(email);
 	        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	        if (userEntity == null) {
 	            throw new BadCredentialsException("Invalid user.");
+	        }
+	        
+	        if (!email.equals(checkForgotToken(temporaryToken))) {
+	            throw new BadCredentialsException("Invalid or expired token.");
 	        }
 
 	        userEntity.setPassword(passwordEncoder.encode(newPassword));

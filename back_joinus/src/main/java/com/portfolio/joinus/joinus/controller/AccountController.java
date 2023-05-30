@@ -51,18 +51,6 @@ public class AccountController {
 		return ResponseEntity.badRequest().body("Password change failed.");
 	}
 	
-	@ValidAspect
-	@PostMapping("/reset/password")
-	public ResponseEntity<?> resetPassword(@Valid @RequestBody PwResetReqDto pwResetReqDto) {
-
-	    boolean isPasswordReset = authenticationService.resetPassword(pwResetReqDto);
-
-	    if(isPasswordReset) {
-	        return ResponseEntity.ok().body("Password reset successful.");
-	    } else {
-	        return ResponseEntity.badRequest().body("Password reset failed.");
-	    }
-	}
 	
 	@PutMapping("/change/address")
 	public ResponseEntity<?> changeAddress( @RequestBody AddressChangeReqDto addressChangeReqDto, BindingResult bindingResult){

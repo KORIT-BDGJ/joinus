@@ -8,6 +8,8 @@ import { GrUserSettings } from 'react-icons/gr';
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
+import { TfiWrite, TfiClipboard,TfiPencil } from "react-icons/tfi";
+
 
 const sidebar = (isOpen) => css`
     position: absolute;
@@ -22,16 +24,14 @@ const sidebar = (isOpen) => css`
     box-shadow: -1px 0px 5px #dbdbdb;
     transition: left 0.5s ease;
     background-color: white;
+    background-color: white;
+    overflow: hidden;
     
     ${isOpen ? "" : `
-        cursor: pointer;
-    `}
-    
-    ${isOpen ? "" : `
-        &:hover { 
-            left: -200px;
-        }
-    `}
+    &:hover { 
+      left: -200px;
+    }
+  `}
 `;
 
 const header = css`
@@ -50,7 +50,6 @@ const userIcon = css`
     border: 2px solid #dbdbdb;
     width: 60px;
     height: 60px;
-    background-color: white;
     color: white;
     font-size: 30px;
     font-weight: 600;
@@ -69,6 +68,7 @@ const userInfo = css`
     margin: 5px;
     font-size: 20px;
     font-weight: 600;
+    color: #2ecc71;
 `;
 
 
@@ -79,15 +79,16 @@ const closeButton = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #dbdbdb;
+    border: none;
     padding-left: 0.3px;
     width: 18px;
     height: 18px;
-    border-radius: 50%;
-    font-size: 12px;
+    background-color: transparent;
+    font-size: 16px; 
+    color: #2ecc71; 
     cursor: pointer;
     &:active {
-        background-color: #fafafa;
+        background-color: rgba(0, 0, 0, 0.1);
     }
 `;
 
@@ -162,7 +163,7 @@ const Sidebar = () => {
                 <img
                 css={imgIcon}
                 src={"http://localhost:8080/image/profile/" + principal.data.image}
-                alt="Profile Image"
+                alt={principal.data.nickName}
                 />
             ) : (
                 <span>{principal.data.nickName}</span>
@@ -178,9 +179,9 @@ const Sidebar = () => {
                 <Link to={`/user/${principal.data.userId}/modification`}><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
                 </div>
                 <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
-                <Link to="/post/register"><ListButton title="운동 모집글 작성"></ListButton></Link>
-                <Link to={`/post/${principal.data.userId}/owner`}><ListButton title="내 모집글 보기"></ListButton></Link>
-                <Link to={`/post/${principal.data.userId}/host`}><ListButton title="내 신청 보기"></ListButton></Link>
+                <Link to="/post/register"><ListButton title="운동 모집글 작성"><TfiWrite/></ListButton></Link>
+                <Link to={`/post/${principal.data.userId}/owner`}><ListButton title="내 모집글 보기"><TfiClipboard/></ListButton></Link>
+                <Link to={`/post/${principal.data.userId}/host`}><ListButton title="내 신청 보기"><TfiPencil/></ListButton></Link>
             </main>
             <footer css={footer}>
                 <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>

@@ -1,12 +1,17 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import ResetPasswordModal from '../../components/Modal/ResetPasswordModal';
 
 const ResetPassword = () => {
-    const {temporaryToken} = useParams();
+
+    const [isOpen, setIsOpen] = useState(true);
+
+    if (!isOpen) {
+        return null;
+    }
+
     return (
         <div>
-            <ResetPasswordModal />
+            <ResetPasswordModal  setIsOpen={setIsOpen}/>
         </div>
     );
 };

@@ -19,6 +19,7 @@ import com.portfolio.joinus.joinus.dto.auth.ForgetPasswordReqDto;
 import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
+import com.portfolio.joinus.joinus.dto.auth.PwResetReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
 import com.portfolio.joinus.joinus.security.JwtTokenProvider;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
@@ -100,11 +101,29 @@ public class AuthenticationController {
 	    return ResponseEntity.ok(emailExists);
 	}
 	
+	@GetMapping("/forget/password/token")
+	public ResponseEntity<?> checkForgotToken(String token) {
+		return ResponseEntity.ok(authenticationService.checkForgotToken(token));
+	}
+	
 	@PostMapping("/validation/send")
 	public ResponseEntity<?> sendMail(@RequestBody Map<String, String> requestData){
 		System.out.println(requestData);
 		
 		return ResponseEntity.ok(authenticationService.validAndSendEmail(requestData.get("email")));
+	}
+	
+	@ValidAspect
+	@PutMapping("/reset/password")
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody PwResetReqDto pwResetReqDto, BindingResult bindingResult) {
+
+	    boolean isPasswordReset = authenticationService.resetPassword(pwResetReqDto);
+
+	    if(isPasswordReset) {
+	        return ResponseEntity.ok().body("Password reset successful.");
+	    } else {
+	        return ResponseEntity.badRequest().body("Password reset failed.");
+	    }
 	}
 	
 	

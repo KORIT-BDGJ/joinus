@@ -177,6 +177,20 @@
 	        user_info_id = #{userId}
 	</select>
 	
+	<insert id="createPasswordToken" parameterType="hashmap">
+		insert into forgot_token_tb
+		values(0, #{email}, #{temporaryToken}, now())
+	</insert>
+	
+	<select id="checkForgotToken" parameterType="String" resultType="String">
+		select
+			email
+		from
+			forgot_token_tb
+		where
+			token = #{token}
+		and	DATE_ADD(create_date, INTERVAL 5 MINUTE) > now() 
+	</select>
 </mapper>
 
 
