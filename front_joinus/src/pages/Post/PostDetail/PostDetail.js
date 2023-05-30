@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 import AttendList from '../../../components/UI/PostDetail/AttendList';
@@ -274,21 +274,20 @@ const footHeader = css`
 `;
 
 const PostDetail = () => {
+    const [ errorMsg, setErrorMsg ] = useState("");
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
     const [ applicantShow, setApplicantShow ] = useState(false);
     const [totalApplicantCount, setTotalApplicantCount] = useState(0);
     const [totalAttendCount, setTotalAttendCount] = useState(0);
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [editedTitle, setEditedTitle] = useState("");
-    const [editedText, setEditedText] = useState("");
-    const [editedLevel, setEditedLevel] = useState("");
-    const [editedState, setEditedState] = useState("");
-    const [editedMedal, setEditedMedal] = useState("");
-    const [editedSports, setEditedSports] = useState("");
-    const [editedRegion, setEditedRegion] = useState("");
-    const [editedGender, setEditedGender] = useState("");
-
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
+    const [updateTitle, setUpdateTitle] = useState("");
+    const [updateText, setUpdateText] = useState("");
+    const [updateLevel, setUpdateLevel] = useState("");
+    const [updateState, setUpdateState] = useState("");
+    const [updateSports, setUpdateSports] = useState("");
+    const [updateRegion, setUpdateRegion] = useState("");
+    const [updateGender, setUpdateGender] = useState("");
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -305,10 +304,10 @@ const PostDetail = () => {
         setApplicantShow(!applicantShow);
     };
 
-    const enableEditMode = () => {
-        setIsEditMode(true);
-        setEditedTitle(getPost.data.data.title);
-        setEditedText(getPost.data.data.text);
+    const updateMode = () => {
+        setIsUpdateMode(true);
+        setUpdateTitle(getPost.data.data.title);
+        setUpdateText(getPost.data.data.text);
     };
 
     const detailClickHandle = (e) => {
@@ -317,9 +316,6 @@ const PostDetail = () => {
     const attendClickHandle = (e) => {
         setAttendShow(!attendShow);
     };
-
-
-
     
     const { postId } = useParams();
     
@@ -333,32 +329,28 @@ const PostDetail = () => {
         return response;
     });
 
-    const saveChanges = async () => {
-        // Perform the logic to save the edited data, such as making an API request
-        // You can use the edited variables (e.g., editedTitle, editedText) to send the updated data
-      
-        // Example API request to update the post
-        const updatedPost = {
-          ...getPost.data.data,
-          title: editedTitle,
-          text: editedText
-        };
-      
+    const saveChanges = useMutation(async (updateData)=> {
+        console.log(updateData);
         const option = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        };
-      
-        try {
-          await axios.put(`http://localhost:8080/post/${postId}`, updatedPost, option);
-          // Assuming the API call is successful, you can exit the edit mode
-          setIsEditMode(false);
-        } catch (error) {
-          // Handle any error that occurred during the API request
-          console.error(error);
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
         }
-    };
+        try{
+            const response = await axios.put(`http://localhost:8080/post/update/${postId}`, updateData, option);
+            return response;
+        } catch(error) {
+            setErrorMsg(error.response.data);
+            return error;
+        }
+    }, {
+        onSuccess: (response) => {
+            if(response.status === 200) {
+                alert("게시글 수정 완료!");
+                setIsUpdateMode(false);
+            }
+        }
+    });
 
     if(principal.isLoading) {
         return <div>불러오는 중...</div>
@@ -371,8 +363,6 @@ const PostDetail = () => {
     const userId = principal.data.userId;
     const writerId = getPost.data.data.writerId;
     const isCurrentUserAuthor = writerId === userId;
-
-   
     
     const deadline = new Date(getPost.data.data.deadLine).toLocaleString("ko-KR", {
         year: "numeric",
@@ -390,18 +380,29 @@ const PostDetail = () => {
         setTotalAttendCount(count);
     };
 
+    const saveChangeSubmitHandle = () => {
+        saveChanges.mutate({
+            updateTitle, 
+            updateText
+        })
+    }
+
+    const cancelClickHandle = () => {
+        setIsUpdateMode(false);
+    }
+
     return (
         
         <div css={container}>
             <Sidebar></Sidebar>
             <div css={detailHeader}>
                 <div css={headerTitle}>
-                    {isEditMode ? (
+                    {isUpdateMode ? (
                         <>
                             <input
                             type="text"
-                            value={editedTitle}
-                            onChange={(e) => setEditedTitle(e.target.value)}
+                            value={updateTitle}
+                            onChange={(e) => setUpdateTitle(e.target.value)}
                             />
                         </>
                         ) : (
@@ -413,14 +414,14 @@ const PostDetail = () => {
                 <div>
                     {isCurrentUserAuthor ? (
                         <>
-                            {isEditMode ? (
+                            {isUpdateMode ? (
                                 <>
-                                    <button onClick={saveChanges}>저장하기</button>
-                                    <button>취소하기</button>
+                                    <button onClick={saveChangeSubmitHandle}>저장하기</button>
+                                    <button onClick={cancelClickHandle}>취소하기</button>
                                 </>
                                 ) : (
                                 <>
-                                    <button css={attendButton} onClick={enableEditMode}>수정하기</button>
+                                    <button css={attendButton} onClick={updateMode}>수정하기</button>
                                     <button css={attendButton}>삭제하기</button>
                                 </>
                             )}
@@ -468,11 +469,11 @@ const PostDetail = () => {
                         모집글 소개
                     </div>
                     <div css={recruitTextBody}>
-                        {isEditMode ? (
+                        {isUpdateMode ? (
                             <>
                                 <textarea
-                                value={editedText}
-                                onChange={(e) => setEditedText(e.target.value)}
+                                value={updateText}
+                                onChange={(e) => setUpdateText(e.target.value)}
                                 ></textarea>
                             </>
                             ) : (

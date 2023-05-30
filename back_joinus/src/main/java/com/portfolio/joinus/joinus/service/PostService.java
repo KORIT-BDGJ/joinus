@@ -14,10 +14,12 @@ import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.HostPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
+import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -237,6 +239,19 @@ public class PostService {
 
     public int saveMyApplicantPostList(HostPostList hostPostList) {
         return postRepository.saveMyApplicantPostList(hostPostList);
+    }
+    
+    public int updatePost(int postId, PostUpdateReqDto postUpdateReqDto) {
+    	String updateTitle = postUpdateReqDto.getUpdateTitle();
+    	String updateText = postUpdateReqDto.getUpdateText();
+		System.out.println("요청 : " + updateTitle);
+		System.out.println("요청 : " + updateText);
+		System.out.println("요청 : " + postId);
+    	return postRepository.updatePost(Post.builder()
+    											.postId(postId)
+    											.title(updateTitle)
+    											.text(updateText)
+    											.build());
     }
 
 

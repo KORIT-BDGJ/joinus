@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.service.PostService;
 
@@ -125,5 +127,11 @@ public class PostController {
 	@PostMapping("/post/{postId}/applicant/accept")
 	public ResponseEntity<?> applicantAccept(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
 		return ResponseEntity.ok().body(postService.applicantAccept(postId, requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
+	}
+	
+	//게시글 수정
+	@PutMapping("/post/update/{postId}")
+	public ResponseEntity<?> postUpdate(@PathVariable int postId, @RequestBody PostUpdateReqDto postUpdateReqDto) {
+		return ResponseEntity.ok().body(postService.updatePost(postId, postUpdateReqDto));
 	}
 }
