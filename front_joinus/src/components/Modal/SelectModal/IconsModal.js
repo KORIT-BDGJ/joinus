@@ -21,14 +21,14 @@ const sportsIcon = () => css`
     &:hover {
     background-color: #63cc63;
     }
-  
+
     &:active {
     background-color: #5EC75E;
     
     }
 `;
 
-const IconsModal = ({ onIconClick, activeStyle }) => {
+const IconsModal = ({ onIconClick }) => {
 
     const sportsIcons = [
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
@@ -63,7 +63,7 @@ const IconsModal = ({ onIconClick, activeStyle }) => {
             {sportsIcons.map((icon) => (
                 <div
                     key={icon.id}
-                    css={[sportsIcon, activeStyle(icon.icon)]}
+                    css={sportsIcon}
                     onClick={() => handleIconClick(icon)}
                     title={icon.title}
                 >

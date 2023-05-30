@@ -40,7 +40,7 @@ const resetButton = css`
     cursor: pointer;
 `;
 
-const selectIconbox = css`
+const selectIconBox = css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -256,17 +256,6 @@ const Main = () => {
         };
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
-        },
-        {
-        onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
-        }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
     });
 
     const sportsIcons = [
@@ -301,17 +290,6 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
@@ -325,17 +303,6 @@ const Main = () => {
         }
         const response = await axios.get("http://localhost:8080/option/regions", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
@@ -346,17 +313,6 @@ const Main = () => {
         }
         const response = await axios.get("http://localhost:8080/option/searchs", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getPostList = useQuery(["getPostList"], async () => {
@@ -371,17 +327,6 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/post/list", option);
         return response.data;
-    }, 
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     if(principal.isLoading) {
@@ -392,17 +337,16 @@ const Main = () => {
         const currentDate = new Date();
         const nextDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
         let nextServerTime;
-      
+
         if (currentDate.getHours() < 12) {
           // 현재 시간이 오전인 경우
-          nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
+            nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
         } else {
           // 현재 시간이 오후인 경우
-          nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
+            nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
         }
-      
         return nextServerTime;
-      }
+    }
 
     const handleIconSelect = (IconComponent) => {
         setSelectedIcon(IconComponent.id);
@@ -441,6 +385,7 @@ const Main = () => {
             [optionName]: option.value,
             page: 1
         });
+
         setRefresh(true);
     }
 
@@ -586,9 +531,16 @@ const Main = () => {
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
-                <button css={resetButton} onClick={resetSearchClickHandle}><GrPowerReset /></button>
-                <div css={selectIconbox} onClick={(e) => setSportsModalIsOpen(true)}>
-                    {icons}
+                <button 
+                    css={resetButton} 
+                    onClick={resetSearchClickHandle}
+                >
+                    <GrPowerReset />
+                </button>
+                <div css={selectIconBox}>
+                    <div onClick={() => setSportsModalIsOpen(true)}>
+                        {icons}
+                    </div>
                 </div>
                 {getSports.isLoading ? ""
                     : <SelectSportsModal 
@@ -598,7 +550,7 @@ const Main = () => {
                         onClick={selectedIconClickHandle}
                     />
                 }
-                <div css={selectIconbox}>
+                <div css={selectIconBox}>
                     {getRegions.isLoading ? ""
                         : <Select
                             css={selectCountry}
@@ -632,15 +584,23 @@ const Main = () => {
                 <>
                     {getPostList.data.postList
                     .map((post) =>(
-                        <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
+                        <div 
+                            css={listContainer} 
+                            key={post.postId} 
+                            onClick={() => listClickHandle(post.postId)} 
+                        >
                             <div css={postIconBox}>
                                 {sportsIcons.filter(sportIcon => sportIcon.id === parseInt(!!post.sportsId ? post.sportsId : 1))[0].icon}
                             </div>
                             <div css={postContent}>
                                 <header css={postListHeader}>
-                                    <label css={informationLabel} >작성자:{post.writerNickName}</label>
+                                    <label css={informationLabel} >
+                                        작성자:{post.writerNickName}
+                                    </label>
                                     <input css={headerNickName} type="text" readOnly/>  
-                                    <label css={headerDateLabel} >작성일:</label>
+                                    <label css={headerDateLabel} >
+                                        작성일:
+                                    </label>
                                     <input 
                                         css={headerDate} 
                                         type="text" 
