@@ -59,9 +59,11 @@ const cancelButton = css`
 
 
 const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
+    
+    const [selectedIcon, setSelectedIcon] = useState(null);
 
-    const handleIconClick = (IconComponent) => {
-        onSelect(IconComponent);
+    const handleIconClick = (icon) => {
+        onSelect(icon);
     }
 
     return (
@@ -70,14 +72,22 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
                 <h1 css={modalMainTitle}>운동 종목 선택</h1>
             </header>
             <main css={modalMain}>
-                <IconsModal onIconClick={handleIconClick} />
+                <IconsModal 
+                    onIconClick={handleIconClick} 
+                    selectedIcon={selectedIcon} 
+                    setSelectedIcon={setSelectedIcon}
+                />
             </main>
             <footer css={modalMainButton}>
                 <button css={okButton} onClick={()=> {
                     setIsOpen(false);
                     onClick();
+                    setSelectedIcon(null);
                 }}>확인</button>
-                <button css={cancelButton} onClick={()=> setIsOpen(false)}>취소</button>
+                <button css={cancelButton} onClick={()=> {
+                    setIsOpen(false);
+                    setSelectedIcon(null);
+                }}>취소</button>
             </footer>
         </div>
     );

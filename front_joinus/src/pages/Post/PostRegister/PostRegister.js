@@ -202,7 +202,12 @@ const PostRegister = () => {
         selectedCountry: null
     });
 
-    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+    const [ icons, setIcons ] = useState(() => (
+        <FcSportsMode 
+            css={sportIcon}
+            title="운동 선택"
+        />
+    ));
 
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },

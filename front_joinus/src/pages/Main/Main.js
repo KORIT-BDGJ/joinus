@@ -48,6 +48,17 @@ const selectIconBox = css`
     height: 100%;
 `;
 
+const likeSports = css`
+    border: 1px solid #999;
+    width: 20px;
+    text-align: center;
+`;
+
+const likeSportsButton = css`
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+`;
+
 const sportIcon = css`
     width: 45px;
     height: 35px;
@@ -246,7 +257,12 @@ const Main = () => {
 
     const [ searchInputValue, setSearchInputValue ] = useState("");
 
-    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+    const [ icons, setIcons ] = useState(() => (
+        <FcSportsMode 
+            css={sportIcon}
+            title="운동 선택"
+        />
+    ));
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -257,6 +273,26 @@ const Main = () => {
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     });
+
+    // useEffect(() => {
+    //     if (principal.data && principal.data.sportsLikes) {
+    //       // principal에서 sportsLikes 값을 가져옴
+    //       const sportsLikes = principal.data.sportsLikes;
+    //       // sportsLikes 값 중 sportsId에 포함된 값들만 필터링하여 업데이트
+    //       const filteredSportsId = sportsLikes.filter((id) =>
+    //         sportsIcons.some((icon) => icon.id === id)
+    //       );
+    
+    //       setSearchParams((prevState) => ({
+    //         ...prevState,
+    //         sportsId: filteredSportsId,
+    //         page: 1
+    //       }));
+    //     }
+    //   }, [principal.data]);
+    
+    //   // ...
+    // };
 
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
@@ -327,6 +363,11 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/post/list", option);
         return response.data;
+    },{
+        enabled: refresh,
+        onSuccess: () => {
+            setRefresh(false);
+        }
     });
 
     if(principal.isLoading) {
@@ -538,6 +579,11 @@ const Main = () => {
                     <GrPowerReset />
                 </button>
                 <div css={selectIconBox}>
+                    <button css={likeSports}>
+                        <h1>1</h1>
+                        <h1 css={likeSportsButton}>2</h1>
+                        <h1>3</h1>
+                    </button>
                     <div onClick={() => setSportsModalIsOpen(true)}>
                         {icons}
                     </div>
@@ -578,9 +624,9 @@ const Main = () => {
                 </div>
             </header>
             <div css={mainListBox}>
-            {getPostList.isLoading ? ( 
-                "" 
-            ) : (
+                {getPostList.isLoading ? ( 
+                    "" 
+                ) : (
                 <>
                     {getPostList.data.postList
                     .map((post) =>(
