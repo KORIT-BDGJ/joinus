@@ -2,7 +2,6 @@
 import { css } from '@emotion/react'
 import React from 'react';
 import { useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -11,6 +10,17 @@ import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 import AttendList from '../../../components/UI/PostDetail/AttendList';
 import Comment from '../../../components/UI/PostDetail/Comment';
 import ApplyPost from '../../../components/UI/PostDetail/ApplyPost';
+import { FcSportsMode } from "react-icons/fc";
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { CgGym } from 'react-icons/cg';
+import { IoMdBicycle } from 'react-icons/io';
+import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
+import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { GrGamepad } from 'react-icons/gr';
+import { BiMale, BiMaleFemale, BiFemale } from 'react-icons/bi';
+import SelectSportsModal from '../../../components/Modal/SelectModal/SelectSportsModal';
+import Select from 'react-select';
 
 
 const container = css`
@@ -90,10 +100,10 @@ const ownerPicture = css`
 `;
 
 const imgIcon = css`
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const ownerNickname = css`
@@ -145,6 +155,34 @@ const recruitInfoContent = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+`;
+
+const sportIcon = css`
+    width: 60px;
+    height: 35px;
+    cursor: pointer;
+`;
+
+const postTitle = css`
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    width: 30%;
+`;
+
+const buttonRadio = css`
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+`;
+
+const selectCity = css`
+    width: 200px;
+    height: 40px;
+`;
+
+const buttonRadioBox = css`
+    font-size: 30px;
 `;
 
 const recruitSports = css`
@@ -283,11 +321,38 @@ const PostDetail = () => {
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const [updateTitle, setUpdateTitle] = useState("");
     const [updateText, setUpdateText] = useState("");
+    const [ selectedIcon, setSelectedIcon ] = useState(null);
+    const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
+    const [updateRegion, setUpdateRegion] = useState("");
+    const [updateRegionName, setUpdateRegionName] = useState("");
     const [updateLevel, setUpdateLevel] = useState("");
     const [updateState, setUpdateState] = useState("");
     const [updateSports, setUpdateSports] = useState("");
-    const [updateRegion, setUpdateRegion] = useState("");
     const [updateGender, setUpdateGender] = useState("");
+    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+
+    const sportsIcons = [
+        {id: 1, name: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, name: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, name: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, name: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, name: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, name: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, name: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, name: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, name: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, name: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, name: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, name: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, name: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, name: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, name: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, name: "게임", icon: <GrGamepad size={32} /> }
+    ]
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -327,7 +392,75 @@ const PostDetail = () => {
         }
         const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
         return response;
+    }, {
+        onSuccess: (response) => {
+            const selectedSportsIcon = sportsIcons.find((icon) => icon.id === response.data.sportsId);
+            setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+
+        }
     });
+
+    const getSports = useQuery(["getSports"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/sports", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
+
+    const getRegions = useQuery(["getRegions"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/regions", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
+
+    const getGenders = useQuery(["getGenders"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/genders", option);
+        return response.data;
+    },{
+        onError: (error) => {
+          // 인증에 실패했을 때의 처리를 추가합니다.
+          if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+          }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
+      });
 
     const saveChanges = useMutation(async (updateData)=> {
         console.log(updateData);
@@ -360,6 +493,7 @@ const PostDetail = () => {
         return <div>불러오는 중...</div>
     }
 
+
     const userId = principal.data.userId;
     const writerId = getPost.data.data.writerId;
     const isCurrentUserAuthor = writerId === userId;
@@ -372,6 +506,20 @@ const PostDetail = () => {
         minute: "numeric",
     });
 
+    const handleIconSelect = (IconComponent) => {
+        setSelectedIcon(IconComponent.id);
+    }
+
+    const selectedIconClickHandle = () => {
+        const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
+        setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        setUpdateSports(selectedIcon);
+    }
+
+    const genderHandleChange = (e) => {
+        setUpdateGender(e.target.value);
+    }
+
     const updateTotalApplicantCount = (count) => {
         setTotalApplicantCount(count);
     };
@@ -383,12 +531,23 @@ const PostDetail = () => {
     const saveChangeSubmitHandle = () => {
         saveChanges.mutate({
             updateTitle, 
-            updateText
+            updateText,
+            updateRegion,
+            updateGender,
+            updateSports
         })
     }
 
     const cancelClickHandle = () => {
         setIsUpdateMode(false);
+    }
+
+    if(principal.isLoading) {
+        return <div>불러오는 중...</div>
+    }
+
+    if(getPost.isLoading) {
+        return <div>불러오는 중...</div>
     }
 
     return (
@@ -458,10 +617,74 @@ const PostDetail = () => {
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
                     <div css={recruitInfoContent}>
-                        <div css={recruitSports}>{getPost.data.data.sportsName}</div>
-                        <div css={recruitRegion}>지역: {getPost.data.data.regionName}</div>
+                        <div css={recruitSports}>
+                        {isUpdateMode ? (
+                            <>
+                            <div onClick={() => setSportsModalIsOpen(true)}>{icons}</div>
+                            {getSports.isLoading ? (
+                                ""
+                            ) : (
+                                <SelectSportsModal
+                                isOpen={sportsModalIsOpen}
+                                setIsOpen={setSportsModalIsOpen}
+                                onSelect={handleIconSelect}
+                                onClick={selectedIconClickHandle}
+                                />
+                            )}
+                            </>
+                        ) : (
+                            <>
+                            <div>{icons}</div>
+                            </>
+                        )}
+                        </div>
+                        <div css={recruitRegion}>
+                            {isUpdateMode ? (
+                                <>
+                                {getRegions.isLoading ? ""
+                                : <Select
+                                    css={selectCity}
+                                    value={updateRegion}
+                                    onChange={(e) => setUpdateRegion(e.value) & setUpdateRegionName(e.label)}
+                                    options={getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))}
+                                    placeholder={updateRegionName ? updateRegionName : getPost.data.data.regionName}
+                                />}
+                                </>
+                            ) : (
+                                <div>
+                                    지역: {getPost.data.data.regionName}
+                                </div>
+                            )}               
+                        </div>
                         <div css={recruitTime}>{deadline}</div>
-                        <div css={recruitGender}>모집성별: {getPost.data.data.genderName}</div>
+                        <div css={recruitGender}>
+                        {isUpdateMode ? (
+                            <>
+                            {getGenders.isLoading ? "" : getGenders.data.map((genderOption) => (
+                                <label css={buttonRadioBox} key={genderOption.genderId}>
+                                    <input
+                                        css={buttonRadio}
+                                        type="radio"
+                                        name="gender"
+                                        value={genderOption.genderId}
+                                        checked={updateGender === `${genderOption.genderId}`}
+                                        onChange={genderHandleChange}
+                                    />
+                                    {genderOption.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
+                                    {genderOption.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
+                                    {genderOption.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
+                                </label>
+                            ))}   
+                            </>
+                            ) : (
+                                <div>
+                                    모집성별: {` `}
+                                    {getPost.data.data.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
+                                    {getPost.data.data.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
+                                    {getPost.data.data.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
+                                </div>
+                            )} 
+                        </div>
                     </div>
                 </div>
                 <div css={recruitText}>

@@ -66,6 +66,7 @@ public class Post {
 				.regionName(region.getRegionName())
 				.deadLine(deadLine)
 				.recruitsCount(recruitsCount)
+				.genderId(gender.getGenderId())
 				.genderName(gender.getGenderName())
 				.text(text)
 				.build();

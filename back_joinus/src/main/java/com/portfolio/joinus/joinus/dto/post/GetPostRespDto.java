@@ -19,6 +19,7 @@ public class GetPostRespDto {
 	private String regionName;
 	private Date deadLine;
 	private int recruitsCount;
+	private int genderId;
 	private String genderName;
 	private String text;
 }
