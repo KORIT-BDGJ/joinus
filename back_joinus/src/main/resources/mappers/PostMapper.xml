@@ -350,6 +350,33 @@
 			LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
 	</select>
 	
+	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.dto.post.AttendListRespDto">
+	    SELECT
+	        pt.post_id AS postId,
+	        pt.title,
+	        ut.user_id AS userId,
+	        uit.nickname,
+	        uit.image
+	    FROM
+	        post_tb pt
+	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
+	        LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+	    WHERE
+	        pt.post_id IN (
+	            SELECT DISTINCT
+	                patl.post_id
+	            FROM
+	                post_attend_list_tb patl
+	                INNER JOIN post_applicant_list_tb papl ON (papl.post_id = patl.post_id)
+	            WHERE
+	                papl.user_id = #{userId}
+	                AND patl.state_id = 1
+	        )
+	</select>
+
+
+	
+	
 	<select id="getMyAttendPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
 		SELECT
 			hplt.host_post_list_id AS hostPostListId,

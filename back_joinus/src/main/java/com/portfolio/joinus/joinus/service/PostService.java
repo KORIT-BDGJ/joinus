@@ -20,6 +20,7 @@ import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -186,18 +187,34 @@ public class PostService {
         List<HostPostListRespDto> list = new ArrayList<>();
 
         postRepository.getHostPostListByUserId(userId).forEach(hostPostData -> {
-            list.add(hostPostData.toDto());
+            if (hostPostData.getUserId() == userId) {
+                list.add(hostPostData.toDto());
+            }
         });
 
         return list;
     }
 
 
+
     public List<HostPostListRespDto> getMyApplicantPostListByUserId(int userId) {
         List<HostPostListRespDto> list = new ArrayList<>();
 
         postRepository.getMyApplicantPostListByUserId(userId).forEach(hostPostData -> {
-            list.add(hostPostData.toDto());
+            if (hostPostData.getUserId() == userId) {
+                list.add(hostPostData.toDto());
+            }
+        });
+
+        return list;
+    }
+
+    
+    public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId) {
+        List<AttendListRespDto> list = new ArrayList<>();
+
+        postRepository.getMyApplicantAcceptPostListByUserId(userId).forEach(attendData -> {
+            list.add(attendData.toDto());
         });
 
         return list;
@@ -238,6 +255,4 @@ public class PostService {
     public int saveMyApplicantPostList(HostPostList hostPostList) {
         return postRepository.saveMyApplicantPostList(hostPostList);
     }
-
-
 }
