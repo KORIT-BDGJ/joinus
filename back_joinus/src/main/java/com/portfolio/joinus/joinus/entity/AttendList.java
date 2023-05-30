@@ -1,7 +1,5 @@
 package com.portfolio.joinus.joinus.entity;
 
-
-
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +16,7 @@ public class AttendList {
 	private String nickName;
 	private String stateName;
 	private String levelName;
+	private String title; //  2023-05-30 김두영 추가
 	
 	private User user;
 	private Post post;
@@ -32,6 +31,7 @@ public class AttendList {
 				.nickName(nickName)
 				.stateName(stateName)
 				.levelName(levelName)
+				.title(title)
 				.build();
 	}
 }

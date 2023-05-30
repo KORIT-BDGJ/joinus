@@ -12,8 +12,8 @@ public class AttendListRespDto {
     private String nickName;
     private String stateName;
     private String levelName;
-	public AttendListRespDto toDto() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private String title;
+
+
 }
+

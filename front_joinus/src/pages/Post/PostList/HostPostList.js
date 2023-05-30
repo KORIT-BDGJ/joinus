@@ -194,6 +194,8 @@ const HostPostList = () => {
       .catch((error) => {
         console.error(error);
       });
+
+    
   }, []);
 
     useEffect(() => {
@@ -335,8 +337,7 @@ const HostPostList = () => {
         <div css={list}>
           {myApplicantPosts.map((post) => (
             <li key={`applicant-${post.postId}`} css={listItem}>
-              <div css={postInfo}>
-                <div css={iconWrapper}>{post.sportsIcon}</div>
+              <div css={postInfo}>                
                 <h1 css={postTitle} onClick={() => movePost(post.postId)}>
                   {post.title}
                 </h1>
@@ -351,18 +352,19 @@ const HostPostList = () => {
       <div>
         <h1 css={title}>신청 수락된 글</h1>
         <div css={list}>
-          {myApplicantAcceptPosts.map((post) => (
-            <li key={`accept-${post.postId}`} css={listItem}>
-              <div css={postInfo}>
-                <div css={iconWrapper}>{post.sportsIcon}</div>
-                <h1 css={postTitle} onClick={() => movePost(post.postId)}>
-                  {post.title}
-                </h1>
-              </div>
-            </li>
-          ))}
+        {myApplicantAcceptPosts.map((post) => (
+          <li key={`accept-${post.postId}`} css={listItem}>
+            <div css={postInfo}>
+              <div css={iconWrapper}>{post.sportsIcon}</div>
+              <h1 css={postTitle} onClick={() => movePost(post.postId)}>
+                {post.title}
+              </h1>
+            </div>
+          </li>
+        ))}
         </div>
       </div>
+
       <div>
         <h1 css={title}>참여 완료한 글</h1>
         {/* <div css={list}>

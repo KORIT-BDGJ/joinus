@@ -211,13 +211,7 @@ public class PostService {
 
     
     public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId) {
-        List<AttendListRespDto> list = new ArrayList<>();
-
-        postRepository.getMyApplicantAcceptPostListByUserId(userId).forEach(attendData -> {
-            list.add(attendData.toDto());
-        });
-
-        return list;
+        return postRepository.getMyApplicantAcceptPostListByUserId(userId);
     }
 
     public List<HostPostListRespDto> getMyAttendPostListByUserId(int userId) {

@@ -73,6 +73,17 @@
 		<id property="genderId" column="gender_id"/>
 		<result property="genderName" column="gender_name"/>
 	</resultMap>
+	
+	<resultMap type="com.portfolio.joinus.joinus.entity.AttendList" id="AttendListMap">
+	    <id property="postId" column="postId"/>
+	    <id property="userId" column="userId"/>
+	    <result property="image" column="image"/>
+	    <result property="nickname" column="nickname"/>
+	    <result property="levelName" column="levelName"/>
+	    <result property="stateName" column="stateName"/>
+	   
+	</resultMap>
+	
 
 	<select id="getPost" parameterType="Integer" resultMap="PostMap">
 		SELECT
@@ -350,32 +361,21 @@
 			LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
 	</select>
 	
-	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.dto.post.AttendListRespDto">
+	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultMap="AttendListMap">
 	    SELECT
 	        pt.post_id AS postId,
-	        pt.title,
-	        ut.user_id AS userId,
-	        uit.nickname,
-	        uit.image
+	        pt.title AS title,
+	        ut.user_id AS userId
 	    FROM
-	        post_tb pt
-	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
+	        post_attend_list_tb patl
+	        LEFT OUTER JOIN post_tb pt ON (pt.post_id = patl.post_id)
+	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = patl.user_id)
 	        LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+	        LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
+	        LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
 	    WHERE
-	        pt.post_id IN (
-	            SELECT DISTINCT
-	                patl.post_id
-	            FROM
-	                post_attend_list_tb patl
-	                INNER JOIN post_applicant_list_tb papl ON (papl.post_id = patl.post_id)
-	            WHERE
-	                papl.user_id = #{userId}
-	                AND patl.state_id = 1
-	        )
+	        ut.user_id = #{userId}	
 	</select>
-
-
-	
 	
 	<select id="getMyAttendPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
 		SELECT
