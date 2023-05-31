@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -365,5 +366,13 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 								.build());
 						
 		}
+		
+		public List<String> getNicknames(List<Long> userIds) {
+		    List<String> nicknames = userRepository.findNicknamesByUserIds(userIds);
+		    return nicknames;
+		}
+
+
+		
 	
 }

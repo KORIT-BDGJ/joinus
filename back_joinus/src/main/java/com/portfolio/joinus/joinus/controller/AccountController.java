@@ -1,5 +1,7 @@
 package com.portfolio.joinus.joinus.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -74,4 +76,12 @@ public class AccountController {
 		System.out.println(profileImgFile.getOriginalFilename());
 		return ResponseEntity.ok(authenticationService.updateImage(profileImgFile));
 	}
+	
+	@PostMapping("/nickname")
+	public ResponseEntity<?> getNicknames(@RequestBody List<Long> userIds) {
+	    List<String> nicknames = authenticationService.getNicknames(userIds);
+	    return ResponseEntity.ok().body(nicknames);
+	}
+
+	
 }

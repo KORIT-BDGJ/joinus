@@ -4,22 +4,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 import com.portfolio.joinus.joinus.dto.post.CommentRespDto;
+import com.portfolio.joinus.joinus.dto.post.FinishListRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.HostPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
+import com.portfolio.joinus.joinus.entity.FinishList;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.repository.PostRepository;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -214,10 +216,29 @@ public class PostService {
         return postRepository.getMyApplicantAcceptPostListByUserId(userId);
     }
     
-    public List<AttendListRespDto> getMyfinishPostListByUserId(int userId) {
-        return postRepository.getMyfinishPostListByUserId(userId);
+    public List<FinishListRespDto> getMyfinishPostListByUserId(int userId) {
+        List<FinishList> finishList = postRepository.getMyfinishPostListByUserId(userId);
+        List<FinishListRespDto> finishListRespDtos = new ArrayList<>();
+
+        for (FinishList finish : finishList) {
+            int postId = finish.getPostId();
+            List<Integer> userIdList = postRepository.getUserIdListByPostIdExceptUserId(postId, userId);
+            List<String> userIdStringList = userIdList.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+
+            finish.setUserIdList(userIdStringList);
+
+            FinishListRespDto finishListRespDto = finish.toDto();
+            finishListRespDto.setUserIdList(userIdStringList);
+
+            finishListRespDtos.add(finishListRespDto);
+        }
+
+        return finishListRespDtos;
     }
-    
+
+
     public int applyPost(int postId, int userId, int stateId, int levelId) {
         Map<String, Object> map = new HashMap<>();
         map.put("postId", postId);
@@ -243,8 +264,4 @@ public class PostService {
     public int saveMyApplicantPostList(HostPostList hostPostList) {
         return postRepository.saveMyApplicantPostList(hostPostList);
     }
-    
-
-
-    
 }

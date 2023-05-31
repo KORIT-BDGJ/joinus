@@ -29,9 +29,6 @@ public interface UserRepository {
 	
 	public int updateImage(User user);
 	
-	
-	
-	
 	// registerUser 하는 동작 하나로, DB 테이블 5개 개별로 생성
 	// 유저 등록
 	public int registerUser (User user);
@@ -51,4 +48,6 @@ public interface UserRepository {
 	List<OwnerPostList> getOwnerPostListByUserId(int userId);
 	
 	List<HostPostList> getApplicantPostListByUserId(int userId);
+
+	List<String> findNicknamesByUserIds(List<Long> userIds);
 }

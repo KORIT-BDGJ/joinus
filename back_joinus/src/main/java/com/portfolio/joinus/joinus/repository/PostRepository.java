@@ -10,6 +10,7 @@ import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.entity.ApplicantList;
 import com.portfolio.joinus.joinus.entity.AttendList;
 import com.portfolio.joinus.joinus.entity.Comment;
+import com.portfolio.joinus.joinus.entity.FinishList;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Post;
@@ -53,8 +54,9 @@ public interface PostRepository {
 	// post_attend_list_tb 에서 id로 list 불러오기
 	public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId);
 
-	public List<AttendListRespDto> getMyfinishPostListByUserId(int userId);
-
+	public List<FinishList> getMyfinishPostListByUserId(int userId);
+	
+	public List<Integer> getUserIdListByPostIdExceptUserId(int postId, int userId);
 
 	public int applyPost(Map<String, Object> map);
 

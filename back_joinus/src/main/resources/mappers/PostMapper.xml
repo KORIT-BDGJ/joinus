@@ -396,6 +396,13 @@
 	        ut.user_id = #{userId}
 	</select>
 	
+	<select id="getUserIdListByPostIdExceptUserId" parameterType="map" resultType="int">
+	    SELECT user_id
+	    FROM host_finish_list_tb
+	    WHERE post_id = #{postId}
+	    AND user_id != #{userId}
+	</select>
+
 	<insert id="applyPost" parameterType="hashMap">
 		INSERT INTO post_applicant_list_tb
 		VALUES (0, #{postId}, #{userId}, #{stateId}, #{levelId})
@@ -457,5 +464,4 @@
 		values (0, #{postId}, #{userId}, #{stateId}, #{levelId})
 	</insert>
 	
-
 </mapper>
