@@ -18,7 +18,7 @@ import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.CheckPasswordReqDto;
 import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
-import com.portfolio.joinus.joinus.dto.auth.PwResetReqDto;
+import com.portfolio.joinus.joinus.dto.auth.SportsLikesChangeReqDto;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -76,4 +76,17 @@ public class AccountController {
 		System.out.println(profileImgFile.getOriginalFilename());
 		return ResponseEntity.ok(authenticationService.updateImage(profileImgFile));
 	}
+	
+	@GetMapping("/check/sportslikes")
+	public ResponseEntity<?> checkSportsLikes(){
+	
+		return ResponseEntity.ok().body(authenticationService.checkSportsLikes());
+	}
+	
+	@PutMapping("/change/sportslikes")
+	public ResponseEntity<?> changeSportsLikes( @RequestBody SportsLikesChangeReqDto sportsLikesChangeReqDto ){
+		
+		return ResponseEntity.ok().body(authenticationService.changeSportsLikes(sportsLikesChangeReqDto));
+	}
+	
 }

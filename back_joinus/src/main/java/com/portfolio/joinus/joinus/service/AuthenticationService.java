@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,6 +47,7 @@ import com.portfolio.joinus.joinus.dto.auth.PrincipalRespDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwResetReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
+import com.portfolio.joinus.joinus.dto.auth.SportsLikesChangeReqDto;
 import com.portfolio.joinus.joinus.entity.Authority;
 import com.portfolio.joinus.joinus.entity.Point;
 import com.portfolio.joinus.joinus.entity.SportsLikes;
@@ -105,10 +108,6 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 					.image(null)
 					.nickName(nickname)
 					.build()); 
-			userRepository.registerSportsLikes(SportsLikes.builder()
-					.userId(userEntity.getUserId())
-					.SportsId(0)
-					.build());
 			
 	}
 
@@ -172,6 +171,28 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	            .point(userEntity.getPoint().getPoint())
 	            .build();
 	}
+	
+	public List<SportsLikesChangeReqDto> checkSportsLikes() {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
+	    List<SportsLikes> sportsLikesList = userRepository.findSportsLikesByuserId(principalUser.getUserId());
+	    List<SportsLikesChangeReqDto> sportsLikesDtoList = new ArrayList<>();
+	    
+	    for(SportsLikes sportsLikes : sportsLikesList) {
+	        if(sportsLikes != null) {
+	            SportsLikesChangeReqDto sportsLikesChangeReqDto = SportsLikesChangeReqDto.builder()
+	                .userId(principalUser.getUserId())
+	                .sportsId(sportsLikes.getSportsId())
+	                .build();
+	            sportsLikesDtoList.add(sportsLikesChangeReqDto);
+	        }
+	    }
+	    
+	    //System.out.println(sportsLikesDtoList);
+	    return sportsLikesDtoList;
+	}
+
+	
 	 @Override
 	    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 	        OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
@@ -203,15 +224,10 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 					.image(null)
 					.nickName(nickname)
 					.build()); 
-			userRepository.registerSportsLikes(SportsLikes.builder()
-					.userId(userEntity.getUserId())
-					.SportsId(0)
-					.build());
 	    }
 	    
 	    public boolean checkEmail(String email) {
 	    	User userEntity = userRepository.findUserByEmail(email);
-	    	
 	    	return userEntity != null;
 	    }
 	    
@@ -358,6 +374,21 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	        return true;
 	    }
 	    
+	    public boolean changeSportsLikes(SportsLikesChangeReqDto sportsLikesChangeReqDto) {
+	        userRepository.deleteSportsLikesByUserId(sportsLikesChangeReqDto.getUserId());
+
+	        SportsLikes sportsLikes = SportsLikes.builder()
+	            .userId(sportsLikesChangeReqDto.getUserId())
+	            .sportsId(sportsLikesChangeReqDto.getSportsId())
+	            .build();
+	        
+	        System.out.println(sportsLikes);
+	        userRepository.updateSportsLikes(sportsLikes);
+
+	        return true;
+	    }
+	
+	    
 
 		public int oAuth2ProviderMerge(OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
 			User userEntity = userRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());
@@ -395,8 +426,6 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 					.getContext()
 					.getAuthentication()
 					.getPrincipal();
-
-
 
 			return userRepository.updateImage(User.builder()
 								.userId(principalUser.getUserId())

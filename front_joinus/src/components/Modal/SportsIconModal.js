@@ -45,10 +45,13 @@ const sportsIconsContainer = css`
   overflow-y: auto;
 `;
 const sportsIcon = css`
-  font-size: 50px;
+  
   margin: 10px;
   cursor: pointer;
   padding: 10px;
+  border: 2px solid transparent;
+  width: 50px;  // or other appropriate value
+  height: 50px; // or other appropriate value
 
     &:hover {
     background-color: rgba(0, 255, 0, 0.2);
@@ -100,6 +103,7 @@ const modalCancelButton = css`
 
 
 const SportsIconModal = ({
+  selectedSports,
   closeModal,
   selectedIndex,
   setSelectedSports,
@@ -110,7 +114,7 @@ const SportsIconModal = ({
 
   const handleSportSelect = (e) => {
     const selectedSport = e.currentTarget.getAttribute('data-sport');
-    setSelectedSport(selectedSport);
+    setSelectedSport(parseInt(selectedSport));
   };
 
   const handleConfirm = () => {
@@ -130,7 +134,6 @@ const SportsIconModal = ({
   };
 
   const sportsIconActive = (sport) => {
-
     return selectedSport === sport
       ? css`
           ${sportsIcon};
@@ -150,6 +153,7 @@ const SportsIconModal = ({
           <ModalsIcon
             handleSportSelect={handleSportSelect}
             sportsIconActive={sportsIconActive}
+            selectedSports={selectedSports}
           />
         </div>
         <div css={modalButtonContainer}>

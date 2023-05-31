@@ -66,7 +66,7 @@ const userInfo = css`
     display: flex;
     flex-direction: column;
     margin: 5px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
     color: #2ecc71;
 `;

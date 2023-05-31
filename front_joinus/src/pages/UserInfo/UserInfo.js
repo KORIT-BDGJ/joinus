@@ -110,6 +110,7 @@ const changeButton = css`
   border-radius: 5px;
   font-size: 12px;
   font-weight: 600;
+  border: none;
   cursor: pointer;
 `;
 
@@ -134,9 +135,14 @@ const imagePreview = css`
 
 const detailContainer = css`
   width: 680px;
-  height: 350px;
+  height: 400px;
   border: 1px solid #333;
   border-radius: 10px;
+  display: flex;        
+  flex-direction: column;  
+  justify-content: space-between; 
+  align-items: center;   
+  
 `;
 
 const footerContainer = css`
@@ -146,14 +152,12 @@ const footerContainer = css`
 `;
 
 const modifyButton = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0px ;
+  margin-top: auto;    /* add this line */
+  margin-bottom: 20px;  /* modify this line */
   border: 1px solid #dbdbdb;
   border-radius: 7px;
   width: 200PX;
-  height: 50px;
+  height: 60px;
   background-color: #2ecc71;
   color: white;
   font-weight: 900;
@@ -179,7 +183,7 @@ const circleContainer = css`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 20px 0;
+  margin: 0px;
 `;
 
 
@@ -234,7 +238,7 @@ const animationStyles = (start, end) => ({
 
 const emojiContainer = css`
   position: absolute;
-  bottom: 23px;
+  bottom: 60px;
   right: 15px;
   transform: translateY(-50%);
   font-size: 11px;
@@ -245,8 +249,14 @@ const emojiContainer = css`
 `;
 
 const emoji = css`
-  ${animationStyles(-10, 0)}
+  ${animationStyles(-70, -50)}
   display: inline-block;
+  
+`;
+
+const spanLocation = css`
+  position: relative;
+  left: -40px;  // adjust this value to move the text further to the left
 `;
 
 
@@ -289,6 +299,30 @@ const UserInfo = () => {
       setProfileImgURL("http://localhost:8080/image/profile/" + principal.data.image);
     }
   }, [principal.data]);  
+
+  const sportsLikes = useQuery(["sportsLikes"], async () => {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    };
+
+    const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
+    return response.data;
+  });
+
+
+  useEffect(() => {
+    if (sportsLikes.data) {
+      const sportsArray = sportsLikes.data.map(sport => sport.sportsId);
+      setSelectedSports(sportsArray);
+    }
+  }, [sportsLikes.data]);  
+
+
+
+
+
   
   const profileImgSubmit = useMutation(async(selectedFile) => {
     
@@ -381,7 +415,7 @@ const UserInfo = () => {
  
   const handleMinusClick = (e, index) => {
     e.stopPropagation();
-    
+  
     setSelectedSports(prev => {
       const newSports = [...prev];
       newSports.splice(index, 1);
@@ -391,12 +425,43 @@ const UserInfo = () => {
   
     setPlusVisible(prev => {
       const newPlusVisible = [...prev];
-      newPlusVisible[index] = true;
+      newPlusVisible[index] = false;
+      if (index > 0) {
+        newPlusVisible[index - 1] = true;
+      }
       return newPlusVisible;
     });
   };
-  const handleModifyClick = () => {
-    navigate('/main');
+  const handleModifyClick = async () => {
+    // Get the selected sports
+    const selectedSportsToSend = selectedSports.filter(sport => sport != null);
+
+    const options = {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    };
+  
+    try {
+        const response = await axios.put("http://localhost:8080/account/change/sportslikes", 
+            {
+                userId: principal.data.userId,
+                sports: selectedSportsToSend
+            }, 
+            options
+        );
+
+        if (response.status === 200 ) {
+            alert("스포츠가 성공적으로 등록되었습니다.");
+            // navigate('/main');
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+          // alert창
+        } else {
+          alert("스포츠 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
+    }
   };
 
   const updatePassword = (newPw) => {
@@ -412,31 +477,34 @@ const UserInfo = () => {
     setAddress(newAddress);
   };
 
+  if(sportsLikes.isLoading){
+    return <></>;
+  }
   
 
 
   const renderSportIcon = (sport, size, index) => {
     
-    if (sport === "3") return <GiSoccerKick size={size} />;
-    if (sport === "1") return <CgGym size={size} />;
-    if (sport === "4") return <GiBaseballBat size={size} />;
-    if (sport === "5") return <GiBasketballBasket size={size} />;
-    if (sport === "8") return <GiMountainClimbing size={size} />;
-    if (sport === "9") return <IoMdBicycle size={size} />;
-    if (sport === "15") return <MdGolfCourse size={size} />;
-    if (sport === "11") return <GiBoatFishing size={size} />;
-    if (sport === "7") return <GiTennisRacket size={size} />;
-    if (sport === "10") return <GiMountainRoad size={size} />;
-    if (sport === "12") return <GiBowlingStrike size={size} />;
-    if (sport === "13") return <FaTableTennis size={size} />;
-    if (sport === "14") return <FaVolleyballBall size={size} />;
-    if (sport === "2") return <FaRunning size={size} />;
-    if (sport === "6") return <FaSwimmer size={size} />;
-    if (sport === "18") return <MdSurfing size={size} />;
-    if (sport === "17") return <MdOutlineScubaDiving size={size} />;
-    if (sport === "16") return <MdOutlineSkateboarding size={size} />;
-    if (sport === "19") return <RiBilliardsFill size={size} />;
-    if (sport === "20") return <GrGamepad size={size} />;
+    if (sport === 3) return <GiSoccerKick size={size} />;
+    if (sport === 1) return <CgGym size={size} />;
+    if (sport === 4) return <GiBaseballBat size={size} />;
+    if (sport === 5) return <GiBasketballBasket size={size} />;
+    if (sport === 8) return <GiMountainClimbing size={size} />;
+    if (sport === 9) return <IoMdBicycle size={size} />;
+    if (sport === 15) return <MdGolfCourse size={size} />;
+    if (sport === 11) return <GiBoatFishing size={size} />;
+    if (sport === 7) return <GiTennisRacket size={size} />;
+    if (sport === 10) return <GiMountainRoad size={size} />;
+    if (sport === 12) return <GiBowlingStrike size={size} />;
+    if (sport === 13) return <FaTableTennis size={size} />;
+    if (sport === 14) return <FaVolleyballBall size={size} />;
+    if (sport === 2) return <FaRunning size={size} />;
+    if (sport === 6) return <FaSwimmer size={size} />;
+    if (sport === 18) return <MdSurfing size={size} />;
+    if (sport === 17) return <MdOutlineScubaDiving size={size} />;
+    if (sport === 16) return <MdOutlineSkateboarding size={size} />;
+    if (sport === 19) return <RiBilliardsFill size={size} />;
+    if (sport === 20) return <GrGamepad size={size} />;
   };
   
  const convertedSports = selectedSports.map(sport => parseInt(sport));
@@ -487,35 +555,29 @@ const UserInfo = () => {
         <div css={detailContainer}>
           <h1 css={dcTitle}>선호 운동</h1>
           <div css={circleContainer}>
-            {selectedSports.map((sport, index) => {
-              console.log(sport)
-              return (
-                <div key={index} css={circle} data-index={index} onClick={handleCircleClick}>
-                  {sport && (
-                      <div css={minusButton} onClick={(e) => handleMinusClick(e, index)}>－</div>
-                  )}
-                  {renderSportIcon(sport ,80)}
-                  {!sport && (!!selectedSports[index - 1] || index === 0) ? <div css={plusButton}>+</div> : ""} 
-                </div>
-              )}
-            )}
+            {selectedSports.concat(new Array(3 - selectedSports.length).fill(null)).map((sport, index) => (
+              <div key={index} css={circle} data-index={index} onClick={handleCircleClick}>
+                {sport !== null && (
+                  <div css={minusButton} onClick={(e) => handleMinusClick(e, index)}>－</div>
+                )}
+                {sport !== null ? renderSportIcon(sport ,80) : null}
+                {(!sport && (!!selectedSports[index - 1] || index === 0)) && (
+                  <div css={plusButton}>+</div>
+                )}
+              </div>
+            ))}
           </div>
-        </div>
-      </main>
-      <footer>
-        <div css={footerContainer}>
           <button css={modifyButton} onClick={handleModifyClick}>수정</button>
           <div css={emojiContainer}>
             <span css={emoji}>👈🏻</span> 
-            <span>선호 운동은 수정 버튼을 눌러서 등록해주세요.</span>
-
+            <span css={spanLocation}>수정 버튼을 눌러서 등록해주세요.</span>
           </div>
         </div>
-      </footer>
+      </main>
       {isAddressChangeModalOpen && <AddressChangeModal closeModal={closeAddressChangeModal} updateAddress={updateAddress} />}
       {isNicknameChangeModalOpen && <NicknameChangeModal closeModal={closeNicknameChangeModal} updateNickname={updateNickname} />}
       {isPwChangeModalOpen && <PwChangeModal closeModal ={closePwChangeModal} updatePassword={updatePassword} />}
-      {isSportsIconModalOpen && <SportsIconModal closeModal={closeSportsIconModal} handleSportIconSelect={handleSportIconSelect} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} plusVisible={plusVisible} setPlusVisible={setPlusVisible} />}
+      {isSportsIconModalOpen && <SportsIconModal selectedSports={selectedSports} closeModal={closeSportsIconModal} handleSportIconSelect={handleSportIconSelect} selectedIndex={selectedIndex} setSelectedSports={setSelectedSports} plusVisible={plusVisible} setPlusVisible={setPlusVisible} />}
     </div>
   );
   

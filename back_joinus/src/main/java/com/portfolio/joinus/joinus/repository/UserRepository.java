@@ -20,6 +20,7 @@ public interface UserRepository {
 	
 	public UserInfo findByNickname(String nickName);
 	
+	
 	public int updatePassword(User user); 
 	
 	public int updateAddress(User user);
@@ -30,10 +31,16 @@ public interface UserRepository {
 	
 	public int updateImage(User user);
 	
+	
 	public int createPasswordToken(Map<String, Object> map);
 	
 	public String checkForgotToken(String token);
 	
+	public List<SportsLikes> findSportsLikesByuserId(int userId);
+	
+	public int updateSportsLikes (SportsLikes sportsLikes);
+	// 삭제
+	public int deleteSportsLikesByUserId(int userId);
 	
 	
 	// registerUser 하는 동작 하나로, DB 테이블 5개 개별로 생성
@@ -50,7 +57,7 @@ public interface UserRepository {
     public int registerUserInfo(UserInfo userInfo);
 
     // 사용자가 좋아하는 스포츠 등록
-    public int registerSportsLikes(SportsLikes sportsLikes);
+    //public int registerSportsLikes(SportsLikes sportsLikes);
 	
 	List<OwnerPostList> getOwnerPostListByUserId(int userId);
 	

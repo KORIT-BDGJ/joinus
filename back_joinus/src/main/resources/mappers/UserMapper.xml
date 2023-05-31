@@ -114,15 +114,6 @@
 	    values (0, #{userId}, 'default.jpg', #{nickName})
 	</insert>
 	
-	<insert id="registerSportsLikes" 
-	    parameterType="com.portfolio.joinus.joinus.entity.SportsLikes"
-	    useGeneratedKeys="true"
-	    keyProperty="userId">
-	    insert into sports_likes_tb
-	    values (0, #{userId}, 0)
-	</insert>
-	
-	
 	
 	
 	<update id="updateProvider">
@@ -191,6 +182,29 @@
 			token = #{token}
 		and	DATE_ADD(create_date, INTERVAL 5 MINUTE) > now() 
 	</select>
+	
+	<delete id="deleteSportsLikesByUserId" parameterType="int">
+		delete from sports_likes_tb
+		where
+			user_id = #{userId}
+	</delete>
+	
+	<select id="findSportsLikesByuserId" resultType="com.portfolio.joinus.joinus.entity.SportsLikes">
+	    select 
+	        sports_likes_id,
+	        user_id as userId,
+	        sports_id as sportsId
+	    from 
+	        sports_likes_tb 
+	    where 
+	        user_id = #{userId}
+	</select>
+	
+	<insert id="updateSportsLikes" parameterType="com.portfolio.joinus.joinus.entity.SportsLikes">
+	  insert into sports_likes_tb 
+	  values (0, #{userId}, #{sportsId})
+	</insert>
+	
 </mapper>
 
 

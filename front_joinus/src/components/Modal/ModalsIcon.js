@@ -13,152 +13,43 @@ import { GrGamepad } from 'react-icons/gr';
 
 
 
-
-
-
-
-const ModalsIcon = ({ sportsIconActive, handleSportSelect}) => {
-
+const ModalsIcon = ({ sportsIconActive, handleSportSelect, selectedSports}) => {
+    const sportsIcons = [
+        {id: 1, title: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, title: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, title: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, title: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, title: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, title: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, title: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, title: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, title: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, title: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, title: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, title: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, title: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, title: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, title: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, title: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, title: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, title: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, title: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, title: "게임", icon: <GrGamepad size={32} /> }
+    ]
    
     return (
         <>
-           <GiSoccerKick
-                data-sport="3"
-                onClick={handleSportSelect}
-                css={sportsIconActive('3')}
-                title="축구"
-            />
-            <GiBaseballBat
-                data-sport="4"
-                onClick={handleSportSelect}
-                css={sportsIconActive('4')}
-                title="야구"
-            />
-            <GiBasketballBasket
-                data-sport="5"
-                onClick={handleSportSelect}
-                css={sportsIconActive('5')}
-                title="농구"
-            />
-
-            <CgGym
-                data-sport="1"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('1')}
-                title="헬스"
-            />
-
-            <GiMountainClimbing
-                data-sport="8"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('8')}
-                title="클라이밍"
-            />
-
-            <IoMdBicycle 
-                data-sport="9"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('9')}
-                title="라이딩"
-            />
-
-            <MdGolfCourse 
-                data-sport="15"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('15')}
-                title="골프"
-            />
-
-            <GiBoatFishing 
-                data-sport="11"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('11')}
-                title="낚시"
-            />
-
-            <GiTennisRacket 
-                data-sport="7"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('7')}
-                title="테니스"
-            />
-
-            <GiMountainRoad 
-                data-sport="10"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('10')}
-                title="등산"
-            />
-
-            <GiBowlingStrike 
-                data-sport="12"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('12')}
-                title="볼링"
-            />
-
-            <FaTableTennis 
-                data-sport="13"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('13')}
-                title="탁구"
-            />
-
-            <FaVolleyballBall 
-                data-sport="14"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('14')}
-                title="배구"
-            />
-
-            <FaRunning 
-                data-sport="2"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('2')}
-                title="러닝"
-            />
-
-            <FaSwimmer 
-                data-sport="6"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('6')}
-                title="수영"
-            />
-
-            <MdSurfing 
-                data-sport="18"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('18')}
-                title="서핑"
-            />
-
-            <MdOutlineScubaDiving 
-                data-sport="17"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('17')}
-                title="스쿠버다이빙"
-            />
-
-            <MdOutlineSkateboarding 
-                data-sport="16"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('16')}
-                title="스케이트보드"
-            />
-
-            <RiBilliardsFill
-                data-sport="19"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('19')}
-                title="당구"
-            />
-
-            <GrGamepad 
-                data-sport="20"
-                onClick= {handleSportSelect}
-                css={sportsIconActive('20')}
-                title="게임"
-            />
+            {sportsIcons.filter(icon => !selectedSports.includes(icon.id)).map((icon) => (
+                <div
+                    key={icon.id}
+                    data-sport={icon.id}
+                    css={sportsIconActive(icon.id)}
+                    onClick={handleSportSelect}
+                    title={icon.title}
+                >
+                    {icon.icon}
+                </div>
+            ))}
         </>
     );
 };
