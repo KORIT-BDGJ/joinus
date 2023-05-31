@@ -213,17 +213,11 @@ public class PostService {
     public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId) {
         return postRepository.getMyApplicantAcceptPostListByUserId(userId);
     }
-
-    public List<HostPostListRespDto> getMyAttendPostListByUserId(int userId) {
-        List<HostPostListRespDto> list = new ArrayList<>();
-
-        postRepository.getMyAttendPostListByUserId(userId).forEach(hostPostData -> {
-            list.add(hostPostData.toDto());
-        });
-
-        return list;
+    
+    public List<AttendListRespDto> getMyfinishPostListByUserId(int userId) {
+        return postRepository.getMyfinishPostListByUserId(userId);
     }
-
+    
     public int applyPost(int postId, int userId, int stateId, int levelId) {
         Map<String, Object> map = new HashMap<>();
         map.put("postId", postId);
@@ -249,4 +243,8 @@ public class PostService {
     public int saveMyApplicantPostList(HostPostList hostPostList) {
         return postRepository.saveMyApplicantPostList(hostPostList);
     }
+    
+
+
+    
 }

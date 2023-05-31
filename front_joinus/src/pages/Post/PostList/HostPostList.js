@@ -195,14 +195,16 @@ const HostPostList = () => {
         console.error(error);
       });
 
-    
+      axios
+        .get(`http://localhost:8080/post/${userId}/myfinish`, option)
+        .then((res) => {
+          setMyAttendFinishPosts(res.data);
+            console.log("참여 완료한 글 리스트:", res.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
   }, []);
-
-    useEffect(() => {
-        if (getHostPostList.isSuccess) {
-        setMyAttendFinishPosts(getHostPostList.data);
-        }
-    }, [getHostPostList.isSuccess, getHostPostList.data]);
 
   const openCancelModal = (id) => {
     setCancelPostId(id);
@@ -367,74 +369,73 @@ const HostPostList = () => {
 
       <div>
         <h1 css={title}>참여 완료한 글</h1>
-        {/* <div css={list}>
-          {getHostPostList.data.map((post) => (
-            <div key={post.postId} css={listItem}>
-              <div css={postInfo}>
-                <div css={iconWrapper}>{post.sportsIcon}</div>
-                <h1 css={postTitle} onClick={() => handlePostTitleClick(post.postId)}>
-                  {post.postTitle}
-                </h1>
-                <div css={buttons}>
-                  <button onClick={() => handleButtonClick('evaluate', post.postId)}>
-                    평가하기
-                  </button>
-                  <button onClick={() => handleButtonClick('skip', post.postId)}>
-                    하지않기
-                  </button>
-                </div>
+        {myAttendFinishPosts.map((post) => (
+          <div key={post.postId} css={listItem}>
+            <div css={postInfo}>
+              <div css={iconWrapper}>{post.sportsIcon}</div>
+              <h1 css={postTitle} onClick={() => handlePostTitleClick(post.postId)}>
+                {post.title}
+              </h1>
+              <div css={buttons}>
+                <button onClick={() => handleButtonClick('evaluate', post.postId)}>
+                  평가하기
+                </button>
+                <button onClick={() => handleButtonClick('skip', post.postId)}>
+                  하지않기
+                </button>
               </div>
-              {selectedPosts.includes(post.postId) && (
-                <div>
-                  <div css={titleAndDateContainer}>
-                    <h2 css={attendUserListTitle}>참여 유저 목록</h2>
-                    <div css={postDate}>{post.date}</div>
-                  </div>
-                  {post.users.map((user) => (
-                    <div key={`user-${post.postId}-${user.userId}`}>
-                      <span css={attendUserName}>{user.username}</span>
-                      <div>
-                        {starOptions.map((starCount) => {
-                          const key = `${post.postId}:${user.userId}:${starCount}`;
-                          return (
-                            <button
-                              key={`star-${key}`}
-                              css={star}
-                              onMouseOver={() =>
-                                handleStarMouseOver(post.postId, user.userId, starCount)
-                              }
-                              onMouseOut={handleStarMouseOut}
-                              onClick={() =>
-                                handleStarClick(post.postId, user.userId, starCount)
-                              }
-                            >
-                              {starCount <=
-                              (hoveredStar.postId === post.postId &&
-                                hoveredStar.userId === user.userId
-                                ? hoveredStar.starCount
-                                : starCountState[`${post.postId}:${user.userId}`] ||
-                                  user.medalCount ||
-                                  0)
-                                ? activeStar
-                                : inactiveStar}
-                            </button>
-                          );
-                        })}
-                        <button
-                          css={resetButton}
-                          onClick={() => handleStarReset(post.postId, user.userId)}
-                        >
-                          <FaRedo />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
-          ))}
-        </div> */}
+            {selectedPosts.includes(post.postId) && (
+              <div>
+                <div css={titleAndDateContainer}>
+                  <h2 css={attendUserListTitle}>참여 유저 목록</h2>
+                  <div css={postDate}>{post.date}</div>
+                </div>
+                {post.users.map((user) => (
+                  <div key={`user-${post.postId}-${user.userId}`}>
+                    <span css={attendUserName}>{user.username}</span>
+                    <div>
+                      {starOptions.map((starCount) => {
+                        const key = `${post.postId}:${user.userId}:${starCount}`;
+                        return (
+                          <button
+                            key={`star-${key}`}
+                            css={star}
+                            onMouseOver={() =>
+                              handleStarMouseOver(post.postId, user.userId, starCount)
+                            }
+                            onMouseOut={handleStarMouseOut}
+                            onClick={() =>
+                              handleStarClick(post.postId, user.userId, starCount)
+                            }
+                          >
+                            {starCount <=
+                            (hoveredStar.postId === post.postId &&
+                              hoveredStar.userId === user.userId
+                              ? hoveredStar.starCount
+                              : starCountState[`${post.postId}:${user.userId}`] ||
+                                user.medalCount ||
+                                0)
+                              ? activeStar
+                              : inactiveStar}
+                          </button>
+                        );
+                      })}
+                      <button
+                        css={resetButton}
+                        onClick={() => handleStarReset(post.postId, user.userId)}
+                      >
+                        <FaRedo />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
+
       {cancelModalOpen && (
         <AlertModal
           isModalOpen={cancelModalOpen}

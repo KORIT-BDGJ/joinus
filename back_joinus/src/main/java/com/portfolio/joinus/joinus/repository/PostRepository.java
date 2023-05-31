@@ -1,13 +1,11 @@
 package com.portfolio.joinus.joinus.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
-import com.portfolio.joinus.joinus.dto.post.HostPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.entity.ApplicantList;
 import com.portfolio.joinus.joinus.entity.AttendList;
@@ -52,16 +50,10 @@ public interface PostRepository {
 	// host_post_list_tb 에서 id로 applicant_list 불러오기
 	public List<HostPostList> getMyApplicantPostListByUserId(int userId);
 
-	// post_attned_list_tb 에서 id로 list 불러오기
+	// post_attend_list_tb 에서 id로 list 불러오기
 	public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId);
 
-	// host_post_list_tb 에 데이터 저장
-	public int saveMyAttendPostListByUserId(HostPostList hostPostList);
-
-	// host_post_list_tb 에서 id로 attend_list 불러오기
-	public List<HostPostList> getMyAttendPostListByUserId(int userId);
-	
-
+	public List<AttendListRespDto> getMyfinishPostListByUserId(int userId);
 
 
 	public int applyPost(Map<String, Object> map);
@@ -77,5 +69,7 @@ public interface PostRepository {
 	public int applicantDelete(Map<String, Object> map);
 
 	public int applicantAccept(Map<String, Object> map);
+
+	
 
 }

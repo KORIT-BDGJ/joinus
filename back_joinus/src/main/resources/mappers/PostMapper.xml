@@ -84,6 +84,12 @@
 	   
 	</resultMap>
 	
+	<resultMap type="com.portfolio.joinus.joinus.entity.FinishList" id="FinishListMap">
+	    <id property="hostFinishListId" column="hostFinishListId"/>
+	    <result property="title" column="title"/>
+	    <result property="userId" column="userId"/>
+	</resultMap>
+	
 
 	<select id="getPost" parameterType="Integer" resultMap="PostMap">
 		SELECT
@@ -377,16 +383,17 @@
 	        ut.user_id = #{userId}	
 	</select>
 	
-	<select id="getMyAttendPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
-		SELECT
-			hplt.host_post_list_id AS hostPostListId,
-			ut.user_id AS userId,
-			pt.post_id AS postId,
-			pt.title
-		FROM
-			host_post_list_tb hplt
-			LEFT OUTER JOIN post_tb pt ON (pt.post_id = hplt.post_id)
-			LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
+	<select id="getMyfinishPostListByUserId" parameterType="Integer" resultMap="FinishListMap">
+	    SELECT
+	        hflt.post_id AS postId,
+	        pt.title AS title,
+	        ut.user_id AS userId
+	    FROM
+	        host_finish_list_tb hflt
+	        LEFT OUTER JOIN post_tb pt ON (pt.post_id = hflt.post_id)
+	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = hflt.user_id)
+	    WHERE
+	        ut.user_id = #{userId}
 	</select>
 	
 	<insert id="applyPost" parameterType="hashMap">

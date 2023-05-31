@@ -13,7 +13,5 @@ public class AttendListRespDto {
     private String stateName;
     private String levelName;
     private String title;
-
-
 }
 

@@ -87,13 +87,11 @@ public class PostController {
     }
 
     // 참여 완료한 게시글 목록 조회
-    @GetMapping("/post/{userId}/myattend")
-    public ResponseEntity<?> getMyAttendPostList(@PathVariable int userId) {
-        return ResponseEntity.ok().body(postService.getMyAttendPostListByUserId(userId));
+    @GetMapping("/post/{userId}/myfinish")
+    public ResponseEntity<?> getMyfinishPostList(@PathVariable int userId) {
+        return ResponseEntity.ok().body(postService.getMyfinishPostListByUserId(userId));
     }
 
-    
-    
     //신청취소버튼 클릭시 신청자 목록에서 삭제
     @DeleteMapping("/post/cancel/apply/{postId}")
     public ResponseEntity<?> cancelApplyPost(@PathVariable int postId, @RequestParam int userId) {
