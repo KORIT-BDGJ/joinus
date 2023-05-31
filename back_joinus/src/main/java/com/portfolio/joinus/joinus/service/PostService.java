@@ -1,6 +1,7 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,14 +245,31 @@ public class PostService {
     public int updatePost(int postId, PostUpdateReqDto postUpdateReqDto) {
     	String updateTitle = postUpdateReqDto.getUpdateTitle();
     	String updateText = postUpdateReqDto.getUpdateText();
-		System.out.println("요청 : " + updateTitle);
-		System.out.println("요청 : " + updateText);
-		System.out.println("요청 : " + postId);
+    	int updateSports = postUpdateReqDto.getUpdateSports();
+    	int updateRegion = postUpdateReqDto.getUpdateRegion();
+    	int updateGender = postUpdateReqDto.getUpdateGender();
+    	Date updateDate = postUpdateReqDto.getUpdateDate();
+    	int updateState = postUpdateReqDto.getUpdateState();
+    	int updateLevel = postUpdateReqDto.getUpdateLevel();
+    	int updateRecruitsCount = postUpdateReqDto.getUpdateRecruitsCount();
+    	
+
     	return postRepository.updatePost(Post.builder()
     											.postId(postId)
     											.title(updateTitle)
     											.text(updateText)
+    											.regionId(updateRegion)
+    											.genderId(updateGender)
+    											.sportsId(updateSports)
+    											.deadLine(updateDate)
+    											.levelId(updateLevel)
+    											.stateId(updateState)
+    											.recruitsCount(updateRecruitsCount)
     											.build());
+    }
+    
+    public int postDelete(int postId) {
+    	return postRepository.postDelete(postId);
     }
 
 

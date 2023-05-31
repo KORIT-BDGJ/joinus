@@ -45,6 +45,14 @@ const infoNickname = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 10px;
+`;
+const infoOption = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-weight: 600;
     padding-left: 10px;
 `;
@@ -134,6 +142,8 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                                     )}
                                 </div>
                                 <div css={infoNickname}>{attendData.nickName}</div>
+                                <div css={infoOption}>레벨: {attendData.levelName}</div>
+                                <div css={infoOption}>상태: {attendData.stateName}</div>
                             </div>
                             <div css={attendButtonContainer}>
                                 {isCurrentUserAuthor && (

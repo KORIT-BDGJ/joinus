@@ -51,6 +51,9 @@ const infoNickname = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-weight: 600;
     padding: 0px 10px;
 `;

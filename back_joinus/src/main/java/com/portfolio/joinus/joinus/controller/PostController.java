@@ -134,4 +134,10 @@ public class PostController {
 	public ResponseEntity<?> postUpdate(@PathVariable int postId, @RequestBody PostUpdateReqDto postUpdateReqDto) {
 		return ResponseEntity.ok().body(postService.updatePost(postId, postUpdateReqDto));
 	}
+	
+	//게시글 삭제
+	@DeleteMapping("/post/{postId}/delete")
+	public ResponseEntity<?> postDelete(@PathVariable int postId) {
+		return ResponseEntity.ok().body(postService.postDelete(postId));
+	}
 }

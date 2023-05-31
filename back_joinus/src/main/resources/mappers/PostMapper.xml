@@ -427,10 +427,25 @@
 		update post_tb
 		set
 			title = #{title},
-			text = #{text}
+			text = #{text},
+			region_id = #{regionId},
+			gender_id = #{genderId},
+			sports_id = #{sportsId},
+			deadline = #{deadLine},
+			state_id = #{stateId},
+			level_id = #{levelId},
+			recruits_count = #{recruitsCount}
 		where
 			post_id = #{postId}
 	</update>
+	
+	<delete id="postDelete" parameterType="hashMap">
+		delete
+		from
+			post_tb
+		where
+			post_id = #{postId}
+	</delete>
 	
 
 </mapper>

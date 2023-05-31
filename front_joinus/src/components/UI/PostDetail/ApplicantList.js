@@ -45,6 +45,15 @@ const infoNickname = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 10px;
+`;
+
+const infoOption = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-weight: 600;
     padding-left: 10px;
 `;
@@ -134,7 +143,6 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
     };
 
     const acceptApplicantUser = (userId, stateId, levelId) => {
-        console.log(userId, stateId, levelId)
         applicantAccept.mutate({ postId, applicantUserId: userId, applicantStateId: stateId, applicantLevelId: levelId });
     };
     
@@ -162,6 +170,8 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                                 )}
                                 </div>
                                 <div css={infoNickname}>{applicantData.nickName}</div>
+                                <div css={infoOption}>레벨: {applicantData.levelName}</div>
+                                <div css={infoOption}>상태: {applicantData.stateName}</div>
                             </div>
                             <div css={applicantButtonContainer}>
                                 {isCurrentUserAuthor && (

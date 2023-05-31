@@ -64,5 +64,5 @@ public interface PostRepository {
 	public int applicantDelete(Map<String, Object> map);
 	public int applicantAccept(Map<String, Object> map);
 	public int updatePost(Post post);
-	
+	public int postDelete(int postId);
 }

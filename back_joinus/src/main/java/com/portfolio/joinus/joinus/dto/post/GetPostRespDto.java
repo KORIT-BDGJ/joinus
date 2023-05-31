@@ -14,8 +14,11 @@ public class GetPostRespDto {
 	private String title;
 	private int sportsId;
 	private String sportsName;
+	private int levelId;
 	private String levelName;
+	private int stateId;
 	private String stateName;
+	private int regionId;
 	private String regionName;
 	private Date deadLine;
 	private int recruitsCount;
