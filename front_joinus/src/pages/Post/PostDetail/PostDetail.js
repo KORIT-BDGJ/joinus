@@ -700,6 +700,8 @@ const PostDetail = () => {
         setIsUpdateMode(false);
     }
 
+
+
     if(principal.isLoading) {
         return <div>불러오는 중...</div>
     }

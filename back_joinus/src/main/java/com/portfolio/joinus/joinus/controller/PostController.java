@@ -140,4 +140,10 @@ public class PostController {
 	public ResponseEntity<?> postDelete(@PathVariable int postId) {
 		return ResponseEntity.ok().body(postService.postDelete(postId));
 	}
+	
+    //참석취소버튼 클릭시 신청자 목록에서 삭제
+    @DeleteMapping("/post/cancel/attend/{postId}")
+    public ResponseEntity<?> cancelAttendPost(@PathVariable int postId, @RequestParam int userId) {
+        return ResponseEntity.ok().body(postService.cancelAttendPost(postId, userId));
+    }
 }

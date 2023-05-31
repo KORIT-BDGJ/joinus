@@ -271,6 +271,15 @@ public class PostService {
     public int postDelete(int postId) {
     	return postRepository.postDelete(postId);
     }
+    
+	// attend취소
+	public int cancelAttendPost(int postId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", postId);
+		map.put("userId", userId);
+		
+		return postRepository.cancelAttendPost(map);
+	}
 
 
 }

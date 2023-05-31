@@ -447,5 +447,14 @@
 			post_id = #{postId}
 	</delete>
 	
+	<delete id="cancelAttendPost" parameterType="hashMap">
+		DELETE
+		FROM
+			post_attend_list_tb
+		WHERE
+			post_id = #{postId}
+			AND user_id = #{userId}
+	</delete>
+	
 
 </mapper>

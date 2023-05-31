@@ -10,7 +10,7 @@ const commentBody = css`
     width: 100%;
     display: flex;
     flex-direction: column;
-    max-height: 100px;
+    max-height: 150px;
     overflow-y: auto;
 `;
 
