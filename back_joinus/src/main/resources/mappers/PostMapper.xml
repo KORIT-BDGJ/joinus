@@ -173,7 +173,7 @@
 		    left outer join sports_tb spt on(spt.sports_id = pt.sports_id)
             left outer join region_tb rt on(rt.region_id = pt.region_id)
             left outer join gender_tb gt on(gt.gender_id = pt.gender_id)
-        where
+		where
         	1 = 1
         	and pt.deadline &gt; now()
         	<choose>
@@ -204,8 +204,11 @@
         	<if test="regionId != 0">
         		and rt.region_id = #{regionId}
         	</if>
-        	
-    	order by pt.registe_date DESC
+				order by 
+		        	<if test="sort == 1">
+		        		pt.deadline,
+		        	</if>
+					pt.registe_date DESC        	
     
         limit #{index}, 10;	
 	</select>
@@ -251,6 +254,11 @@
         	<if test="regionId != 0">
         		and rt.region_id = #{regionId}
         	</if>
+        	order by 
+		        	<if test="sort == 1">
+		        		pt.deadline,
+		        	</if>
+					pt.registe_date DESC
 	</select>
 	
 	<select id="getApplicantListByPostId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">

@@ -120,6 +120,7 @@ public class PostService {
         map.put("regionId", searchPostReqDto.getRegionId());
         map.put("searchType", searchPostReqDto.getSearchType());
         map.put("searchValue", searchPostReqDto.getSearchValue());
+        map.put("sort", searchPostReqDto.getSort());
 
         postRepository.getPostList(map).forEach(post -> {
             list.add(post.toDto());
