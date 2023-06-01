@@ -81,9 +81,6 @@ const applicantButton = css`
 
 
 const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount }) => {
-    const [ applicantUserId, setApplicantUserId ] = useState("");
-    const [ applicantStateId, setApplicantStateId ] = useState("");
-    const [ applicantLevelId, setApplicantLevelId ] = useState("");
     const queryClient = useQueryClient();
 
 
@@ -93,7 +90,6 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-
         const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response.data;
     }, {

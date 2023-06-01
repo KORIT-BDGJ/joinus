@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class ApplicantListRespDto {
 	private int postId;
+	private String title;
 	private int userId;
 	private String image;
 	private String nickName;

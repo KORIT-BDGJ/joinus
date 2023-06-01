@@ -348,32 +348,50 @@
 	        oplt.user_id = #{userId}
 	</select>
 	
-	<select id="getHostPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
-	    SELECT
-	        hplt.host_post_list_id AS hostPostListId,
-	        ut.user_id AS userId,
-	        pt.post_id AS postId,
-	        pt.title
-	    FROM
-	        host_post_list_tb hplt
-	        LEFT OUTER JOIN post_tb pt ON (pt.post_id = hplt.post_id)
-	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
-	    WHERE
-	        ut.user_id = #{userId}
-	</select>
-	
-	
-	<select id="getMyApplicantPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.HostPostList">
+	<select id="getHostApplicantListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
 		SELECT
-			hplt.host_post_list_id AS hostPostListId,
-			ut.user_id AS userId,
 			pt.post_id AS postId,
-			pt.title
-		FROM
-			host_post_list_tb hplt
-			LEFT OUTER JOIN post_tb pt ON (pt.post_id = hplt.post_id)
-			LEFT OUTER JOIN user_tb ut ON (ut.user_id = hplt.user_id)
+			pt.title,
+			ut.user_id AS userId,
+			uit.image,
+			uit.nickname,
+			lt.level_name AS levelName,
+			lt.level_id AS levelId,
+			stt.state_name AS stateName,
+			stt.state_id AS stateId
+		FROM 
+			post_applicant_list_tb papl
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = papl.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = papl.user_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = papl.state_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = papl.level_id)
+		WHERE
+			papl.user_id = #{userId}
 	</select>
+	
+	<select id="getHostAttendListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.AttendList">
+		SELECT
+			pt.post_id AS postId,
+			pt.title,
+			ut.user_id AS userId,
+			uit.image,
+			uit.nickname,
+			lt.level_name AS levelName,
+			stt.state_name AS stateName
+		FROM 
+			post_attend_list_tb patl
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = patl.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = patl.user_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
+		WHERE
+			patl.user_id = #{userId}
+	</select>
+	
+	
+	
 	
 	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultMap="AttendListMap">
 	    SELECT

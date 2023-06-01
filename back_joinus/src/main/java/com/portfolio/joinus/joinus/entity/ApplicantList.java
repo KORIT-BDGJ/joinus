@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ApplicantList {
 	private int postId;
+	private String title;
 	private int userId;
 	private String image;
 	private String nickName;
@@ -27,6 +28,7 @@ public class ApplicantList {
 	public ApplicantListRespDto toDto() {
 		return ApplicantListRespDto.builder()
 				.postId(postId)
+				.title(title)
 				.userId(userId)
 				.image(image)
 				.nickName(nickName)

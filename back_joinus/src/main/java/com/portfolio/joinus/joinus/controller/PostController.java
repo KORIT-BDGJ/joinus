@@ -69,24 +69,23 @@ public class PostController {
         return ResponseEntity.ok().body(postService.getOwnerPostListByUserId(userId));
     }
     
-    // 내 신청 보기
-    @GetMapping("/post/{userId}/host")
-    public ResponseEntity<?> getHostPostList(@PathVariable int userId) {
-    	return ResponseEntity.ok().body(postService.getHostPostListByUserId(userId));
+    // 내가 신청한 게시글 목록 조회
+    @GetMapping("/post/{userId}/host/applicant")
+    public ResponseEntity<?> getHostApplicantList(@PathVariable int userId) {
+        return ResponseEntity.ok().body(postService.getHostApplicantListByUserId(userId));
     }
     
- // 내가 신청한 게시글 목록 조회
-    @GetMapping("/post/{userId}/myapplicant")
-    public ResponseEntity<?> getMyApplicantPostList(@PathVariable int userId) {
-        return ResponseEntity.ok().body(postService.getMyApplicantPostListByUserId(userId));
+    // 내가 참석한 게시글 목록 조회
+    @GetMapping("/post/{userId}/host/attend")
+    public ResponseEntity<?> getHostAttendList(@PathVariable int userId) {
+    	return ResponseEntity.ok().body(postService.getHostAttendListByUserId(userId));
     }
 
-
-    // 신청 수락된 게시글 목록 조회
-    @GetMapping("/post/{userId}/myapplicantaccept")
-    public ResponseEntity<?> getMyApplicantAcceptPostList(@PathVariable int userId) {
-        return ResponseEntity.ok().body(postService.getMyApplicantAcceptPostListByUserId(userId));
-    }
+//    // 신청 수락된 게시글 목록 조회
+//    @GetMapping("/post/{userId}/myapplicantaccept")
+//    public ResponseEntity<?> getMyApplicantAcceptPostList(@PathVariable int userId) {
+//        return ResponseEntity.ok().body(postService.getMyApplicantAcceptPostListByUserId(userId));
+//    }
 
     // 참여 완료한 게시글 목록 조회
     @GetMapping("/post/{userId}/myfinish")

@@ -6,7 +6,7 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 const container = css`
@@ -36,7 +36,7 @@ const list = css`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 150px;
+  max-height: 300px;
 `;
 
 
@@ -74,11 +74,17 @@ const postTitle = css`
 `;
 
 const buttons = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
-  width: 120px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    width: 50px;
+    height: 30px;
+    margin-right: 5px;
+    cursor: pointer;
+
+    &:hover {
+    border: 1px solid black;
+    }
 `;
 
 const attendUserListTitle = css`
@@ -118,292 +124,149 @@ const resetButton = css`
 `;
 
 const HostPostList = () => {
-  const [myApplicantPosts, setMyApplicantPosts] = useState([]);
-  const [myApplicantAcceptPosts, setMyApplicantAcceptPosts] = useState([]);
-  const [myAttendFinishPosts, setMyAttendFinishPosts] = useState([]);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const [evaluateModalOpen, setEvaluateModalOpen] = useState({
-    type: '',
-    isOpen: false,
-    postId: null,
-  });
-  const [attendUserNames, setAttendUserNames] = useState({});
-  
-  const [selectedPosts, setSelectedPosts] = useState([]);
-  const [cancelPostId, setCancelPostId] = useState(null);
-  const [evaluateUsers, setEvaluateUsers] = useState([]);
-  const [hoveredStar, setHoveredStar] = useState({
-    postId: null,
-    userId: null,
-    starCount: 0,
-  });
-  const [starCount, setStarCount] = useState({});
-  const [starCountState, setStarCountState] = useState({});
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const principal = useQuery(["principal"], async () => {
+    const option = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    }
+    const response = await axios.get("http://localhost:8080/account/principal", option);
+    return response.data;
+  });
+
+  const { userId } = useParams();
+
+  const getHostApplicantList = useQuery(["getHostApplicantList"], async () => {
+      const option = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      };
+      const response = await axios.get(`http://localhost:8080/post/${userId}/host/applicant`, option);
+      return response.data;
+  });
+
+  const cancelApplyPost = useMutation(async (postId) => {
+    const option = {
+        params: {
+            userId: userId
+        },
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    }
+    return await axios.delete(`http://localhost:8080/post/cancel/apply/${postId}`, option);
+  }, {
+      onSuccess: () => {
+          queryClient.invalidateQueries("getHostApplicantList");
+      } 
+  });
+
+  const getHostAttendList = useQuery(["getHostAttendList"], async () => {
+    const option = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    };
+    const response = await axios.get(`http://localhost:8080/post/${userId}/host/attend`, option);
+    return response.data;
+  });
+
+const cancelAttendPost = useMutation(async (postId) => {
+  const option = {
+      params: {
+          userId: userId
+      },
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      }
+  }
+  return await axios.delete(`http://localhost:8080/post/${postId}/attend/delete`, option);
+}, {
+    onSuccess: () => {
+        queryClient.invalidateQueries("getHostAttendList");
+    } 
+});
 
   const movePost = (postId) => {
     navigate(`/post/${postId}`);
   };
 
-  const { userId } = useParams();
-  const option = {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    },
-  };
-
-  const currentUserQuery = useQuery(
-    'currentUser',
-    async () => {
-      const response = await axios.get('http://localhost:8080/account/principal', option);
-      return response.data;
-    },
-    {
-      enabled: Boolean(localStorage.getItem('accessToken')),
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  const getHostPostList = useQuery(
-    'getHostPostList',
-    async () => {
-      const response = await axios.get(`http://localhost:8080/post/${userId}/host`, option);
-      return response.data;
-    },
-    {
-      enabled: Boolean(currentUserQuery.data),
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  const currentUser = currentUserQuery.data;
-
-  useEffect(() => {
-    // 내가 신청한 글 가져오기
-    axios
-      .get(`http://localhost:8080/post/${userId}/myapplicant`, option)
-      .then((res) => {
-        setMyApplicantPosts(res.data);
-        console.log("내가 신청한 글 리스트:", res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  
-    // 신청 수락된 글 가져오기
-    axios
-      .get(`http://localhost:8080/post/${userId}/myapplicantaccept`, option)
-      .then((res) => {
-        setMyApplicantAcceptPosts(res.data);
-        console.log("신청 수락된 글 리스트:", res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  
-    // 참여 완료한 글 가져오기
-    axios
-      .get(`http://localhost:8080/post/${userId}/myfinish`, option)
-      .then((res) => {
-        setMyAttendFinishPosts(res.data);
-        console.log("참여 완료한 글 리스트:", res.data);
-  
-        // 참여 완료한 글에 대한 참여자 닉네임 가져오기
-        const userIds = res.data.reduce(
-          (acc, post) => [...acc, ...post.userIdList],
-          []
-        );
-        axios
-          .post(`http://localhost:8080/account/nickname`, userIds, option)
-          .then((res) => {
-            const nicknameMap = res.data;
-            const attendeeNames = userIds.map(
-              (userId) => nicknameMap[userId] || null
-            );
-            const attendeeNamesObj = {};
-            userIds.forEach((userId, index) => {
-              attendeeNamesObj[userId] = attendeeNames[index];
-            });
-            setAttendUserNames(attendeeNamesObj);
-            console.log("Attend user names:", attendeeNamesObj);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-  
-  
-  
-  
-  
-  
-
-  const openCancelModal = (id) => {
-    setCancelPostId(id);
-    setCancelModalOpen(true);
-  };
-
-  const closeCancelModal = () => {
-    setCancelPostId(null);
-    setCancelModalOpen(false);
-  };
-
-  const cancelPost = () => {
-    console.log('취소가 완료되었습니다.');
-    setCancelModalOpen(false);
-  };
-
-  const handleButtonClick = (type, postId) => {
-    const selectedPost = myAttendFinishPosts.find((post) => post.postId === postId);
-    setEvaluateUsers(selectedPost.users);
-    setEvaluateModalOpen({ type, isOpen: true, postId });
-  };
-
-  const confirmEvaluate = () => {
-    if (evaluateModalOpen.type === 'evaluate') {
-      console.log('평가하기');
-      evaluateUsers.forEach((user) => {
-        console.log(
-          `평가한 유저: ${user.username}, 평가 점수: ${starCount[`${evaluateModalOpen.postId}:${user.userId}`]}`
-        );
-      });
-      // Add logic to send evaluation information
-    } else if (evaluateModalOpen.type === 'skip') {
-      console.log('평가하지 않기');
-      // Add logic to skip evaluation
-    }
-    setEvaluateModalOpen({ type: '', isOpen: false });
-  };
-
-  const cancelEvaluate = () => {
-    setEvaluateModalOpen({ type: '', isOpen: false });
-    console.log(evaluateModalOpen);
-  };
-
-  const handlePostTitleClick = (postId) => {
-    if (selectedPosts.includes(postId)) {
-      setSelectedPosts(selectedPosts.filter((id) => id !== postId));
+  const handleApplyDeleteClick = (postId) => {
+    const result = window.confirm('해당 게시글 신청을 취소하시겠습니까?');
+    if (result) {
+      deleteApplyPostHandle(postId);
     } else {
-      setSelectedPosts([...selectedPosts, postId]);
+        // 취소 버튼을 클릭한 경우 아무 작업도 수행하지 않기.
     }
   };
 
-  const handleStarMouseOver = (postId, userId, starCount) => {
-    setHoveredStar({ postId, userId, starCount });
+  const deleteApplyPostHandle = (postId) => {
+    cancelApplyPost.mutate(postId);
+  }
+
+  const handleAttendDeleteClick = (postId) => {
+    const result = window.confirm('해당 게시글 신청을 취소하시겠습니까?');
+    if (result) {
+      deleteAttendPostHandle(postId);
+    } else {
+        // 취소 버튼을 클릭한 경우 아무 작업도 수행하지 않기.
+    }
   };
 
-  const handleStarMouseOut = () => {
-    setHoveredStar({ postId: null, userId: null, starCount: 0 });
-  };
+  const deleteAttendPostHandle = (postId) => {
+    cancelAttendPost.mutate(postId);
+  }
 
-  const handleStarClick = (postId, userId, newMedalCount) => {
-    const key = `${postId}:${userId}`;
-
-    setStarCount({
-      ...starCount,
-      [key]: newMedalCount,
-    });
-
-    setStarCountState({
-      ...starCountState,
-      [key]: newMedalCount,
-    });
-
-    setEvaluateUsers((prevUsers) =>
-      prevUsers.map((user) => {
-        if (user.userId === userId) {
-          return {
-            ...user,
-            medalCount: newMedalCount,
-          };
-        } else {
-          return user;
-        }
-      })
-    );
-  };
-
-  const handleStarReset = (postId, userId) => {
-    const key = `${postId}:${userId}`;
-
-    setStarCount({
-      ...starCount,
-      [key]: 0,
-    });
-
-    setStarCountState({
-      ...starCountState,
-      [key]: 0,
-    });
-
-    setMyAttendFinishPosts((prevPosts) =>
-      prevPosts.map((post) => {
-        if (post.postId === postId) {
-          return {
-            ...post,
-            users: post.users.map((user) => {
-              if (user.userId === userId) {
-                return {
-                  ...user,
-                  medalCount: 0,
-                };
-              } else {
-                return user;
-              }
-            }),
-          };
-        } else {
-          return post;
-        }
-      })
-    );
-  };
-
-  const starOptions = [1, 2, 3, 4, 5];
-  const inactiveStar = <AiOutlineStar />;
-  const activeStar = <AiFillStar />;
+  if (principal.isLoading || getHostApplicantList.isLoading || getHostAttendList.isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <div css={container}>
       <Sidebar />
       <div>
         <h1 css={title}>내가 신청한 글</h1>
+        {getHostApplicantList.data.length === 0 ? (
+        <div>게시물이 없습니다.</div>
+        ) : (
         <div css={list}>
-          {myApplicantPosts.map((post) => (
-            <li key={`applicant-${post.postId}`} css={listItem}>
+          {getHostApplicantList.data.map((post) => (
+            <li key={post.postId} css={listItem}>
               <div css={postInfo}>                
                 <h1 css={postTitle} onClick={() => movePost(post.postId)}>
                   {post.title}
                 </h1>
-                <div css={buttons}>
-                  <button onClick={() => openCancelModal(post.postId)}>취소하기</button>
-                </div>
+                <button css={buttons} onClick={() => handleApplyDeleteClick(post.postId) }>취소</button>
               </div>
             </li>
           ))}
         </div>
+        )}
       </div>
       <div>
         <h1 css={title}>신청 수락된 글</h1>
+        {getHostAttendList.data.length === 0 ? (
+        <div>게시물이 없습니다.</div>
+        ) : (
         <div css={list}>
-        {myApplicantAcceptPosts.map((post) => (
-          <li key={`accept-${post.postId}`} css={listItem}>
-            <div css={postInfo}>
-              <div css={iconWrapper}>{post.sportsIcon}</div>
-              <h1 css={postTitle} onClick={() => movePost(post.postId)}>
-                {post.title}
-              </h1>
-            </div>
-          </li>
-        ))}
+          {getHostAttendList.data.map((post) => (
+            <li key={post.postId} css={listItem}>
+              <div css={postInfo}>                
+                <h1 css={postTitle} onClick={() => movePost(post.postId)}>
+                  {post.title}
+                </h1>
+                <button css={buttons} onClick={() => handleAttendDeleteClick(post.postId) }>취소</button>
+              </div>
+            </li>
+          ))}
         </div>
+        )}
       </div>
-
-      <div>
+      {/* <div>
         <h1 css={title}>참여 완료한 글</h1>
         <div css={list}>
           {myAttendFinishPosts.map((post) => (
@@ -495,7 +358,7 @@ const HostPostList = () => {
               : '평가를 하지 않으시겠습니까?'
           }
         />
-      )}
+      )} */}
     </div>
   );
 };

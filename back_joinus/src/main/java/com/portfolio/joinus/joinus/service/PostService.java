@@ -181,36 +181,28 @@ public class PostService {
         return list;
     }
     
-    public List<HostPostListRespDto> getHostPostListByUserId(int userId) {
-        List<HostPostListRespDto> list = new ArrayList<>();
+    public List<ApplicantListRespDto> getHostApplicantListByUserId(int userId) {
+        List<ApplicantListRespDto> list = new ArrayList<>();
 
-        postRepository.getHostPostListByUserId(userId).forEach(hostPostData -> {
-            if (hostPostData.getUserId() == userId) {
-                list.add(hostPostData.toDto());
-            }
+        postRepository.getHostApplicantListByUserId(userId).forEach(applicantData -> {
+            list.add(applicantData.toDto());
         });
 
         return list;
     }
-
-
-
-    public List<HostPostListRespDto> getMyApplicantPostListByUserId(int userId) {
-        List<HostPostListRespDto> list = new ArrayList<>();
-
-        postRepository.getMyApplicantPostListByUserId(userId).forEach(hostPostData -> {
-            if (hostPostData.getUserId() == userId) {
-                list.add(hostPostData.toDto());
-            }
-        });
-
-        return list;
-    }
-
     
-    public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId) {
-        return postRepository.getMyApplicantAcceptPostListByUserId(userId);
+    public List<AttendListRespDto> getHostAttendListByUserId(int userId) {
+    	List<AttendListRespDto> list = new ArrayList<>();
+    	
+    	postRepository.getHostAttendListByUserId(userId).forEach(attendData -> {
+    		list.add(attendData.toDto());
+    	});
+    	
+    	return list;
     }
+    
+
+
     
     public List<FinishListRespDto> getMyfinishPostListByUserId(int userId) {
         List<FinishList> finishList = postRepository.getMyfinishPostListByUserId(userId);
