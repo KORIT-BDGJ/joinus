@@ -2,21 +2,35 @@
 import { css } from '@emotion/react'
 import React from 'react';
 import { useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
 import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 import AttendList from '../../../components/UI/PostDetail/AttendList';
 import Comment from '../../../components/UI/PostDetail/Comment';
 import ApplyPost from '../../../components/UI/PostDetail/ApplyPost';
+import { FcSportsMode } from "react-icons/fc";
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { CgGym } from 'react-icons/cg';
+import { MdOutlineEmojiPeople } from 'react-icons/md';
+import { IoMdBicycle } from 'react-icons/io';
+import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
+import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
+import { RiBilliardsFill } from 'react-icons/ri';
+import { GrGamepad } from 'react-icons/gr';
+import { BiMale, BiMaleFemale, BiFemale } from 'react-icons/bi';
+import SelectSportsModal from '../../../components/Modal/SelectModal/SelectSportsModal';
+import Select from 'react-select';
+import DatePicker from "react-datepicker";
+import { addMinutes } from "date-fns";
 
 
 const container = css`
     display: flex;
     flex-direction: column;
-    padding: 10px 50px;
+    padding: 10px 40px;
     height: 900px;
     overflow-y: auto;
 `;
@@ -36,9 +50,8 @@ const headerTitle = css`
     font-weight: 600;
 `;
 
-
-
 const attendButton = css`
+    margin-left: 5px;
     background-color: white;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
@@ -46,7 +59,7 @@ const attendButton = css`
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+    border: 3px solid #dbdbdb;
     }
 `;
 
@@ -90,30 +103,22 @@ const ownerPicture = css`
 `;
 
 const imgIcon = css`
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const ownerNickname = css`
     padding: 10px;
-`;
-const detailButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
-    border-radius: 5px;
-    height: 30px;
-    cursor: pointer;
-
-    &:hover {
-    border: 1px solid black;
-    }
+    font-size: 20px;
+    font-weight: 600;
 `;
 
 const infoDetail = (detailShow) => css`
     display: ${detailShow ? "flex" : "none"};
     flex-direction: row;
+    align-items: center;
     padding: 10px;
     border: 1px solid #dbdbdb;
 `;
@@ -145,6 +150,47 @@ const recruitInfoContent = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+`;
+
+
+const postTitle = css`
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    width: 30%;
+`;
+
+
+
+const selectBox = css`
+    width: 130px;
+    height: 30px;
+`;
+const selectBoxLong = css`
+    width: 150px;
+    height: 30px;
+`;
+
+const genderBox = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
+
+const genderName = css`
+    font-size: 15px;
+    padding-right: 5px;
+`;
+
+const buttonRadioBox = css`
+    font-size: 25px;
+`;
+
+const buttonRadio = css`
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 `;
 
 const recruitSports = css`
@@ -182,6 +228,44 @@ const recruitTextBody = css`
     padding-top: 10px;
 `;
 
+const textContainer = css`
+    width: 100%;
+    height: 100px;
+    border: 2px solid #dbdbdb;
+`;
+
+const selectCount = css`
+    display: flex;
+    height: 25px;
+`;
+
+const changeCount = css`
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    margin: 1px;
+    font-size: 20px;
+    font-weight: 300;
+`;
+
+const countBox = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 70px;
+    font-size: 20px;
+    font-weight: 600;
+`;
+const countText = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 150px;
+    font-size: 20px;
+    font-weight: 600;
+`;
+
 const applicant = css`
     display: flex;
     flex-direction: column;
@@ -200,7 +284,7 @@ const attendTitle = css`
     justify-content: space-between;
     width: 100%;
     padding-top: 10px;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
 `;
 
@@ -223,13 +307,24 @@ const attendList = (attendShow) => css`
     flex-direction: column;
 `;
 
+const recruitHeader = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0px 10px 0px;
+
+    font-size: 20px;
+    font-weight: 600;
+`;
+
 const applicantTitle = css`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
     padding-top: 10px;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
 `;
 
@@ -274,19 +369,53 @@ const footHeader = css`
 `;
 
 const PostDetail = () => {
+    const [ errorMsg, setErrorMsg ] = useState("");
     const [ detailShow, setDetailShow ] = useState(false);
     const [ attendShow, setAttendShow ] = useState(false);
     const [ applicantShow, setApplicantShow ] = useState(false);
     const [totalApplicantCount, setTotalApplicantCount] = useState(0);
     const [totalAttendCount, setTotalAttendCount] = useState(0);
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [editedTitle, setEditedTitle] = useState("");
-    const [editedLevel, setEditedLevel] = useState("");
-    const [editedState, setEditedState] = useState("");
-    const [editedMedal, setEditedMedal] = useState("");
-    const [editedSports, setEditedSports] = useState("");
-    const [editedRegion, setEditedRegion] = useState("");
-    const [editedGender, setEditedGender] = useState("");
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
+    const [updateTitle, setUpdateTitle] = useState("");
+    const [updateText, setUpdateText] = useState("");
+    const [ selectedIcon, setSelectedIcon ] = useState(null);
+    const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
+    const [updateLevel, setUpdateLevel] = useState("");
+    const [updateLevelName, setUpdateLevelName] = useState("");
+    const [updateState, setUpdateState] = useState("");
+    const [updateStateName, setUpdateStateName] = useState("");
+    const [updateRegion, setUpdateRegion] = useState("");
+    const [updateRegionName, setUpdateRegionName] = useState("");
+    const [updateSports, setUpdateSports] = useState("");
+    const [updateGender, setUpdateGender] = useState("");
+    const [ updateDate, setUpdateDate ] = useState("");
+    const [ updateRecruitsCount, setUpdateRecruitsCount] = useState("");
+    const currentDate = new Date();
+    const minSelectableDate = addMinutes(currentDate, 0);
+    const [ icons, setIcons ] = useState("");
+
+    const sportsIcons = [
+        {id: 1, name: "헬스", icon: <CgGym size={50} /> },
+        {id: 2, name: "러닝", icon: <FaRunning size={50} /> },
+        {id: 3, name: "축구", icon: <GiSoccerKick size={50} /> },
+        {id: 4, name: "야구", icon: <GiBaseballBat size={50} /> },
+        {id: 5, name: "농구", icon: <GiBasketballBasket size={50} /> },
+        {id: 6, name: "수영", icon: <FaSwimmer size={50} /> },
+        {id: 7, name: "테니스", icon: <GiTennisRacket size={50} /> },
+        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={50} /> },
+        {id: 9, name: "자전거", icon: <IoMdBicycle size={50} /> },
+        {id: 10, name: "등산", icon: <GiMountainRoad size={50} /> },
+        {id: 11, name: "낚시", icon: <GiBoatFishing size={50} /> },
+        {id: 12, name: "볼링", icon: <GiBowlingStrike size={50} /> },
+        {id: 13, name: "탁구", icon: <FaTableTennis size={50} /> },
+        {id: 14, name: "배구", icon: <FaVolleyballBall size={50} /> },
+        {id: 15, name: "골프", icon: <MdGolfCourse size={50} /> },
+        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={50} /> },
+        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={50} /> },
+        {id: 18, name: "서핑", icon: <MdSurfing size={50} /> },
+        {id: 19, name: "당구", icon: <RiBilliardsFill size={50} /> },
+        {id: 20, name: "게임", icon: <GrGamepad size={50} /> }
+    ]
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -303,26 +432,10 @@ const PostDetail = () => {
         setApplicantShow(!applicantShow);
     };
 
-    const enableEditMode = () => {
-        setIsEditMode(true);
-        setEditedTitle(getPost.data.data.title);
-        setEditedLevel(getPost.data.data.levelName);
-        setEditedState(getPost.data.data.stateName);
-        setEditedMedal(getPost.data.data.writerNickName);
-        setEditedSports(getPost.data.data.sportsName);
-        setEditedRegion(getPost.data.data.regionName);
-        setEditedGender(getPost.data.data.genderName);
+    const updateMode = () => {
+        setIsUpdateMode(true);
+        setDetailShow(true);
     };
-
-    const saveChanges = () => {
-        // Perform the logic to save the edited data, such as making an API request
-        // You can use the edited variables (e.g., editedTitle, editedLevel, etc.) to send the updated data
-        // Once the changes are saved, you can exit the edit mode
-        setIsEditMode(false);
-    };
-
-
-    
 
     const detailClickHandle = (e) => {
         setDetailShow(!detailShow);
@@ -330,9 +443,6 @@ const PostDetail = () => {
     const attendClickHandle = (e) => {
         setAttendShow(!attendShow);
     };
-
-
-
     
     const { postId } = useParams();
     
@@ -344,6 +454,170 @@ const PostDetail = () => {
         }
         const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
         return response;
+    }, {
+        onSuccess: (response) => {
+            <DatePicker 
+            locale={ko} 
+            selected={response.data.deadLine}
+            showTimeSelect
+            minDate={minSelectableDate}
+            dateFormat="yyyy년 MM월 dd일 HH시 mm분"
+            />
+            const selectedSportsIcon = sportsIcons.find((icon) => icon.id === response.data.sportsId);
+            setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+            setUpdateGender(response.data.genderId);
+            setUpdateLevel(response.data.levelId);
+            setUpdateRegion(response.data.regionId);
+            setUpdateState(response.data.stateId);
+            setUpdateText(response.data.text);
+            setUpdateTitle(response.data.title);
+            setUpdateSports(response.data.sportsId);
+            setUpdateDate(minSelectableDate);
+            setUpdateRecruitsCount(response.data.recruitsCount)
+
+        }
+    });
+
+    const deletePost = useMutation(async ({ postId }) => {
+        console.log(postId)
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        return await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
+    }, {
+        onSuccess: () => {
+            window.location.replace("/main");
+            alert("해당 게시글이 삭제되었습니다.");
+        }
+        
+    });
+
+    const getSports = useQuery(["getSports"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/sports", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
+
+    const getLevels = useQuery(["getLevels"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/levels", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
+
+    const getStates = useQuery(["getStates"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/states", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
+
+    const getRegions = useQuery(["getRegions"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/regions", option);
+        return response.data;
+    },
+    {
+      onError: (error) => {
+        // 인증에 실패했을 때의 처리를 추가합니다.
+        if (error.response?.status === 401) {
+          
+          console.error('Error fetching principal:', error);
+        }
+      },
+      // 토큰이 존재할 때만 쿼리를 활성화합니다.
+      enabled: !!localStorage.getItem("accessToken"),
+    });
+
+    const getGenders = useQuery(["getGenders"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/option/genders", option);
+        return response.data;
+    },{
+        onError: (error) => {
+          // 인증에 실패했을 때의 처리를 추가합니다.
+          if (error.response?.status === 401) {
+            
+            console.error('Error fetching principal:', error);
+          }
+        },
+        // 토큰이 존재할 때만 쿼리를 활성화합니다.
+        enabled: !!localStorage.getItem("accessToken"),
+      });
+
+    const saveChanges = useMutation(async (updateData)=> {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        try{
+            const response = await axios.put(`http://localhost:8080/post/update/${postId}`, updateData, option);
+            return response;
+        } catch(error) {
+            setErrorMsg(error.response.data);
+            return error;
+        }
+    }, {
+        onSuccess: (response) => {
+            if(response.status === 200) {
+                alert("게시글 수정 완료!");
+                setIsUpdateMode(false);
+            }
+        }
     });
 
     if(principal.isLoading) {
@@ -354,11 +628,10 @@ const PostDetail = () => {
         return <div>불러오는 중...</div>
     }
 
+
     const userId = principal.data.userId;
     const writerId = getPost.data.data.writerId;
     const isCurrentUserAuthor = writerId === userId;
-
-   
     
     const deadline = new Date(getPost.data.data.deadLine).toLocaleString("ko-KR", {
         year: "numeric",
@@ -368,6 +641,39 @@ const PostDetail = () => {
         minute: "numeric",
     });
 
+    const handleDeleteClick = () => {
+        const result = window.confirm('해당 게시글을 삭제하시겠습니까?');
+        if (result) {
+          deletePostHandle();
+        } else {
+            // 취소 버튼을 클릭한 경우 아무 작업도 수행하지 않기.
+        }
+    };
+    
+    const deletePostHandle = () => {
+        deletePost.mutate({ postId });
+    }
+
+    const handleIconSelect = (IconComponent) => {
+        setSelectedIcon(IconComponent.id);
+    }
+
+    const selectedIconClickHandle = () => {
+        const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
+        setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        setUpdateSports(selectedIcon);
+    }
+
+    const handleClick = (value) => () => {
+        if(updateRecruitsCount + value >= 0) {
+            setUpdateRecruitsCount((prev) => prev + value);
+        }
+    }
+
+    const genderHandleChange = (e) => {
+        setUpdateGender(e.target.value);
+    }
+
     const updateTotalApplicantCount = (count) => {
         setTotalApplicantCount(count);
     };
@@ -376,19 +682,69 @@ const PostDetail = () => {
         setTotalAttendCount(count);
     };
 
+    const saveChangeSubmitHandle = () => {
+        saveChanges.mutate({
+            updateTitle, 
+            updateText,
+            updateRegion,
+            updateGender,
+            updateSports,
+            updateDate,
+            updateLevel,
+            updateState,
+            updateRecruitsCount
+        })
+    }
+
+    const cancelClickHandle = () => {
+        setIsUpdateMode(false);
+    }
+
+
+
+    if(principal.isLoading) {
+        return <div>불러오는 중...</div>
+    }
+
+    if(getPost.isLoading) {
+        return <div>불러오는 중...</div>
+    }
+
     return (
         
         <div css={container}>
             <Sidebar></Sidebar>
             <div css={detailHeader}>
                 <div css={headerTitle}>
-                    {getPost.data.data.title}
+                    {isUpdateMode ? (
+                        <>
+                            <input
+                            css={headerTitle}
+                            type="text"
+                            value={updateTitle}
+                            onChange={(e) => setUpdateTitle(e.target.value)}
+                            />
+                        </>
+                        ) : (
+                        <>
+                            <div>{getPost.data.data.title}</div>
+                        </>
+                    )}
                 </div>
                 <div>
                     {isCurrentUserAuthor ? (
                         <>
-                            <button css={attendButton}>수정하기</button>
-                            <button css={attendButton}>삭제하기</button>
+                            {isUpdateMode ? (
+                                <>
+                                    <button css={attendButton} onClick={saveChangeSubmitHandle}>저장하기</button>
+                                    <button css={attendButton} onClick={cancelClickHandle}>취소하기</button>
+                                </>
+                                ) : (
+                                <>
+                                    <button css={attendButton} onClick={updateMode}>수정하기</button>
+                                    <button css={attendButton} onClick={handleDeleteClick}>삭제하기</button>
+                                </>
+                            )}
                         </>
                     ) : (
                         <ApplyPost postId={postId}/>
@@ -412,20 +768,141 @@ const PostDetail = () => {
                         </div>
                         <div css={ownerNickname}>{getPost.data.data.writerNickName}</div>
                     </div>
-                    <button css={detailButton} onClick={detailClickHandle}>방장 상세정보</button>
+                    <button css={attendButton} onClick={detailClickHandle}>방장 상세정보</button>
                 </div>
                 <div css={infoDetail(detailShow)}>
-                    <div css={ownerLevel}>레벨: {getPost.data.data.levelName}</div>
-                    <div css={ownerState}>상태: {getPost.data.data.stateName}</div>
+                    <div css={ownerLevel}>
+                        {isUpdateMode ? (
+                            <>
+                            {getLevels.isLoading ? ""
+                            : <Select
+                                css={selectBox}
+                                value={updateLevel}
+                                onChange={(e) => setUpdateLevel(e.value) & setUpdateLevelName(e.label)}
+                                options={getLevels.data.map(level => ({"value": level.levelId, "label": level.levelName}))}
+                                placeholder={updateLevelName ? updateLevelName : getPost.data.data.levelName}
+                            />}
+                            </>
+                        ) : (
+                            <div>
+                                레벨: {getPost.data.data.levelName}
+                            </div>
+                        )}                          
+                    </div>
+                    <div css={ownerState}>
+                        {isUpdateMode ? (
+                            <>
+                                {getStates.isLoading ? ""
+                                : <Select
+                                    css={selectBoxLong}
+                                    value={updateState}
+                                    onChange={(e) => setUpdateState(e.value) & setUpdateStateName(e.label)}
+                                    options={getStates.data.map(state => ({"value": state.stateId, "label": state.stateName}))}
+                                    placeholder={updateStateName ? updateStateName : getPost.data.data.stateName}
+                                />}
+                            </>
+                            ) : (
+                                <div>
+                                    상태: {getPost.data.data.stateName}
+                                </div>
+                            )}
+                    </div>
                     <div css={ownerMedal}>메달: {getPost.data.data.writerNickName}</div>
                 </div>
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
                     <div css={recruitInfoContent}>
-                        <div css={recruitSports}>{getPost.data.data.sportsName}</div>
-                        <div css={recruitRegion}>지역: {getPost.data.data.regionName}</div>
-                        <div css={recruitTime}>{deadline}</div>
-                        <div css={recruitGender}>모집성별: {getPost.data.data.genderName}</div>
+                        <div css={recruitSports}>
+                        {isUpdateMode ? (
+                            <>
+                            <div onClick={() => setSportsModalIsOpen(true)}>{icons}</div>
+                            {getSports.isLoading ? (
+                                ""
+                            ) : (
+                                <SelectSportsModal
+                                isOpen={sportsModalIsOpen}
+                                setIsOpen={setSportsModalIsOpen}
+                                onSelect={handleIconSelect}
+                                onClick={selectedIconClickHandle}
+                                />
+                            )}
+                            </>
+                        ) : (
+                            <>
+                            <div>{icons}</div>
+                            </>
+                        )}
+                        </div>
+                        <div css={recruitRegion}>
+                            {isUpdateMode ? (
+                                <>
+                                {getRegions.isLoading ? ""
+                                : <Select
+                                    css={selectBox}
+                                    value={updateRegion}
+                                    onChange={(e) => setUpdateRegion(e.value) & setUpdateRegionName(e.label)}
+                                    options={getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))}
+                                    placeholder={updateRegionName ? updateRegionName : getPost.data.data.regionName}
+                                />}
+                                </>
+                            ) : (
+                                <div>
+                                    지역: {getPost.data.data.regionName}
+                                </div>
+                            )}               
+                        </div>
+                        
+                        <div css={recruitTime}>
+                        {isUpdateMode ? (
+                            <>
+                                <DatePicker 
+                                locale={ko} 
+                                selected={updateDate}
+                                onChange={date => setUpdateDate(date)}
+                                showTimeSelect
+                                minDate={minSelectableDate}
+                                dateFormat="yyyy년 MM월 dd일 HH시 mm분"
+                                placeholderText="날짜를 선택하시오."
+                                />
+                            </>
+                            ) : (
+                                <div>
+                                    {deadline}
+                                </div>
+                        )} 
+                        </div>
+                        <div css={recruitGender}>
+                        {isUpdateMode ? (
+                            <>
+                            {getGenders.isLoading ? "" : getGenders.data.map((genderOption) => (
+                                <label css={buttonRadioBox} key={genderOption.genderId}>
+                                    <input
+                                        css={buttonRadio}
+                                        type="radio"
+                                        name="gender"
+                                        value={genderOption.genderId}
+                                        checked={updateGender === `${genderOption.genderId}`}
+                                        onChange={genderHandleChange}
+                                    />
+                                    {genderOption.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
+                                    {genderOption.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
+                                    {genderOption.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
+                                </label>
+                            ))}   
+                            </>
+                            ) : (
+                                <div css={genderBox}>
+                                    <div css={genderName}>
+                                        모집성별: {` `}
+                                    </div>
+                                    <div css={buttonRadioBox}>
+                                        {getPost.data.data.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
+                                        {getPost.data.data.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
+                                        {getPost.data.data.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
+                                    </div>
+                                </div>
+                        )} 
+                        </div>
                     </div>
                 </div>
                 <div css={recruitText}>
@@ -433,16 +910,45 @@ const PostDetail = () => {
                         모집글 소개
                     </div>
                     <div css={recruitTextBody}>
-                        {getPost.data.data.text}
+                        {isUpdateMode ? (
+                            <>
+                                <textarea
+                                css={textContainer}
+                                value={updateText}
+                                onChange={(e) => setUpdateText(e.target.value)}
+                                ></textarea>
+                            </>
+                            ) : (
+                            <>
+                                <div>{getPost.data.data.text}</div>
+                            </>
+                        )}
+                        
                     </div>
 
                 </div>
                 <div css={applicant}>
                     <div>
+                        {isUpdateMode ? (
+                            <>
+                                <div css={selectCount}>
+                                    <div css={countText}>모집인원 변경 : </div>
+                                    <button css={changeCount} onClick={handleClick(-5)}>&#60;&#60;</button>
+                                    <button css={changeCount} onClick={handleClick(-1)}>&#60;</button>
+                                    <div css={countBox}>{updateRecruitsCount} 명</div>
+                                    <button css={changeCount} onClick={handleClick(1)}>&#62;</button>
+                                    <button css={changeCount} onClick={handleClick(+5)}>&#62;&#62;</button>
+                                </div>
+                            </>
+                            ) : (
+                            <>
+                                <div css={recruitHeader}>모집인원  <MdOutlineEmojiPeople /> ({getPost.data.data.recruitsCount})</div>
+                            </>
+                        )}
                         <div css={applicantTitle}>
-                            <div css={applicantCount}>신청인원 정보 : {totalApplicantCount}명 신청중</div>
+                            <div css={applicantCount}>신청인원 현황 : {totalApplicantCount}명 신청중</div>
                             <div css={applicantButtonContainer}>
-                                <button css={applicantButton} onClick={applicantClickHandle}>
+                                <button css={attendButton} onClick={applicantClickHandle}>
                                     신청자 보기
                                 </button>
                             </div>
@@ -453,7 +959,7 @@ const PostDetail = () => {
                     </div>
                     <div>
                         <div css={attendTitle}>
-                            <div css={attendCount}>참석인원 정보: {getPost.data.data.recruitsCount}명 모집 / {totalAttendCount}명 참석중</div>
+                            <div css={attendCount}>참석인원 현황 : {totalAttendCount}명 참석중</div>
                             <div css={attendButtonContainer}>
                                 <button css={attendButton} onClick={attendClickHandle}>
                                     참석자 보기

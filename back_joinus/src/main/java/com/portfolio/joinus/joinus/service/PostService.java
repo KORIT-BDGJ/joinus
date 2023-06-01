@@ -1,6 +1,7 @@
 package com.portfolio.joinus.joinus.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,13 @@ import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.HostPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
 import com.portfolio.joinus.joinus.entity.FinishList;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
+import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -257,4 +260,45 @@ public class PostService {
     public int saveMyApplicantPostList(HostPostList hostPostList) {
         return postRepository.saveMyApplicantPostList(hostPostList);
     }
+    
+    public int updatePost(int postId, PostUpdateReqDto postUpdateReqDto) {
+    	String updateTitle = postUpdateReqDto.getUpdateTitle();
+    	String updateText = postUpdateReqDto.getUpdateText();
+    	int updateSports = postUpdateReqDto.getUpdateSports();
+    	int updateRegion = postUpdateReqDto.getUpdateRegion();
+    	int updateGender = postUpdateReqDto.getUpdateGender();
+    	Date updateDate = postUpdateReqDto.getUpdateDate();
+    	int updateState = postUpdateReqDto.getUpdateState();
+    	int updateLevel = postUpdateReqDto.getUpdateLevel();
+    	int updateRecruitsCount = postUpdateReqDto.getUpdateRecruitsCount();
+    	
+
+    	return postRepository.updatePost(Post.builder()
+    											.postId(postId)
+    											.title(updateTitle)
+    											.text(updateText)
+    											.regionId(updateRegion)
+    											.genderId(updateGender)
+    											.sportsId(updateSports)
+    											.deadLine(updateDate)
+    											.levelId(updateLevel)
+    											.stateId(updateState)
+    											.recruitsCount(updateRecruitsCount)
+    											.build());
+    }
+    
+    public int postDelete(int postId) {
+    	return postRepository.postDelete(postId);
+    }
+    
+	// attend취소
+	public int cancelAttendPost(int postId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", postId);
+		map.put("userId", userId);
+		
+		return postRepository.cancelAttendPost(map);
+	}
+
+
 }

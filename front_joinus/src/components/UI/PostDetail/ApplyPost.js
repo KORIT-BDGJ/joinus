@@ -41,6 +41,17 @@ const ApplyPost = ({ postId }) => {
         return response;
     });
 
+    const getAttendList= useQuery(["getAttendList"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+
+        const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
+        return response;
+    });
+
     const applyPost = useMutation(async () => {
 
         const option = {
@@ -73,8 +84,23 @@ const ApplyPost = ({ postId }) => {
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getApplicantList");
+        } 
+    });
+
+    const cancelAttendPost = useMutation(async () => {
+        const option = {
+            params: {
+                userId: queryClient.getQueryData("principal").userId
+            },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
         }
-        
+        return await axios.delete(`http://localhost:8080/post/cancel/attend/${postId}`, option);
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries("getAttendList");
+        } 
     });
 
     if(getApplicantList.isLoading) {
@@ -90,6 +116,8 @@ const ApplyPost = ({ postId }) => {
 
     const currentUserID = queryClient.getQueryData("principal").userId;
     const isCurrentUserApplied = getApplicantList.data.data.some(applicantData => applicantData.userId === currentUserID);
+    const isCurrentUserAttended = getAttendList.data.data.some(attendData => attendData.userId === currentUserID);
+    
     
     const closeStateLevelChangeModal = () => {
         setIsStateLevelChangeModalOpen(false);
@@ -98,11 +126,16 @@ const ApplyPost = ({ postId }) => {
 
     return (
         <div>
-          {isCurrentUserApplied ? (
-            <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate() }}>취소</button>
-          ) : (
-            <button css={applyPostButton} onClick={openStateLevelChangeModal}>신청</button>
-          )}
+            {isCurrentUserAttended ? (
+                <button css={applyPostButton} onClick={() => { cancelAttendPost.mutate() }}>취소</button>
+            ) : (
+                isCurrentUserApplied ? (
+                    <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate() }}>취소</button>
+                  ) : (
+                    <button css={applyPostButton} onClick={openStateLevelChangeModal}>신청</button>
+                  )
+            )}
+          
             <footer>
                 {isStateLevelChangeModalOpen && <ApplicantSelectStateLevelModal modalState={closeStateLevelChangeModal} updateStateId={updateStateId} updateLevelId={updateLevelId} postId={postId}/>}
             </footer>

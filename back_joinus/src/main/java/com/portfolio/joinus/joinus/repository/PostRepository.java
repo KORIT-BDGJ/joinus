@@ -62,6 +62,7 @@ public interface PostRepository {
 
 	public int cancelApplyPost(Map<String, Object> map);
 
+	public int cancelAttendPost(Map<String, Object> map);
 	public int commentSubmit(Map<String, Object> map);
 
 	public int commentDelete(Map<String, Object> map);
@@ -72,6 +73,7 @@ public interface PostRepository {
 
 	public int applicantAccept(Map<String, Object> map);
 
+	public int updatePost(Post post);
 	
-
+	public int postDelete(int postId);
 }
