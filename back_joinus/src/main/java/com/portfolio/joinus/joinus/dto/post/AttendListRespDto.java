@@ -6,10 +6,12 @@ import lombok.Data;
 @Builder
 @Data
 public class AttendListRespDto {
-	private int postId;
-	private int userId;
-	private String image;
-	private String nickName;
-	private String stateName;
-	private String levelName;
+    private int postId;
+    private int userId;
+    private String image;
+    private String nickName;
+    private String stateName;
+    private String levelName;
+    private String title;
 }
+

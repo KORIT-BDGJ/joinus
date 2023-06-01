@@ -84,6 +84,13 @@
      	WHERE 
     		nickname = #{nickName}
     </select>
+    
+    <select id="findNicknamesByUserIds" resultType="java.lang.String">
+	    SELECT ui.nickname FROM user_info_tb ui WHERE ui.user_id IN
+	    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+	        #{userId}
+	    </foreach>
+	</select>
 	
 	<insert id="registerUser" 
 	parameterType="com.portfolio.joinus.joinus.entity.User"
@@ -206,15 +213,3 @@
 	</insert>
 	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-

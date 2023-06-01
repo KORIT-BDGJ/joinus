@@ -434,5 +434,13 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 								.build());
 						
 		}
+		
+		public List<String> getNicknames(List<Long> userIds) {
+		    List<String> nicknames = userRepository.findNicknamesByUserIds(userIds);
+		    return nicknames;
+		}
+
+
+		
 	
 }

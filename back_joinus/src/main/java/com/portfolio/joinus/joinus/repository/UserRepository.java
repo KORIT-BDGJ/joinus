@@ -62,4 +62,6 @@ public interface UserRepository {
 	List<OwnerPostList> getOwnerPostListByUserId(int userId);
 	
 	List<HostPostList> getApplicantPostListByUserId(int userId);
+
+	List<String> findNicknamesByUserIds(List<Long> userIds);
 }
