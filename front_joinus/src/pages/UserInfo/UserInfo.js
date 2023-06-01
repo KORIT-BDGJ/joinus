@@ -4,8 +4,8 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { CgGym } from 'react-icons/cg';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
-import { GrGamepad } from 'react-icons/gr';
+import { GiArcheryTarget, GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiBoxingGlove, GiHockey, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
+import { GrGamepad, GrYoga } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
@@ -498,6 +498,10 @@ const UserInfo = () => {
     if (sport === 16) return <MdOutlineSkateboarding size={size} />;
     if (sport === 19) return <RiBilliardsFill size={size} />;
     if (sport === 20) return <GrGamepad size={size} />;
+    if (sport === 21) return <GrYoga size={size} />;
+    if (sport === 22) return <GiHockey size={size} />;
+    if (sport === 23) return <GiArcheryTarget size={size} />;
+    if (sport === 24) return <GiBoxingGlove size={size} />;
   };
   
  const convertedSports = selectedSports.map(sport => parseInt(sport));

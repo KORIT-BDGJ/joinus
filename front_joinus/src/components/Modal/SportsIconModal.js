@@ -103,6 +103,7 @@ const modalCancelButton = css`
 `;
 
 
+
 const SportsIconModal = ({
   selectedSports,
   closeModal,
@@ -110,6 +111,7 @@ const SportsIconModal = ({
   setSelectedSports,
   plusVisible,
   setPlusVisible,
+  iconTitle,
 }) => {
   const [selectedSport, setSelectedSport] = useState(null);
 
