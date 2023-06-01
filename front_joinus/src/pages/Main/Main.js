@@ -23,7 +23,7 @@ const Main = () => {
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
-        sprotsId: 0,
+        sportsId: 0,
         searchType: 1,
         searchValue: "",
         sort: 0
@@ -68,7 +68,7 @@ const Main = () => {
         const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
         return response.data;
     });
-    console.log(sportsLikes.data);
+     
 
     const sportsIcons = [
         {id: 0, title: "선호운동", icon: "⭐" },
@@ -175,27 +175,20 @@ const Main = () => {
     };
 
     const handleIconSelect = (IconComponent) => {
-        if (IconComponent.id === 0) { // 별 아이콘 선택
-            if (sportsLikes.isSuccess && sportsLikes.data) {
-                setSearchParams((prevState) => ({
-                    ...prevState,
-                    sportsId: sportsLikes.data, // 유저의 선호운동 설정
-                    page: 1
-                }));
-            }
-        } else {
-            setSelectedIcon(IconComponent.id);
-            setSearchParams((prevState) => ({
-                ...prevState,
-                sportsId: IconComponent.id,
-                page: 1
-            }));
-        }
+        
+        setSelectedIcon(IconComponent.id);
+    
+        
     }
 
     const selectedIconClickHandle = () => {
         const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
         setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        setSearchParams((prevState) => ({
+            ...prevState,
+            sportsId: selectedIcon,
+            page: 1
+        }));
         setRefresh(true);
     }
 

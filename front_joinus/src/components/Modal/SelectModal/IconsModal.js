@@ -42,7 +42,7 @@ const starIcon = css`
 
 const iconTitle = css`
     margin-top: 10px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     text-align: center;
 `;
