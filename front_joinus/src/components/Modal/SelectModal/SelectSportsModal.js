@@ -23,7 +23,7 @@ const modalMainContainer = css`
     flex-direction: column;
     border-radius: 10px;
     width: 450px;
-    height: 500px;
+    height: 600px;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
     background-color: white;
 `;
@@ -93,6 +93,7 @@ const cancelButton = css`
         background-color: #00FF00;
     }
 `;
+
 
 
 const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick, sportsLikes, userId }) => {

@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React from 'react';
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiArcheryTarget, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
 import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
 import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
-import { GrGamepad } from 'react-icons/gr';
+import { GrGamepad, GrYoga } from 'react-icons/gr';
 
 const sportsIcon = (isSelected, isLiked) => css`
     display: flex;
@@ -18,6 +18,7 @@ const sportsIcon = (isSelected, isLiked) => css`
     margin: 10px;
     padding: 10px;
     background-color: ${isSelected ? "rgba(0, 255, 0, 0.2);" : "white"};
+    border: 2px solid ${isLiked ? "green" : "transparent"};
 
     &:hover {
         background-color: ${isSelected ? "#5EC75E" : "#63cc63"};
@@ -41,14 +42,15 @@ const starIcon = css`
 
 const iconTitle = css`
     margin-top: 10px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     text-align: center;
 `;
 
-const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon,sportsLikes,userId }) => {
+const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon,sportsLikes, userId }) => {
 
     const sportsIcons = [
+        {id: 0, title: "선호운동", icon: "⭐" },
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
         {id: 2, title: "러닝", icon: <FaRunning size={32} /> },
         {id: 3, title: "축구", icon: <GiSoccerKick size={32} /> },
@@ -64,11 +66,15 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon,sportsLikes,use
         {id: 13, title: "탁구", icon: <FaTableTennis size={32} /> },
         {id: 14, title: "배구", icon: <FaVolleyballBall size={32} /> },
         {id: 15, title: "골프", icon: <MdGolfCourse size={32} /> },
-        {id: 16, title: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
-        {id: 17, title: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 16, title: "스케이트", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, title: "스쿠버", icon: <MdOutlineScubaDiving size={32} /> },
         {id: 18, title: "서핑", icon: <MdSurfing size={32} /> },
         {id: 19, title: "당구", icon: <RiBilliardsFill size={32} /> },
-        {id: 20, title: "게임", icon: <GrGamepad size={32} /> }
+        {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
+        {id: 21, title: "요가", icon: <GrYoga size={32} />},
+        {id: 22, title: "하키", icon: <GiHockey size={32} />},
+        {id: 23, title: "양궁", icon: <GiArcheryTarget size={32} />},
+        {id: 24, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
 
     const isIconSelected = (iconId) => {
