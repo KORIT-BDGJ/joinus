@@ -157,13 +157,12 @@ export const mainListBox = css`
 
 export const listContainer = css`
     display: flex;
-    flex-direction: row;
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
     padding: 3px;
     width: 100%;
-    height: 120px;
+    height: 140px;
     background-color: beige;
     cursor: pointer;
 `;
@@ -180,53 +179,61 @@ export const postIconBox = css`
 export const postContent = css`
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
+    margin: 0px 10px;
     width: 90%;
-    height: 100%;
+
 `;
 
 export const postListHeader = css`
     display: flex;
     justify-content: space-between;
-    height: 19px;
-`;
-
-export const headerNickName = css`
-    width: 100px;
-    text-align: center;
-    border: none;
-    background-color: beige;
-    cursor: pointer;
+    align-items: center;
+    height: 25px;
 `;
 
 export const headerDateLabel = css`
-    margin-left: 10px;
+    margin-right: 5px;
     font-weight: 600;
     cursor: pointer;
 `;
 
-export const headerDate = css`
-    width: 160px;
+export const headerNickName = css`
     text-align: center;
     border: none;
+    width: 140px;
+    background-color: beige;
+    cursor: pointer;
+`;
+
+export const registeDates = css`
+    border: none;
+    text-align: center;
     background-color: beige;
     cursor: pointer;
 `;
 
 export const postMain = css`
     display: flex;
+    justify-content: center;
     align-items: center;
-    height: 80px;
+    height: 90px;
     font-size: 28px;
 `;
 
+export const postFooter = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 25px;
+`;
+
 export const informationLabel =css`
+    margin-right: 5px;
     font-weight: 600;
     cursor: pointer;
 `;
 
 export const informationTextName = css`
-    width: 80px;
     text-align: center;
     border: none;
     background-color: beige;
@@ -234,9 +241,9 @@ export const informationTextName = css`
 `;
 
 export const informationDate = css`
-    width: 150px;
     text-align: center;
     border: none;
+    width: 180px;
     background-color: beige;
     cursor: pointer;
 `;
@@ -246,7 +253,6 @@ export const finalDeadLine = css`
 `;
 
 export const informationCount = css`
-    width: 60px;
     text-align: center;
     border: none;
     background-color: beige;

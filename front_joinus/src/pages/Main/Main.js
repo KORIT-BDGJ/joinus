@@ -68,7 +68,6 @@ const Main = () => {
         const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
         return response.data;
     });
-    console.log(sportsLikes.data);
 
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
@@ -472,63 +471,57 @@ const Main = () => {
                 {getPostList.isLoading ? (
                     ""
                     ) : (
-                    <>
-                        {getPostList.data.postList.length === 0 ? (
-                            <div>
-                                {searchParams
-                                    ? "검색한 게시물이 없습니다."
-                                    : "작성된 게시물이 없습니다."
-                                }
-                            </div>
-                            ) : (
-                            <>
-                                {getPostList.data.postList.map((post) => (
-                                    <div
-                                        css={S.listContainer}
-                                        key={post.postId}
-                                        onClick={() => listClickHandle(post.postId)}
-                                    >
-                                        <div css={S.postIconBox}>
-                                            {sportsIcons.filter(
-                                                (sportIcon) =>
-                                                sportIcon.id ===
-                                                parseInt(!!post.sportsId ? post.sportsId : 1)
-                                                )[0].icon
-                                            }
-                                        </div>
-                                        <div css={S.postContent}>
-                                            <header css={S.postListHeader}>
-                                                <label css={S.informationLabel}>
-                                                    작성자:
-                                                </label>
-                                                <div css={S.headerNickName} >{post.writerNickName}</div>
+                        <>
+                            {getPostList.data.postList.map((post) => (
+                                <div
+                                    css={S.listContainer}
+                                    key={post.postId}
+                                    onClick={() => listClickHandle(post.postId)}
+                                >
+                                    <div css={S.postIconBox}>
+                                        {sportsIcons.filter(
+                                            (sportIcon) =>
+                                            sportIcon.id ===
+                                            parseInt(!!post.sportsId ? post.sportsId : 1)
+                                            )[0].icon
+                                        }
+                                    </div>
+                                    <div css={S.postContent}>
+                                        <header css={S.postListHeader}>
+                                            <div css={S.headerNickName} >
+                                                <label css={S.informationLabel}>작성자:</label>
+                                                {post.writerNickName}
+                                            </div>
+                                            <div css={S.registeDates}>
                                                 <label css={S.headerDateLabel}>작성일:</label>
-                                                <div css={S.headerDate}>
-                                                    {new Date(post.registeDate).toLocaleString(
-                                                        "ko-KR",
-                                                        {
-                                                            month: "long",
-                                                            day: "numeric",
-                                                            hour: "2-digit",
-                                                            minute: "2-digit",
-                                                        }
-                                                    )}
-                                                </div>
-                                            </header>
-                                            <main css={S.postMain}>
-                                                {post.title}
-                                            </main>
-                                            <footer>
+                                                {new Date(post.registeDate).toLocaleString(
+                                                    "ko-KR",
+                                                    {
+                                                        month: "long",
+                                                        day: "numeric",
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                    }
+                                                )}
+                                            </div>
+                                        </header>
+                                        <main css={S.postMain}>
+                                            {post.title}
+                                        </main>
+                                        <footer css={S.postFooter}>
+                                            <div css={S.informationTextName}>
                                                 <label css={S.informationLabel}>지역:</label>
-                                                <div css={S.informationTextName}>{post.regionName}</div>
+                                                {post.regionName}
+                                            </div>
+                                            <div css={[
+                                                    S.informationDate,
+                                                    new Date(post.deadLine) > new Date() &&
+                                                    new Date(post.deadLine) <= getNextServerTime() &&
+                                                    S.finalDeadLine
+                                                ]}
+                                            >
                                                 <label css={S.informationLabel}>날짜:</label>
-                                                <div css={[
-                                                        S.informationDate,
-                                                        new Date(post.deadLine) > new Date() &&
-                                                        new Date(post.deadLine) <= getNextServerTime() &&
-                                                        S.finalDeadLine
-                                                    ]}
-                                                >{new Date(post.deadLine).toLocaleString(
+                                                {new Date(post.deadLine).toLocaleString(
                                                     "ko-KR",
                                                     {
                                                         month: "long",
@@ -537,19 +530,21 @@ const Main = () => {
                                                         minute: "2-digit",
                                                     }
                                                 )}   
-                                                </div>
+                                            </div>
+                                            <div css={S.informationTextName}>
                                                 <label css={S.informationLabel}>성별:</label>
-                                                <div css={S.informationTextName}>{post.genderName}</div> 
+                                                {post.genderName}
+                                            </div> 
+                                            <div css={S.informationCount}>
                                                 <label css={S.informationLabel}>인원:</label>
-                                                <div css={S.informationCount}>{post.recruitsCount}</div>
-                                            </footer>
-                                        </div>
+                                                {post.recruitsCount}
+                                            </div>
+                                        </footer>
                                     </div>
-                                ))}
-                            </>
-                        )}
-                    </>
-                )}
+                                </div>
+                            ))}
+                        </>
+                    )}
             </div>
             <div css={S.pageButton}>
                 <div css={S.emptyBox}></div>
