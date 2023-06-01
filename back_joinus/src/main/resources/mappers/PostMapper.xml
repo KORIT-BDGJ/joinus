@@ -409,6 +409,17 @@
 	        ut.user_id = #{userId}	
 	</select>
 	
+	<select id="getExpiredAttendPosts" parameterType="java.time.LocalDateTime" resultType="com.portfolio.joinus.joinus.dto.post.AttendListRespDto">
+    SELECT
+        patl.post_id AS postId,
+        patl.user_id AS userId
+    FROM
+        post_attend_list_tb patl
+        INNER JOIN post_tb pt ON patl.post_id = pt.post_id
+    WHERE
+        pt.deadline &lt;= #{currentTime}
+</select>
+	
 	<select id="getMyfinishPostListByUserId" parameterType="Integer" resultMap="FinishListMap">
 	    SELECT
 	        hflt.post_id AS postId,
@@ -521,6 +532,21 @@
 		WHERE
 			post_id = #{postId}
 			AND user_id = #{userId}
+	</delete>
+	
+	<insert id="createPostFinish" parameterType="com.portfolio.joinus.joinus.dto.post.FinishListRespDto">
+	  INSERT INTO post_finish_list_tb (post_id, user_id)
+	  VALUES (#{postId}, #{userId})
+	</insert>
+	
+	<delete id="deleteExpiredFinishPosts" parameterType="java.time.LocalDateTime">
+	  DELETE FROM post_finish_list_tb
+	  WHERE post_id IN (
+	    SELECT pfl.post_id
+	    FROM post_finish_list_tb pfl
+	    INNER JOIN post_tb pt ON pfl.post_id = pt.post_id
+	    WHERE pt.deadline &lt;= #{currentTime}
+	  )
 	</delete>
 	
 

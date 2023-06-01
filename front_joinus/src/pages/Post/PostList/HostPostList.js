@@ -266,9 +266,9 @@ const cancelAttendPost = useMutation(async (postId) => {
         </div>
         )}
       </div>
-      {/* <div>
+      <div>
         <h1 css={title}>참여 완료한 글</h1>
-        <div css={list}>
+        {/* <div css={list}>
           {myAttendFinishPosts.map((post) => (
             <div key={post.postId} css={listItem}>
               <div css={postInfo}>
@@ -336,9 +336,9 @@ const cancelAttendPost = useMutation(async (postId) => {
               )}
             </div>
           ))}
+        </div> */}
         </div>
-        </div>
-      {cancelModalOpen && (
+      {/* {cancelModalOpen && (
         <AlertModal
           isModalOpen={cancelModalOpen}
           confirmRemove={cancelPost}

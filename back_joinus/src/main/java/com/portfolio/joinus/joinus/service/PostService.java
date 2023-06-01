@@ -1,5 +1,6 @@
 package com.portfolio.joinus.joinus.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 import com.portfolio.joinus.joinus.dto.post.CommentRespDto;
 import com.portfolio.joinus.joinus.dto.post.FinishListRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
-import com.portfolio.joinus.joinus.dto.post.HostPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
@@ -201,6 +201,24 @@ public class PostService {
     	return list;
     }
     
+    public void moveExpiredAttendPostsToFinishTable() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        // deadline이 지난 post_attend_list_tb의 행을 가져옴
+        List<AttendListRespDto> expiredAttendPosts = postRepository.getExpiredAttendPosts(currentTime);
+
+        for (AttendListRespDto postAttend : expiredAttendPosts) {
+            // 해당 post_attend_list_tb의 post_id와 post_tb의 post_id가 같은 행을 post_finish_list_tb로 이동
+            FinishListRespDto postFinish = FinishListRespDto.builder()
+                    .postId(postAttend.getPostId())
+                    .userId(postAttend.getUserId())
+                    .build();
+
+            postRepository.createPostFinish(postFinish);
+        }
+
+        // post_attend_list_tb에서 이동된 행들을 삭제
+        postRepository.deleteExpiredAttendPosts(currentTime);
+    }
 
 
     
