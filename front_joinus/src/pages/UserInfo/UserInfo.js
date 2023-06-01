@@ -311,13 +311,13 @@ const UserInfo = () => {
     return response.data;
   });
 
-
+  
   useEffect(() => {
     if (sportsLikes.data) {
-      const sportsArray = sportsLikes.data.map(sport => sport.sportsId);
+      const sportsArray = sportsLikes.data.flatMap(sport => sport.sportsIds);
       setSelectedSports(sportsArray);
     }
-  }, [sportsLikes.data]);  
+  }, [sportsLikes.data]);   
 
 
 
@@ -346,11 +346,6 @@ const UserInfo = () => {
     }
   });
   
-  
-  
-  if(principal.isLoading ) {
-    return <></>; // Or a loading spinner
-  }
 
 
   const closeAddressChangeModal = () => {
@@ -415,7 +410,6 @@ const UserInfo = () => {
  
   const handleMinusClick = (e, index) => {
     e.stopPropagation();
-  
     setSelectedSports(prev => {
       const newSports = [...prev];
       newSports.splice(index, 1);
@@ -435,7 +429,6 @@ const UserInfo = () => {
   const handleModifyClick = async () => {
     // Get the selected sports
     const selectedSportsToSend = selectedSports.filter(sport => sport != null);
-
     const options = {
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
@@ -446,11 +439,11 @@ const UserInfo = () => {
         const response = await axios.put("http://localhost:8080/account/change/sportslikes", 
             {
                 userId: principal.data.userId,
-                sports: selectedSportsToSend
+                sportsIds: selectedSportsToSend
             }, 
             options
         );
-
+          
         if (response.status === 200 ) {
             alert("스포츠가 성공적으로 등록되었습니다.");
             // navigate('/main');
@@ -477,7 +470,7 @@ const UserInfo = () => {
     setAddress(newAddress);
   };
 
-  if(sportsLikes.isLoading){
+  if(principal.isLoading || sportsLikes.isLoading){
     return <></>;
   }
   
@@ -508,7 +501,7 @@ const UserInfo = () => {
   };
   
  const convertedSports = selectedSports.map(sport => parseInt(sport));
- console.log(convertedSports)
+ //console.log(convertedSports)
 
   return (
     <div css={container}>

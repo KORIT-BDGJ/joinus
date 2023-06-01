@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -182,13 +183,12 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	        if(sportsLikes != null) {
 	            SportsLikesChangeReqDto sportsLikesChangeReqDto = SportsLikesChangeReqDto.builder()
 	                .userId(principalUser.getUserId())
-	                .sportsId(sportsLikes.getSportsId())
+	                .sportsIds(Arrays.asList(sportsLikes.getSportsId()))  // Wrap the sportsId in a new List
 	                .build();
 	            sportsLikesDtoList.add(sportsLikesChangeReqDto);
 	        }
 	    }
 	    
-	    //System.out.println(sportsLikesDtoList);
 	    return sportsLikesDtoList;
 	}
 
@@ -377,14 +377,15 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	    public boolean changeSportsLikes(SportsLikesChangeReqDto sportsLikesChangeReqDto) {
 	        userRepository.deleteSportsLikesByUserId(sportsLikesChangeReqDto.getUserId());
 
-	        SportsLikes sportsLikes = SportsLikes.builder()
-	            .userId(sportsLikesChangeReqDto.getUserId())
-	            .sportsId(sportsLikesChangeReqDto.getSportsId())
-	            .build();
-	        
-	        System.out.println(sportsLikes);
-	        userRepository.updateSportsLikes(sportsLikes);
+	        for(Integer sportsId : sportsLikesChangeReqDto.getSportsIds()){
+	            SportsLikes sportsLikes = SportsLikes.builder()
+	                .userId(sportsLikesChangeReqDto.getUserId())
+	                .sportsId(sportsId)  // Here we directly assign the sportsId
+	                .build();
 
+	            System.out.println(sportsLikes);
+	            userRepository.updateSportsLikes(sportsLikes);
+	        }
 	        return true;
 	    }
 	

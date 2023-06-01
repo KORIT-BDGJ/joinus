@@ -200,7 +200,7 @@
 	        user_id = #{userId}
 	</select>
 	
-	<insert id="updateSportsLikes" parameterType="com.portfolio.joinus.joinus.entity.SportsLikes">
+	<insert id="updateSportsLikes" parameterType="hashmap">
 	  insert into sports_likes_tb 
 	  values (0, #{userId}, #{sportsId})
 	</insert>

@@ -84,7 +84,9 @@ public class AccountController {
 	}
 	
 	@PutMapping("/change/sportslikes")
-	public ResponseEntity<?> changeSportsLikes( @RequestBody SportsLikesChangeReqDto sportsLikesChangeReqDto ){
+	public ResponseEntity<?> changeSportsLikes(@RequestBody SportsLikesChangeReqDto sportsLikesChangeReqDto ){
+		
+		System.out.println(sportsLikesChangeReqDto);
 		
 		return ResponseEntity.ok().body(authenticationService.changeSportsLikes(sportsLikesChangeReqDto));
 	}
