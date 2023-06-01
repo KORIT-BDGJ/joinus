@@ -11,22 +11,29 @@ import { GrGamepad } from 'react-icons/gr';
 
 const sportsIcon = (isSelected) => css`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
     cursor: pointer;
     margin: 10px;
     padding: 10px;
-    background-color: ${isSelected ? "#5EC75E" : "white"};
+    background-color: ${isSelected ? "rgba(0, 255, 0, 0.2);" : "white"};
 
     &:hover {
         background-color: ${isSelected ? "#5EC75E" : "#63cc63"};
     }
 
     &:active {
-        background-color: #5EC75E;
+        background-color: rgba(0, 255, 0, 0.2);
     
     }
+`;
+
+const iconTitle = css`
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
 `;
 
 const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon }) => {
@@ -66,9 +73,9 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon }) => {
                     key={icon.id}
                     css={sportsIcon(selectedIcon === icon.id)}
                     onClick={() => handleIconClick(icon)}
-                    title={icon.title}
                 >
                     {icon.icon}
+                    <span css={iconTitle}>{icon.title}</span>
                 </div>
             ))}
         </>
