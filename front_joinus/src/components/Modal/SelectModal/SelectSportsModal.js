@@ -66,16 +66,6 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
         onSelect(icon);
     }
 
-    const sportsIconActive = (sport) => {
-        return selectedSport === sport.id
-        ? css`
-            ${sportsIcon};
-            background-color: #5EC75E;
-            `
-        : sportsIcon;
-    };
-
-
     return (
         <div css={modalMainContainer(isOpen)}>
             <header css={modalMainHeader}>

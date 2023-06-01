@@ -353,7 +353,7 @@ const Main = () => {
     const [ searchInputValue, setSearchInputValue ] = useState("");
 
     const [ icons, setIcons ] = useState(() => (
-        <FcSportsMode 
+        <FcSportsMode
             css={sportIcon}
             title="운동 선택"
         />

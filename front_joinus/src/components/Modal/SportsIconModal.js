@@ -42,6 +42,7 @@ const sportsIconsContainer = css`
   justify-items: center;
   align-items: center;
   max-height: 280px;
+  overflow-x: hidden;
   overflow-y: auto;
 `;
 const sportsIcon = css`

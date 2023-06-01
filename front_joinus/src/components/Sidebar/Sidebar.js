@@ -65,7 +65,10 @@ const imgIcon = css`
 const userInfo = css`
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    word-break: break-all;
     margin: 5px;
+    width: 150px;
     font-size: 16px;
     font-weight: 600;
     color: #2ecc71;
@@ -158,19 +161,19 @@ const Sidebar = () => {
     return (
         <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle}>
             <header css={header}>
-            <div css={userIcon}>
-            {principal.data.image ? (
-                <img
-                css={imgIcon}
-                src={"http://localhost:8080/image/profile/" + principal.data.image}
-                alt={principal.data.nickName}
-                />
-            ) : (
-                <span>{principal.data.nickName}</span>
-            )}
-            </div>
+                <div css={userIcon}>
+                {principal.data.image ? (
+                    <img
+                    css={imgIcon}
+                    src={"http://localhost:8080/image/profile/" + principal.data.image}
+                    alt={principal.data.nickName}
+                    />
+                ) : (
+                    <span>{principal.data.nickName.split('@')[0]}</span>
+                )}
+                </div>
                 <div css={userInfo}>
-                    {principal.data.nickName}
+                    {principal.data.nickName.split('@')[0]}
                 </div>
                 <div css={closeButton} onClick={sidebarCloseClickHandle}><GrFormClose /></div>
             </header>
