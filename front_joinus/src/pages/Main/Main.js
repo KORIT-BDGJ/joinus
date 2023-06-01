@@ -61,8 +61,9 @@ const expandedButtonsContainer = (expandedIsOpen) => css`
     padding: 0px 20px;
     width: 100%;
     height: ${expandedIsOpen ? "100px" : "0px"};
+    ${expandedIsOpen ? "opacity: 1;" : "overflow: hidden;opacity: 0;"}
+    
     transition: all 0.5s ease;
-    overflow: hidden;
 `;
 
 const expandedOptions = css`
@@ -368,6 +369,25 @@ const Main = () => {
         return response.data;
     });
 
+    // const sportsLikes = useQuery(["sportsLikes"], async () => {
+    //     const options = {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //       },
+    //     };
+    
+    //     const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
+    //     return response.data;
+    // });
+    
+      
+    //   useEffect(() => {
+    //     if (sportsLikes.data) {
+    //       const sportsArray = sportsLikes.data.flatMap(sport => sport.sportsIds);
+    //       setSelectedSports(sportsArray);
+    //     }
+    //   }, [sportsLikes.data]);   
+
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
         {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
@@ -659,7 +679,7 @@ const Main = () => {
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
-                <div css={inputBox} isExpanded={isExpanded}>
+                <div css={inputBox}>
                     {getSearchs.isLoading ? ""
                         : <Select
                             css={selectSearch}
