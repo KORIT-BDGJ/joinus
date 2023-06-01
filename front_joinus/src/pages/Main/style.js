@@ -243,7 +243,7 @@ export const informationTextName = css`
 export const informationDate = css`
     text-align: center;
     border: none;
-    width: 180px;
+    width: 200px;
     background-color: beige;
     cursor: pointer;
 `;

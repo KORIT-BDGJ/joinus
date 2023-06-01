@@ -23,7 +23,7 @@ const Main = () => {
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
-        sprotsId: 0,
+        sportsId: 0,
         searchType: 1,
         searchValue: "",
         sort: 0
@@ -170,16 +170,16 @@ const Main = () => {
 
     const handleIconSelect = (IconComponent) => {
         setSelectedIcon(IconComponent.id);
-        setSearchParams((prevState) => ({
-            ...prevState,
-            sportsId: IconComponent.id,
-            page: 1
-        }));
     }
 
     const selectedIconClickHandle = () => {
         const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
         setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        setSearchParams((prevState) => ({
+            ...prevState,
+            sportsId: selectedIcon,
+            page: 1
+        }));
         setRefresh(true);
     }
 
