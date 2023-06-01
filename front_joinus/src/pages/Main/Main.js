@@ -82,8 +82,17 @@ const expandedButtons = css`
     width: 25%;
     height: 100%;
 `;
+const buttonContents = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+`;
 
 const resetButton = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     border-radius: 50%;
     width: 60px;
@@ -94,8 +103,6 @@ const resetButton = css`
 `;
 
 const buttonTitles = css`
-    position: absolute;
-    top: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,10 +111,11 @@ const buttonTitles = css`
 
 const buttonsBox = css`
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     width: 25%;
-    height: 100%;
+    height: 70%;
 `;
 
 const likeSports = css`
@@ -145,7 +153,7 @@ const selectSearch = css`
 const searchInput = css`
     border: 1px solid #dbdbdb;
     border-radius: 7px;
-    padding: 0;
+    padding: 10px;
     width: 60%;
     height: 100%;
 `;
@@ -297,7 +305,7 @@ const pageButtons = css`
 `;
 
 const emptyBox = css`
-    width: 100px;
+    width: 19%;
     height: 100%;
 `;
 
@@ -323,9 +331,15 @@ const nowPageButton = css`
 `;
 
 const createButton = css`
-    border-radius: 6px;
-    width: 100px;
-    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #dbdbdb;
+    border-radius: 7px;
+    width: 19%;
+    height: 100%;
+    background-color: white;
+    cursor: pointer;
 `;
 
 const Main = () => {
@@ -368,25 +382,6 @@ const Main = () => {
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     });
-
-    // const sportsLikes = useQuery(["sportsLikes"], async () => {
-    //     const options = {
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    //       },
-    //     };
-    
-    //     const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
-    //     return response.data;
-    // });
-    
-      
-    //   useEffect(() => {
-    //     if (sportsLikes.data) {
-    //       const sportsArray = sportsLikes.data.flatMap(sport => sport.sportsIds);
-    //       setSelectedSports(sportsArray);
-    //     }
-    //   }, [sportsLikes.data]);   
 
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
@@ -701,15 +696,11 @@ const Main = () => {
                     <div css={expandedButtonsContainer(isExpanded)}>
                         <div css={expandedOptions}>
                             <div css={buttonsBox}>
-                                <label css={buttonTitles}>선호 운동</label>
-                                <button css={likeSports}>
-                                    1
-                                </button>
-                            </div>
-                            <div css={buttonsBox}>
                                 <label css={buttonTitles}>운동 선택</label>
-                                <div onClick={() => setSportsModalIsOpen(true)}>
-                                    {icons}
+                                <div css={buttonContents}>
+                                    <div onClick={() => setSportsModalIsOpen(true)}>
+                                        {icons}
+                                    </div>
                                 </div>
                             </div>
                             {getSports.isLoading ? ""
@@ -722,20 +713,24 @@ const Main = () => {
                             }
                             <div css={buttonsBox}>
                                 <label css={buttonTitles}>지역 선택</label>
-                                {getRegions.isLoading ? ""
-                                    : <Select
-                                        css={selectCountry}
-                                        value={selectedOptions.region}
-                                        onChange={handleOptionChange('regionId')}
-                                        options={[{"value": 0, "label": "전체"}, ...getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
-                                        placeholder="지역"
-                                    />
-                                }
+                                <div css={buttonContents}>
+                                    {getRegions.isLoading ? ""
+                                        : <Select
+                                            css={selectCountry}
+                                            value={selectedOptions.region}
+                                            onChange={handleOptionChange('regionId')}
+                                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
+                                            placeholder="지역"
+                                        />
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <div css={expandedButtons}>
-                            <button css={resetButton} 
-                    onClick={resetSearchClickHandle}><GrPowerReset /></button>
+                            <div css={buttonsBox}>
+                                <label css={buttonTitles}>초기화</label>
+                                <div css={buttonContents}>
+                                    <button css={resetButton} onClick={resetSearchClickHandle}><GrPowerReset /></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
