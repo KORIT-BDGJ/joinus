@@ -11,22 +11,20 @@ import { GrGamepad } from 'react-icons/gr';
 
 const sportsIcon = (isSelected, isLiked) => css`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
     cursor: pointer;
     margin: 10px;
     padding: 10px;
-    background-color: ${isSelected ? "#5EC75E" : "white"};
-    border: ${isLiked ? "2px solid #00B894" : "none"};
-
+    background-color: ${isSelected ? "rgba(0, 255, 0, 0.2);" : "white"};
 
     &:hover {
         background-color: ${isSelected ? "#5EC75E" : "#63cc63"};
     }
 
     &:active {
-        background-color: #5EC75E;
+        background-color: rgba(0, 255, 0, 0.2);
     
     }
 `;
@@ -40,7 +38,15 @@ const starIcon = css`
     color: #FFD700;  // adjust color as needed
 `;
 
-const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon, sportsLikes, userId }) => {
+
+const iconTitle = css`
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+`;
+
+const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon,sportsLikes,userId }) => {
 
     const sportsIcons = [
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
@@ -87,11 +93,12 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon, sportsLikes, u
                     key={icon.id}
                     css={sportsIcon(isSelected, isLiked)}
                     onClick={() => handleIconClick(icon)}
-                    title={icon.title}
+
                     style={{ position: 'relative' }}  // add this line
                     >
                         {icon.icon}
                         {isLiked && <div css={starIcon}>⭐</div>}
+                        <span css={iconTitle}>{icon.title}</span>
                     </div>
                 )
             })}
