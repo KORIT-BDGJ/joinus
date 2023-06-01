@@ -103,7 +103,7 @@ const ApplyPost = ({ postId }) => {
         } 
     });
 
-    if(getApplicantList.isLoading) {
+    if(getApplicantList.isLoading || getAttendList.isLoading) {
         return <div>불러오는 중...</div>
     }
 
