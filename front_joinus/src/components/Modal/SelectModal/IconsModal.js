@@ -9,7 +9,7 @@ import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing }
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 
-const sportsIcon = (isSelected) => css`
+const sportsIcon = (isSelected, isLiked) => css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,6 +18,8 @@ const sportsIcon = (isSelected) => css`
     margin: 10px;
     padding: 10px;
     background-color: ${isSelected ? "#5EC75E" : "white"};
+    border: ${isLiked ? "2px solid #00B894" : "none"};
+
 
     &:hover {
         background-color: ${isSelected ? "#5EC75E" : "#63cc63"};
@@ -29,7 +31,16 @@ const sportsIcon = (isSelected) => css`
     }
 `;
 
-const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon }) => {
+
+const starIcon = css`
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    font-size: 15px;  // adjust size as needed
+    color: #FFD700;  // adjust color as needed
+`;
+
+const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon, sportsLikes, userId }) => {
 
     const sportsIcons = [
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
@@ -54,6 +65,13 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon }) => {
         {id: 20, title: "게임", icon: <GrGamepad size={32} /> }
     ]
 
+    const isIconSelected = (iconId) => {
+        return sportsLikes.some(item => item.userId === userId && item.sportsIds.includes(iconId));
+    }
+
+
+
+
     const handleIconClick = (icon) => {
         setSelectedIcon(icon.id);
         onIconClick(icon);
@@ -61,16 +79,22 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon }) => {
 
     return (
         <>
-            {sportsIcons.map((icon) => (
-                <div
+            {sportsIcons.map((icon) => {
+                const isSelected = selectedIcon === icon.id;
+                const isLiked = isIconSelected(icon.id);
+                return (
+                    <div
                     key={icon.id}
-                    css={sportsIcon(selectedIcon === icon.id)}
+                    css={sportsIcon(isSelected, isLiked)}
                     onClick={() => handleIconClick(icon)}
                     title={icon.title}
-                >
-                    {icon.icon}
-                </div>
-            ))}
+                    style={{ position: 'relative' }}  // add this line
+                    >
+                        {icon.icon}
+                        {isLiked && <div css={starIcon}>⭐</div>}
+                    </div>
+                )
+            })}
         </>
     );
 };

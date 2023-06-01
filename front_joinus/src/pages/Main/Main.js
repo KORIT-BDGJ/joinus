@@ -383,6 +383,18 @@ const Main = () => {
         return response.data;
     });
 
+    const sportsLikes = useQuery(["sportsLikes"], async () => {
+        const options = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        };
+    
+        const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
+        return response.data;
+    });
+    console.log(sportsLikes.data);
+
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
         {id: 2, name: "러닝", icon: <FaRunning size={32} /> },
@@ -459,10 +471,7 @@ const Main = () => {
         }
     });
 
-    if(principal.isLoading) {
-        return <></>;
-    }
-
+    
     const getNextServerTime = () => {
         const currentDate = new Date();
         const nextDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
@@ -709,6 +718,8 @@ const Main = () => {
                                     setIsOpen={setSportsModalIsOpen} 
                                     onSelect={handleIconSelect} 
                                     onClick={selectedIconClickHandle}
+                                    sportsLikes={sportsLikes.data}
+                                    userId={principal.isLoading ? 0  : principal.data.userId}
                                 />
                             }
                             <div css={buttonsBox}>
