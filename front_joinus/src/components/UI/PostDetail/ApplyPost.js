@@ -38,7 +38,7 @@ const ApplyPost = ({ postId }) => {
         }
 
         const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
-        return response;
+        return response.data;
     });
 
     const getAttendList= useQuery(["getAttendList"], async () => {
@@ -49,7 +49,7 @@ const ApplyPost = ({ postId }) => {
         }
 
         const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
-        return response;
+        return response.data;
     });
 
     const applyPost = useMutation(async () => {
@@ -115,8 +115,8 @@ const ApplyPost = ({ postId }) => {
     };
 
     const currentUserID = queryClient.getQueryData("principal").userId;
-    const isCurrentUserApplied = getApplicantList.data.data.some(applicantData => applicantData.userId === currentUserID);
-    const isCurrentUserAttended = getAttendList.data.data.some(attendData => attendData.userId === currentUserID);
+    const isCurrentUserApplied = getApplicantList.data.map(applicantData => applicantData.userId === currentUserID);
+    const isCurrentUserAttended = getAttendList.data.map(attendData => attendData.userId === currentUserID);
     
     
     const closeStateLevelChangeModal = () => {

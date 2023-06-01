@@ -90,10 +90,10 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
         }
 
         const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
-        return response;
+        return response.data;
     }, {
         onSuccess: (response) => {
-            updateTotalAttendCount(response.data.length);
+            updateTotalAttendCount(response.length);
         }
     });
 
@@ -124,7 +124,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
     if(!getAttendList.isLoading)
     return (
         <div css={tableContainer}>
-            {getAttendList.data.data.map(attendData => {
+            {getAttendList.data.map(attendData => {
                 return (
                     <div key={attendData.userId} >
 

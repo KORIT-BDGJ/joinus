@@ -95,10 +95,10 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
         }
 
         const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
-        return response;
+        return response.data;
     }, {
         onSuccess: (response) => {
-            updateTotalApplicantCount(response.data.length);
+            updateTotalApplicantCount(response.length);
         }
     });
 
@@ -153,7 +153,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
     if(!getApplicantList.isLoading)
     return (
         <div css={tableContainer}>
-            {getApplicantList.data.data.map(applicantData => {
+            {getApplicantList.data.map(applicantData => {
                 return (
                     <div key={applicantData.userId}>
                         <div css={member}>
