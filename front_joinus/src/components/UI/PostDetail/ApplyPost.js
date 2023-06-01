@@ -115,8 +115,8 @@ const ApplyPost = ({ postId }) => {
     };
 
     const currentUserID = queryClient.getQueryData("principal").userId;
-    const isCurrentUserApplied = getApplicantList.data.map(applicantData => applicantData.userId === currentUserID);
-    const isCurrentUserAttended = getAttendList.data.map(attendData => attendData.userId === currentUserID);
+    const isCurrentUserApplied = getApplicantList.data.some(applicantData => applicantData.userId === currentUserID);
+    const isCurrentUserAttended = getAttendList.data.some(attendData => attendData.userId === currentUserID);
     
     
     const closeStateLevelChangeModal = () => {
