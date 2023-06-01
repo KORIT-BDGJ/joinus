@@ -123,23 +123,16 @@ public class PostService {
         map.put("regionId", searchPostReqDto.getRegionId());
         map.put("searchType", searchPostReqDto.getSearchType());
         map.put("searchValue", searchPostReqDto.getSearchValue());
+        map.put("sort", searchPostReqDto.getSort());
 
         postRepository.getPostList(map).forEach(post -> {
             list.add(post.toDto());
         });
 
         int totalCount = postRepository.getTotalCount(map);
-        
-//        int totalPages = (int) Math.ceil((double) totalCount / 10);
-//        if(totalPages == 0) {
-//        	totalPages = 1;
-//        } else if(totalPages > 1 && totalPages * 10 > totalCount) {
-//        	totalPages = (int) Math.ceil((double) totalCount / 10);
-//        }
 
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("totalCount", totalCount);
-//        responseMap.put("totalPages", totalPages);
         responseMap.put("postList", list);
 
         return responseMap;

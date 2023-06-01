@@ -18,34 +18,102 @@ import { GrGamepad } from 'react-icons/gr';
 import { GrPowerReset } from 'react-icons/gr';
 
 const mainContainer = css`
+    display: flex;
+    flex-direction: column;
     padding: 10px;
+    height: 100%;
 `;
+
+// const header = css`
+//     position: relative;
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     height: 100px;
+// `;
 
 const header = css`
-    position: relative;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100px;
 `;
 
-const resetButton = css`
-    position: absolute;
-    top: 0;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+const categoryButton = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #dbdbdb;
+    border-radius: 7px;
+    width: 19%;
+    height: 100%;
     background-color: white;
     cursor: pointer;
 `;
 
-const selectIconbox = css`
+const expandedButtonsContainer = (expandedIsOpen) => css`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 150px;
+    margin: 5px 0px;
+    border: ${expandedIsOpen ? "1px solid #dbdbdb" : "none"};
+    border-radius: 7px;
+    padding: 0px 20px;
+    width: 100%;
+    height: ${expandedIsOpen ? "100px" : "0px"};
+    ${expandedIsOpen ? "opacity: 1;" : "overflow: hidden;opacity: 0;"}
+    
+    transition: all 0.5s ease;
+`;
+
+const expandedOptions = css`
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
     height: 100%;
+`;
+
+const expandedButtons = css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+`;
+
+const resetButton = css`
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: x-large;
+    background-color: white;
+    cursor: pointer;
+`;
+
+const buttonTitles = css`
+    position: absolute;
+    top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+`;
+
+const buttonsBox = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+`;
+
+const likeSports = css`
+    border: 1px solid #999;
+    width: 20px;
+    text-align: center;
 `;
 
 const sportIcon = css`
@@ -55,29 +123,55 @@ const sportIcon = css`
 `;
 
 const selectCountry = css`
-    z-index: 99;
+    z-index: 1;
     width: 100px;
     height: 35px;
 `;
 
-const selectSearch = css`
-    width: 30%;
-    height: 35px;
-    font-size: 14px;
-`;
-
 const inputBox = css`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 400px;
-    height: 100%;
+    width: 100%;
+    height: 40px;
+`;
+
+const selectSearch = css`
+    width: 19%;
+    border-radius: 7px;
+    font-size: 14px;
 `;
 
 const searchInput = css`
     border: 1px solid #dbdbdb;
     border-radius: 7px;
-    height: 38px;
+    padding: 0;
+    width: 60%;
+    height: 100%;
+`;
+
+const listOrder = css`
+    height: 20px;
+    margin-bottom: 5px;
+`;
+
+const listNewEst = css`
+    border: none;
+    height: 20px;
+    background-color: white;
+    font-weight: 400;
+    cursor: pointer;
+`;
+
+const listDeadLine = css`
+    border: none;
+    height: 20px;
+    background-color: white;
+    cursor: pointer;
+`;
+
+const selectedSortButton = css`
+    font-weight: 600;
 `;
 
 const mainListBox = css`
@@ -85,7 +179,7 @@ const mainListBox = css`
     flex-direction: column;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
-    height: 700px;
+    flex-grow: 1;
     overflow-y: auto;
 `;
 
@@ -188,11 +282,23 @@ const informationCount = css`
 `;
 
 const pageButton = css`
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    height: 80px;
+`;
+
+const pageButtons = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    height: 100%;
+`;
+
+const emptyBox = css`
+    width: 100px;
+    height: 100%;
 `;
 
 const goToPageButton = css`
@@ -217,25 +323,25 @@ const nowPageButton = css`
 `;
 
 const createButton = css`
-    position: absolute;
     border-radius: 6px;
-    bottom: 20px;
-    right: 20px;
     width: 100px;
     height: 40px;
 `;
 
 const Main = () => {
+
     const navigate = useNavigate();
     const [ searchParams, setSearchParams ] = useState({
         page: 1, 
         regionId: 0,
         sprotsId: 0,
         searchType: 1,
-        searchValue: ""
+        searchValue: "",
+        sort: 0
     });
     const [ refresh, setRefresh ] = useState(true);
     const [ selectedIcon, setSelectedIcon ] = useState(null);
+    const [ isExpanded, setIsExpanded ] = useState(false);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedOptions, setSelectedOptions ] = useState(
         {
@@ -246,7 +352,12 @@ const Main = () => {
 
     const [ searchInputValue, setSearchInputValue ] = useState("");
 
-    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+    const [ icons, setIcons ] = useState(() => (
+        <FcSportsMode 
+            css={sportIcon}
+            title="운동 선택"
+        />
+    ));
 
     const principal = useQuery(["principal"], async () => {
         const option = {
@@ -256,18 +367,26 @@ const Main = () => {
         };
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
-        },
-        {
-        onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
-        }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
     });
+
+    // const sportsLikes = useQuery(["sportsLikes"], async () => {
+    //     const options = {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //       },
+    //     };
+    
+    //     const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
+    //     return response.data;
+    // });
+    
+      
+    //   useEffect(() => {
+    //     if (sportsLikes.data) {
+    //       const sportsArray = sportsLikes.data.flatMap(sport => sport.sportsIds);
+    //       setSelectedSports(sportsArray);
+    //     }
+    //   }, [sportsLikes.data]);   
 
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
@@ -301,17 +420,6 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
@@ -325,17 +433,6 @@ const Main = () => {
         }
         const response = await axios.get("http://localhost:8080/option/regions", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSearchs = useQuery(["getSearchs"], async () => {
@@ -346,17 +443,6 @@ const Main = () => {
         }
         const response = await axios.get("http://localhost:8080/option/searchs", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getPostList = useQuery(["getPostList"], async () => {
@@ -371,17 +457,11 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/post/list", option);
         return response.data;
-    }, 
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
+    },{
+        enabled: refresh,
+        onSuccess: () => {
+            setRefresh(false);
         }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     if(principal.isLoading) {
@@ -392,17 +472,20 @@ const Main = () => {
         const currentDate = new Date();
         const nextDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
         let nextServerTime;
-      
+
         if (currentDate.getHours() < 12) {
           // 현재 시간이 오전인 경우
-          nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
+            nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
         } else {
           // 현재 시간이 오후인 경우
-          nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
+            nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
         }
-      
         return nextServerTime;
-      }
+    }
+
+    const expandHeader = () => {
+        setIsExpanded(!isExpanded);
+    };
 
     const handleIconSelect = (IconComponent) => {
         setSelectedIcon(IconComponent.id);
@@ -441,6 +524,7 @@ const Main = () => {
             [optionName]: option.value,
             page: 1
         });
+
         setRefresh(true);
     }
 
@@ -470,6 +554,15 @@ const Main = () => {
             searchType: 1,
             searchValue: ""
         });
+        setRefresh(true);
+    }
+
+    const handleSortChange = (sortType) => {
+        if(sortType === "newest") {
+            setSearchParams({...searchParams, sort: 0});
+        }else {
+            setSearchParams({...searchParams, sort: 1});
+        }
         setRefresh(true);
     }
 
@@ -586,28 +679,6 @@ const Main = () => {
         <div css={mainContainer}>
             <Sidebar></Sidebar>
             <header css={header}>
-                <button css={resetButton} onClick={resetSearchClickHandle}><GrPowerReset /></button>
-                <div css={selectIconbox} onClick={(e) => setSportsModalIsOpen(true)}>
-                    {icons}
-                </div>
-                {getSports.isLoading ? ""
-                    : <SelectSportsModal 
-                        isOpen={sportsModalIsOpen} 
-                        setIsOpen={setSportsModalIsOpen} 
-                        onSelect={handleIconSelect} 
-                        onClick={selectedIconClickHandle}
-                    />
-                }
-                <div css={selectIconbox}>
-                    {getRegions.isLoading ? ""
-                        : <Select
-                            css={selectCountry}
-                            value={selectedOptions.region}
-                            onChange={handleOptionChange('regionId')}
-                            options={[{"value": 0, "label": "전체"}, ...getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
-                            placeholder="지역"
-                        />}
-                </div>
                 <div css={inputBox}>
                     {getSearchs.isLoading ? ""
                         : <Select
@@ -622,25 +693,82 @@ const Main = () => {
                         type="text" 
                         placeholder="검색"
                         value={searchInputValue}
-                        onChange={searchValueOnChangeHandle}/>
+                        onChange={searchValueOnChangeHandle}
+                    />
+                    <button css={categoryButton} onClick={expandHeader}>상세검색</button>
                 </div>
+                {(
+                    <div css={expandedButtonsContainer(isExpanded)}>
+                        <div css={expandedOptions}>
+                            <div css={buttonsBox}>
+                                <label css={buttonTitles}>선호 운동</label>
+                                <button css={likeSports}>
+                                    1
+                                </button>
+                            </div>
+                            <div css={buttonsBox}>
+                                <label css={buttonTitles}>운동 선택</label>
+                                <div onClick={() => setSportsModalIsOpen(true)}>
+                                    {icons}
+                                </div>
+                            </div>
+                            {getSports.isLoading ? ""
+                                : <SelectSportsModal 
+                                    isOpen={sportsModalIsOpen} 
+                                    setIsOpen={setSportsModalIsOpen} 
+                                    onSelect={handleIconSelect} 
+                                    onClick={selectedIconClickHandle}
+                                />
+                            }
+                            <div css={buttonsBox}>
+                                <label css={buttonTitles}>지역 선택</label>
+                                {getRegions.isLoading ? ""
+                                    : <Select
+                                        css={selectCountry}
+                                        value={selectedOptions.region}
+                                        onChange={handleOptionChange('regionId')}
+                                        options={[{"value": 0, "label": "전체"}, ...getRegions.data.map(region => ({"value": region.regionId, "label": region.regionName}))]}
+                                        placeholder="지역"
+                                    />
+                                }
+                            </div>
+                        </div>
+                        <div css={expandedButtons}>
+                            <button css={resetButton} 
+                    onClick={resetSearchClickHandle}><GrPowerReset /></button>
+                        </div>
+                    </div>
+                )}
             </header>
+            <div css={listOrder}>
+                <button css={[listNewEst, searchParams.sort === 0 && selectedSortButton]} onClick={() => handleSortChange('newest')}>최신순</button>
+                <span>|</span>
+                <button css={[listDeadLine, searchParams.sort === 1 && selectedSortButton]} onClick={() => handleSortChange('deadline')}>마감순</button>
+            </div>
             <div css={mainListBox}>
-            {getPostList.isLoading ? ( 
-                "" 
-            ) : (
+                {getPostList.isLoading ? ( 
+                    "" 
+                ) : (
                 <>
                     {getPostList.data.postList
                     .map((post) =>(
-                        <div css={listContainer} key={post.postId} onClick={() => listClickHandle(post.postId)} >
+                        <div 
+                            css={listContainer} 
+                            key={post.postId} 
+                            onClick={() => listClickHandle(post.postId)} 
+                        >
                             <div css={postIconBox}>
                                 {sportsIcons.filter(sportIcon => sportIcon.id === parseInt(!!post.sportsId ? post.sportsId : 1))[0].icon}
                             </div>
                             <div css={postContent}>
                                 <header css={postListHeader}>
-                                    <label css={informationLabel} >작성자:{post.writerNickName}</label>
+                                    <label css={informationLabel} >
+                                        작성자:{post.writerNickName}
+                                    </label>
                                     <input css={headerNickName} type="text" readOnly/>  
-                                    <label css={headerDateLabel} >작성일:</label>
+                                    <label css={headerDateLabel} >
+                                        작성일:
+                                    </label>
                                     <input 
                                         css={headerDate} 
                                         type="text" 
@@ -686,11 +814,14 @@ const Main = () => {
             )}
             </div>
             <div css={pageButton}>
-                {pagination()}
-            </div>
+                <div css={emptyBox}></div>
+                <div css={pageButtons}>
+                    {pagination()}
+                </div>
                 <button css={createButton} onClick={createClickHandle}>
                     작성하기
                 </button>
+            </div>
             
         </div>
     );

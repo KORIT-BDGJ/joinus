@@ -9,7 +9,7 @@ import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing }
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad } from 'react-icons/gr';
 
-const sportsIcon = () => css`
+const sportsIcon = (isSelected) => css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,18 +17,19 @@ const sportsIcon = () => css`
     cursor: pointer;
     margin: 10px;
     padding: 10px;
+    background-color: ${isSelected ? "#5EC75E" : "white"};
 
     &:hover {
-    background-color: #63cc63;
+        background-color: ${isSelected ? "#5EC75E" : "#63cc63"};
     }
-  
+
     &:active {
-    background-color: #5EC75E;
+        background-color: #5EC75E;
     
     }
 `;
 
-const IconsModal = ({ onIconClick, activeStyle }) => {
+const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon }) => {
 
     const sportsIcons = [
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
@@ -54,8 +55,8 @@ const IconsModal = ({ onIconClick, activeStyle }) => {
     ]
 
     const handleIconClick = (icon) => {
+        setSelectedIcon(icon.id);
         onIconClick(icon);
-
     }
 
     return (
@@ -63,7 +64,7 @@ const IconsModal = ({ onIconClick, activeStyle }) => {
             {sportsIcons.map((icon) => (
                 <div
                     key={icon.id}
-                    css={[sportsIcon, activeStyle(icon.icon)]}
+                    css={sportsIcon(selectedIcon === icon.id)}
                     onClick={() => handleIconClick(icon)}
                     title={icon.title}
                 >

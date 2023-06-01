@@ -39,22 +39,6 @@ const modalMain = css`
     height: 70%;
 `;
 
-const sportsIcon = css`
-    font-size: 50px;
-    margin: 10px;
-    cursor: pointer;
-    padding: 10px;
-
-    &:hover {
-    background-color: #63cc63;
-    }
-  
-    &:active {
-    background-color: #5EC75E;
-    
-    }
-`;
-
 const modalMainButton = css`
     display: flex;
     justify-content: center;
@@ -75,22 +59,12 @@ const cancelButton = css`
 
 
 const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
+    
+    const [selectedIcon, setSelectedIcon] = useState(null);
 
-    const [ selectedSport, setSelectedSport ] = useState(null);
-
-    const handleIconClick = (IconComponent) => {
-        setSelectedSport(IconComponent);
-        onSelect(IconComponent);
+    const handleIconClick = (icon) => {
+        onSelect(icon);
     }
-
-    const sportsIconActive = (sport) => {
-        return selectedSport === sport.id
-          ? css`
-              ${sportsIcon};
-              background-color: #5EC75E;
-            `
-          : sportsIcon;
-      };
 
     return (
         <div css={modalMainContainer(isOpen)}>
@@ -98,14 +72,22 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick }) => {
                 <h1 css={modalMainTitle}>운동 종목 선택</h1>
             </header>
             <main css={modalMain}>
-                <IconsModal onIconClick={handleIconClick} activeStyle={sportsIconActive}  />
+                <IconsModal 
+                    onIconClick={handleIconClick} 
+                    selectedIcon={selectedIcon} 
+                    setSelectedIcon={setSelectedIcon}
+                />
             </main>
             <footer css={modalMainButton}>
                 <button css={okButton} onClick={()=> {
                     setIsOpen(false);
                     onClick();
+                    setSelectedIcon(null);
                 }}>확인</button>
-                <button css={cancelButton} onClick={()=> setIsOpen(false)}>취소</button>
+                <button css={cancelButton} onClick={()=> {
+                    setIsOpen(false);
+                    setSelectedIcon(null);
+                }}>취소</button>
             </footer>
         </div>
     );

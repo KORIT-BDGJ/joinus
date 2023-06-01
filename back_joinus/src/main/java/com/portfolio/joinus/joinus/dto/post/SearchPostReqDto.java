@@ -10,4 +10,5 @@ public class SearchPostReqDto {
     private int regionId;
     private int searchType;
     private String searchValue;
+    private int sort;
 }

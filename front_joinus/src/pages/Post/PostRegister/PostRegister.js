@@ -182,17 +182,6 @@ const PostRegister = () => {
         }
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const [ titlePost, setTitlePost ] = useState("");
@@ -213,7 +202,12 @@ const PostRegister = () => {
         selectedCountry: null
     });
 
-    const [ icons, setIcons ] = useState(() => (<FcSportsMode css={sportIcon}/>));
+    const [ icons, setIcons ] = useState(() => (
+        <FcSportsMode 
+            css={sportIcon}
+            title="운동 선택"
+        />
+    ));
 
     const sportsIcons = [
         {id: 1, name: "헬스", icon: <CgGym size={32} /> },
@@ -268,102 +262,37 @@ const PostRegister = () => {
             return error;
         }
     
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getSports = useQuery(["getSports"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getLevels = useQuery(["getLevels"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/levels", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getStates = useQuery(["getStates"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/states", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/regions", option);
         return response.data;
-    },
-    {
-      onError: (error) => {
-        // 인증에 실패했을 때의 처리를 추가합니다.
-        if (error.response?.status === 401) {
-          
-          console.error('Error fetching principal:', error);
-        }
-      },
-      // 토큰이 존재할 때만 쿼리를 활성화합니다.
-      enabled: !!localStorage.getItem("accessToken"),
     });
 
     const getGenders = useQuery(["getGenders"], async () => {
 
         const response = await axios.get("http://localhost:8080/option/genders", option);
         return response.data;
-    },{
-        onError: (error) => {
-          // 인증에 실패했을 때의 처리를 추가합니다.
-          if (error.response?.status === 401) {
-            
-            console.error('Error fetching principal:', error);
-          }
-        },
-        // 토큰이 존재할 때만 쿼리를 활성화합니다.
-        enabled: !!localStorage.getItem("accessToken"),
-      });
+    });
 
     if(principal.isLoading) {
         return <></>;
