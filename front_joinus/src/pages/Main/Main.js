@@ -8,7 +8,7 @@ import Select from 'react-select';
 import SelectSportsModal from "../../components/Modal/SelectModal/SelectSportsModal";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiArcheryTarget, GiBoxingGlove } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
 import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
@@ -136,7 +136,6 @@ const Main = () => {
         const option = {
             params: {
                 ...searchParams,
-                //sportsId: selectedIcon
             },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -156,22 +155,7 @@ const Main = () => {
     if(principal.isLoading || sportsLikes.isLoading || getSports.isLoading || getRegions.isLoading || getSearchs.isLoading || getPostList.isLoading) {
         return <></>;
     }
-
-    const getNextServerTime = () => {
-        const currentDate = new Date();
-        const nextDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
-        let nextServerTime;
-
-        if (currentDate.getHours() < 12) {
-          // 현재 시간이 오전인 경우
-            nextServerTime = new Date(nextDay.setHours(12, 0, 0, 0));
-        } else {
-          // 현재 시간이 오후인 경우
-            nextServerTime = new Date(nextDay.setHours(23, 30, 0, 0));
-        }
-        return nextServerTime;
-    }
-
+    
     const expandHeader = () => {
         setIsExpanded(!isExpanded);
     };
@@ -189,9 +173,7 @@ const Main = () => {
             page: 1
         }));
         setRefresh(true);
-    }   
-   
-
+    }
 
     const handleOptionChange = (optionName) => (option) => {
         if(optionName === "regionId") {
