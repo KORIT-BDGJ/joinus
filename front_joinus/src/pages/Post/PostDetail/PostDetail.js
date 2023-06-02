@@ -35,14 +35,6 @@ const container = css`
     overflow-y: auto;
 `;
 
-const logoStyle= css`
-    width: 724px; 
-    height: 125px;
-    background-image: url('/images/12_plus.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-`;
 
 const logoTitle = css`
     display: flex;
@@ -54,18 +46,31 @@ const logoTitle = css`
 `;
 
 const detailHeader = css`
+    width: 724px; 
+    height: 125px;
+    background-image: url('/images/12_none.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px;
-    border: 1px solid #dbdbdb;
-    margin-bottom: 50px;
+`;
+
+const buttonContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
 `;
 
 const headerTitle = css`
-    font-size: 25px;
+    font-size: 35px;
     font-weight: 600;
+    
 `;
 
 const attendButton = css`
@@ -740,44 +745,43 @@ const PostDetail = () => {
         <div css={container}>
             <Sidebar></Sidebar>
             <h1 css={logoTitle}>
-              <div css={logoStyle}></div>
+                <div css={detailHeader}>
+                    <div css={headerTitle}>
+                        {isUpdateMode ? (
+                            <>
+                                <input
+                                css={headerTitle}
+                                type="text"
+                                value={updateTitle}
+                                onChange={(e) => setUpdateTitle(e.target.value)}
+                                />
+                            </>
+                            ) : (
+                            <>
+                                <div>{getPost.data.data.title}</div>
+                            </>
+                        )}
+                    </div>
+                </div>
             </h1>
-            <div css={detailHeader}>
-                <div css={headerTitle}>
-                    {isUpdateMode ? (
-                        <>
-                            <input
-                            css={headerTitle}
-                            type="text"
-                            value={updateTitle}
-                            onChange={(e) => setUpdateTitle(e.target.value)}
-                            />
-                        </>
-                        ) : (
-                        <>
-                            <div>{getPost.data.data.title}</div>
-                        </>
-                    )}
-                </div>
-                <div>
-                    {isCurrentUserAuthor ? (
-                        <>
-                            {isUpdateMode ? (
-                                <>
-                                    <button css={attendButton} onClick={saveChangeSubmitHandle}>저장하기</button>
-                                    <button css={attendButton} onClick={cancelClickHandle}>취소하기</button>
-                                </>
-                                ) : (
-                                <>
-                                    <button css={attendButton} onClick={updateMode}>수정하기</button>
-                                    <button css={attendButton} onClick={handleDeleteClick}>삭제하기</button>
-                                </>
-                            )}
-                        </>
-                    ) : (
-                        <ApplyPost postId={postId}/>
-                    )}
-                </div>
+            <div css={buttonContainer}>
+                {isCurrentUserAuthor ? (
+                    <>
+                        {isUpdateMode ? (
+                            <>
+                                <button css={attendButton} onClick={saveChangeSubmitHandle}>저장하기</button>
+                                <button css={attendButton} onClick={cancelClickHandle}>취소하기</button>
+                            </>
+                            ) : (
+                            <>
+                                <button css={attendButton} onClick={updateMode}>수정하기</button>
+                                <button css={attendButton} onClick={handleDeleteClick}>삭제하기</button>
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <ApplyPost postId={postId}/>
+                )}
             </div>
             <div css={detailBody}>
                 <div css={infoBasic}>
