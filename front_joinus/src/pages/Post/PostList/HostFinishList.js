@@ -132,7 +132,7 @@ const HostFinishList = () => {
                     <li key={post.postId} css={listItem}>
                     <div css={postInfo}>
                         <h1 css={postTitle}>
-                        {post.title}
+                            {post.title}
                         </h1>
                     </div>
                     </li>

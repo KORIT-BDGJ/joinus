@@ -12,7 +12,8 @@ import com.portfolio.joinus.joinus.entity.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FinishListRespDto {
+	private Date deadline;
     private int postId;
     private String title;
-    private Date deadline;
+    private int writerId;
 }

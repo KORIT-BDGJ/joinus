@@ -454,9 +454,11 @@
 	    SELECT
 	        pt.post_id,
 	        pt.title,
-	        pt.deadline
+	        pt.deadline,
+	        pt.writer_id
 	    FROM
 	        post_tb pt
+	        LEFT OUTER JOIN post_attend_list_tb pat ON pt.writer_id = pat.user_id
 	    WHERE
 	        pt.deadline &lt; NOW() 
 	</select>
