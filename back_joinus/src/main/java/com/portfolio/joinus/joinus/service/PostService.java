@@ -1,6 +1,5 @@
 package com.portfolio.joinus.joinus.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
-import com.portfolio.joinus.joinus.entity.FinishList;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Post;
@@ -201,49 +199,10 @@ public class PostService {
     	return list;
     }
     
-    public void moveExpiredAttendPostsToFinishTable() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        // deadline이 지난 post_attend_list_tb의 행을 가져옴
-        List<AttendListRespDto> expiredAttendPosts = postRepository.getExpiredAttendPosts(currentTime);
-
-        for (AttendListRespDto postAttend : expiredAttendPosts) {
-            // 해당 post_attend_list_tb의 post_id와 post_tb의 post_id가 같은 행을 post_finish_list_tb로 이동
-            FinishListRespDto postFinish = FinishListRespDto.builder()
-                    .postId(postAttend.getPostId())
-                    .userId(postAttend.getUserId())
-                    .build();
-
-            postRepository.createPostFinish(postFinish);
-        }
-
-        // post_attend_list_tb에서 이동된 행들을 삭제
-        postRepository.deleteExpiredAttendPosts(currentTime);
+    public List<Post> getFinishPostList() {
+        List<Post> finishPosts = postRepository.getFinishPostList();
+        return finishPosts;
     }
-
-
-    
-    public List<FinishListRespDto> getMyfinishPostListByUserId(int userId) {
-        List<FinishList> finishList = postRepository.getMyfinishPostListByUserId(userId);
-        List<FinishListRespDto> finishListRespDtos = new ArrayList<>();
-
-        for (FinishList finish : finishList) {
-            int postId = finish.getPostId();
-            List<Integer> userIdList = postRepository.getUserIdListByPostIdExceptUserId(postId, userId);
-            List<String> userIdStringList = userIdList.stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.toList());
-
-            finish.setUserIdList(userIdStringList);
-
-            FinishListRespDto finishListRespDto = finish.toDto();
-            finishListRespDto.setUserIdList(userIdStringList);
-
-            finishListRespDtos.add(finishListRespDto);
-        }
-
-        return finishListRespDtos;
-    }
-
 
     public int applyPost(int postId, int userId, int stateId, int levelId) {
         Map<String, Object> map = new HashMap<>();

@@ -1,18 +1,15 @@
 package com.portfolio.joinus.joinus.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
-import com.portfolio.joinus.joinus.dto.post.FinishListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.entity.ApplicantList;
 import com.portfolio.joinus.joinus.entity.AttendList;
 import com.portfolio.joinus.joinus.entity.Comment;
-import com.portfolio.joinus.joinus.entity.FinishList;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Post;
@@ -59,20 +56,9 @@ public interface PostRepository {
 
 	// post_attend_list_tb 에서 id로 list 불러오기
 	public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId);
-	// 완료된 게시글 목록을 조회
-	public List<FinishList> getMyfinishPostListByUserId(int userId);
-	// 게시글 ID와 사용자 ID를 제외한 다른 사용자 ID 목록을 조회
-	public List<Integer> getUserIdListByPostIdExceptUserId(int postId, int userId);
 	
-	 // 현재 시간 이전에 종료된 참석 목록을 가져옵니다.
-    public List<AttendListRespDto> getExpiredAttendPosts(LocalDateTime currentTime);
+	public List<Post> getFinishPostList();
 
-    // 완료된 게시글 목록에 게시글을 추가합니다.
-    public void createPostFinish(FinishListRespDto postFinish);
-
-    // 현재 시간 이전에 종료된 참석 목록을 삭제합니다.
-    public void deleteExpiredAttendPosts(LocalDateTime currentTime);
-	
 	public int applyPost(Map<String, Object> map);
 
 	public int cancelApplyPost(Map<String, Object> map);
@@ -91,4 +77,5 @@ public interface PostRepository {
 	public int updatePost(Post post);
 	
 	public int postDelete(int postId);
+
 }

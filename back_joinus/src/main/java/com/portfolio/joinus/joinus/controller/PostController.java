@@ -1,5 +1,6 @@
 package com.portfolio.joinus.joinus.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
+import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -88,9 +90,10 @@ public class PostController {
 //    }
 
     // 참여 완료한 게시글 목록 조회
-    @GetMapping("/post/{userId}/myfinish")
-    public ResponseEntity<?> getMyfinishPostList(@PathVariable int userId) {
-        return ResponseEntity.ok().body(postService.getMyfinishPostListByUserId(userId));
+    @GetMapping("/post/finish")
+    public ResponseEntity<List<Post>> getFinishPostList() {
+        List<Post> finishPostList = postService.getFinishPostList();
+        return ResponseEntity.ok().body(finishPostList);
     }
 
     //신청취소버튼 클릭시 신청자 목록에서 삭제

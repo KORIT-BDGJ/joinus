@@ -1,16 +1,18 @@
-
 package com.portfolio.joinus.joinus.dto.post;
 
-import java.util.List;
-
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Builder
+import java.util.Date;
+
+import com.portfolio.joinus.joinus.entity.User;
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FinishListRespDto {
     private int postId;
     private String title;
-    private int userId;
-    private List<String> userIdList; 
+    private Date deadline;
 }

@@ -74,5 +74,8 @@ public class Post {
 				.text(text)
 				.build();
 	}
-
+	
+	 public Date getDeadline() {
+	        return deadLine;
+	}
 }

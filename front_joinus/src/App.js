@@ -16,6 +16,7 @@ import OAuth2Merge from './pages/OAuth2Merge/OAuth2Merge';
 import ForgetPassword from './pages/Login/ForgetPassword';
 import PostDetail from './pages/Post/PostDetail/PostDetail';
 import ResetPassword from './pages/Login/ResetPassword';
+import HostFinishList from './pages/Post/PostList/HostFinishList';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<PostDetail />}/>} />
         <Route path="/post/:userId/owner" element={<OwnerPostList />} />
         <Route path="/post/:userId/host" element={<HostPostList />} />
+        <Route path="/post/finish" element={<HostFinishList />} />
 
       </Routes>
     </>

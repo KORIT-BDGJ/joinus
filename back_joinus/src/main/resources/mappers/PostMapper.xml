@@ -84,11 +84,7 @@
 	   
 	</resultMap>
 	
-	<resultMap type="com.portfolio.joinus.joinus.entity.FinishList" id="FinishListMap">
-	    <id property="hostFinishListId" column="hostFinishListId"/>
-	    <result property="title" column="title"/>
-	    <result property="userId" column="userId"/>
-	</resultMap>
+
 	
 
 	<select id="getPost" parameterType="Integer" resultMap="PostMap">
@@ -390,9 +386,6 @@
 			patl.user_id = #{userId}
 	</select>
 	
-	
-	
-	
 	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultMap="AttendListMap">
 	    SELECT
 	        pt.post_id AS postId,
@@ -409,36 +402,21 @@
 	        ut.user_id = #{userId}	
 	</select>
 	
-	<select id="getExpiredAttendPosts" parameterType="java.time.LocalDateTime" resultType="com.portfolio.joinus.joinus.dto.post.AttendListRespDto">
-    SELECT
-        patl.post_id AS postId,
-        patl.user_id AS userId
-    FROM
-        post_attend_list_tb patl
-        INNER JOIN post_tb pt ON patl.post_id = pt.post_id
-    WHERE
-        pt.deadline &lt;= #{currentTime}
-</select>
-	
-	<select id="getMyfinishPostListByUserId" parameterType="Integer" resultMap="FinishListMap">
+	<select id="getFinishPostList" resultMap="PostMap">
 	    SELECT
-	        hflt.post_id AS postId,
-	        pt.title AS title,
-	        ut.user_id AS userId
+	        pt.post_id,
+	        pt.title,
+	        pt.deadline
 	    FROM
-	        host_finish_list_tb hflt
-	        LEFT OUTER JOIN post_tb pt ON (pt.post_id = hflt.post_id)
-	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = hflt.user_id)
+	        post_tb pt
 	    WHERE
-	        ut.user_id = #{userId}
+	        pt.deadline &lt; NOW() 
 	</select>
+
+
+
 	
-	<select id="getUserIdListByPostIdExceptUserId" parameterType="map" resultType="int">
-	    SELECT user_id
-	    FROM host_finish_list_tb
-	    WHERE post_id = #{postId}
-	    AND user_id != #{userId}
-	</select>
+	
 
 	<insert id="applyPost" parameterType="hashMap">
 		INSERT INTO post_applicant_list_tb
@@ -534,20 +512,4 @@
 			AND user_id = #{userId}
 	</delete>
 	
-	<insert id="createPostFinish" parameterType="com.portfolio.joinus.joinus.dto.post.FinishListRespDto">
-	  INSERT INTO post_finish_list_tb (post_id, user_id)
-	  VALUES (#{postId}, #{userId})
-	</insert>
-	
-	<delete id="deleteExpiredFinishPosts" parameterType="java.time.LocalDateTime">
-	  DELETE FROM post_finish_list_tb
-	  WHERE post_id IN (
-	    SELECT pfl.post_id
-	    FROM post_finish_list_tb pfl
-	    INNER JOIN post_tb pt ON pfl.post_id = pt.post_id
-	    WHERE pt.deadline &lt;= #{currentTime}
-	  )
-	</delete>
-	
-
 </mapper>
