@@ -155,6 +155,13 @@ export const mainListBox = css`
     overflow-y: auto;
 `;
 
+export const noPageText = css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
 export const listContainer = css`
     display: flex;
     align-items: center;

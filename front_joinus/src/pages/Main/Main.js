@@ -58,18 +58,6 @@ const Main = () => {
         return response.data;
     });
 
-    const sportsLikes = useQuery(["sportsLikes"], async () => {
-        const options = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        };
-    
-        const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
-        return response.data;
-    });
-     
-
     const sportsIcons = [
         {id: 0, title: "전체", icon: <MdOutlineListAlt size={32} /> },
         {id: 99, title: "선호운동", icon: "⭐" },
@@ -97,6 +85,17 @@ const Main = () => {
         {id: 22, title: "하키", icon: <GiHockey size={32} />},
         {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
+
+    const sportsLikes = useQuery(["sportsLikes"], async () => {
+        const options = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        };
+    
+        const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
+        return response.data;
+    });
 
     const getSports = useQuery(["getSports"], async () => {
         const option = {
@@ -146,7 +145,6 @@ const Main = () => {
 
         const response = await axios.get("http://localhost:8080/post/list", option);
 
-       
         return response.data;
     },{
         enabled: refresh,
@@ -155,7 +153,7 @@ const Main = () => {
         }
     });
 
-    if(principal.isLoading || getSports.isLoading || getRegions.isLoading || getSearchs.isLoading || getPostList.isLoading) {
+    if(principal.isLoading || sportsLikes.isLoading || getSports.isLoading || getRegions.isLoading || getSearchs.isLoading || getPostList.isLoading) {
         return <></>;
     }
 
@@ -314,7 +312,6 @@ const Main = () => {
                     </button>
                 )}
 
-                {beforePage && (
                     <button 
                         css={S.goToPageButton} 
                         disabled={nowPage === 1} 
@@ -325,7 +322,6 @@ const Main = () => {
                     >
                         &#60;
                     </button>
-                )}
 
                 {pageNumbers.map(page => (
                     <button 
@@ -341,7 +337,6 @@ const Main = () => {
                     </button>
                 ))}
 
-                {afterPage && (
                     <button 
                         css={S.goToPageButton} 
                         disabled={nowPage === lastPage} 
@@ -352,7 +347,6 @@ const Main = () => {
                     >
                         &#62;
                     </button>
-                )}
 
                 {afterPage && nowPage + 5 <= lastPage && (
                     <button 
@@ -482,6 +476,10 @@ const Main = () => {
             <div css={S.mainListBox}>
                 {getPostList.isLoading ? (
                     ""
+                    ) : getPostList.data.postList.length === 0 && !searchParams ? (
+                        <div css={S.noPageText}>작성된 게시물이 없습니다.</div>
+                    ) : getPostList.data.postList.length === 0 && searchParams ? (
+                        <div css={S.noPageText}>검색된 게시물이 없습니다.</div>
                     ) : (
                         <>
                             {getPostList.data.postList.map((post) => (

@@ -127,7 +127,6 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick, sportsLikes, 
                         setIsOpen(false);
                         onClick();
                         setSelectedIcon(null);
-                        console.log(selectedIcon);
                     }}>확인</button>
                     <button css={cancelButton} onClick={()=> {
                         setIsOpen(false);
