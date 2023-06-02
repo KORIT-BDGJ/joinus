@@ -121,7 +121,7 @@ public class PostService {
     	int userId = ((PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         List<SearchPostRespDto> list = new ArrayList<>();
 
-        int index = (searchPostReqDto.getPage() - 1) * 10;
+        int index = (searchPostReqDto.getPage() - 1) * 9;
 
         Map<String, Object> map = new HashMap<>();
         map.put("index", index);

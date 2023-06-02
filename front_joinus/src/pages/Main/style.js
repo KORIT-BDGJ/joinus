@@ -5,7 +5,7 @@ export const mainContainer = css`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    height: 100%;
+    height: 100%
 `;
 
 export const header = css`
@@ -69,7 +69,7 @@ export const expandedOptions = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 70%;
+    width: 100%;
     height: 100%;
 `;
 
@@ -91,9 +91,8 @@ export const resetButton = css`
     justify-content: center;
     align-items: center;
     border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     font-size: x-large;
     background-color: white;
     cursor: pointer;
@@ -118,7 +117,7 @@ export const buttonsBox = css`
 
 export const selectCountry = css`
     z-index: 1;
-    width: 100px;
+    width: 120px;
     height: 35px;
 `;
 
@@ -149,7 +148,8 @@ export const selectedSortButton = css`
 export const mainListBox = css`
     display: flex;
     flex-direction: column;
-    border: 1px solid #dbdbdb;
+    border: none;
+    height: 900px;
     border-radius: 7px;
     flex-grow: 1;
     overflow-y: auto;
@@ -161,9 +161,10 @@ export const listContainer = css`
     border: 1px solid #dbdbdb;
     border-radius: 7px;
     padding: 3px;
+    margin-bottom: 3px;
     width: 100%;
-    height: 100px;
-    background-color: beige;
+    height: 70px;
+    background-color: #C8E8E5;
     cursor: pointer;
 `;
 
@@ -186,7 +187,7 @@ export const postContent = css`
 
 export const postListHeader = css`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     height: 25px;
 `;
@@ -198,31 +199,32 @@ export const headerDateLabel = css`
 `;
 
 export const headerNickName = css`
-    text-align: center;
+    //text-align: center;
     border: none;
     width: 140px;
-    background-color: beige;
+    background-color: #C8E8E5;
     cursor: pointer;
 `;
 
 export const registeDates = css`
     border: none;
     text-align: center;
-    background-color: beige;
+    background-color: #C8E8E5
+    ;
     cursor: pointer;
 `;
 
 export const postMain = css`
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    font-size: 28px;
+    /* justify-content: center;
+    align-items: center; */
+    height: 20px;
+    font-size: 20px;
 `;
 
 export const postFooter = css`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     height: 25px;
 `;
@@ -236,7 +238,7 @@ export const informationLabel =css`
 export const informationTextName = css`
     text-align: center;
     border: none;
-    background-color: beige;
+    background-color: #C8E8E5;
     cursor: pointer;
 `;
 
@@ -244,18 +246,18 @@ export const informationDate = css`
     text-align: center;
     border: none;
     width: 200px;
-    background-color: beige;
+    background-color: #C8E8E5;
     cursor: pointer;
 `;
 
 export const finalDeadLine = css`
-    background-color: red;
+    color: red;
 `;
 
 export const informationCount = css`
     text-align: center;
     border: none;
-    background-color: beige;
+    background-color: #C8E8E5;
     cursor: pointer;
 `;
 
@@ -264,7 +266,8 @@ export const pageButton = css`
     justify-content: space-between;
     align-items: center;
     margin-top: 5px;
-    height: 80px;
+    height: 15px;
+    
 `;
 
 export const pageButtons = css`
@@ -283,21 +286,18 @@ export const goToPageButton = css`
     border: none;
     border-radius: 50%;
     margin: 0 1px;
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
     background-color: white;
     cursor: pointer;
-
-    &:hover {
-        background-color: rgba(0, 255, 0, 0.2);
-    }
+    
     &:active {
-        background-color: #00FF00;
+        background-color: #2ecc71;
     }
 `;
 
 export const nowPageButton = css`
-    background-color: #00FF00;
+    background-color: #2ecc71;
 `;
 
 export const createButton = css`
@@ -307,7 +307,7 @@ export const createButton = css`
     border: none;
     border-radius: 7px;
     width: 19%;
-    height: 80%;
+    height: 25px;
     font-size: 16px;
     font-weight: 600;
     background-color: white;
@@ -317,6 +317,6 @@ export const createButton = css`
         background-color: rgba(0, 255, 0, 0.2);
     }
     &:active {
-        background-color: #00FF00;
+        background-color: #2ecc71;
     }
 `;
