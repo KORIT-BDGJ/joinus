@@ -363,6 +363,9 @@ const Main = () => {
     return (
         <div css={S.mainContainer}>
             <Sidebar></Sidebar>
+            <h1 css={S.logoTitle}>
+                <div css={S.logoStyle}></div>
+            </h1>
             <header css={S.header}>
                 <div css={S.inputBox}>
                     {getSearchs.isLoading ? (

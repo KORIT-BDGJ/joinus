@@ -66,7 +66,7 @@ const userInfo = css`
   font-size: 24px;
 `;
 
-const title = css`
+const logoTitle = css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -505,7 +505,7 @@ const UserInfo = () => {
     <div css={container}>
       <Sidebar />
       <header css={headerContainer}>
-        <h1 css={title}>
+        <h1 css={logoTitle}>
           <div css={logoStyle}></div>
         </h1>
       </header>

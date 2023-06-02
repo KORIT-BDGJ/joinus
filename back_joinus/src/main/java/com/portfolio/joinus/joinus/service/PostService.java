@@ -175,8 +175,6 @@ public class PostService {
     }
 
     public List<GetPostRespDto> getOwnerPostListByUserId(int userId) {
-    	System.out.println(userId);
-    	System.out.println(postRepository.getOwnerPostListByUserId(userId));
         List<GetPostRespDto> list = new ArrayList<>();
 
         postRepository.getOwnerPostListByUserId(userId).forEach(ownerPostData -> {

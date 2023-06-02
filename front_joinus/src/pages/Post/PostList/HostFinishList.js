@@ -11,8 +11,26 @@ const container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 0px 10px 10px 10px;
   overflow-y: auto;
+`;
+
+const logoStyle= css`
+  width: 724px; 
+  height: 125px;
+  background-image: url('/images/12_plus.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+
+const logoTitle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-size: 48px;
+  font-weight: 600;
 `;
 
 const title = css`
@@ -101,7 +119,11 @@ const HostFinishList = () => {
       return (
         <div css={container}>
             <Sidebar />
-            <h1 css={title}>참여 완료한 글</h1>
+            <h1 css={logoTitle}>
+              <div css={logoStyle}>
+                {/* 참여 완료한 글 */}
+              </div>
+            </h1>
             {getHostFinishList.data && getHostFinishList.data.length === 0 ? (
                 <div>게시물이 없습니다.</div>
             ) : (

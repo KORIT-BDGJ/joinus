@@ -220,9 +220,9 @@ const PostRegister = () => {
     return (
         <div css={S.mainContainer}>
             <Sidebar></Sidebar>
-            <header css={S.header}>
-                <h1 css={S.title}>게시글 작성하기</h1>
-            </header>
+            <h1 css={S.logoTitle}>
+                <div css={S.logoStyle}></div>
+            </h1>
             <main css={S.postInfo}>
                 <div css={S.postContainer}>
                     <p css={S.postTitle}>제목</p>

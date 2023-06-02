@@ -1,7 +1,25 @@
 import { css } from "@emotion/react";
 
 export const mainContainer = css`
-    padding: 10px;
+    padding: 0px 10px 10px 10px;
+`;
+
+export const logoStyle= css`
+    width: 724px; 
+    height: 125px;
+    background-image: url('/images/12_plus.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+`;
+
+export const logoTitle = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    font-size: 48px;
+    font-weight: 600;
 `;
 
 export const header = css`

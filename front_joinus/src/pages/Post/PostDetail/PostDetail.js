@@ -30,9 +30,27 @@ import { addMinutes } from "date-fns";
 const container = css`
     display: flex;
     flex-direction: column;
-    padding: 10px 40px;
+    padding: 0px 10px 10px 10px;
     height: 900px;
     overflow-y: auto;
+`;
+
+const logoStyle= css`
+    width: 724px; 
+    height: 125px;
+    background-image: url('/images/12_plus.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+`;
+
+const logoTitle = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    font-size: 48px;
+    font-weight: 600;
 `;
 
 const detailHeader = css`
@@ -721,6 +739,9 @@ const PostDetail = () => {
         
         <div css={container}>
             <Sidebar></Sidebar>
+            <h1 css={logoTitle}>
+              <div css={logoStyle}></div>
+            </h1>
             <div css={detailHeader}>
                 <div css={headerTitle}>
                     {isUpdateMode ? (

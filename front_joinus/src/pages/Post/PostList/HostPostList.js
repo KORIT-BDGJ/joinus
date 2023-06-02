@@ -13,8 +13,35 @@ const container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 0px 30px 30px 30px;
   overflow-y: auto;
+  overflow-x: hidden;
+`;
+
+const listContainer = css`
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+`;
+
+const logoStyle= css`
+  width: 724px; 
+  height: 125px;
+  background-image: url('/images/12_plus.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+
+const logoTitle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-size: 48px;
+  font-weight: 600;
 `;
 
 const title = css`
@@ -228,8 +255,12 @@ const cancelAttendPost = useMutation(async (postId) => {
   return (
     <div css={container}>
       <Sidebar />
-      <div>
-        <h1 css={title}>내가 신청한 글</h1>
+      <div css={listContainer}>
+        <h1 css={logoTitle}>
+          <div css={logoStyle}>
+            {/* 내가 신청한 글 */}
+          </div>
+        </h1>
         {getHostApplicantList.data.length === 0 ? (
         <div>게시물이 없습니다.</div>
         ) : (
@@ -247,8 +278,12 @@ const cancelAttendPost = useMutation(async (postId) => {
         </div>
         )}
       </div>
-      <div>
-        <h1 css={title}>신청 수락된 글</h1>
+      <div css={listContainer}>
+        <h1 css={logoTitle}>
+          <div css={logoStyle}>
+            {/* 신청 수락된 글   */}
+          </div> 
+        </h1>
         {getHostAttendList.data.length === 0 ? (
         <div>게시물이 없습니다.</div>
         ) : (
@@ -266,99 +301,6 @@ const cancelAttendPost = useMutation(async (postId) => {
         </div>
         )}
       </div>
-      <div>
-        <h1 css={title}>참여 완료한 글</h1>
-        {/* <div css={list}>
-          {myAttendFinishPosts.map((post) => (
-            <div key={post.postId} css={listItem}>
-              <div css={postInfo}>
-                <div css={iconWrapper}>{post.sportsIcon}</div>
-                <h1 css={postTitle} onClick={() => handlePostTitleClick(post.postId)}>
-                  {post.title}
-                </h1>
-                <div css={buttons}>
-                  <button onClick={() => handleButtonClick('evaluate', post.postId)}>
-                    평가하기
-                  </button>
-                  <button onClick={() => handleButtonClick('skip', post.postId)}>
-                    하지않기
-                  </button>
-                </div>
-              </div>
-              {selectedPosts.includes(post.postId) && (
-                <div>
-                  <div css={titleAndDateContainer}>
-                    <h2 css={attendUserListTitle}>참여 유저 목록</h2>
-                    <div css={postDate}>{post.date}</div>
-                  </div>
-                  {post.users && post.users.map((user) => (
-                    <div key={`user-${post.postId}-${user.userId}`}>
-                      <span css={attendUserName}>
-                        {user.username} ({attendUserNames[user.userId]})
-                      </span>
-                      <div>
-                        {starOptions.map((starCount) => {
-                          const key = `${post.postId}:${user.userId}:${starCount}`;
-                          return (
-                            <button
-                              key={`star-${key}`}
-                              css={star}
-                              onMouseOver={() =>
-                                handleStarMouseOver(post.postId, user.userId, starCount)
-                              }
-                              onMouseOut={handleStarMouseOut}
-                              onClick={() =>
-                                handleStarClick(post.postId, user.userId, starCount)
-                              }
-                            >
-                              {starCount <=
-                              (hoveredStar.postId === post.postId &&
-                                hoveredStar.userId === user.userId
-                                ? hoveredStar.starCount
-                                : starCountState[`${post.postId}:${user.userId}`] ||
-                                  user.medalCount ||
-                                  0)
-                                ? activeStar
-                                : inactiveStar}
-                            </button>
-                          );
-                        })}
-                        <button
-                          css={resetButton}
-                          onClick={() => handleStarReset(post.postId, user.userId)}
-                        >
-                          <FaRedo />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div> */}
-        </div>
-      {/* {cancelModalOpen && (
-        <AlertModal
-          isModalOpen={cancelModalOpen}
-          confirmRemove={cancelPost}
-          cancelRemove={closeCancelModal}
-          message="취소하시겠습니까?"
-        />
-      )}
-      {evaluateModalOpen.isOpen && (
-        <AlertModal
-          isModalOpen={evaluateModalOpen.isOpen}
-          confirmRemove={confirmEvaluate}
-          cancelRemove={cancelEvaluate}
-          onClose={() => setEvaluateModalOpen({ type: '', isOpen: false })}
-          message={
-            evaluateModalOpen.type === 'evaluate'
-              ? '평가하시겠습니까?'
-              : '평가를 하지 않으시겠습니까?'
-          }
-        />
-      )} */}
     </div>
   );
 };
