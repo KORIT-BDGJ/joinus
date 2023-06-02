@@ -245,6 +245,7 @@ const changeCount = css`
     margin: 1px;
     font-size: 20px;
     font-weight: 300;
+    cursor: pointer;
 `;
 
 const countBox = css`
@@ -664,11 +665,18 @@ const PostDetail = () => {
         setUpdateSports(selectedIcon);
     }
 
-    const handleClick = (value) => () => {
-        if(updateRecruitsCount + value >= 0) {
-            setUpdateRecruitsCount((prev) => prev + value);
+
+    const handleClick = (count) => () => {
+        if (updateRecruitsCount + count < 1){
+            alert("모집인원은 0명일 수 없습니다.");
+            return;
+        } else if (updateRecruitsCount + count < totalAttendCount){
+            alert("모집인원은 참가자 수보다 작을 수 없습니다.");
+            return;
+        } else {
+            setUpdateRecruitsCount(updateRecruitsCount + count);
         }
-    }
+      };
 
     const genderHandleChange = (e) => {
         setUpdateGender(e.target.value);
@@ -699,7 +707,6 @@ const PostDetail = () => {
     const cancelClickHandle = () => {
         setIsUpdateMode(false);
     }
-
 
 
     if(principal.isLoading) {

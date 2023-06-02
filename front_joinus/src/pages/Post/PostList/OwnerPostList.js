@@ -102,7 +102,6 @@ const OwnerPostList = () => {
   });
 
   const deletePost = useMutation(async ({ postId }) => {
-    console.log(postId)
     const option = {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
