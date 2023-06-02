@@ -272,9 +272,9 @@ const Main = () => {
 
         const nowPage = searchParams.page;
 
-        const lastPage = getPostList.data.totalCount % 9 === 0
-            ? getPostList.data.totalCount / 9
-            : Math.floor(getPostList.data.totalCount / 9) + 1;
+        const lastPage = getPostList.data.totalCount % 7 === 0
+            ? getPostList.data.totalCount / 7
+            : Math.floor(getPostList.data.totalCount / 7) + 1;
 
         const startIndex = nowPage % 5 === 0 ? nowPage - 4 : nowPage - (nowPage % 5) + 1;
         const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
@@ -503,15 +503,11 @@ const Main = () => {
                                     </div>
                                     <div css={S.postWriterName}>
                                         <div css={S.imgIcon}>
-                                        {principal.data.image ? (
                                             <img
                                             css={S.imgIcon}
-                                            src={"http://localhost:8080/image/profile/" + principal.data.image}
-                                            alt={principal.data.nickName}
+                                            src={"http://localhost:8080/image/profile/" + post.writerImage}
+                                            alt={post.writerNickName}
                                             />
-                                        ) : (
-                                            <span>{principal.data.nickName.split('@')[0]}</span>
-                                        )}
                                         </div>
                                         <div css={S.headerNickName} >
                                             {post.writerNickName}
