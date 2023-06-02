@@ -77,6 +77,8 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon, sportsLikes, u
         {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
 
+    const filteredSportsIcons = sportsIcons.filter(icon => icon.id !== 0 && icon.id !== 99);
+
     const isIconSelected = (iconId) => {
         return sportsLikes?.some(item => item.userId === userId && item.sportsIds.includes(iconId)) || false;
     }

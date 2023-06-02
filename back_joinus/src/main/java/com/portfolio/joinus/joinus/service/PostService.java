@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
@@ -25,6 +26,7 @@ import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.repository.PostRepository;
+import com.portfolio.joinus.joinus.security.PrincipalUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -116,6 +118,7 @@ public class PostService {
     }
 
     public Map<String, Object> getPostList(SearchPostReqDto searchPostReqDto) {
+    	int userId = ((PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         List<SearchPostRespDto> list = new ArrayList<>();
 
         int index = (searchPostReqDto.getPage() - 1) * 10;
@@ -127,6 +130,7 @@ public class PostService {
         map.put("searchType", searchPostReqDto.getSearchType());
         map.put("searchValue", searchPostReqDto.getSearchValue());
         map.put("sort", searchPostReqDto.getSort());
+        map.put("userId", userId);
 
         postRepository.getPostList(map).forEach(post -> {
             list.add(post.toDto());

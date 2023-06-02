@@ -2,13 +2,14 @@
 import { css } from '@emotion/react';
 
 export const Reset = css`
-    /* http://meyerweb.com/eric/tools/css/reset/ 
-    v2.0 | 20110126
-    License: none (public domain)
-    */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+
     * {
         box-sizing: border-box;
         color: #333;
+        font-family: 'Inter', 'Noto Sans KR', sans-serif;
     }
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -37,6 +38,7 @@ export const Reset = css`
     }
     body {
         line-height: 1;
+        font-family: 'Inter', 'Noto Sans KR', sans-serif;
     }
     #root {
         position: relative;

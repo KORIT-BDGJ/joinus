@@ -44,7 +44,7 @@ const confirmButton = css`
     justify-content:center;
     align-items: center;
     border: none;
-    background-color : #2ecc71;
+    background-color : #C8E8E5;
     cursor: pointer;
     border-radius: 5px;
 `;

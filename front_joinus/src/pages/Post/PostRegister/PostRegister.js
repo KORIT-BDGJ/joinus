@@ -11,7 +11,7 @@ import { FcSportsMode } from "react-icons/fc";
 import Select from 'react-select';
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { addMinutes } from "date-fns";
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiArcheryTarget, GiBoxingGlove } from 'react-icons/gi';
@@ -25,7 +25,6 @@ import { GrGamepad, GrYoga } from 'react-icons/gr';
 const PostRegister = () => {
 
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
     const principal = useQuery(["principal"], async () => {
         const option = {
             headers: {
@@ -88,6 +87,7 @@ const PostRegister = () => {
         {id: 22, title: "하키", icon: <GiHockey size={32} />},
         {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
+
     
     const option = {
         headers: {
@@ -192,6 +192,7 @@ const PostRegister = () => {
     const selectedIconClickHandle = () => {
         const selectedSportsIcon = sportsIcons.find((icon) => icon.id === selectedIcon);
         setIcons(selectedSportsIcon ? selectedSportsIcon.icon : null);
+        
 
     }
         

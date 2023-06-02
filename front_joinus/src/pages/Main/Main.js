@@ -106,6 +106,7 @@ const Main = () => {
         }
 
         const response = await axios.get("http://localhost:8080/option/sports", option);
+
         return response.data;
     });
 
@@ -135,7 +136,8 @@ const Main = () => {
     const getPostList = useQuery(["getPostList"], async () => {
         const option = {
             params: {
-                ...searchParams
+                ...searchParams,
+                //sportsId: selectedIcon
             },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -143,6 +145,8 @@ const Main = () => {
         }
 
         const response = await axios.get("http://localhost:8080/post/list", option);
+
+       
         return response.data;
     },{
         enabled: refresh,
@@ -187,7 +191,8 @@ const Main = () => {
             page: 1
         }));
         setRefresh(true);
-    }
+    }   
+   
 
 
     const handleOptionChange = (optionName) => (option) => {
