@@ -162,7 +162,7 @@ export const listContainer = css`
     border-radius: 7px;
     padding: 3px;
     width: 100%;
-    height: 140px;
+    height: 100px;
     background-color: beige;
     cursor: pointer;
 `;
@@ -216,7 +216,7 @@ export const postMain = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90px;
+    height: 50px;
     font-size: 28px;
 `;
 

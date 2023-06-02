@@ -96,13 +96,14 @@ const cancelButton = css`
 
 
 
-const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick, sportsLikes, userId }) => {
+const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick, sportsLikes, userId, hiddenIcons }) => {
     
     const [selectedIcon, setSelectedIcon] = useState(null);
 
     const handleIconClick = (icon) => {
         onSelect(icon);
     }
+
 
     return (
         <div css={modalContainer(isOpen)}>
@@ -117,6 +118,7 @@ const SelectSportsModal = ({ isOpen, setIsOpen, onSelect, onClick, sportsLikes, 
                         setSelectedIcon={setSelectedIcon}
                         sportsLikes={sportsLikes}
                         userId={userId}
+                        hiddenIcons={hiddenIcons}
                     />
                 </main>
                 <footer css={modalMainButton}>

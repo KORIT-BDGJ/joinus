@@ -12,7 +12,7 @@ import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, G
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
 import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
-import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
+import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing, MdOutlineListAlt } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad, GrYoga } from 'react-icons/gr';
 import { GrPowerReset } from 'react-icons/gr';
@@ -71,7 +71,8 @@ const Main = () => {
      
 
     const sportsIcons = [
-        {id: 0, title: "선호운동", icon: "⭐" },
+        {id: 0, title: "전체", icon: <MdOutlineListAlt size={32} /> },
+        {id: 99, title: "선호운동", icon: "⭐" },
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
         {id: 2, title: "러닝", icon: <FaRunning size={32} /> },
         {id: 3, title: "축구", icon: <GiSoccerKick size={32} /> },
@@ -94,8 +95,7 @@ const Main = () => {
         {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
         {id: 21, title: "요가", icon: <GrYoga size={32} />},
         {id: 22, title: "하키", icon: <GiHockey size={32} />},
-        {id: 23, title: "양궁", icon: <GiArcheryTarget size={32} />},
-        {id: 24, title: "복싱", icon: <GiBoxingGlove size={32} />}
+        {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
 
     const getSports = useQuery(["getSports"], async () => {
@@ -175,10 +175,7 @@ const Main = () => {
     };
 
     const handleIconSelect = (IconComponent) => {
-        
         setSelectedIcon(IconComponent.id);
-    
-        
     }
 
     const selectedIconClickHandle = () => {
@@ -413,8 +410,9 @@ const Main = () => {
                                     setIsOpen={setSportsModalIsOpen}
                                     onSelect={handleIconSelect}
                                     onClick={selectedIconClickHandle}
-                                    sportsLikes={sportsLikes.data}
+                                    sportsLikes={sportsLikes.isLoading ? [] : sportsLikes.data}
                                     userId={principal.isLoading ? 0  : principal.data.userId}
+
                                 />
                         )}
                         <div css={S.buttonsBox}>
