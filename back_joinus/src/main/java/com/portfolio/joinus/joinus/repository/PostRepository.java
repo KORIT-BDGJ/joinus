@@ -6,7 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
+import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.dto.post.PostRespDto;
 import com.portfolio.joinus.joinus.entity.ApplicantList;
 import com.portfolio.joinus.joinus.entity.AttendList;
 import com.portfolio.joinus.joinus.entity.Comment;
@@ -40,7 +42,7 @@ public interface PostRepository {
 	public int saveOwnerPostList(OwnerPostList ownerPostList);
 
 	// owner_post_list_tb 에서 id로 list 불러오기
-	public List<OwnerPostList> getOwnerPostListByUserId(int userId);
+	public List<Post> getOwnerPostListByUserId(int userId);
 
 	//	post_applicant_list_tb에서 userId로 list 불러오기
 	public List<ApplicantList> getHostApplicantListByUserId(int userId);

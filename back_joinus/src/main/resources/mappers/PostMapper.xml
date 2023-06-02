@@ -338,18 +338,53 @@
 			ct.post_id = #{postId}
 	</select>
 	
-	<select id="getOwnerPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.OwnerPostList">
-	    SELECT
-	        oplt.owner_post_list_id AS ownerPostListId,
-	        pt.post_id AS postId,
-	        pt.title,
-	        ut.user_id AS userId
-	    FROM
-	        owner_post_list_tb oplt
-			LEFT OUTER JOIN post_tb pt ON (pt.post_id = oplt.post_id)
-			LEFT OUTER JOIN user_tb ut ON (ut.user_id = oplt.user_id)
+	<select id="getOwnerPostListByUserId" parameterType="Integer" resultMap="PostMap">
+		SELECT
+			pt.post_id,
+			pt.writer_id,
+			pt.title,
+			pt.sports_id,
+			pt.level_id,
+			pt.state_id,
+			pt.region_id,
+			pt.deadline,
+			pt.recruits_count,
+			pt.gender_id,
+			pt.text,
+			
+			ut.user_id,
+			
+			uit.user_info_id,
+			uit.nickname,
+			uit.image,
+			
+			spt.sports_id,
+			spt.sports_name,
+			
+			lt.level_id,
+			lt.level_name,
+			
+			stt.state_id,
+			stt.state_name,
+			
+			rt.region_id,
+			rt.region_name,
+			
+			gt.gender_id,
+			gt.gender_name
+		FROM 
+			post_tb pt
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN sports_tb spt ON (spt.sports_id = pt.sports_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = pt.level_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = pt.state_id)
+			LEFT OUTER JOIN region_tb rt ON (rt.region_id = pt.region_id)
+			LEFT OUTER JOIN gender_tb gt ON (gt.gender_id = pt.gender_id)
 	    WHERE
-	        oplt.user_id = #{userId}
+	    	1 = 1
+        	and pt.deadline &gt; now()
+	        and pt.writer_id = #{userId}
 	</select>
 	
 	<select id="getHostApplicantListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.ApplicantList">
@@ -371,7 +406,10 @@
 			LEFT OUTER JOIN state_tb stt ON (stt.state_id = papl.state_id)
 			LEFT OUTER JOIN level_tb lt ON (lt.level_id = papl.level_id)
 		WHERE
-			papl.user_id = #{userId}
+			1 = 1
+        	and pt.deadline &gt; now()
+	        and papl.user_id = #{userId}
+			
 	</select>
 	
 	<select id="getHostAttendListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.AttendList">
@@ -391,7 +429,9 @@
 			LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
 			LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
 		WHERE
-			patl.user_id = #{userId}
+			1 = 1
+        	and pt.deadline &gt; now()
+	        and patl.user_id = #{userId}
 	</select>
 	
 	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultMap="AttendListMap">
@@ -407,7 +447,7 @@
 	        LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
 	        LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
 	    WHERE
-	        ut.user_id = #{userId}	
+			ut.user_id = #{userId}	
 	</select>
 	
 	<select id="getFinishPostList" resultMap="PostMap">

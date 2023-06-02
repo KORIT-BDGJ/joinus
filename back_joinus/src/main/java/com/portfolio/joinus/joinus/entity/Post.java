@@ -56,6 +56,7 @@ public class Post {
 		return GetPostRespDto.builder()
 				.postId(postId)
 				.writerId(writerId)
+				.userId(user.getUserId())
 				.writerNickName(user.getUserInfo().getNickName())
 				.image(user.getUserInfo().getImage())
 				.title(title)

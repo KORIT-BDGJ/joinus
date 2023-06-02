@@ -9,6 +9,7 @@ import lombok.Data;
 public class GetPostRespDto {
 	private int postId;
 	private int writerId;
+	private int userId;
 	private String writerNickName;
 	private String image;
 	private String title;

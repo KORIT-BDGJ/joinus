@@ -17,6 +17,7 @@ import com.portfolio.joinus.joinus.dto.post.FinishListRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
+import com.portfolio.joinus.joinus.dto.post.PostRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
@@ -173,11 +174,13 @@ public class PostService {
         return list;
     }
 
-    public List<OwnerPostListRespDto> getOwnerPostListByUserId(int userId) {
-        List<OwnerPostListRespDto> list = new ArrayList<>();
+    public List<GetPostRespDto> getOwnerPostListByUserId(int userId) {
+    	System.out.println(userId);
+    	System.out.println(postRepository.getOwnerPostListByUserId(userId));
+        List<GetPostRespDto> list = new ArrayList<>();
 
         postRepository.getOwnerPostListByUserId(userId).forEach(ownerPostData -> {
-            list.add(ownerPostData.toDto());
+            list.add(ownerPostData.toGetPostDto());
         });
 
         return list;
