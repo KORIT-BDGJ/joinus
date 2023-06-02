@@ -1,16 +1,22 @@
 
 /** @jsxImportSource @emotion/react */
-
+import { css } from '@emotion/react';
 import React from 'react';
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiArcheryTarget, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
-
 import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
 import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
-import { GrGamepad } from 'react-icons/gr';
+import { GrGamepad, GrYoga } from 'react-icons/gr';
 
+const iconTitle = css`
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+`;
 
 
 const ModalsIcon = ({ sportsIconActive, handleSportSelect, selectedSports}) => {
@@ -30,11 +36,15 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect, selectedSports}) => {
         {id: 13, title: "탁구", icon: <FaTableTennis size={32} /> },
         {id: 14, title: "배구", icon: <FaVolleyballBall size={32} /> },
         {id: 15, title: "골프", icon: <MdGolfCourse size={32} /> },
-        {id: 16, title: "스케이트보드", icon: <MdOutlineSkateboarding size={32} /> },
-        {id: 17, title: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 16, title: "스케이트", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, title: "스쿠버", icon: <MdOutlineScubaDiving size={32} /> },
         {id: 18, title: "서핑", icon: <MdSurfing size={32} /> },
         {id: 19, title: "당구", icon: <RiBilliardsFill size={32} /> },
-        {id: 20, title: "게임", icon: <GrGamepad size={32} /> }
+        {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
+        {id: 21, title: "요가", icon: <GrYoga size={32} />},
+        {id: 22, title: "하키", icon: <GiHockey size={32} />},
+        {id: 23, title: "양궁", icon: <GiArcheryTarget size={32} />},
+        {id: 24, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
    
     return (
@@ -45,9 +55,9 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect, selectedSports}) => {
                     data-sport={icon.id}
                     css={sportsIconActive(icon.id)}
                     onClick={handleSportSelect}
-                    title={icon.title}
                 >
                     {icon.icon}
+                    <span css={iconTitle}>{icon.title}</span>
                 </div>
             ))}
         </>

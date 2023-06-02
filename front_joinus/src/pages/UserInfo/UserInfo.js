@@ -4,8 +4,8 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { CgGym } from 'react-icons/cg';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
-import { GrGamepad } from 'react-icons/gr';
+import { GiArcheryTarget, GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiBoxingGlove, GiHockey, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
+import { GrGamepad, GrYoga } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
@@ -117,7 +117,7 @@ const changeButton = css`
 const imageBox = css`
   width: 300px;
   height: 300px;
-  border: 1px solid #333;
+  border: 2px solid #2ecc71;;
   border-radius: 5px;
   padding: 15px;
   margin: 20px;
@@ -136,7 +136,7 @@ const imagePreview = css`
 const detailContainer = css`
   width: 680px;
   height: 400px;
-  border: 1px solid #333;
+  border: 2px solid #2ecc71;;
   border-radius: 10px;
   display: flex;        
   flex-direction: column;  
@@ -145,16 +145,10 @@ const detailContainer = css`
   
 `;
 
-const footerContainer = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const modifyButton = css`
   margin-top: auto;    /* add this line */
   margin-bottom: 20px;  /* modify this line */
-  border: 1px solid #dbdbdb;
+  border: 1px solid #2ecc71;
   border-radius: 7px;
   width: 200PX;
   height: 60px;
@@ -163,7 +157,7 @@ const modifyButton = css`
   font-weight: 900;
   cursor: pointer;
   &:hover {
-    border: 1px solid #000000;
+    border: 1px solid #27ae60;
   }
   &:active {
     background-color: #27ae60;
@@ -175,7 +169,7 @@ const dcTitle = css`
     align-items: center;
     margin: 10px 5px 20px;
     font-size: 30px;
-    color: #00B894;
+    color: #2ecc71;
     font-weight: 600;
 `;
 
@@ -196,7 +190,7 @@ const circle = css`
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border: 2px solid #333;
+  border: 2px solid #2ecc71;;
 `;
 
 const plusButton = css`
@@ -498,6 +492,10 @@ const UserInfo = () => {
     if (sport === 16) return <MdOutlineSkateboarding size={size} />;
     if (sport === 19) return <RiBilliardsFill size={size} />;
     if (sport === 20) return <GrGamepad size={size} />;
+    if (sport === 21) return <GrYoga size={size} />;
+    if (sport === 22) return <GiHockey size={size} />;
+    if (sport === 23) return <GiArcheryTarget size={size} />;
+    if (sport === 24) return <GiBoxingGlove size={size} />;
   };
   
  const convertedSports = selectedSports.map(sport => parseInt(sport));

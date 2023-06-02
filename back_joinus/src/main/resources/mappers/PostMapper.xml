@@ -21,6 +21,7 @@
 		<association property="state" resultMap="StateMap"></association>
 		<association property="region" resultMap="RegionMap"></association>
 		<association property="gender" resultMap="GenderMap"></association>
+		
 	</resultMap>
 	
 	<resultMap type="com.portfolio.joinus.joinus.entity.User" id="UserMap">
@@ -153,7 +154,7 @@
 		)
 	</insert>
 	
-	<select id="getPostList" parameterType="Integer" resultMap="PostMap">
+	<select id="getPostList" parameterType="hashmap" resultMap="PostMap">
 		SELECT
 			pt.post_id,
 		    pt.writer_id,
@@ -168,6 +169,7 @@
 		    ut.user_id,
 		    
 		    uit.user_info_id,
+		    ult.image,
 		    uit.nickname,
 		    
 		    spt.sports_id,
@@ -210,8 +212,11 @@
         		</otherwise>
         	</choose>
         	
-        	<if test="sportsId != 0">
+        	<if test="sportsId != 0 and sportsId != 99">
         		and spt.sports_id = #{sportsId}
+        	</if>
+        	<if test="sportsId == 99">
+        		and spt.sports_id in (select sports_id from sports_likes_tb where user_id = #{userId})
         	</if>
         	
         	<if test="regionId != 0">
@@ -223,7 +228,7 @@
 		        	</if>
 					pt.registe_date DESC        	
     
-        limit #{index}, 10;	
+        limit #{index}, 9;	
 	</select>
 	
 	<select id="getTotalCount" parameterType="hashMap" resultType="Integer">
@@ -260,8 +265,11 @@
         		</otherwise>
         	</choose>
         	
-        	<if test="sportsId != 0">
+        	<if test="sportsId != 0 and sportsId != 99">
         		and spt.sports_id = #{sportsId}
+        	</if>
+        	<if test="sportsId == 99">
+        		and spt.sports_id in (select sports_id from sports_likes_tb where user_id = #{userId})
         	</if>
         	
         	<if test="regionId != 0">

@@ -68,21 +68,20 @@ const forgetPassword = css`
 `;
 
 const loginButton = css`
-    margin: 10px 0px ;
-    border: 1px solid #dbdbdb;
+    margin: 10px 0px;
+    border: none; /* 테두리 제거 */
     border-radius: 7px;
     width: 100%;
     height: 50px;
-    background-color: white;
+    background-color: #C8E8E5;
     font-weight: 900;
     cursor: pointer;
     &:hover {
-        background-color: #fafafa;
+        background-color: #a7c6c2; /* 어둡게 설정한 호버 색상 */
     }
     &:active {
-        background-color: #eee;
+        background-color: #93b0ad; /* 어둡게 설정한 액티브 색상 */
     }
-
 `;
 
 const naverButton = css`

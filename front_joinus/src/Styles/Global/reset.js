@@ -2,13 +2,14 @@
 import { css } from '@emotion/react';
 
 export const Reset = css`
-    /* http://meyerweb.com/eric/tools/css/reset/ 
-    v2.0 | 20110126
-    License: none (public domain)
-    */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+
     * {
         box-sizing: border-box;
         color: #333;
+        font-family: 'Inter', 'Noto Sans KR', sans-serif;
     }
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -37,6 +38,7 @@ export const Reset = css`
     }
     body {
         line-height: 1;
+        font-family: 'Inter', 'Noto Sans KR', sans-serif;
     }
     #root {
         position: relative;
@@ -69,15 +71,16 @@ export const Reset = css`
         width: 5px; /* 스크롤바의 너비 */
     }
     ::-webkit-scrollbar-track {
-    background: rgba(150, 238, 150, 0.2); /* 스크롤바 트랙의 배경색 */
+    background: #C8E8E5; /* 스크롤바 트랙의 배경색 */
+    border-radius: 5px;
     }
     ::-webkit-scrollbar-thumb {
     
-    background: #6ef1a079; /* 스크롤바 썸의 배경색 */
+    background: #C8E8E5; /* 스크롤바 썸의 배경색 */
     border-radius: 5px; /* 스크롤바 썸의 모서리 반경 */
     }
     ::-webkit-scrollbar-thumb:hover {
 
-    background: #0af845; /* 스크롤바 썸의 호버 배경색 */
+    background: #C8E8E5; /* 스크롤바 썸의 호버 배경색 */
     }
 `;
