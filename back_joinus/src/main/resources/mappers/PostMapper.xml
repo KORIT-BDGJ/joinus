@@ -458,16 +458,11 @@
 	        pt.writer_id
 	    FROM
 	        post_tb pt
-	        LEFT OUTER JOIN post_attend_list_tb pat ON pt.writer_id = pat.user_id
+	  
 	    WHERE
-	        pt.deadline &lt; NOW() 
+	        pt.deadline &lt; NOW()
 	</select>
-
-
-
 	
-	
-
 	<insert id="applyPost" parameterType="hashMap">
 		INSERT INTO post_applicant_list_tb
 		VALUES (0, #{postId}, #{userId}, #{stateId}, #{levelId})

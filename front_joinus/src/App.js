@@ -37,7 +37,7 @@ function App() {
         <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<PostDetail />}/>} />
         <Route path="/post/:userId/owner" element={<OwnerPostList />} />
         <Route path="/post/:userId/host" element={<HostPostList />} />
-        <Route path="/post/finish" element={<HostFinishList />} />
+        <Route path="/post/:userId/finish" element={<HostFinishList />} />
 
       </Routes>
     </>

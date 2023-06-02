@@ -85,7 +85,7 @@ const postInfo = css`
 `;
 
 const HostFinishList = () => {
-
+    const { userId } = useParams();
     const principal = useQuery(["principal"], async () => {
         const option = {
             headers: {
@@ -103,7 +103,7 @@ const HostFinishList = () => {
           },
         };
   
-        const response = await axios.get(`http://localhost:8080/post/finish`, option);
+        const response = await axios.get(`http://localhost:8080/post/${userId}/finish`, option);
         return response.data;
     });
 
@@ -132,7 +132,7 @@ const HostFinishList = () => {
                     <li key={post.postId} css={listItem}>
                     <div css={postInfo}>
                         <h1 css={postTitle}>
-                            {post.title}
+                        {post.title}
                         </h1>
                     </div>
                     </li>

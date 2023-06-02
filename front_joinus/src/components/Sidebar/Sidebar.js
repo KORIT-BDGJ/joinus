@@ -88,7 +88,7 @@ const closeButton = css`
     height: 18px;
     background-color: transparent;
     font-size: 16px; 
-    color: #C8E8E5; 
+    color: #2ecc71; 
     cursor: pointer;
     &:active {
         background-color: rgba(0, 0, 0, 0.1);
@@ -185,7 +185,7 @@ const Sidebar = () => {
                 <Link to="/post/register"><ListButton title="운동 모집글 작성"><TfiWrite/></ListButton></Link>
                 <Link to={`/post/${principal.data.userId}/owner`}><ListButton title="내 모집글 보기"><TfiClipboard/></ListButton></Link>
                 <Link to={`/post/${principal.data.userId}/host`}><ListButton title="내 신청 보기"><TfiPencil/></ListButton></Link>
-                <Link to={`/post/finish`}><ListButton title="참여 완료한 글"><TfiPencil/></ListButton></Link>
+                <Link to={`/post/${principal.data.userId}/finish`}><ListButton title="참여 완료한 글"><TfiPencil/></ListButton></Link>
             </main>
             <footer css={footer}>
                 <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>

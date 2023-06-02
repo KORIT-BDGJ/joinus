@@ -90,7 +90,7 @@ public class PostController {
 //    }
 
     // 참여 완료한 게시글 목록 조회
-    @GetMapping("/post/finish")
+    @GetMapping("/post/{userId}/finish")
     public ResponseEntity<List<Post>> getFinishPostList() {
         List<Post> finishPostList = postService.getFinishPostList();
         return ResponseEntity.ok().body(finishPostList);
