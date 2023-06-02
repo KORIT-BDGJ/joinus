@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegAddressCard, FaSearch } from 'react-icons/fa';
 import { useMutation } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -142,7 +142,6 @@ const UserOAuth2Register = () => {
     passwordConfirm: "",
     address: "",
     gender: "", 
-    // 초기값을 "FEMALE"로 잡아도 됨
     provider: provider,
   });
 
@@ -150,6 +149,13 @@ const UserOAuth2Register = () => {
     password: "",
     passwordConfirm: "",
   });
+
+  useEffect(() => {
+    // If the name consists of only digits, treat it as an error
+    if (/^\d+$/.test(registerUser.name)) {
+      setIsNameError(true);
+    }
+  }, [registerUser.name]);
 
   const searchAddress = () => {
        
@@ -206,14 +212,20 @@ const UserOAuth2Register = () => {
           registerToken: `Bearer ${registerToken}`,
         },
       };
-
+  
       try {
-        const response = await axios.post('http://localhost:8080/auth/oauth2/register', registerData, option);
+        const response = await axios.post(
+          'http://localhost:8080/auth/oauth2/register',
+          registerData,
+          option
+        );
         return response;
       } catch (error) {
-        alert('페이지가 만료되었습니다.');
-        window.location.replace('/auth/login');
-        return error;
+        if (error.response && error.response.data) {
+          throw error.response.data.errorData;
+        } else {
+          throw error;
+        }
       }
     },
     {
@@ -225,9 +237,7 @@ const UserOAuth2Register = () => {
       },
     }
   );
-
   
-
   const oauth2RegisterSubmitHandle = async () => {
     const isValid = validateInputs();
   
@@ -238,35 +248,23 @@ const UserOAuth2Register = () => {
     const registerData = {
       ...registerUser,
     };
-    
-    oauth2Register.mutate(registerData);
-    // const option = {
-    //   headers: {
-    //      "Content-Type" : "application/json",
-    //     registerToken: `Bearer ${registerToken}`,
-    //   },
-    // };
+  
+    try {
+      await oauth2Register.mutateAsync(registerData);
+    } catch (error) {
+      if (typeof error === 'object') {
+        setErrorMessages({
+          name: '',
+          email: '',
+          password: '',
+          passwordConfirm: '',
+          ...error,
+        });
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
 
-    // try {
-    //   const response = await axios.post('http://localhost:8080/auth/oauth2/register', JSON.stringify(registerData), option);
-
-    //   if (response.status === 200) {
-    //     alert('회원가입 완료.');
-    //     window.location.replace('/auth/login');
-    //   }
-    // } catch (error) {
-    //   if (error.response && error.response.data) {
-    //     setErrorMessages({
-    //       name: '',
-    //       email: '',
-    //       password: '',
-    //       passwordConfirm: '',
-    //       ...error.response.data.errorData,
-    //     });
-    //   } else {
-    //     console.error('Unexpected error:', error);
-    //   }
-    // }
   };
 
 

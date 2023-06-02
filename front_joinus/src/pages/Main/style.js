@@ -167,7 +167,7 @@ export const mainListBox = css`
     display: flex;
     flex-direction: column;
     border: none;
-    height: 900px;
+    height: 500px;
     border-radius: 7px;
     flex-grow: 1;
     overflow-y: auto;

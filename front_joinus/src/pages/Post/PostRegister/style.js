@@ -38,7 +38,7 @@ export const postInfo = css`
 
     border: 1px solid #dbdbdb;
     padding: 10px;
-    height: 700px;
+    height: 650px;
 `;
 
 export const postContainer = css`
@@ -125,7 +125,7 @@ export const buttonRadio = css`
 export const postWrite = css`
     display: flex;
     flex-direction: column;
-    height: 160px;
+    height: 140px;
 `;
 
 export const writeText = css`
@@ -136,8 +136,8 @@ export const writeText = css`
 
 export const writeBox = css`
     width: 100%;
-    height: 120px;
-    border: 1px solid #999;
+    height: 80px;
+    border: 1px solid #dbdbdb;
 `;
 
 export const buttonBox = css`

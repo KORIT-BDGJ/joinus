@@ -41,6 +41,7 @@ public class Post {
 		return SearchPostRespDto.builder()
 				.postId(postId)
 				.writerNickName(user.getUserInfo().getNickName())
+				.writerImage(user.getUserInfo().getImage())
 				.title(title)
 				.sportsId(sports.getSportsId())
 				.sportsName(sports.getSportsName())
