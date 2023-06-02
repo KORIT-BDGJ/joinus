@@ -234,7 +234,6 @@ export const headerNickName = css`
     cursor: pointer;
 `;
 
-
 export const pageButton = css`
     display: flex;
     justify-content: space-between;
