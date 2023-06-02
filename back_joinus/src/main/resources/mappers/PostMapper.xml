@@ -173,6 +173,7 @@
 		    ut.user_id,
 		    
 		    uit.user_info_id,
+		    ult.image,
 		    uit.nickname,
 		    
 		    spt.sports_id,

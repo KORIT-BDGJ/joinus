@@ -164,6 +164,7 @@ export const noPageText = css`
 
 export const listContainer = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 7px;
@@ -184,89 +185,37 @@ export const postIconBox = css`
     height: 60px;
 `;
 
-export const postContent = css`
+export const postMainBox = css`
     display: flex;
-    flex-direction: column;
-    margin: 0px 10px;
-    width: 90%;
-
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    font-size: 20px;
 `;
 
-export const postListHeader = css`
+export const postWriterName = css`
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     height: 25px;
 `;
 
-export const headerDateLabel = css`
-    margin-right: 5px;
-    font-weight: 600;
-    cursor: pointer;
+export const imgIcon = css`
+    border: 1px solid #999;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
 `;
 
 export const headerNickName = css`
     //text-align: center;
     border: none;
     width: 140px;
+    margin-left: 10px;
     background-color: #C8E8E5;
     cursor: pointer;
 `;
 
-export const registeDates = css`
-    border: none;
-    text-align: center;
-    background-color: #C8E8E5
-    ;
-    cursor: pointer;
-`;
-
-export const postMain = css`
-    display: flex;
-    /* justify-content: center;
-    align-items: center; */
-    height: 20px;
-    font-size: 20px;
-`;
-
-export const postFooter = css`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 25px;
-`;
-
-export const informationLabel =css`
-    margin-right: 5px;
-    font-weight: 600;
-    cursor: pointer;
-`;
-
-export const informationTextName = css`
-    text-align: center;
-    border: none;
-    background-color: #C8E8E5;
-    cursor: pointer;
-`;
-
-export const informationDate = css`
-    text-align: center;
-    border: none;
-    width: 200px;
-    background-color: #C8E8E5;
-    cursor: pointer;
-`;
-
-export const finalDeadLine = css`
-    color: red;
-`;
-
-export const informationCount = css`
-    text-align: center;
-    border: none;
-    background-color: #C8E8E5;
-    cursor: pointer;
-`;
 
 export const pageButton = css`
     display: flex;

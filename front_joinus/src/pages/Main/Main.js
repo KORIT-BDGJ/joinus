@@ -281,7 +281,6 @@ const Main = () => {
 
         const pageNumbers = [];
 
-        const beforePage = nowPage > 1;
         const afterPage = nowPage < lastPage;
 
         for(let i = startIndex; i <= endIndex; i++) {
@@ -496,61 +495,24 @@ const Main = () => {
                                             )[0].icon
                                         }
                                     </div>
-                                    <div css={S.postContent}>
-                                        <header css={S.postListHeader}>
-                                            <div css={S.headerNickName} >
-                                                <label css={S.informationLabel}>작성자:</label>
-                                                {post.writerNickName}
-                                            </div>
-                                            <div css={S.informationTextName}>
-                                                <label css={S.informationLabel}>성별:</label>
-                                                {post.genderName}
-                                            </div> 
-                                            <div css={S.registeDates}>
-                                                <label css={S.headerDateLabel}>작성일:</label>
-                                                {new Date(post.registeDate).toLocaleString(
-                                                    "ko-KR",
-                                                    {
-                                                        month: "long",
-                                                        day: "numeric",
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                    }
-                                                )}
-                                            </div>
-                                        </header>
-                                        <main css={S.postMain}>
-                                            {post.title}
-                                        </main>
-                                        <footer css={S.postFooter}>
-                                            <div css={S.informationTextName}>
-                                                <label css={S.informationLabel}>지역:</label>
-                                                {post.regionName}
-                                            </div>
-                                            <div css={[
-                                                    S.informationDate,
-                                                    new Date(post.deadLine) > new Date() &&
-                                                    new Date(post.deadLine) <= getNextServerTime() &&
-                                                    S.finalDeadLine
-                                                ]}
-                                            >
-                                                <label css={S.informationLabel}>날짜:</label>
-                                                {new Date(post.deadLine).toLocaleString(
-                                                    "ko-KR",
-                                                    {
-                                                        month: "long",
-                                                        day: "numeric",
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                    }
-                                                )}   
-                                            </div>
-                                            
-                                            <div css={S.informationCount}>
-                                                <label css={S.informationLabel}>인원:</label>
-                                                {post.recruitsCount}
-                                            </div>
-                                        </footer>
+                                    <div css={S.postMainBox}>
+                                        {post.title}
+                                    </div>
+                                    <div css={S.postWriterName}>
+                                        <div css={S.imgIcon}>
+                                        {principal.data.image ? (
+                                            <img
+                                            css={S.imgIcon}
+                                            src={"http://localhost:8080/image/profile/" + principal.data.image}
+                                            alt={principal.data.nickName}
+                                            />
+                                        ) : (
+                                            <span>{principal.data.nickName.split('@')[0]}</span>
+                                        )}
+                                        </div>
+                                        <div css={S.headerNickName} >
+                                            {post.writerNickName}
+                                        </div>
                                     </div>
                                 </div>
                             ))}
