@@ -5,7 +5,7 @@ import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, G
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
 import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
-import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
+import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing, MdOutlineListAlt } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad, GrYoga } from 'react-icons/gr';
 
@@ -50,7 +50,8 @@ const iconTitle = css`
 const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon,sportsLikes, userId }) => {
 
     const sportsIcons = [
-        {id: 0, title: "선호운동", icon: "⭐" },
+        {id: 0, title: "전체", icon: <MdOutlineListAlt size={32} /> },
+        {id: 99, title: "선호운동", icon: "⭐" },
         {id: 1, title: "헬스", icon: <CgGym size={32} /> },
         {id: 2, title: "러닝", icon: <FaRunning size={32} /> },
         {id: 3, title: "축구", icon: <GiSoccerKick size={32} /> },
@@ -73,12 +74,13 @@ const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon,sportsLikes, us
         {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
         {id: 21, title: "요가", icon: <GrYoga size={32} />},
         {id: 22, title: "하키", icon: <GiHockey size={32} />},
-        {id: 23, title: "양궁", icon: <GiArcheryTarget size={32} />},
-        {id: 24, title: "복싱", icon: <GiBoxingGlove size={32} />}
+        {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
 
+    const filteredSportsIcons = sportsIcons.filter(icon => icon.id !== 0 && icon.id !== 99);
+
     const isIconSelected = (iconId) => {
-        return sportsLikes.some(item => item.userId === userId && item.sportsIds.includes(iconId));
+        return sportsLikes?.some(item => item.userId === userId && item.sportsIds.includes(iconId)) || false;
     }
 
 

@@ -88,7 +88,7 @@ const closeButton = css`
     height: 18px;
     background-color: transparent;
     font-size: 16px; 
-    color: #2ecc71; 
+    color: #C8E8E5; 
     cursor: pointer;
     &:active {
         background-color: rgba(0, 0, 0, 0.1);
