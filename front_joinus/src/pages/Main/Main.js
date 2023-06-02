@@ -272,9 +272,9 @@ const Main = () => {
 
         const nowPage = searchParams.page;
 
-        const lastPage = getPostList.data.totalCount % 10 === 0
-            ? getPostList.data.totalCount / 10
-            : Math.floor(getPostList.data.totalCount / 10) + 1;
+        const lastPage = getPostList.data.totalCount % 9 === 0
+            ? getPostList.data.totalCount / 9
+            : Math.floor(getPostList.data.totalCount / 9) + 1;
 
         const startIndex = nowPage % 5 === 0 ? nowPage - 4 : nowPage - (nowPage % 5) + 1;
         const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
@@ -502,6 +502,10 @@ const Main = () => {
                                                 <label css={S.informationLabel}>작성자:</label>
                                                 {post.writerNickName}
                                             </div>
+                                            <div css={S.informationTextName}>
+                                                <label css={S.informationLabel}>성별:</label>
+                                                {post.genderName}
+                                            </div> 
                                             <div css={S.registeDates}>
                                                 <label css={S.headerDateLabel}>작성일:</label>
                                                 {new Date(post.registeDate).toLocaleString(
@@ -541,10 +545,7 @@ const Main = () => {
                                                     }
                                                 )}   
                                             </div>
-                                            <div css={S.informationTextName}>
-                                                <label css={S.informationLabel}>성별:</label>
-                                                {post.genderName}
-                                            </div> 
+                                            
                                             <div css={S.informationCount}>
                                                 <label css={S.informationLabel}>인원:</label>
                                                 {post.recruitsCount}

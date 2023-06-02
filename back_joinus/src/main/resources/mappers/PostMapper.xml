@@ -231,7 +231,7 @@
 		        	</if>
 					pt.registe_date DESC        	
     
-        limit #{index}, 10;	
+        limit #{index}, 9;	
 	</select>
 	
 	<select id="getTotalCount" parameterType="hashMap" resultType="Integer">

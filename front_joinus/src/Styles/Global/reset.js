@@ -71,15 +71,16 @@ export const Reset = css`
         width: 5px; /* 스크롤바의 너비 */
     }
     ::-webkit-scrollbar-track {
-    background: rgba(150, 238, 150, 0.2); /* 스크롤바 트랙의 배경색 */
+    background: #C8E8E5; /* 스크롤바 트랙의 배경색 */
+    border-radius: 5px;
     }
     ::-webkit-scrollbar-thumb {
     
-    background: #6ef1a079; /* 스크롤바 썸의 배경색 */
+    background: #C8E8E5; /* 스크롤바 썸의 배경색 */
     border-radius: 5px; /* 스크롤바 썸의 모서리 반경 */
     }
     ::-webkit-scrollbar-thumb:hover {
 
-    background: #0af845; /* 스크롤바 썸의 호버 배경색 */
+    background: #C8E8E5; /* 스크롤바 썸의 호버 배경색 */
     }
 `;
