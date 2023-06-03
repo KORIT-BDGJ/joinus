@@ -22,12 +22,12 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 50px;
+    padding-top: 10px;
 `;
 const logoStyle= css`
     width: 310px; 
     height: 210px;
-    background-image: url('/images/6_plus.png');
+    background-image: url('/images/register.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -45,7 +45,7 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    margin-top: 75px;
+    margin-top: 100px;
     padding: 50px 20px;
     width: 400px;
 `;
@@ -63,24 +63,24 @@ const inputLabel = css`
 
 
 
-const loginButton = css`
+const registerButton = css`
     display: flex;
     justify-content:center;
     align-items: center;
     margin: 10px 0px ;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius: 7px;
     width: 100%;
     height: 50px;
-    background-color: #2ecc71;
-    color: white;
+    background-color: #C8E8E5;
+    color: black;
     font-weight: 900;
     cursor: pointer;
     &:hover {
-    border: 1px solid #000000;
+    background-color: #A6CEC7;  // 대략적으로 #C8E8E5보다 조금 어둡게 설정하였습니다.
     }
     &:active {
-    background-color: #27ae60;
+    background-color: #85B4A3;  // 대략적으로 #C8E8E5보다 훨씬 어둡게 설정하였습니다.
     }
 `;
 
@@ -95,14 +95,14 @@ const searchButton = css`
   align-items: center;
   margin-left: 10px;
   border: none;
-  background-color: #2ecc71;
+  background-color : #C8E8E5;
   cursor: pointer;
   border-radius: 5px;
   padding: 5px;
   color: white;
 
   &:hover {
-    background-color: #27ae60;
+    background-color: #85B4A3;
   }
 `;
 
@@ -331,7 +331,7 @@ const UserOAuth2Register = () => {
                         </label>
                     </div>
 
-                    <button css={ loginButton } onClick={oauth2RegisterSubmitHandle}>등록</button>
+                    <button css={ registerButton } onClick={oauth2RegisterSubmitHandle}>등록</button>
                     
                 </div>
                 
