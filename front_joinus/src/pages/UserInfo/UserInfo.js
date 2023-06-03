@@ -34,19 +34,10 @@ const headerContainer = css`
 const logoStyle= css`
   width: 724px; 
   height: 125px;
-  background-image: url('/images/title_2.png');
+  background-image: url('/images/12_plus.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-`;
-
-const sportsLikesTitle= css`
-width: 724px; 
-height: 125px;
-background-image: url('/images/title_9.png');
-background-repeat: no-repeat;
-background-size: contain;
-background-position: center;
 `;
 
 
@@ -113,8 +104,8 @@ const spanStyle = css`
 `;
 
 const changeButton = css`
-  background-color: #C8E8E5;
-  color: black;
+  background-color: #2ecc71;
+  color: white;
   margin-left: auto;
   border-radius: 5px;
   font-size: 12px;
@@ -126,7 +117,7 @@ const changeButton = css`
 const imageBox = css`
   width: 300px;
   height: 300px;
-  border: none;
+  border: 2px solid #2ecc71;;
   border-radius: 5px;
   padding: 15px;
   margin: 20px;
@@ -139,14 +130,13 @@ const imageBox = css`
 const imagePreview = css`
   width: 100%;
   height: 100%;
-  border-radius: 5px;
   object-fit: cover;
 `;
 
 const detailContainer = css`
   width: 680px;
   height: 400px;
-  border: none;
+  border: 2px solid #2ecc71;;
   border-radius: 10px;
   display: flex;        
   flex-direction: column;  
@@ -158,19 +148,19 @@ const detailContainer = css`
 const modifyButton = css`
   margin-top: auto;    /* add this line */
   margin-bottom: 20px;  /* modify this line */
-  border: 1px solid #C8E8E5;
+  border: 1px solid #2ecc71;
   border-radius: 7px;
   width: 200PX;
   height: 60px;
-  background-color: #C8E8E5;
-  color: black;
+  background-color: #2ecc71;
+  color: white;
   font-weight: 900;
   cursor: pointer;
   &:hover {
-    border: 1px solid #C8E8E5;
+    border: 1px solid #27ae60;
   }
   &:active {
-    background-color: #C8E8E5;
+    background-color: #27ae60;
   }
 `;
 const dcTitle = css`
@@ -179,7 +169,7 @@ const dcTitle = css`
     align-items: center;
     margin: 10px 5px 20px;
     font-size: 30px;
-    color: #C8E8E5;
+    color: #2ecc71;
     font-weight: 600;
 `;
 
@@ -188,7 +178,6 @@ const circleContainer = css`
   justify-content: space-evenly;
   align-items: center;
   margin: 0px;
-  cursor: pointer;
 `;
 
 
@@ -201,13 +190,13 @@ const circle = css`
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border: 2px solid #C8E8E5;
+  border: 2px solid #2ecc71;;
 `;
 
 const plusButton = css`
   font-size: 25px;
   font-weight: 600;
-  color: #C8E8E5;
+  color: #00B894;
   cursor: pointer;
 `;
 
@@ -555,7 +544,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div css={detailContainer}>
-        <div css={sportsLikesTitle}></div>
+          <h1 css={dcTitle}>선호 운동</h1>
           <div css={circleContainer}>
             {selectedSports.concat(new Array(3 - selectedSports.length).fill(null)).map((sport, index) => (
               <div key={index} css={circle} data-index={index} onClick={handleCircleClick}>

@@ -19,14 +19,14 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    //padding-top: 50px;
+    padding-top: 50px;
     
 `;
 
 const logoStyle= css`
-    width: 400px; 
-    height: 300px;
-    background-image: url('/images/logo_move2.gif');
+    width: 300px; 
+    height: 200px;
+    background-image: url('/images/5_plus.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -45,8 +45,8 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    padding: 30px 20px;
-    margin-top: 170px;
+    padding: 50px 20px;
+    margin-top: 75px;
     width: 400px;
 
 `;

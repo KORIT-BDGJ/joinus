@@ -7,7 +7,7 @@ export const mainContainer = css`
 export const logoStyle= css`
     width: 724px; 
     height: 125px;
-    background-image: url('/images/title_4.png');
+    background-image: url('/images/12_plus.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

@@ -26,12 +26,12 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 10px;
+    padding-top: 50px;
 `;
 const logoStyle= css`
     width: 310px; 
     height: 210px;
-    background-image: url('/images/register.png');
+    background-image: url('/images/6_plus.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -49,7 +49,7 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    margin-top: 100px;
+    margin-top: 75px;
     padding: 50px 20px;
     width: 400px;
 `;
@@ -67,24 +67,24 @@ const inputLabel = css`
 
 
 
-const registerButton = css`
+const loginButton = css`
     display: flex;
     justify-content:center;
     align-items: center;
     margin: 10px 0px ;
-    border: none;
+    border: 1px solid #dbdbdb;
     border-radius: 7px;
     width: 100%;
     height: 50px;
-    background-color: #C8E8E5;
-    color: black;
+    background-color: #2ecc71;
+    color: white;
     font-weight: 900;
     cursor: pointer;
     &:hover {
-    background-color: #A6CEC7;  // 대략적으로 #C8E8E5보다 조금 어둡게 설정하였습니다.
+    border: 1px solid #000000;
     }
     &:active {
-    background-color: #85B4A3;  // 대략적으로 #C8E8E5보다 훨씬 어둡게 설정하였습니다.
+    background-color: #27ae60;
     }
 `;
 
@@ -99,7 +99,7 @@ const searchButton = css`
     align-items: center;
     margin-left: 10px;
     border: none;
-    background-color : #C8E8E5;
+    background-color : #2ecc71;
     cursor: pointer;
     border-radius: 5px;
 `;
@@ -283,7 +283,7 @@ const UserRegister = () => {
                         </label>
                     </div>
 
-                    <button css={ registerButton } onClick={registerSubmit}>등록</button>
+                    <button css={ loginButton } onClick={registerSubmit}>등록</button>
                     
                 </div>
                 

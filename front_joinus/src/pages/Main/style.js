@@ -11,7 +11,7 @@ export const mainContainer = css`
 export const logoStyle= css`
     width: 724px; 
     height: 125px;
-    background-image: url('/images/title_3.png');
+    background-image: url('/images/12_plus.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -72,7 +72,7 @@ export const expandedButtonsContainer = (expandedIsOpen) => css`
     justify-content: center;
     align-items: center;
     margin: 5px 0px;
-    border: ${expandedIsOpen ? "none" : "none"};
+    border: ${expandedIsOpen ? "1px solid #dbdbdb" : "none"};
     border-radius: 7px;
     padding: 0px 20px;
     width: 100%;
@@ -184,7 +184,7 @@ export const listContainer = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: none;
+    border: 1px solid #dbdbdb;
     border-radius: 7px;
     padding: 3px;
     margin-bottom: 3px;
@@ -265,12 +265,12 @@ export const goToPageButton = css`
     cursor: pointer;
     
     &:active {
-        background-color: #C8E8E5;
+        background-color: #2ecc71;
     }
 `;
 
 export const nowPageButton = css`
-    background-color: #C8E8E5;
+    background-color: #2ecc71;
 `;
 
 export const createButton = css`
@@ -283,13 +283,13 @@ export const createButton = css`
     height: 25px;
     font-size: 16px;
     font-weight: 600;
-    background-color: #C8E8E5;
+    background-color: white;
     cursor: pointer;
 
     &:hover {
         background-color: rgba(0, 255, 0, 0.2);
     }
     &:active {
-        background-color: #C8E8E5;
+        background-color: #2ecc71;
     }
 `;

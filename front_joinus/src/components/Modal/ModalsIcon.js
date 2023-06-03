@@ -43,7 +43,8 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect, selectedSports}) => {
         {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
         {id: 21, title: "요가", icon: <GrYoga size={32} />},
         {id: 22, title: "하키", icon: <GiHockey size={32} />},
-        {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
+        {id: 23, title: "양궁", icon: <GiArcheryTarget size={32} />},
+        {id: 24, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
    
     return (
