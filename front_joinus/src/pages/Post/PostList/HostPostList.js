@@ -29,7 +29,16 @@ const listContainer = css`
 const logoStyle= css`
   width: 724px; 
   height: 125px;
-  background-image: url('/images/12_plus.png');
+  background-image: url('/images/title_6.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+
+const logoStyle2= css`
+  width: 724px; 
+  height: 125px;
+  background-image: url('/images/title_7.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -280,7 +289,7 @@ const cancelAttendPost = useMutation(async (postId) => {
       </div>
       <div css={listContainer}>
         <h1 css={logoTitle}>
-          <div css={logoStyle}>
+          <div css={logoStyle2}>
             {/* 신청 수락된 글   */}
           </div> 
         </h1>

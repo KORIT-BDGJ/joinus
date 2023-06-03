@@ -105,9 +105,66 @@ const footer = css`
     padding: 10px;
 `;
 
+const button_1= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_1.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+const button_2= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_2.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+const button_3= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_3.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+const button_4= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_4.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+const button_5= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_5.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+const button_6= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_6.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+
+const button_7= css`
+  width: 120px; 
+  height: 50px;
+  background-image: url('/images/button_7.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+
 const Sidebar = () => {
     
-    const queryClient = useQueryClient(); // 쿼리를 무효화시키기 위해 사용합니다.
 
     const principal = useQuery(
         ["principal"],
@@ -179,16 +236,16 @@ const Sidebar = () => {
             </header>
             <main css={main}>
                 <div>
-                <Link to={`/user/${principal.data.userId}/modification`}><ListButton title="내 정보 변경"><GrUserSettings /></ListButton></Link>
+                <Link to={`/user/${principal.data.userId}/modification`}><div css={button_1}></div></Link>
                 </div>
-                <Link to="/main"><ListButton title="운동 찾기"><BiHome /></ListButton></Link>
-                <Link to="/post/register"><ListButton title="운동 모집글 작성"><TfiWrite/></ListButton></Link>
-                <Link to={`/post/${principal.data.userId}/owner`}><ListButton title="내 모집글 보기"><TfiClipboard/></ListButton></Link>
-                <Link to={`/post/${principal.data.userId}/host`}><ListButton title="내 신청 보기"><TfiPencil/></ListButton></Link>
-                <Link to={`/post/finish`}><ListButton title="참여 완료한 글"><TfiPencil/></ListButton></Link>
+                <Link to="/main"><div css={button_2}></div></Link>
+                <Link to="/post/register"><div css={button_3}></div></Link>
+                <Link to={`/post/${principal.data.userId}/owner`}><div css={button_4}></div></Link>
+                <Link to={`/post/${principal.data.userId}/host`}><div css={button_5}></div></Link>
+                <Link to={`/post/finish`}><div css={button_6}></div></Link>
             </main>
             <footer css={footer}>
-                <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>
+                <div css={button_7} onClick={logoutClickHandle}></div>
             </footer>
         </div>
     );

@@ -22,12 +22,12 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 50px;
+    padding-top: 10px;
 `;
 const logoStyle= css`
     width: 310px; 
     height: 210px;
-    background-image: url('/images/6_plus.png');
+    background-image: url('/images/register.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -45,7 +45,7 @@ const mainContainer = css`
     align-items: center;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    margin-top: 75px;
+    margin-top: 100px;
     padding: 50px 20px;
     width: 400px;
 `;
