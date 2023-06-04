@@ -502,8 +502,7 @@ const UserInfo = () => {
     if (sport === 20) return <GrGamepad size={size} />;
     if (sport === 21) return <GrYoga size={size} />;
     if (sport === 22) return <GiHockey size={size} />;
-    if (sport === 23) return <GiArcheryTarget size={size} />;
-    if (sport === 24) return <GiBoxingGlove size={size} />;
+    if (sport === 23) return <GiBoxingGlove size={size} />;
   };
   
  const convertedSports = selectedSports.map(sport => parseInt(sport));

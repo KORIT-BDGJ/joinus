@@ -38,6 +38,8 @@ public class Post {
 	private Gender gender;
 	
 	public SearchPostRespDto toDto() {
+		
+		
 		return SearchPostRespDto.builder()
 				.postId(postId)
 				.writerNickName(user.getUserInfo().getNickName())
