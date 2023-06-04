@@ -27,7 +27,7 @@ public class PostController {
 
     private final PostService postService;
     
-    
+    // 해당 게시글 상세보기
     @GetMapping("/post/{postId}")
 	public ResponseEntity<?> getPost(@PathVariable int postId) {
 		return ResponseEntity.ok().body(postService.getPost(postId)) ;
