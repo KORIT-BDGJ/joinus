@@ -146,10 +146,10 @@ const Main = () => {
 
         return response.data;
     },{
-        enabled: refresh,
         onSuccess: () => {
             setRefresh(false);
-        }
+        },
+        refetchInterval: 3000
     });
 
     if(principal.isLoading || sportsLikes.isLoading || getSports.isLoading || getRegions.isLoading || getSearchs.isLoading || getPostList.isLoading) {
