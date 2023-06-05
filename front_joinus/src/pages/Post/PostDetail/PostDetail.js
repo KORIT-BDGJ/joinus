@@ -1015,7 +1015,8 @@ const PostDetail = () => {
                         </div>
                     </div>
                     <div css={applicantList(applicantShow)}>
-                        <ApplicantList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalApplicantCount={updateTotalApplicantCount}/>
+                        <ApplicantList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalApplicantCount={updateTotalApplicantCount}
+                        totalAttendCount={totalAttendCount} recruitsCount={getPost.data.data.recruitsCount}/>
                     </div>
                     <div>
                         <div css={attendTitle}>
