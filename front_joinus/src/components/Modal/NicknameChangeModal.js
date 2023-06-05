@@ -29,14 +29,14 @@ const inputWrapper = css`
 
 const label = css`
   display: block;
-  font-size: 16px;
+  font-size: 25px;
   margin-bottom: 5px;
 `;
 
 const input = css`
   width: 100%;
   padding: 10px;
-  font-size: 16px;
+  font-size: 25px;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
 `;
@@ -46,26 +46,38 @@ const buttonContainer = css`
   justify-content: flex-end;
 `;
 
+const confirmButton = css`
+  
+  background-color: #C8E8E5;
+  color: black;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:active{
+    background-color: #85B4A3;
+  }
+`;
 const cancelButton = css`
   background-color: #dbdbdb;
-  color: white;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
-  margin-right: 10px;
+  font-weight: bold;
   cursor: pointer;
+  &:active {
+    background-color: #b5b5b5; /* 더 진한 색상으로 변경 */
+  }
 `;
 
-const confirmButton = css`
-  background-color: #2ecc71;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 const errorMessage = css`
   color: red;
-  font-size: 14px;
+  font-size: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
 `;
@@ -130,8 +142,8 @@ const NicknameChangeModal = ({ closeModal, updateNickname }) => {
           {error && <div css={errorMessage}>{error}</div>}
         </div>
         <div css={buttonContainer}>
-          <button css={cancelButton} onClick={closeModal}>취소</button>
           <button css={confirmButton} onClick={handleSubmit}>확인</button>
+          <button css={cancelButton} onClick={closeModal}>취소</button>
         </div>
       </div>
     </div>

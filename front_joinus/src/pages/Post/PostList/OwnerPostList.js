@@ -45,7 +45,8 @@ const list = css`
   width: 100%;
   max-width: 800px;
   margin-top: 30px;
-  border: 1px solid #dbdbdb;
+  border: 2px solid #C8E8E5;
+  border-radius: 7px;
   padding: 0;
   list-style: none;
   display: flex;
@@ -59,7 +60,7 @@ const listItem = css`
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px;
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 2px solid #C8E8E5;
 
   &:last-child {
     border-bottom: none;
@@ -77,17 +78,22 @@ const postTitle = css`
 `;
 
 const buttons = css`
-  background-color: white;
-  border: 1px solid #dbdbdb;
+  border: none;
   border-radius: 5px;
+  margin-right: 5px;
   width: 70px;
   height: 30px;
-  margin-right: 5px;
+  font-weight: bold;
+  background-color: #C8E8E5;
   cursor: pointer;
 
   &:hover {
-  border: 1px solid black;
+    background-color:  #A7DED9;
   }
+`;
+
+const noPost = css`
+  font-size: 25px;
 `;
 
 
@@ -172,7 +178,7 @@ const OwnerPostList = () => {
         </div>
       </h1>
       {getOwnerPostList.data.length === 0 ? (
-        <div>게시물이 없습니다.</div>
+        <div css={noPost}>게시물이 없습니다.</div>
       ) : (
         <ul css={list}>
           {getOwnerPostList.data.map((post) => (

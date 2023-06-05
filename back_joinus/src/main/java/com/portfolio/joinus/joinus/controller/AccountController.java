@@ -1,7 +1,5 @@
 package com.portfolio.joinus.joinus.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -92,11 +90,5 @@ public class AccountController {
 		
 		return ResponseEntity.ok().body(authenticationService.changeSportsLikes(sportsLikesChangeReqDto));
 	}
-	@PostMapping("/nickname")
-	public ResponseEntity<?> getNicknames(@RequestBody List<Long> userIds) {
-	    List<String> nicknames = authenticationService.getNicknames(userIds);
-	    return ResponseEntity.ok().body(nicknames);
-	}
-
-	
+		
 }

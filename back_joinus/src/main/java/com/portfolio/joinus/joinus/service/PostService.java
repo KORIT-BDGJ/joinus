@@ -107,8 +107,12 @@ public class PostService {
 
 
     public Map<String, Object> getPostList(SearchPostReqDto searchPostReqDto) {
+    	
+    
     	int userId = ((PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        List<SearchPostRespDto> list = new ArrayList<>();
+        
+    	
+    	List<SearchPostRespDto> list = new ArrayList<>();
 
         int index = (searchPostReqDto.getPage() - 1) * 7;
 
@@ -120,17 +124,20 @@ public class PostService {
         map.put("searchValue", searchPostReqDto.getSearchValue());
         map.put("sort", searchPostReqDto.getSort());
         map.put("userId", userId);
-
+        System.out.println("Map: "+map);
+        
         postRepository.getPostList(map).forEach(post -> {
-            list.add(post.toDto());
+        	if(post != null) {
+                list.add(post.toDto());
+            }
         });
-
         int totalCount = postRepository.getTotalCount(map);
+        //System.out.println(totalCount);
 
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("totalCount", totalCount);
         responseMap.put("postList", list);
-
+        
         return responseMap;
     }
 

@@ -36,7 +36,7 @@ const infoImage = css`
     justify-content: center;
     width: 35px;
     height: 35px;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius:  50%;
     font-size: 10px;
 `;
@@ -65,14 +65,16 @@ const attendButtonContainer = css`
 `;
 
 const attendButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color:  #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
+    font-weight: bold;
+
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+    background-color:  #A7DED9;
     }
 `;
 
@@ -134,7 +136,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                                         <img
                                             css={imgIcon}
                                             src={"http://localhost:8080/image/profile/" + attendData.image}
-                                            alt="Profile Image"
+                                            alt="ProfileImage"
                                         />
                                     ) : (
                                         <span>{attendData.nickName}</span>

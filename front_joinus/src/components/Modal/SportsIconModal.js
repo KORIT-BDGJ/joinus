@@ -30,7 +30,7 @@ const modalTitle = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   margin-bottom: 20px;
 `;
@@ -55,12 +55,11 @@ const sportsIcon = css`
   height: 50px; // or other appropriate value
 
     &:hover {
-    background-color: rgba(0, 255, 0, 0.2);
+    background-color: #C8E8E5;
     }
   
     &:active {
-    border: 2px solid green;
-    
+    background-color: #93b0ad;
     }
 `;
 
@@ -72,33 +71,37 @@ const modalButtonContainer = css`
 `;
 
 const modalConfirmButton = css`
-  background-color: #333;
+  background-color: #C8E8E5;
   color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin: 20px 10px;
-  font-size: 16px;
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
 
   &:hover {
-    background-color: #555;
+    background-color: #93b0ad;
   }
 `;
 
 const modalCancelButton = css`
   
-  background-color: #333;
+  background-color: #dbdbdb;
   color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin: 20px 10px;
-  font-size: 16px;
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
 
   &:hover {
-    background-color: #555;
+    background-color:  #b5b5b5;
   }
 `;
 
@@ -140,7 +143,7 @@ const SportsIconModal = ({
     return selectedSport === sport
       ? css`
           ${sportsIcon};
-          background-color: rgba(0, 255, 0, 0.2);
+          background-color: #93b0ad;
           border-radius: 0;
         `
       : sportsIcon;
@@ -160,10 +163,10 @@ const SportsIconModal = ({
           />
         </div>
         <div css={modalButtonContainer}>
-          <button onClick={handleConfirm} css={modalCancelButton}>
+          <button onClick={handleConfirm} css={modalConfirmButton}>
             확인
           </button>
-          <button onClick={closeModal} css={modalConfirmButton}>
+          <button onClick={closeModal} css={modalCancelButton}>
             취소
           </button>
         </div>

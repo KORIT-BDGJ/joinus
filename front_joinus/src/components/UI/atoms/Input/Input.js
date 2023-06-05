@@ -9,6 +9,7 @@ const input = css`
     outline:none;
     padding: 5px 10px;
     width: 100%;
+    font-size: 25px;
 `;
 
 const Input = ( { type, placeholder, onChange, name, onClick, readOnly,value, disabled} ) => {

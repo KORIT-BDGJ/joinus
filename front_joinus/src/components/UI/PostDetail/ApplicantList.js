@@ -66,17 +66,36 @@ const applicantButtonContainer = css`
 `;
 
 const applicantButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
     margin-right: 5px;
+    font-weight: bold;
     cursor: pointer;
 
-    &:hover {
-    border: 1px solid black;
+    &:active {
+        background-color: #A7DED9;
     }
 `;
+
+const rejectButton = css`
+    background-color: #dbdbdb;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    margin-right: 5px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:active {
+        background-color: #b5b5b5;
+    }
+
+
+
+`;
+
 
 
 
@@ -159,7 +178,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                                     <img
                                         css={imgIcon}
                                         src={"http://localhost:8080/image/profile/" + applicantData.image}
-                                        alt="Profile Image"
+                                        alt="ProfileImage"
                                     />
                                 ) : (
                                     <span>{applicantData.nickName}</span>
@@ -177,7 +196,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
                                         onClick={() => acceptApplicantUser(applicantData.userId, applicantData.stateId, applicantData.levelId)}>
                                         수락
                                         </button>
-                                        <button css={applicantButton} onClick={() => deleteApplicantUser(applicantData.userId)}>거절</button>
+                                        <button css={rejectButton} onClick={() => deleteApplicantUser(applicantData.userId)}>거절</button>
                                     </>
                                 )}
                             </div>

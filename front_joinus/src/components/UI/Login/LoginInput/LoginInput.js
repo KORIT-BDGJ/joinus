@@ -10,12 +10,11 @@ import Input from '../../atoms/Input/Input';
 const loginInput = css`
     position: relative;
     margin-bottom: 5px;
-    border-bottom: 1px  solid #dbdbdb;
+    border-bottom: 2px  solid #dbdbdb;
     padding: 0px 5px 0px 40px ;
     width: 100%;
 `;
 const icon = css`
-
     position: absolute;
     transform:  translateY(-50%);
     top: 50%;

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import * as S from './style';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FcSportsMode } from 'react-icons/fc';
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -57,6 +57,7 @@ const Main = () => {
         const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     });
+
 
     const sportsIcons = [
         {id: 0, title: "전체", icon: <MdOutlineListAlt size={32} /> },
@@ -146,10 +147,10 @@ const Main = () => {
 
         return response.data;
     },{
-        enabled: refresh,
         onSuccess: () => {
             setRefresh(false);
-        }
+        },
+        refetchInterval: 500
     });
 
     if(principal.isLoading || sportsLikes.isLoading || getSports.isLoading || getRegions.isLoading || getSearchs.isLoading || getPostList.isLoading) {

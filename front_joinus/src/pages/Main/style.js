@@ -42,9 +42,12 @@ export const inputBox = css`
 `;
 
 export const selectSearch = css`
+    display: flex;
+    justify-content:center;
+    align-items: flex-start;
     width: 19%;
     border-radius: 7px;
-    font-size: 14px;
+    font-size: 25px;
 `;
 
 export const searchInput = css`
@@ -53,6 +56,7 @@ export const searchInput = css`
     padding: 10px;
     width: 60%;
     height: 100%;
+    font-size: 25px;
 `;
 
 export const detailsSearchBox = css`
@@ -63,6 +67,7 @@ export const detailsSearchBox = css`
     border-radius: 7px;
     width: 19%;
     height: 100%;
+    font-weight: bold;
     background-color: white;
     cursor: pointer;
 `;
@@ -89,6 +94,7 @@ export const expandedOptions = css`
     align-items: center;
     width: 100%;
     height: 100%;
+    font-size: 20px;
 `;
 
 export const buttonContents = css`
@@ -177,6 +183,7 @@ export const noPageText = css`
     position: absolute;
     top: 50%;
     left: 50%;
+    font-size: 25px;
     transform: translate(-50%, -50%);
 `;
 
@@ -206,9 +213,9 @@ export const postIconBox = css`
 export const postMainBox = css`
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 20px;
-    font-size: 20px;
+    font-size: 30px;
 `;
 
 export const postWriterName = css`
@@ -219,7 +226,7 @@ export const postWriterName = css`
 `;
 
 export const imgIcon = css`
-    border: 1px solid #999;
+    border: none;
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -229,6 +236,8 @@ export const headerNickName = css`
     //text-align: center;
     border: none;
     width: 140px;
+    font-size: 25px;
+    font-weight: bold;
     margin-left: 10px;
     background-color: #C8E8E5;
     cursor: pointer;
@@ -261,6 +270,7 @@ export const goToPageButton = css`
     margin: 0 1px;
     width: 25px;
     height: 25px;
+    font-weight: bold;
     background-color: white;
     cursor: pointer;
     
@@ -282,7 +292,7 @@ export const createButton = css`
     border-radius: 7px;
     width: 19%;
     height: 25px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     background-color: #C8E8E5;
     cursor: pointer;
@@ -294,4 +304,8 @@ export const createButton = css`
     &:active {
         background-color: #85B4A3;
     }
+`;
+
+export const iconSize = css`
+    font-size: 25px;
 `;

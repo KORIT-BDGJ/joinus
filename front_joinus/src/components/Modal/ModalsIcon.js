@@ -11,8 +11,11 @@ import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad, GrYoga } from 'react-icons/gr';
 
 const iconTitle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 10px;
-  font-size: 10px;
+  font-size: 18px;
   font-weight: 600;
   text-align: center;
   white-space: nowrap;

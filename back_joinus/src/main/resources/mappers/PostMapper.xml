@@ -21,7 +21,7 @@
 		<association property="state" resultMap="StateMap"></association>
 		<association property="region" resultMap="RegionMap"></association>
 		<association property="gender" resultMap="GenderMap"></association>
-		
+		<association property="point" resultMap="PointMap"></association>
 	</resultMap>
 	
 	<resultMap type="com.portfolio.joinus.joinus.entity.User" id="UserMap">
@@ -121,7 +121,10 @@
 			rt.region_name,
 			
 			gt.gender_id,
-			gt.gender_name
+			gt.gender_name,
+			
+			pnt.user_id,
+			pnt.point
 		FROM 
 			post_tb pt
 			LEFT OUTER JOIN user_tb ut ON (ut.user_id = pt.writer_id)
@@ -131,6 +134,7 @@
 			LEFT OUTER JOIN state_tb stt ON (stt.state_id = pt.state_id)
 			LEFT OUTER JOIN region_tb rt ON (rt.region_id = pt.region_id)
 			LEFT OUTER JOIN gender_tb gt ON (gt.gender_id = pt.gender_id)
+		    LEFT OUTER JOIN point_tb pnt ON (pnt.user_id = ut.user_id)
 		WHERE
 			pt.post_id = #{postId}
 	</select>

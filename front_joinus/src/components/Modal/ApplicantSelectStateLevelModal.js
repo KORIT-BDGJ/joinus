@@ -28,7 +28,8 @@ const inputWrapper = css`
 
 const label = css`
   display: block;
-  font-size: 16px;
+  font-size: 30px;
+  font-weight: bold;
   margin-bottom: 5px;
 `;
 
@@ -47,19 +48,35 @@ const buttonContainer = css`
 
 const cancelButton = css`
   background-color: #dbdbdb;
-  color: white;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
-  margin-right: 10px;
+  font-weight: bold;
   cursor: pointer;
+
+  &:active {
+    background-color: #b9b9b9;
+  }
 `;
 
 const confirmButton = css`
-  background-color: #2ecc71;
-  color: white;
+  background-color: #C8E8E5;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
+  font-weight: bold;
+  margin-right: 10px;
   cursor: pointer;
+
+  &:active {
+    background-color: #A7DED9;
+  }
+`;
+
+const radioBox = css`
+  font-size: 25px;
 `;
 
 
@@ -111,7 +128,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
         <div css={modalContent}>
           <div css={inputWrapper}>
               <label css={label}>신청자의 상태를 선택하세요</label>
-              <label>
+              <label css={radioBox}>
                 <input
                   type="radio"
                   name="state"
@@ -120,7 +137,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
                 />
                 알려줄게요
               </label>
-              <label>
+              <label css={radioBox}>
                 <input
                   type="radio"
                   name="state"
@@ -129,7 +146,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
                 />
                 알려주세요
               </label>
-              <label>
+              <label css={radioBox}>
                 <input
                   type="radio"
                   name="state"
@@ -141,7 +158,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
           </div>
           <div css={inputWrapper}>
               <label css={label}>신청자의 레벨을 선택하세요</label>
-              <label>
+              <label css={radioBox}>
                 <input
                   type="radio"
                   name="level"
@@ -150,7 +167,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
                 />
                 초급
               </label>
-              <label>
+              <label css={radioBox}>
                 <input
                   type="radio"
                   name="level"
@@ -159,7 +176,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
                 />
                 중급
               </label>
-              <label>
+              <label css={radioBox}>
                 <input
                   type="radio"
                   name="level"
@@ -170,8 +187,8 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
               </label>
           </div>
           <div css={buttonContainer}>
-            <button css={cancelButton} onClick={modalState}>취소</button>
             <button css={confirmButton} onClick={handleSubmit}>확인</button>
+            <button css={cancelButton} onClick={modalState}>취소</button>
           </div>
         </div>
       </div>
