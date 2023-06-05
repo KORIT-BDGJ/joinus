@@ -213,7 +213,7 @@ const genderBox = css`
 `;
 
 const genderName = css`
-    font-size: 20px;
+    font-size: 25px;
     padding-right: 5px;
 `;
 
@@ -405,15 +405,15 @@ const footHeader = css`
 `;
 
 const regionName = css `
-    font-size: 20px
+    font-size: 25px;
 `;
 
 const deadlineName = css`
-    font-size: 20px;
+    font-size: 25px;
 `;
 
 const recruitTextBox = css`
-    font-size: 20px;
+    font-size: 25px;
 `;
 
 const PostDetail = () => {

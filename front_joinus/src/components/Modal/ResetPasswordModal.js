@@ -31,6 +31,7 @@ const modalContent = css`
 
 const h1 = css`
   text-align: center;
+  font-size: 25px;
   font-weight: bold;
   /* 추가적인 스타일링 */
 `;
@@ -41,7 +42,7 @@ const inputWrapper = css`
 
 const label = css`
   display: block;
-  font-size: 16px;
+  font-size: 25px;
   margin-bottom: 5px;
 `;
 
@@ -61,31 +62,37 @@ const buttonContainer = css`
 
 const cancelButton = css`
   background-color: #dbdbdb;
-  color: white;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
   margin-right: 10px;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
 `;
 
 const confirmButton = css`
-  background-color: #2ecc71;
-  color: white;
+  background-color: #85B4A3;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
   margin-right: 10px;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
 `;
 
 const errorMessage = css`
   color: red;
-  font-size: 14px;
+  font-size: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
 `;
 
 const inputFocused = css`
-  border: 3px solid #2ecc71;
+  border: 3px solid #85B4A3;
 `;
 
 const ResetPasswordModal = ({ setIsOpen , setResetSuccess }) => {

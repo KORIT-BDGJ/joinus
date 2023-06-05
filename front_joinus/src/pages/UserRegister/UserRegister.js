@@ -61,7 +61,7 @@ const authForm = css`
 
 const inputLabel = css`
     margin-left: 5px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -98,10 +98,13 @@ const searchButton = css`
     justify-content:center;
     align-items: center;
     margin-left: 10px;
+    width: 30px;
+    height: 30px;
     border: none;
     background-color : #C8E8E5;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 20px;
 
     &:hover {
     background-color: #85B4A3;

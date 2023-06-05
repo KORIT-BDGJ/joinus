@@ -290,7 +290,7 @@ const PostRegister = () => {
                                 options={getRegions.data.map(region => ({
                                     "value": region.regionId, "label": region.regionName
                                 }))}
-                                placeholder="지역을 고르시오."
+                                placeholder="지역을 고르시오"
                             />}
                     </div>
                 </div>
@@ -309,7 +309,7 @@ const PostRegister = () => {
                                 showTimeSelect
                                 minDate={minSelectableDate}
                                 dateFormat="yyyy년 MM월 dd일 HH시 mm분"
-                                placeholderText="날짜를 선택하시오."
+                                placeholderText="날짜를 선택하시오 "
                             />
                         </div>
                     </div>
@@ -345,9 +345,9 @@ const PostRegister = () => {
                                         checked={gender === `${genderOption.genderId}`}
                                         onChange={genderHandleChange}
                                     />
-                                    {genderOption.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
-                                    {genderOption.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
-                                    {genderOption.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
+                                    {genderOption.genderId === 1 && <i className="fas fa-male" ><BiMale /></i>}
+                                    {genderOption.genderId === 2 && <i className="fas fa-female" ><BiFemale /></i>}
+                                    {genderOption.genderId === 3 && <i className="fas fa-maleFemale" ><BiMaleFemale /></i>}
                                 </label>
                             ))}
                         </div>
@@ -358,7 +358,7 @@ const PostRegister = () => {
                         <p css={S.postTitle}>모집 소개글</p>
                     </div>
                     <div css={S.postInputBox}>
-                        <input 
+                        <textarea 
                             css={S.postWriteInput} 
                             type="text" 
                             value={textPost} 

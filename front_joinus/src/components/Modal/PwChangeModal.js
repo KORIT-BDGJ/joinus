@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
 
 const modalContainer = css`
   position: fixed;
@@ -31,12 +30,12 @@ const inputWrapper = css`
 
 const label = css`
   display: block;
-  font-size: 16px;
+  font-size: 25px;
   margin-bottom: 5px;
 `;
 
 const input = css`
-  width: calc(100% - 80px);
+  width: calc(100% - 8px);
   padding: 10px;
   font-size: 16px;
   border: 1px solid #dbdbdb;
@@ -44,7 +43,7 @@ const input = css`
 `;
 
 const inputError = css`
-  width: calc(100% - 80px);
+  width: calc(100% - 8px);
   padding: 10px;
   font-size: 16px;
   border: 2px solid red;
@@ -52,15 +51,16 @@ const inputError = css`
 `;
 
 const inputSuccess = css`
-  width: calc(100% - 80px);
+  width: calc(100% - 8px);
   padding: 10px;
   font-size: 16px;
-  border: 2px solid #2ecc71; 
+  border: none;
+  border: 2px solid #C8E8E5; 
   border-radius: 5px;
 `;
 
 const inputActive = css`
-  width: calc(100% - 80px);
+ width: calc(100% - 8px);
   padding: 10px;
   font-size: 16px;
   border: 2px solid black; 
@@ -72,33 +72,51 @@ const buttonContainer = css`
   justify-content: flex-end;
 `;
 
-const cancelButton = css`
-  background-color: #dbdbdb;
-  color: white;
+const confirmButton = css`
+  background-color: #C8E8E5;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
   margin-right: 10px;
+  font-weight: bold;
   cursor: pointer;
+
+  &:active{
+    background-color: #85B4A3;
+  }
+`;
+const cancelButton = css`
+  background-color: #dbdbdb;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:active {
+    background-color: #b5b5b5; /* 더 진한 색상으로 변경 */
+  }
 `;
 
-const confirmButton = css`
-  background-color: #2ecc71;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 
 
 const confirmInputButton = css`
   width: 70px;
-  background-color: #2ecc71;
-  color: white;
+  background-color: #C8E8E5;
+  color: black;
   padding: 8px 12px; /* Adjusted padding */
+  border: none;
   border-radius: 5px;
   margin-left: 10px; /* Added margin-left */
+  font-weight: bold;
   cursor: pointer;
+
+  &:active{
+    background-color: #85B4A3;
+  }
 `;
 
 const inputContainer = css`
@@ -108,7 +126,7 @@ const inputContainer = css`
 
 const errorMessage = css`
   color: red;
-  font-size: 14px;
+  font-size: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
 `;
@@ -290,8 +308,8 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
           </>
         )}
         <div css={buttonContainer}>
-          <button css={cancelButton} onClick={closeModal}>취소</button>
           <button css={confirmButton} onClick={handleSubmit}>변경</button>
+          <button css={cancelButton} onClick={closeModal}>취소</button>
         </div>
       </div>
     </div>

@@ -55,12 +55,11 @@ const sportsIcon = css`
   height: 50px; // or other appropriate value
 
     &:hover {
-    background-color: #93b0ad;
+    background-color: #C8E8E5;
     }
   
     &:active {
-    border: 2px solid #93b0ad;
-    
+    background-color: #93b0ad;
     }
 `;
 
@@ -84,13 +83,13 @@ const modalConfirmButton = css`
   font-weight: bold;
 
   &:hover {
-    background-color: #555;
+    background-color: #93b0ad;
   }
 `;
 
 const modalCancelButton = css`
   
-  background-color: #C8E8E5;
+  background-color: #dbdbdb;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -102,7 +101,7 @@ const modalCancelButton = css`
   font-weight: bold;
 
   &:hover {
-    background-color: #555;
+    background-color:  #b5b5b5;
   }
 `;
 

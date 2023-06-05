@@ -66,22 +66,22 @@ export const postInputBox = css`
 
 export const postInput = css`
     border: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 3px solid #eee;
     width: 400px;
     height: 50px;
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
     text-align: center;
     background-color: #C8E8E5;
 
     &::placeholder {
         text-align: center;
-        color: black;
+        color: #777;
         font-size: 25px;
     }
 
     &:focus {
         outline: none;
-        border-bottom: 1px solid #999;
     }
 
     &:focus::placeholder {
@@ -101,12 +101,6 @@ export const sportIcon = css`
     cursor: pointer;
 `;
 
-export const selectStyles = css`
-    width: 130px;
-    height: 40px;
-    background-color: #C8E8E5;
-`;
-
 export const selectLevelBox = css`
     display: flex;
     justify-content: center;
@@ -117,12 +111,14 @@ export const selectLevelBox = css`
 
 export const selectLevel = css`
     width: 130px;
+    font-size: 23px;
     height: 40px;
 `;
 
 export const selectUserStatus = css`
     border-radius: 7px;
     width: 180px;
+    font-size: 23px;
     height: 40px;
 `;
 
@@ -136,13 +132,21 @@ export const postSelesctsBox = css`
 export const selectCountry = css`
     width: 200px;
     height: 40px;
+    font-size: 25px;
 `;
 
 export const postSelectDate = css`
+    border: none;
     border-radius: 5px;
     width: 200px;
     height: 40px;
     cursor: pointer;
+
+    &:focus{
+        outline: none;
+    }
+
+    
 `;
 
 export const selectCount = css`
@@ -155,24 +159,27 @@ export const countBox = css`
     justify-content: center;
     align-items: center;
     margin: 0px 5px;
-    border: 1px solid #999;
-    border-radius: 70%;
+    border: none;
+    border-radius: 50%;
     width: 50px;
     text-align: end;
     pointer-events: none;
+    font-size: 25px;
+    font-weight: bold;
 `;
 
 export const countButtons = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #999;
+    border: none;
     border-radius: 50%;
     background-color: #C8E8E5;
     margin: 0px 5px;
     width: 40px;
     height: 40px;
-    font-size: 18px;
+    font-size: 25px;
+    font-weight: bold;
     cursor: pointer;
 `;
 
@@ -187,9 +194,29 @@ export const buttonRadioBox = css`
 `;
 
 export const buttonRadio = css`
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 70%;
+    height: 70%;
+    border: none;
+    border-radius: 50%;
+    background-color: white; /* 흰색으로 변경 */
+    box-sizing: border-box;
+    margin: 15%;
+  }
+
+  &:checked::before {
+    background-color: #333; /* 검정색으로 변경 */
+  }
+
+  &:checked {
+    pointer-events: none; /* 다른 버튼을 클릭하지 못하도록 이벤트 비활성화 */
+  }
 `;
 
 export const postWriteInput = css`
@@ -197,6 +224,12 @@ export const postWriteInput = css`
     border-radius: 7px;
     width: 400px;
     height: 60px;
+    font-size: 25px;
+    resize: none;
+
+    &:focus{
+        outline: none;
+    }
 `;
 
 export const buttonBox = css`
@@ -209,30 +242,32 @@ export const buttonBox = css`
 
 export const modifyButton = css`
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     margin-right: 50px;
     width: 150px;
     height: 45px;
-    font-size: 18px;
+    font-size: 25px;
+    font-weight: bold;
     background-color: #C8E8E5;
     cursor: pointer;
 
-    &:hover {
-        font-weight: 600;
+    &:active {
+        background-color: #A7DED9;
     }
 `;
 
 export const cancelButton = css`
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     margin-left: 40px;
     width: 150px;
     height: 45px;
-    font-size: 18px;
-    background-color: #C8E8E5;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: #dbdbdb;
     cursor: pointer;
 
-    &:hover {
-        font-weight: 600;
+    &:active {
+        background-color: #b5b5b5;
     }
 `;

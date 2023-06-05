@@ -14,7 +14,7 @@ const container = css`
 
 const inputLabel = css`
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 25px;
     font-weight: 600;
 `;
 const headerContainer = css`
@@ -26,7 +26,7 @@ const headerContainer = css`
 
 const title = css`
   font-weight : 600 ;
-  font-size: 30px;
+  font-size: 35px;
 
 `;
 
@@ -37,8 +37,8 @@ const emailContainer = css`
 
 const confirmButton = css`
     width: 50px;
-    height: 20px;
-    font-size: 13px;
+    height: 30px;
+    font-size: 18px;
     font-weight: 600;
     display: flex;
     justify-content:center;
@@ -109,13 +109,7 @@ const ForgetPassword = () => {
                 </div>
 
             </main>
-
-            <footer>
-
-            </footer>
-
-            
-             
+ 
         </div>
   );
 };

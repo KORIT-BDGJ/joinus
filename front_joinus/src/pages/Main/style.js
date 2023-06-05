@@ -305,3 +305,7 @@ export const createButton = css`
         background-color: #85B4A3;
     }
 `;
+
+export const iconSize = css`
+    font-size: 25px;
+`;

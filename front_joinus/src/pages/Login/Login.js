@@ -40,9 +40,9 @@ const mainContainer = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #dbdbdb;
+    border: 2px solid #C8E8E5;
     border-radius: 10px;
-    padding: 30px 20px;
+    padding: 20px 20px;
     margin-top: 170px;
     width: 400px;
 
