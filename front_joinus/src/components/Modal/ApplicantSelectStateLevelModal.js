@@ -91,11 +91,11 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
   const handleNewStateChange = (e) => {
     const selectedStateValue = e.target.value;
     
-    if (selectedStateValue === '알려줄게요') {
+    if (selectedStateValue === '알려주세요') {
       setNewStateId(1);
-    } else if (selectedStateValue === '알려주세요') {
-      setNewStateId(2);
     } else if (selectedStateValue === '같이해요') {
+      setNewStateId(2);
+    } else if (selectedStateValue === '알려줄게요') {
       setNewStateId(3);
     }
   };
@@ -132,15 +132,6 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
                 <input
                   type="radio"
                   name="state"
-                  value="알려줄게요"
-                  onClick={handleNewStateChange}
-                />
-                알려줄게요
-              </label>
-              <label css={radioBox}>
-                <input
-                  type="radio"
-                  name="state"
                   value="알려주세요"
                   onClick={handleNewStateChange}
                 />
@@ -154,6 +145,15 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
                   onClick={handleNewStateChange}
                 />
                 같이해요
+              </label>
+              <label css={radioBox}>
+                <input
+                  type="radio"
+                  name="state"
+                  value="알려줄게요"
+                  onClick={handleNewStateChange}
+                />
+                알려줄게요
               </label>
           </div>
           <div css={inputWrapper}>

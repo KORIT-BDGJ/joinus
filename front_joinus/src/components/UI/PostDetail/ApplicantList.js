@@ -99,7 +99,7 @@ const rejectButton = css`
 
 
 
-const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount }) => {
+const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount, totalAttendCount, recruitsCount }) => {
     const queryClient = useQueryClient();
 
 
@@ -118,6 +118,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
     });
 
     const applicantAccept = useMutation(async ({ postId, applicantUserId, applicantStateId, applicantLevelId }) => {
+        
         const option = {
             headers: {
                 "Content-Type": "application/json",
@@ -158,6 +159,11 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount 
     };
 
     const acceptApplicantUser = (userId, stateId, levelId) => {
+        if (totalAttendCount === recruitsCount) {
+            // 수락 버튼을 누를 수 없는 경우 요청 취소 및 실패 알림
+            alert("참여인원이 가득 찼습니다.");
+            return;
+        }
         applicantAccept.mutate({ postId, applicantUserId: userId, applicantStateId: stateId, applicantLevelId: levelId });
     };
     
