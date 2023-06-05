@@ -1,13 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import AlertModal from '../../../components/Modal/AlertModal';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const container = css`
   display: flex;
@@ -29,7 +25,16 @@ const listContainer = css`
 const logoStyle= css`
   width: 724px; 
   height: 125px;
-  background-image: url('/images/12_plus.png');
+  background-image: url('/images/title_6.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+`;
+
+const logoStyle2= css`
+  width: 724px; 
+  height: 125px;
+  background-image: url('/images/title_7.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -57,7 +62,8 @@ const title = css`
 const list = css`
   width: 650px;
   margin: 30px auto;
-  border: 1px solid #dbdbdb;
+  border: 2px solid #C8E8E5;
+  border-radius: 7px;
   padding: 0;
   list-style: none;
   display: flex;
@@ -72,10 +78,11 @@ const listItem = css`
   flex-direction: column;
   justify-content: space-between;
   padding: 10px;
+  border-bottom: 2px solid #C8E8E5;
+
   &:last-child {
     border-bottom: none;
   }
-  border-bottom: 1px solid #dbdbdb;
 `;
 
 const postInfo = css`
@@ -101,16 +108,17 @@ const postTitle = css`
 `;
 
 const buttons = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius: 5px;
+    margin-right: 5px;
     width: 50px;
     height: 30px;
-    margin-right: 5px;
+    font-weight: bold;
+    background-color: #C8E8E5;
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+      background-color: #A7DED9;
     }
 `;
 
@@ -148,6 +156,10 @@ const resetButton = css`
   font-size: 20px;
   color: #000;
   cursor: pointer;
+`;
+
+const noPost = css`
+  font-size: 25px;
 `;
 
 const HostPostList = () => {
@@ -262,7 +274,7 @@ const cancelAttendPost = useMutation(async (postId) => {
           </div>
         </h1>
         {getHostApplicantList.data.length === 0 ? (
-        <div>게시물이 없습니다.</div>
+        <div css={noPost}>신청한 글이 없습니다.</div>
         ) : (
         <div css={list}>
           {getHostApplicantList.data.map((post) => (
@@ -280,12 +292,12 @@ const cancelAttendPost = useMutation(async (postId) => {
       </div>
       <div css={listContainer}>
         <h1 css={logoTitle}>
-          <div css={logoStyle}>
+          <div css={logoStyle2}>
             {/* 신청 수락된 글   */}
           </div> 
         </h1>
         {getHostAttendList.data.length === 0 ? (
-        <div>게시물이 없습니다.</div>
+        <div css={noPost}>수락된 글이 없습니다.</div>
         ) : (
         <div css={list}>
           {getHostAttendList.data.map((post) => (

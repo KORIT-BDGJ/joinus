@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class AttendListRespDto {
     private int postId;
+    private int writerId;
     private int userId;
     private String image;
     private String nickName;

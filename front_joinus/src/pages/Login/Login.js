@@ -19,20 +19,17 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 50px;
     
 `;
 
 const logoStyle= css`
-    width: 300px; 
-    height: 200px;
-    background-image: url('/images/5_plus.png');
+    width: 400px; 
+    height: 300px;
+    background-image: url('/images/logo_move2.gif');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
 `;
-
-
 
 const title = css`
     margin: 0px;
@@ -43,17 +40,17 @@ const mainContainer = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #dbdbdb;
+    border: 2px solid #C8E8E5;
     border-radius: 10px;
-    padding: 50px 20px;
-    margin-top: 75px;
+    padding: 20px 20px;
+    margin-top: 170px;
     width: 400px;
 
 `;
 
 const inputLabel = css`
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 600;
 `;
 
@@ -63,7 +60,7 @@ const forgetPassword = css`
     align-content: center;
     margin-bottom: 45px;
     width: 100%;
-    font-size: 12px;
+    font-size: 157x;
     font-weight: 600;
 `;
 
@@ -74,6 +71,7 @@ const loginButton = css`
     width: 100%;
     height: 50px;
     background-color: #C8E8E5;
+    font-size: 30px;
     font-weight: 900;
     cursor: pointer;
     &:hover {
@@ -132,24 +130,20 @@ const kakaoButton = css`
 const errorMsg = css`
     margin-left: 5px;
     margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 15px;
     color:red;
 `;
 
 const signupMessage = css`
     margin-top: 20px;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
     color: #777;
 `;
 
 const register = css`
     margin-top: 10px;
-    font-weight: 600;
-`;
-
-const userinfo = css`
-    margin-top: 10px;
+    font-size: 25px;
     font-weight: 600;
 `;
 

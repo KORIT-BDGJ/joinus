@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const tableContainer = css`
     width: 100%;
-`
+`;
 
 const member = css`
     margin-top: 5px;
@@ -36,7 +36,7 @@ const infoImage = css`
     justify-content: center;
     width: 35px;
     height: 35px;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius:  50%;
     font-size: 10px;
 `;
@@ -65,20 +65,22 @@ const attendButtonContainer = css`
 `;
 
 const attendButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color:  #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
+    font-weight: bold;
+
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+    background-color:  #A7DED9;
     }
 `;
 
 
 
-const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => {
+const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount, userId }) => {
     const [ attendUserId, setAttendUserId ] = useState("");
     const queryClient = useQueryClient();
 
@@ -127,7 +129,6 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
             {getAttendList.data.map(attendData => {
                 return (
                     <div key={attendData.userId} >
-
                         <div css={member}>
                             <div css={attendInfo}>
                                 <div css={infoImage}>
@@ -135,7 +136,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                                         <img
                                             css={imgIcon}
                                             src={"http://localhost:8080/image/profile/" + attendData.image}
-                                            alt="Profile Image"
+                                            alt="ProfileImage"
                                         />
                                     ) : (
                                         <span>{attendData.nickName}</span>
@@ -146,18 +147,18 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                                 <div css={infoOption}>상태: {attendData.stateName}</div>
                             </div>
                             <div css={attendButtonContainer}>
-                                {isCurrentUserAuthor && (
-                                    <>
-                                        <button css={attendButton} onClick={() => deleteAttendUser(attendData.userId)}>내보내기</button>
-                                    </>
-                                )}
+                            {isCurrentUserAuthor && attendData.userId !== userId && (
+                                <button css={attendButton} onClick={() => deleteAttendUser(attendData.userId)}>
+                                내보내기
+                                </button>
+                            )}
                             </div>
                         </div>
                     </div>
                 );
             })}
         </div>
-      );      
+    );      
 };
 
 export default AttendList;

@@ -11,8 +11,11 @@ import { RiBilliardsFill } from 'react-icons/ri';
 import { GrGamepad, GrYoga } from 'react-icons/gr';
 
 const iconTitle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 10px;
-  font-size: 10px;
+  font-size: 18px;
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
@@ -43,8 +46,7 @@ const ModalsIcon = ({ sportsIconActive, handleSportSelect, selectedSports}) => {
         {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
         {id: 21, title: "요가", icon: <GrYoga size={32} />},
         {id: 22, title: "하키", icon: <GiHockey size={32} />},
-        {id: 23, title: "양궁", icon: <GiArcheryTarget size={32} />},
-        {id: 24, title: "복싱", icon: <GiBoxingGlove size={32} />}
+        {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
     ]
    
     return (

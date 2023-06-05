@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { CgGym } from 'react-icons/cg';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
-import { GiArcheryTarget, GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiBoxingGlove, GiHockey, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiBoxingGlove, GiHockey, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { GrGamepad, GrYoga } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
@@ -34,11 +34,21 @@ const headerContainer = css`
 const logoStyle= css`
   width: 724px; 
   height: 125px;
-  background-image: url('/images/12_plus.png');
+  background-image: url('/images/title_2.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
 `;
+
+const sportsLikesTitle= css`
+width: 724px; 
+height: 125px;
+background-image: url('/images/title_9.png');
+background-repeat: no-repeat;
+background-size: contain;
+background-position: center;
+`;
+
 
 
 
@@ -53,10 +63,6 @@ const mainContainer = css`
 const userContainer = css`
   width: 100%;
   display: flex;
-  
-  //justify-content: center;
-  //align-items: center;
-  //flex-direction: row;
 `;
 
 
@@ -88,7 +94,7 @@ const userDetail = css`
   display: flex;
   justify-content: space-between;  /* add this line */
   align-items: center;
-  font-size: 15px;
+  font-size: 25px;
   white-space: nowrap;
   overflow-wrap: break-word;
   padding: 10px;
@@ -104,11 +110,11 @@ const spanStyle = css`
 `;
 
 const changeButton = css`
-  background-color: #2ecc71;
-  color: white;
+  background-color: #C8E8E5;
+  color: black;
   margin-left: auto;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -117,7 +123,7 @@ const changeButton = css`
 const imageBox = css`
   width: 300px;
   height: 300px;
-  border: 2px solid #2ecc71;;
+  border: none;
   border-radius: 5px;
   padding: 15px;
   margin: 20px;
@@ -130,13 +136,14 @@ const imageBox = css`
 const imagePreview = css`
   width: 100%;
   height: 100%;
+  border-radius: 5px;
   object-fit: cover;
 `;
 
 const detailContainer = css`
   width: 680px;
   height: 400px;
-  border: 2px solid #2ecc71;;
+  border: none;
   border-radius: 10px;
   display: flex;        
   flex-direction: column;  
@@ -148,29 +155,21 @@ const detailContainer = css`
 const modifyButton = css`
   margin-top: auto;    /* add this line */
   margin-bottom: 20px;  /* modify this line */
-  border: 1px solid #2ecc71;
+  border: 1px solid #C8E8E5;
   border-radius: 7px;
   width: 200PX;
   height: 60px;
-  background-color: #2ecc71;
-  color: white;
+  background-color: #C8E8E5;
+  color: black;
+  font-size: 30px;
   font-weight: 900;
   cursor: pointer;
   &:hover {
-    border: 1px solid #27ae60;
+    border: 1px solid #85B4A3;
   }
   &:active {
-    background-color: #27ae60;
+    background-color: #85B4A3;
   }
-`;
-const dcTitle = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 5px 20px;
-    font-size: 30px;
-    color: #2ecc71;
-    font-weight: 600;
 `;
 
 const circleContainer = css`
@@ -178,6 +177,7 @@ const circleContainer = css`
   justify-content: space-evenly;
   align-items: center;
   margin: 0px;
+  cursor: pointer;
 `;
 
 
@@ -190,13 +190,13 @@ const circle = css`
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border: 2px solid #2ecc71;;
+  border: 2px solid #C8E8E5;
 `;
 
 const plusButton = css`
   font-size: 25px;
   font-weight: 600;
-  color: #00B894;
+  color: #A7DED9;
   cursor: pointer;
 `;
 
@@ -205,7 +205,7 @@ const minusButton = css`
   top: 10px;
   right: 0px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 35px;
   height: 20px;
@@ -213,7 +213,7 @@ const minusButton = css`
   border-radius: 5px ;
   background-color: white;
   color: green;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 600;
   cursor: pointer;
 `;
@@ -234,8 +234,8 @@ const emojiContainer = css`
   position: absolute;
   bottom: 60px;
   right: 15px;
-  transform: translateY(-50%);
-  font-size: 11px;
+  transform: translateY(10%);
+  font-size: 18px;
   opacity: 0.7;
   display: flex; 
   align-items: center; 
@@ -494,8 +494,7 @@ const UserInfo = () => {
     if (sport === 20) return <GrGamepad size={size} />;
     if (sport === 21) return <GrYoga size={size} />;
     if (sport === 22) return <GiHockey size={size} />;
-    if (sport === 23) return <GiArcheryTarget size={size} />;
-    if (sport === 24) return <GiBoxingGlove size={size} />;
+    if (sport === 23) return <GiBoxingGlove size={size} />;
   };
   
  const convertedSports = selectedSports.map(sport => parseInt(sport));
@@ -544,7 +543,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div css={detailContainer}>
-          <h1 css={dcTitle}>선호 운동</h1>
+        <div css={sportsLikesTitle}></div>
           <div css={circleContainer}>
             {selectedSports.concat(new Array(3 - selectedSports.length).fill(null)).map((sport, index) => (
               <div key={index} css={circle} data-index={index} onClick={handleCircleClick}>

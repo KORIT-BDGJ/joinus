@@ -1,25 +1,24 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import React from 'react';
 import { useState } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
 import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 import AttendList from '../../../components/UI/PostDetail/AttendList';
 import Comment from '../../../components/UI/PostDetail/Comment';
 import ApplyPost from '../../../components/UI/PostDetail/ApplyPost';
-import { FcSportsMode } from "react-icons/fc";
-import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { MdOutlineEmojiPeople } from 'react-icons/md';
 import { IoMdBicycle } from 'react-icons/io';
 import { FaTableTennis, FaVolleyballBall, FaRunning, FaSwimmer } from 'react-icons/fa';
 import { MdGolfCourse, MdOutlineSkateboarding, MdOutlineScubaDiving, MdSurfing } from 'react-icons/md';
 import { RiBilliardsFill } from 'react-icons/ri';
-import { GrGamepad } from 'react-icons/gr';
+import { GrGamepad, GrYoga } from 'react-icons/gr';
 import { BiMale, BiMaleFemale, BiFemale } from 'react-icons/bi';
 import SelectSportsModal from '../../../components/Modal/SelectModal/SelectSportsModal';
 import Select from 'react-select';
@@ -35,14 +34,6 @@ const container = css`
     overflow-y: auto;
 `;
 
-const logoStyle= css`
-    width: 724px; 
-    height: 125px;
-    background-image: url('/images/12_plus.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-`;
 
 const logoTitle = css`
     display: flex;
@@ -54,37 +45,53 @@ const logoTitle = css`
 `;
 
 const detailHeader = css`
+    width: 724px; 
+    height: 125px;
+    background-image: url('/images/title_8.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px;
-    border: 1px solid #dbdbdb;
-    margin-bottom: 50px;
+`;
+
+const buttonContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
 `;
 
 const headerTitle = css`
-    font-size: 25px;
+    font-size: 40px;
     font-weight: 600;
+    
 `;
 
 const attendButton = css`
     margin-left: 5px;
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
 
     &:hover {
-    border: 3px solid #dbdbdb;
+        background-color:  #A7DED9;
     }
 `;
 
 const detailBody = css`
     display: flex;
     flex-direction: column;
-    border: 1px solid #dbdbdb;
+    border: 2px solid #A7DED9;
+    border-radius: 10px;
 `;
 
 const infoBasic = css`
@@ -93,18 +100,19 @@ const infoBasic = css`
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border: none;
     
 `;
 const infoBox = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    
 `;
 
 const ownerInfo = css`
     padding: 10px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -115,7 +123,7 @@ const ownerPicture = css`
     justify-content: center;
     width: 50px;
     height: 50px;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius:  50%;
     font-size: 13px;
 `;
@@ -138,28 +146,36 @@ const infoDetail = (detailShow) => css`
     flex-direction: row;
     align-items: center;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border-bottom: 1px solid #A7DED9;
 `;
 const ownerLevel = css`
     padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 `;
 const ownerState = css`
     padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 `;
 const ownerMedal = css`
     padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 `;
+
 
 const recruitInfo = css`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border-top: 1px solid #A7DED9;
+    border-bottom: 2px solid #A7DED9;
 `;
 const recruitInfoTitle = css`
     margin: 0px 10px 10px 10px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -197,7 +213,7 @@ const genderBox = css`
 `;
 
 const genderName = css`
-    font-size: 15px;
+    font-size: 25px;
     padding-right: 5px;
 `;
 
@@ -234,11 +250,11 @@ const recruitText = css`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border-bottom: 2px solid #A7DED9;
 `;
 const recruitTextHeader = css`
     margin: 5px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 const recruitTextBody = css`
@@ -249,7 +265,7 @@ const recruitTextBody = css`
 const textContainer = css`
     width: 100%;
     height: 100px;
-    border: 2px solid #dbdbdb;
+    /* border-bottom: 2px solid #A7DED9; */
 `;
 
 const selectCount = css`
@@ -289,7 +305,9 @@ const applicant = css`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 `;
 
 const applicantList = (applicantShow) => css`
@@ -310,7 +328,7 @@ const attendTitle = css`
 const attendCount = css`
     display: flex;
     flex-direction: row;
-    
+    font-size: 20px;
     height: 30px;
 `;
 
@@ -333,7 +351,7 @@ const recruitHeader = css`
     width: 100%;
     padding: 10px 0px 10px 0px;
 
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -350,7 +368,7 @@ const applicantTitle = css`
 const applicantCount = css`
     display: flex;
     flex-direction: row;
-    
+    font-size: 20px;
     height: 30px;
 `;
 
@@ -375,7 +393,6 @@ const applicantButton = css`
 `;
 
 const detailFoot = css`
-    border: 1px solid #dbdbdb;
     margin-bottom: 5px;
     padding: 10px;
 `;
@@ -385,6 +402,18 @@ const footHeader = css`
     font-size: 20px;
     font-weight: 600;
 
+`;
+
+const regionName = css `
+    font-size: 25px;
+`;
+
+const deadlineName = css`
+    font-size: 25px;
+`;
+
+const recruitTextBox = css`
+    font-size: 25px;
 `;
 
 const PostDetail = () => {
@@ -414,26 +443,30 @@ const PostDetail = () => {
     const [ icons, setIcons ] = useState("");
 
     const sportsIcons = [
-        {id: 1, name: "헬스", icon: <CgGym size={50} /> },
-        {id: 2, name: "러닝", icon: <FaRunning size={50} /> },
-        {id: 3, name: "축구", icon: <GiSoccerKick size={50} /> },
-        {id: 4, name: "야구", icon: <GiBaseballBat size={50} /> },
-        {id: 5, name: "농구", icon: <GiBasketballBasket size={50} /> },
-        {id: 6, name: "수영", icon: <FaSwimmer size={50} /> },
-        {id: 7, name: "테니스", icon: <GiTennisRacket size={50} /> },
-        {id: 8, name: "클라이밍", icon: <GiMountainClimbing size={50} /> },
-        {id: 9, name: "자전거", icon: <IoMdBicycle size={50} /> },
-        {id: 10, name: "등산", icon: <GiMountainRoad size={50} /> },
-        {id: 11, name: "낚시", icon: <GiBoatFishing size={50} /> },
-        {id: 12, name: "볼링", icon: <GiBowlingStrike size={50} /> },
-        {id: 13, name: "탁구", icon: <FaTableTennis size={50} /> },
-        {id: 14, name: "배구", icon: <FaVolleyballBall size={50} /> },
-        {id: 15, name: "골프", icon: <MdGolfCourse size={50} /> },
-        {id: 16, name: "스케이트보드", icon: <MdOutlineSkateboarding size={50} /> },
-        {id: 17, name: "스쿠버다이빙", icon: <MdOutlineScubaDiving size={50} /> },
-        {id: 18, name: "서핑", icon: <MdSurfing size={50} /> },
-        {id: 19, name: "당구", icon: <RiBilliardsFill size={50} /> },
-        {id: 20, name: "게임", icon: <GrGamepad size={50} /> }
+        {id: 1, title: "헬스", icon: <CgGym size={32} /> },
+        {id: 2, title: "러닝", icon: <FaRunning size={32} /> },
+        {id: 3, title: "축구", icon: <GiSoccerKick size={32} /> },
+        {id: 4, title: "야구", icon: <GiBaseballBat size={32} /> },
+        {id: 5, title: "농구", icon: <GiBasketballBasket size={32} /> },
+        {id: 6, title: "수영", icon: <FaSwimmer size={32} /> },
+        {id: 7, title: "테니스", icon: <GiTennisRacket size={32} /> },
+        {id: 8, title: "클라이밍", icon: <GiMountainClimbing size={32} /> },
+        {id: 9, title: "자전거", icon: <IoMdBicycle size={32} /> },
+        {id: 10, title: "등산", icon: <GiMountainRoad size={32} /> },
+        {id: 11, title: "낚시", icon: <GiBoatFishing size={32} /> },
+        {id: 12, title: "볼링", icon: <GiBowlingStrike size={32} /> },
+        {id: 13, title: "탁구", icon: <FaTableTennis size={32} /> },
+        {id: 14, title: "배구", icon: <FaVolleyballBall size={32} /> },
+        {id: 15, title: "골프", icon: <MdGolfCourse size={32} /> },
+        {id: 16, title: "스케이트", icon: <MdOutlineSkateboarding size={32} /> },
+        {id: 17, title: "스쿠버", icon: <MdOutlineScubaDiving size={32} /> },
+        {id: 18, title: "서핑", icon: <MdSurfing size={32} /> },
+        {id: 19, title: "당구", icon: <RiBilliardsFill size={32} /> },
+        {id: 20, title: "게임", icon: <GrGamepad size={32} /> },
+        {id: 21, title: "요가", icon: <GrYoga size={32} />},
+        {id: 22, title: "하키", icon: <GiHockey size={32} />},
+        {id: 23, title: "복싱", icon: <GiBoxingGlove size={32} />}
+
     ]
 
     const principal = useQuery(["principal"], async () => {
@@ -740,44 +773,43 @@ const PostDetail = () => {
         <div css={container}>
             <Sidebar></Sidebar>
             <h1 css={logoTitle}>
-              <div css={logoStyle}></div>
+                <div css={detailHeader}>
+                    <div css={headerTitle}>
+                        {isUpdateMode ? (
+                            <>
+                                <input
+                                css={headerTitle}
+                                type="text"
+                                value={updateTitle}
+                                onChange={(e) => setUpdateTitle(e.target.value)}
+                                />
+                            </>
+                            ) : (
+                            <>
+                                <div>{getPost.data.data.title}</div>
+                            </>
+                        )}
+                    </div>
+                </div>
             </h1>
-            <div css={detailHeader}>
-                <div css={headerTitle}>
-                    {isUpdateMode ? (
-                        <>
-                            <input
-                            css={headerTitle}
-                            type="text"
-                            value={updateTitle}
-                            onChange={(e) => setUpdateTitle(e.target.value)}
-                            />
-                        </>
-                        ) : (
-                        <>
-                            <div>{getPost.data.data.title}</div>
-                        </>
-                    )}
-                </div>
-                <div>
-                    {isCurrentUserAuthor ? (
-                        <>
-                            {isUpdateMode ? (
-                                <>
-                                    <button css={attendButton} onClick={saveChangeSubmitHandle}>저장하기</button>
-                                    <button css={attendButton} onClick={cancelClickHandle}>취소하기</button>
-                                </>
-                                ) : (
-                                <>
-                                    <button css={attendButton} onClick={updateMode}>수정하기</button>
-                                    <button css={attendButton} onClick={handleDeleteClick}>삭제하기</button>
-                                </>
-                            )}
-                        </>
-                    ) : (
-                        <ApplyPost postId={postId}/>
-                    )}
-                </div>
+            <div css={buttonContainer}>
+                {isCurrentUserAuthor ? (
+                    <>
+                        {isUpdateMode ? (
+                            <>
+                                <button css={attendButton} onClick={saveChangeSubmitHandle}>저장하기</button>
+                                <button css={attendButton} onClick={cancelClickHandle}>취소하기</button>
+                            </>
+                            ) : (
+                            <>
+                                <button css={attendButton} onClick={updateMode}>수정하기</button>
+                                <button css={attendButton} onClick={handleDeleteClick}>삭제하기</button>
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <ApplyPost postId={postId}/>
+                )}
             </div>
             <div css={detailBody}>
                 <div css={infoBasic}>
@@ -788,7 +820,7 @@ const PostDetail = () => {
                                 <img
                                     css={imgIcon}
                                     src={"http://localhost:8080/image/profile/" + getPost.data.data.image}
-                                    alt="Profile Image"
+                                    alt="ProfileImage"
                                 />
                             ) : (
                                 <span>{getPost.data.data.writerNickName}</span>
@@ -835,7 +867,7 @@ const PostDetail = () => {
                                 </div>
                             )}
                     </div>
-                    <div css={ownerMedal}>메달: {getPost.data.data.writerNickName}</div>
+                    <div css={ownerMedal}>메달: {getPost.data.data.point}</div>
                 </div>
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
@@ -874,7 +906,7 @@ const PostDetail = () => {
                                 />}
                                 </>
                             ) : (
-                                <div>
+                                <div css={regionName}>
                                     지역: {getPost.data.data.regionName}
                                 </div>
                             )}               
@@ -894,7 +926,7 @@ const PostDetail = () => {
                                 />
                             </>
                             ) : (
-                                <div>
+                                <div css = {deadlineName}>
                                     {deadline}
                                 </div>
                         )} 
@@ -948,7 +980,7 @@ const PostDetail = () => {
                             </>
                             ) : (
                             <>
-                                <div>{getPost.data.data.text}</div>
+                                <div css={recruitTextBox}>{getPost.data.data.text}</div>
                             </>
                         )}
                         
@@ -996,7 +1028,7 @@ const PostDetail = () => {
                         </div>
                     </div>
                     <div css={attendList(attendShow)}>
-                        <AttendList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalAttendCount={updateTotalAttendCount}/>
+                        <AttendList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalAttendCount={updateTotalAttendCount} userId={principal.data.userId}/>
                     </div>
                 </div>
             </div>

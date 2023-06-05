@@ -7,15 +7,16 @@ import { useParams } from 'react-router-dom';
 import ApplicantSelectStateLevelModal from '../../Modal/ApplicantSelectStateLevelModal';
 
 const applyPostButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
     margin-left: 10px;
+    font-weight: bold;
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+        background-color: #A7DED9;
     }
 `;
 

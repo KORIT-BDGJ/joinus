@@ -29,14 +29,14 @@ const inputContainer = css`
 `;
 const label = css`
   display: block;
-  font-size: 16px;
+  font-size: 25px;
   margin-bottom:5px;
 `;
 
 const input = css`
-  width: calc(100% - 80px);
+  width: calc(100% - 18px);
   padding: 10px;
-  font-size: 16px;
+  font-size: 20px;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
 `;
@@ -53,19 +53,31 @@ const buttonContainer = css`
 
 const cancelButton = css`
   background-color: #dbdbdb;
-  color: white;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
-  margin-right: 10px;
+  font-weight: bold;
   cursor: pointer;
+
+  &:active {
+    background-color: #b5b5b5; /* 더 진한 색상으로 변경 */
+  }
 `;
 
 const confirmButton = css`
-  background-color: #2ecc71;
-  color: white;
+  background-color: #C8E8E5;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
+  margin-right: 10px;
+  font-weight: bold;
   cursor: pointer;
+  
+  &:active{
+    background-color: #85B4A3;
+  }
 `;
 
 const searchButton = css`
@@ -73,12 +85,17 @@ const searchButton = css`
   justify-content:center;
   align-items: center;
   width: 70px;
-  background-color: #2ecc71;
+  background-color: #C8E8E5;
   color: white;
   padding: 10px;
+  border: none;
   border-radius: 5px;
   margin-left: 10px; 
   cursor: pointer;
+
+  &:active {
+    background-color: #85B4A3;
+  }
 `;
 
 const AddressChangeModal = ({ closeModal, updateAddress }) => {
@@ -169,8 +186,8 @@ const AddressChangeModal = ({ closeModal, updateAddress }) => {
           </div>
         </div>
         <div css={buttonContainer}>
-          <button css={cancelButton} onClick={closeModal}>취소</button>
           <button css={confirmButton} onClick={handleSubmit}>확인</button>
+          <button css={cancelButton} onClick={closeModal}>취소</button>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ export const mainContainer = css`
 export const logoStyle= css`
     width: 724px; 
     height: 125px;
-    background-image: url('/images/12_plus.png');
+    background-image: url('/images/title_3.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -42,9 +42,12 @@ export const inputBox = css`
 `;
 
 export const selectSearch = css`
+    display: flex;
+    justify-content:center;
+    align-items: flex-start;
     width: 19%;
     border-radius: 7px;
-    font-size: 14px;
+    font-size: 25px;
 `;
 
 export const searchInput = css`
@@ -53,6 +56,7 @@ export const searchInput = css`
     padding: 10px;
     width: 60%;
     height: 100%;
+    font-size: 25px;
 `;
 
 export const detailsSearchBox = css`
@@ -63,6 +67,7 @@ export const detailsSearchBox = css`
     border-radius: 7px;
     width: 19%;
     height: 100%;
+    font-weight: bold;
     background-color: white;
     cursor: pointer;
 `;
@@ -72,7 +77,7 @@ export const expandedButtonsContainer = (expandedIsOpen) => css`
     justify-content: center;
     align-items: center;
     margin: 5px 0px;
-    border: ${expandedIsOpen ? "1px solid #dbdbdb" : "none"};
+    border: ${expandedIsOpen ? "none" : "none"};
     border-radius: 7px;
     padding: 0px 20px;
     width: 100%;
@@ -89,6 +94,7 @@ export const expandedOptions = css`
     align-items: center;
     width: 100%;
     height: 100%;
+    font-size: 20px;
 `;
 
 export const buttonContents = css`
@@ -177,6 +183,7 @@ export const noPageText = css`
     position: absolute;
     top: 50%;
     left: 50%;
+    font-size: 25px;
     transform: translate(-50%, -50%);
 `;
 
@@ -184,7 +191,7 @@ export const listContainer = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius: 7px;
     padding: 3px;
     margin-bottom: 3px;
@@ -206,9 +213,9 @@ export const postIconBox = css`
 export const postMainBox = css`
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 20px;
-    font-size: 20px;
+    font-size: 30px;
 `;
 
 export const postWriterName = css`
@@ -219,7 +226,7 @@ export const postWriterName = css`
 `;
 
 export const imgIcon = css`
-    border: 1px solid #999;
+    border: none;
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -229,11 +236,12 @@ export const headerNickName = css`
     //text-align: center;
     border: none;
     width: 140px;
+    font-size: 25px;
+    font-weight: bold;
     margin-left: 10px;
     background-color: #C8E8E5;
     cursor: pointer;
 `;
-
 
 export const pageButton = css`
     display: flex;
@@ -262,16 +270,18 @@ export const goToPageButton = css`
     margin: 0 1px;
     width: 25px;
     height: 25px;
+    font-weight: bold;
     background-color: white;
     cursor: pointer;
     
     &:active {
-        background-color: #2ecc71;
+    background-color: #C8E8E5;
+
     }
 `;
 
 export const nowPageButton = css`
-    background-color: #2ecc71;
+    background-color: #C8E8E5;
 `;
 
 export const createButton = css`
@@ -282,15 +292,20 @@ export const createButton = css`
     border-radius: 7px;
     width: 19%;
     height: 25px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
-    background-color: white;
+    background-color: #C8E8E5;
     cursor: pointer;
 
     &:hover {
-        background-color: rgba(0, 255, 0, 0.2);
+        background-color: #85B4A3;
+
     }
     &:active {
-        background-color: #2ecc71;
+        background-color: #85B4A3;
     }
+`;
+
+export const iconSize = css`
+    font-size: 25px;
 `;

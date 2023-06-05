@@ -36,8 +36,11 @@ public class Post {
 	private State state;
 	private Region region;
 	private Gender gender;
+	private Point point;
 	
 	public SearchPostRespDto toDto() {
+		
+		
 		return SearchPostRespDto.builder()
 				.postId(postId)
 				.writerNickName(user.getUserInfo().getNickName())
@@ -60,6 +63,7 @@ public class Post {
 				.userId(user.getUserId())
 				.writerNickName(user.getUserInfo().getNickName())
 				.image(user.getUserInfo().getImage())
+				.point(user.getPoint().getPoint())
 				.title(title)
 				.sportsId(sports.getSportsId())
 				.sportsName(sports.getSportsName())

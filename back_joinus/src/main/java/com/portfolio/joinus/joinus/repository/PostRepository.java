@@ -38,28 +38,17 @@ public interface PostRepository {
 	// comment_tb에서 id로 불러오기
 	public List<Comment> getCommentByPostId(int postId);
 
-	// owner_post_list_tb에 데이터 저장
-	public int saveOwnerPostList(OwnerPostList ownerPostList);
-
 	// owner_post_list_tb 에서 id로 list 불러오기
 	public List<Post> getOwnerPostListByUserId(int userId);
 
 	//	post_applicant_list_tb에서 userId로 list 불러오기
 	public List<ApplicantList> getHostApplicantListByUserId(int userId);
 	
-	//	post_attend_list_tb에서 userId로 list 불러오기
+	//	post_attend_list_tb에서 userId로 list 불러오기(deadline 이전)
 	public List<AttendList> getHostAttendListByUserId(int userId);
-
-	// host_post_list_tb 에 데이터 저장
-	public int saveMyApplicantPostList(HostPostList hostPostList);
-
-	// host_post_list_tb 에서 id로 applicant_list 불러오기
-	public List<HostPostList> getMyApplicantPostListByUserId(int userId);
-
-	// post_attend_list_tb 에서 id로 list 불러오기
-	public List<AttendListRespDto> getMyApplicantAcceptPostListByUserId(int userId);
 	
-	public List<Post> getFinishPostList();
+	//	post_attend_list_tb에서 userId로 list 불러오기(deadline 이후)
+	public List<AttendList> getFinishPostListByUserId(int userId);
 
 	public int applyPost(Map<String, Object> map);
 
@@ -79,5 +68,8 @@ public interface PostRepository {
 	public int updatePost(Post post);
 	
 	public int postDelete(int postId);
+	
+
+	
 
 }
