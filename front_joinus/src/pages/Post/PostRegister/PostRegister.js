@@ -358,7 +358,7 @@ const PostRegister = () => {
                         <p css={S.postTitle}>모집 소개글</p>
                     </div>
                     <div css={S.postInputBox}>
-                        <input 
+                        <textarea 
                             css={S.postWriteInput} 
                             type="text" 
                             value={textPost} 

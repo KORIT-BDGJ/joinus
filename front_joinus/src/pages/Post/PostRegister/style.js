@@ -197,6 +197,7 @@ export const postWriteInput = css`
     border-radius: 7px;
     width: 400px;
     height: 60px;
+    resize: none;
 `;
 
 export const buttonBox = css`
