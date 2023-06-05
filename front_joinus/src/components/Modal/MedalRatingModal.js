@@ -24,28 +24,10 @@ const modalContent = css`
   border-radius: 5px;
 `;
 
-const inputWrapper = css`
-  margin-bottom: 10px;
-`;
-
-const label = css`
-  display: block;
-  font-size: 16px;
-  margin-bottom: 5px;
-`;
-
-const input = css`
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
-`;
-
 const star = css`
   font-size: 40px;
   font-weight: 900;
-  color: #ffd700;
+  color: #A7DED9;
   cursor: pointer;
   background-color: white;
   border: none;
@@ -58,22 +40,26 @@ const buttonContainer = css`
   padding-top: 10px;
 `;
 
+const confirmButton = css`
+  background-color: #C8E8E5;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+`;
 const cancelButton = css`
   background-color: #dbdbdb;
-  color: white;
+  color: black;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
   margin-right: 10px;
+  font-weight: bold;
   cursor: pointer;
 `;
 
-const confirmButton = css`
-  background-color: #2ecc71;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 const tableContainer = css`
     width: 100%;
@@ -136,14 +122,15 @@ const attendButtonContainer = css`
 `;
 
 const attendButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    color: black;
+    border: none;
     border-radius: 5px;
     height: 30px;
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+      background-color: #A7DED9;
     }
 `;
 
@@ -229,7 +216,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId }) => {
                                   key={rating}
                                   css={star}
                                   onClick={() => handleNewStarChange(userId, rating)}
-                                  style={{ color: rating <= starValue ? 'yellow' : 'gray' }}
+                                  style={{ color: rating <= starValue ? '#A7DED9' : 'gray' }}
                                 >
                                   ☆
                                 </button>
