@@ -26,7 +26,6 @@ const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 10px;
 `;
 const logoStyle= css`
     width: 310px; 
@@ -50,7 +49,8 @@ const mainContainer = css`
     border: 1px solid #dbdbdb;
     border-radius: 10px;
     margin-top: 100px;
-    padding: 50px 20px;
+    padding: 20px 20px;
+    padding-bottom: 0px;
     width: 400px;
 `;
 
@@ -61,7 +61,7 @@ const authForm = css`
 
 const inputLabel = css`
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 600;
 `;
 
@@ -102,25 +102,30 @@ const searchButton = css`
     background-color : #C8E8E5;
     cursor: pointer;
     border-radius: 5px;
+
+    &:hover {
+    background-color: #85B4A3;
+    }
 `;
 
 
 const signupMessage = css`
     margin-top: 20px;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
     color: #777;
 `;
 
 const register = css`
     margin-top: 10px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
 const errorMsg = css`
     margin-left: 5px;
     margin-bottom: 20px;
-    font-size: 12px;
+    font-size: 17px;
     color:red;
 `;
 

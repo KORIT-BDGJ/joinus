@@ -26,4 +26,5 @@ public class GetPostRespDto {
 	private int genderId;
 	private String genderName;
 	private String text;
+	private int point;
 }

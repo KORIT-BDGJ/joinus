@@ -35,7 +35,7 @@ const infoImage = css`
     white-space: nowrap;
     width: 30px;
     height: 30px;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius:  50%;
     font-size: 5px;
 `;
@@ -54,6 +54,7 @@ const infoNickname = css`
     width: auto;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 20px;
     font-weight: 600;
     padding: 0px 10px;
 `;
@@ -63,6 +64,7 @@ const chattingBody = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 20px;
     justify-content: space-between;
     position: relative;
     &:hover > button {
@@ -72,19 +74,20 @@ const chattingBody = css`
 
 const commentDeleteButton = css`
     visibility: hidden;
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
     position: absolute;
     top: 50%;
     right: 5px;
+    font-weight: bold;
     transform: translateY(-50%);
     cursor: pointer;
 
     &:hover {
     transform: translateY(-50%);
-    border: 1px solid black;
+    background-color: #A7DED9;
   }
 `;
 
@@ -99,18 +102,27 @@ const commentBottom = css`
 const commentInput = css`
     width: 91%;
     height: 30px;
+    border: 2px solid #C8E8E5;
+    border-radius: 5px;
+    font-size: 20px;
+
+    &:focus {
+       outline: none;
+       border: 2px solid #A7DED9;
+    }
 `;
 
 const commentSendButton = css`
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
     margin-left: 10px;
+    font-weight: bold;
     cursor: pointer;
 
     &:hover {
-    border: 1px solid black;
+        background-color: #A7DED9;
     }
 `;
 
@@ -211,7 +223,7 @@ const Comment = ({ postId }) => {
                                         <img
                                             css={imgIcon}
                                             src={"http://localhost:8080/image/profile/" + commentData.image}
-                                            alt="Profile Image"
+                                            alt="ProfileImage"
                                         />
                                     ) : (
                                         <span>{commentData.nickName}</span>

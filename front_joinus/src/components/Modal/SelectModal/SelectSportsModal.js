@@ -24,7 +24,6 @@ const modalMainContainer = css`
     border-radius: 10px;
     width: 450px;
     height: 600px;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
     background-color: white;
 `;
 
@@ -60,7 +59,7 @@ const modalMainButton = css`
 
 const okButton = css`
     border: none;
-    border-radius: 70%;
+    border-radius: 5px;
     margin-right: 10px;
     width: 100px;
     height: 30px;
@@ -68,17 +67,17 @@ const okButton = css`
     background-color: white;
 
     &:hover {
-        background-color: rgba(0, 255, 0, 0.2);
+        background-color: #C8E8E5;
     }
 
     &:active {
-        background-color: #00FF00;
+        background-color: #93b0ad;
     }
 `;
 
 const cancelButton = css`
     border: none;
-    border-radius: 70%;
+    border-radius: 5px;
     margin-left: 10px;
     width: 100px;
     height: 30px;
@@ -86,11 +85,11 @@ const cancelButton = css`
     background-color: white;
 
     &:hover {
-        background-color: rgba(0, 255, 0, 0.2);
+        background-color: #C8E8E5;
     }
 
     &:active {
-        background-color: #00FF00;
+        background-color: #93b0ad;
     }
 `;
 

@@ -17,15 +17,15 @@ const sportsIcon = (isSelected, isLiked) => css`
     cursor: pointer;
     margin: 10px;
     padding: 10px;
-    background-color: ${isSelected ? "rgba(0, 255, 0, 0.2);" : "white"};
-    border: 2px solid ${isLiked ? "green" : "transparent"};
+    background-color: ${isSelected ? "#93b0ad;" : "white"};
+    border: 2px solid ${isLiked ? "#93b0ad" : "transparent"};
 
     &:hover {
-        background-color: ${isSelected ? "#5EC75E" : "#63cc63"};
+        background-color: ${isSelected ? "#C8E8E5" : "#93b0ad"};
     }
 
     &:active {
-        background-color: rgba(0, 255, 0, 0.2);
+        background-color: #93b0ad;
     
     }
 `;
@@ -42,10 +42,11 @@ const starIcon = css`
 
 const iconTitle = css`
     margin-top: 10px;
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 600;
     text-align: center;
 `;
+
 
 const IconsModal = ({ onIconClick, selectedIcon, setSelectedIcon, sportsLikes, userId, hiddenIcons }) => {
 

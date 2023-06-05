@@ -1,17 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import React from 'react';
 import { useState } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
 import ApplicantList from '../../../components/UI/PostDetail/ApplicantList';
 import AttendList from '../../../components/UI/PostDetail/AttendList';
 import Comment from '../../../components/UI/PostDetail/Comment';
 import ApplyPost from '../../../components/UI/PostDetail/ApplyPost';
-import { FcSportsMode } from "react-icons/fc";
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { MdOutlineEmojiPeople } from 'react-icons/md';
@@ -68,28 +67,31 @@ const buttonContainer = css`
 `;
 
 const headerTitle = css`
-    font-size: 35px;
+    font-size: 40px;
     font-weight: 600;
     
 `;
 
 const attendButton = css`
     margin-left: 5px;
-    background-color: white;
-    border: 1px solid #dbdbdb;
+    background-color: #C8E8E5;
+    border: none;
     border-radius: 5px;
     height: 30px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
 
     &:hover {
-    border: 3px solid #dbdbdb;
+        background-color:  #A7DED9;
     }
 `;
 
 const detailBody = css`
     display: flex;
     flex-direction: column;
-    border: 1px solid #dbdbdb;
+    border: 2px solid #A7DED9;
+    border-radius: 10px;
 `;
 
 const infoBasic = css`
@@ -98,18 +100,19 @@ const infoBasic = css`
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border: none;
     
 `;
 const infoBox = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    
 `;
 
 const ownerInfo = css`
     padding: 10px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -120,7 +123,7 @@ const ownerPicture = css`
     justify-content: center;
     width: 50px;
     height: 50px;
-    border: 1px solid #dbdbdb;
+    border: none;
     border-radius:  50%;
     font-size: 13px;
 `;
@@ -143,28 +146,36 @@ const infoDetail = (detailShow) => css`
     flex-direction: row;
     align-items: center;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border-bottom: 1px solid #A7DED9;
 `;
 const ownerLevel = css`
     padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 `;
 const ownerState = css`
     padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 `;
 const ownerMedal = css`
     padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 `;
+
 
 const recruitInfo = css`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border-top: 1px solid #A7DED9;
+    border-bottom: 2px solid #A7DED9;
 `;
 const recruitInfoTitle = css`
     margin: 0px 10px 10px 10px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -202,7 +213,7 @@ const genderBox = css`
 `;
 
 const genderName = css`
-    font-size: 15px;
+    font-size: 20px;
     padding-right: 5px;
 `;
 
@@ -239,11 +250,11 @@ const recruitText = css`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border-bottom: 2px solid #A7DED9;
 `;
 const recruitTextHeader = css`
     margin: 5px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 const recruitTextBody = css`
@@ -254,7 +265,7 @@ const recruitTextBody = css`
 const textContainer = css`
     width: 100%;
     height: 100px;
-    border: 2px solid #dbdbdb;
+    /* border-bottom: 2px solid #A7DED9; */
 `;
 
 const selectCount = css`
@@ -294,7 +305,9 @@ const applicant = css`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border: 1px solid #dbdbdb;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 `;
 
 const applicantList = (applicantShow) => css`
@@ -315,7 +328,7 @@ const attendTitle = css`
 const attendCount = css`
     display: flex;
     flex-direction: row;
-    
+    font-size: 20px;
     height: 30px;
 `;
 
@@ -338,7 +351,7 @@ const recruitHeader = css`
     width: 100%;
     padding: 10px 0px 10px 0px;
 
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
 `;
 
@@ -355,7 +368,7 @@ const applicantTitle = css`
 const applicantCount = css`
     display: flex;
     flex-direction: row;
-    
+    font-size: 20px;
     height: 30px;
 `;
 
@@ -380,7 +393,6 @@ const applicantButton = css`
 `;
 
 const detailFoot = css`
-    border: 1px solid #dbdbdb;
     margin-bottom: 5px;
     padding: 10px;
 `;
@@ -390,6 +402,18 @@ const footHeader = css`
     font-size: 20px;
     font-weight: 600;
 
+`;
+
+const regionName = css `
+    font-size: 20px
+`;
+
+const deadlineName = css`
+    font-size: 20px;
+`;
+
+const recruitTextBox = css`
+    font-size: 20px;
 `;
 
 const PostDetail = () => {
@@ -796,7 +820,7 @@ const PostDetail = () => {
                                 <img
                                     css={imgIcon}
                                     src={"http://localhost:8080/image/profile/" + getPost.data.data.image}
-                                    alt="Profile Image"
+                                    alt="ProfileImage"
                                 />
                             ) : (
                                 <span>{getPost.data.data.writerNickName}</span>
@@ -843,7 +867,7 @@ const PostDetail = () => {
                                 </div>
                             )}
                     </div>
-                    <div css={ownerMedal}>메달: {getPost.data.data.writerNickName}</div>
+                    <div css={ownerMedal}>메달: {getPost.data.data.point}</div>
                 </div>
                 <div css={recruitInfo}>
                     <div css={recruitInfoTitle}>모집정보</div>
@@ -882,7 +906,7 @@ const PostDetail = () => {
                                 />}
                                 </>
                             ) : (
-                                <div>
+                                <div css={regionName}>
                                     지역: {getPost.data.data.regionName}
                                 </div>
                             )}               
@@ -902,7 +926,7 @@ const PostDetail = () => {
                                 />
                             </>
                             ) : (
-                                <div>
+                                <div css = {deadlineName}>
                                     {deadline}
                                 </div>
                         )} 
@@ -956,7 +980,7 @@ const PostDetail = () => {
                             </>
                             ) : (
                             <>
-                                <div>{getPost.data.data.text}</div>
+                                <div css={recruitTextBox}>{getPost.data.data.text}</div>
                             </>
                         )}
                         

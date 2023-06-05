@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { CgGym } from 'react-icons/cg';
 import { FaRunning, FaSwimmer, FaTableTennis, FaVolleyballBall } from 'react-icons/fa';
-import { GiArcheryTarget, GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiBoxingGlove, GiHockey, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
+import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiBowlingStrike, GiBoxingGlove, GiHockey, GiMountainClimbing, GiMountainRoad, GiSoccerKick, GiTennisRacket } from 'react-icons/gi';
 import { GrGamepad, GrYoga } from 'react-icons/gr';
 import { IoMdBicycle } from 'react-icons/io';
 import { MdGolfCourse, MdOutlineScubaDiving, MdOutlineSkateboarding, MdSurfing } from 'react-icons/md';
@@ -94,7 +94,7 @@ const userDetail = css`
   display: flex;
   justify-content: space-between;  /* add this line */
   align-items: center;
-  font-size: 15px;
+  font-size: 25px;
   white-space: nowrap;
   overflow-wrap: break-word;
   padding: 10px;
@@ -114,7 +114,7 @@ const changeButton = css`
   color: black;
   margin-left: auto;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -161,6 +161,7 @@ const modifyButton = css`
   height: 60px;
   background-color: #C8E8E5;
   color: black;
+  font-size: 30px;
   font-weight: 900;
   cursor: pointer;
   &:hover {
@@ -169,15 +170,6 @@ const modifyButton = css`
   &:active {
     background-color: #85B4A3;
   }
-`;
-const dcTitle = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 5px 20px;
-    font-size: 30px;
-    color: #C8E8E5;
-    font-weight: 600;
 `;
 
 const circleContainer = css`
@@ -204,7 +196,7 @@ const circle = css`
 const plusButton = css`
   font-size: 25px;
   font-weight: 600;
-  color: #C8E8E5;
+  color: #A7DED9;
   cursor: pointer;
 `;
 
@@ -213,7 +205,7 @@ const minusButton = css`
   top: 10px;
   right: 0px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 35px;
   height: 20px;
@@ -221,7 +213,7 @@ const minusButton = css`
   border-radius: 5px ;
   background-color: white;
   color: green;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 600;
   cursor: pointer;
 `;
@@ -242,8 +234,8 @@ const emojiContainer = css`
   position: absolute;
   bottom: 60px;
   right: 15px;
-  transform: translateY(-50%);
-  font-size: 11px;
+  transform: translateY(10%);
+  font-size: 18px;
   opacity: 0.7;
   display: flex; 
   align-items: center; 

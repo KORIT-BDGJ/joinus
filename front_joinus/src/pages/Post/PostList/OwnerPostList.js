@@ -90,6 +90,10 @@ const buttons = css`
   }
 `;
 
+const noPost = css`
+  font-size: 25px;
+`;
+
 
 const OwnerPostList = () => {
   const [modal, setModal] = useState({ type: "", isOpen: false, postId: null });
@@ -173,7 +177,7 @@ const OwnerPostList = () => {
         </div>
       </h1>
       {getOwnerPostList.data.length === 0 ? (
-        <div>게시물이 없습니다.</div>
+        <div css={noPost}>게시물이 없습니다.</div>
       ) : (
         <ul css={list}>
           {getOwnerPostList.data.map((post) => (

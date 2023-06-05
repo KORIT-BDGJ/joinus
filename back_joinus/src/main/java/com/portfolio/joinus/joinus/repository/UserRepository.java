@@ -63,5 +63,4 @@ public interface UserRepository {
 	
 	List<HostPostList> getApplicantPostListByUserId(int userId);
 
-	List<String> findNicknamesByUserIds(List<Long> userIds);
 }

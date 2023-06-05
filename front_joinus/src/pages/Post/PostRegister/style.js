@@ -36,9 +36,11 @@ export const title = css`
 
 export const postInfo = css`
 
-    border: 1px solid #dbdbdb;
+    border: none;
+    border-radius: 10px;
     padding: 10px;
     height: 650px;
+    background-color: #C8E8E5;
 `;
 
 export const postContainer = css`

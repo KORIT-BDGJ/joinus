@@ -2,14 +2,27 @@
 import { css } from '@emotion/react';
 
 export const Reset = css`
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 
+    @font-face {
+        font-family: 'GangwonEduHyeonokT_OTFMediumA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduHyeonokT_OTFMediumA.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    input[type=password] {
+        font-size: 12px;
+        font-family: 'Spoqa Han Sans', sans-serif;
+    }
+    /* input[type=email] {
+        font-family: 'Spoqa Han Sans', sans-serif;
+    } */
 
     * {
         box-sizing: border-box;
         color: #333;
-        font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        font-size: 20px;
+        font-family: 'GangwonEduHyeonokT_OTFMediumA', sans-serif;
     }
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -30,6 +43,7 @@ export const Reset = css`
         font-size: 100%;
         font: inherit;
         vertical-align: baseline;
+        font-family: 'GangwonEduHyeonokT_OTFMediumA', sans-serif;
     }
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure, 
@@ -38,7 +52,7 @@ export const Reset = css`
     }
     body {
         line-height: 1;
-        font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        font-family: 'GangwonEduHyeonokT_OTFMediumA' sans-serif;
     }
     #root {
         position: relative;

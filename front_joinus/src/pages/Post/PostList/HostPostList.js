@@ -1,13 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import AlertModal from '../../../components/Modal/AlertModal';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import { FaRedo } from 'react-icons/fa';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const container = css`
   display: flex;
@@ -159,6 +155,10 @@ const resetButton = css`
   cursor: pointer;
 `;
 
+const noPost = css`
+  font-size: 25px;
+`;
+
 const HostPostList = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -271,7 +271,7 @@ const cancelAttendPost = useMutation(async (postId) => {
           </div>
         </h1>
         {getHostApplicantList.data.length === 0 ? (
-        <div>게시물이 없습니다.</div>
+        <div css={noPost}>신청한 글이 없습니다.</div>
         ) : (
         <div css={list}>
           {getHostApplicantList.data.map((post) => (
@@ -294,7 +294,7 @@ const cancelAttendPost = useMutation(async (postId) => {
           </div> 
         </h1>
         {getHostAttendList.data.length === 0 ? (
-        <div>게시물이 없습니다.</div>
+        <div css={noPost}>수락된 글이 없습니다.</div>
         ) : (
         <div css={list}>
           {getHostAttendList.data.map((post) => (

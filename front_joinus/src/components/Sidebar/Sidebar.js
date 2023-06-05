@@ -2,13 +2,9 @@
 import { css } from "@emotion/react";
 import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
-import ListButton from "./ListButton";
-import { BiHome, BiLogOut } from 'react-icons/bi';
-import { GrUserSettings } from 'react-icons/gr';
 import { Link } from "react-router-dom";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
-import { TfiWrite, TfiClipboard,TfiPencil } from "react-icons/tfi";
 
 
 const sidebar = (isOpen) => css`
@@ -69,9 +65,9 @@ const userInfo = css`
     word-break: break-all;
     margin: 5px;
     width: 150px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #2ecc71;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
 `;
 
 
