@@ -97,7 +97,7 @@ public class AuthenticationController {
 			
 			return ResponseEntity.badRequest().body("일치하는 이메일 정보가 없습니다.");
 		}
-		System.out.println(emailExists);
+		//System.out.println(emailExists);
 	    return ResponseEntity.ok(emailExists);
 	}
 	
@@ -108,7 +108,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/validation/send")
 	public ResponseEntity<?> sendMail(@RequestBody Map<String, String> requestData){
-		System.out.println(requestData);
+		//System.out.println(requestData);
 		
 		return ResponseEntity.ok(authenticationService.validAndSendEmail(requestData.get("email")));
 	}

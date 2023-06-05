@@ -62,5 +62,5 @@ jwt:
   secret: EAGsKy84nn189GWAYJEm585gtSujTSJnsaHFR3fzRLrzmKbdn4bPkOY1jPOfZwTc
   
 file:
-#  path: /Users/leesfact/workspace/joinus/back_joinus/upload/
-  path: C:/aws_project/workspace/joinus/back_joinus/upload/  #경로 맨끝엔 "/" 넣어준다
+  path: /Users/leesfact/workspace/joinus/back_joinus/upload/
+#  path: C:/aws_project/workspace/joinus/back_joinus/upload/  #경로 맨끝엔 "/" 넣어준다

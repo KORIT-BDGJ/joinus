@@ -416,7 +416,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			UserInfo userInfo = new UserInfo();
 			userInfo.setImage(tempFileName);
 			Path uploadPath = Paths.get(filePath + "profile/" + tempFileName);
-			System.out.println(uploadPath);
+			//System.out.println(uploadPath);
 			try {
 				Files.write(uploadPath, profileImgFile.getBytes());
 			} catch (IOException e) {

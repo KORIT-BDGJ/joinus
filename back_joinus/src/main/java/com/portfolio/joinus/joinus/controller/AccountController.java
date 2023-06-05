@@ -73,7 +73,7 @@ public class AccountController {
 	
 	@PostMapping("/profile/img")
 	public ResponseEntity<?> updateImage(@RequestPart MultipartFile profileImgFile){
-		System.out.println(profileImgFile.getOriginalFilename());
+		//System.out.println(profileImgFile.getOriginalFilename());
 		return ResponseEntity.ok(authenticationService.updateImage(profileImgFile));
 	}
 	
@@ -86,7 +86,7 @@ public class AccountController {
 	@PutMapping("/change/sportslikes")
 	public ResponseEntity<?> changeSportsLikes(@RequestBody SportsLikesChangeReqDto sportsLikesChangeReqDto ){
 		
-		System.out.println(sportsLikesChangeReqDto);
+		//System.out.println(sportsLikesChangeReqDto);
 		
 		return ResponseEntity.ok().body(authenticationService.changeSportsLikes(sportsLikesChangeReqDto));
 	}

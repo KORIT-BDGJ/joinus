@@ -159,14 +159,10 @@ const OwnerPostList = () => {
     deletePost.mutate({ postId });
   }
 
-  if(principal.isLoading) {
+  if(principal.isLoading ||getOwnerPostList.isLoading) {
     return <div>불러오는 중...</div>
   }
 
-
-  if (getOwnerPostList.isLoading) {
-    return <div>로딩중...</div>;
-  }
 
 
   return (
