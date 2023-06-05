@@ -244,7 +244,7 @@ const Sidebar = () => {
                 <Link to="/post/register"><div css={button_3}></div></Link>
                 <Link to={`/post/${principal.data.userId}/owner`}><div css={button_4}></div></Link>
                 <Link to={`/post/${principal.data.userId}/host`}><div css={button_5}></div></Link>
-                <Link to={`/post/finish`}><div css={button_6}></div></Link>
+                <Link to={`/post/${principal.data.userId}/finish`}><div css={button_6}></div></Link>
             </main>
             <footer css={footer}>
                 <div css={button_7} onClick={logoutClickHandle}></div>

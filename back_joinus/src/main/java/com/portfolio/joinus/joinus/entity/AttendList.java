@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AttendList {
     private int postId;
+    private int writerId;
     private int userId;
     private String image;
     private String nickName;
@@ -26,6 +27,7 @@ public class AttendList {
     public AttendListRespDto toDto() {
         return AttendListRespDto.builder()
                 .postId(postId)
+                .writerId(writerId)
                 .userId(userId)
                 .image(image)
                 .nickName(nickName)

@@ -90,10 +90,9 @@ public class PostController {
 //    }
 
     // 참여 완료한 게시글 목록 조회
-    @GetMapping("/post/finish")
-    public ResponseEntity<List<Post>> getFinishPostList() {
-        List<Post> finishPostList = postService.getFinishPostList();
-        return ResponseEntity.ok().body(finishPostList);
+    @GetMapping("/post/{userId}/finish")
+    public ResponseEntity<?> getFinishPostList(@PathVariable int userId) {
+    	return ResponseEntity.ok().body(postService.getFinishPostListByUserId(userId));
     }
 
     //신청취소버튼 클릭시 신청자 목록에서 삭제

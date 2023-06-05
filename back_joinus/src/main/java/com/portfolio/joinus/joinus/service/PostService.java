@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 import com.portfolio.joinus.joinus.dto.post.CommentRespDto;
-import com.portfolio.joinus.joinus.dto.post.FinishListRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
 import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
@@ -101,20 +100,11 @@ public class PostService {
     public int registePost(PostReqDto postReqDto) {
         int postId = postRepository.registePost(postReqDto);
 
-        // owner_post_list_tb에 데이터 저장
-        OwnerPostList ownerPostList = OwnerPostList.builder()
-            .ownerPostListId(0)
-            .postId(postReqDto.getPostId())
-            .userId(postReqDto.getWriterId())
-            .build();
-        saveOwnerPostList(ownerPostList);
 
         return postId;
     }
 
-    public void saveOwnerPostList(OwnerPostList ownerPostList) {
-        postRepository.saveOwnerPostList(ownerPostList);
-    }
+
 
     public Map<String, Object> getPostList(SearchPostReqDto searchPostReqDto) {
     	int userId = ((PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
@@ -204,9 +194,14 @@ public class PostService {
     	return list;
     }
     
-    public List<Post> getFinishPostList() {
-        List<Post> finishPosts = postRepository.getFinishPostList();
-        return finishPosts;
+    public List<AttendListRespDto> getFinishPostListByUserId(int userId) {
+    	List<AttendListRespDto> list = new ArrayList<>();
+    	
+    	postRepository.getFinishPostListByUserId(userId).forEach(finishPostData -> {
+    		list.add(finishPostData.toDto());
+    	});
+    	
+    	return list;
     }
 
     public int applyPost(int postId, int userId, int stateId, int levelId) {
@@ -218,21 +213,7 @@ public class PostService {
 
         int result = postRepository.applyPost(map);
 
-        if (result > 0) {
-            // host_post_list_tb에 데이터 저장
-            HostPostList hostPostList = HostPostList.builder()
-                .hostPostListId(0)
-                .postId(postId)
-                .userId(userId)
-                .build();
-            saveMyApplicantPostList(hostPostList);
-        }
-
         return result;
-    }
-
-    public int saveMyApplicantPostList(HostPostList hostPostList) {
-        return postRepository.saveMyApplicantPostList(hostPostList);
     }
     
     public int updatePost(int postId, PostUpdateReqDto postUpdateReqDto) {

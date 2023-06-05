@@ -432,37 +432,31 @@
 			1 = 1
         	and pt.deadline &gt; now()
 	        and patl.user_id = #{userId}
+	        AND pt.writer_id != #{userId}
 	</select>
 	
-	<select id="getMyApplicantAcceptPostListByUserId" parameterType="Integer" resultMap="AttendListMap">
-	    SELECT
-	        pt.post_id AS postId,
-	        pt.title AS title,
-	        ut.user_id AS userId
-	    FROM
-	        post_attend_list_tb patl
-	        LEFT OUTER JOIN post_tb pt ON (pt.post_id = patl.post_id)
-	        LEFT OUTER JOIN user_tb ut ON (ut.user_id = patl.user_id)
-	        LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
-	        LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
-	        LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
-	    WHERE
-			ut.user_id = #{userId}	
-	</select>
-	
-	<select id="getFinishPostList" resultMap="PostMap">
-	    SELECT
-	        pt.post_id,
-	        pt.title,
-	        pt.deadline,
-	        pt.writer_id
-	    FROM
-	        post_tb pt
-	        LEFT OUTER JOIN post_attend_list_tb pat ON pt.writer_id = pat.user_id
-	    WHERE
-	        pt.deadline &lt; NOW() 
-	</select>
 
+	<select id="getFinishPostListByUserId" parameterType="Integer" resultType="com.portfolio.joinus.joinus.entity.AttendList">
+		SELECT
+			pt.post_id AS postId,
+			pt.title,
+			ut.user_id AS userId,
+			uit.image,
+			uit.nickname,
+			lt.level_name AS levelName,
+			stt.state_name AS stateName
+		FROM 
+			post_attend_list_tb patl
+			LEFT OUTER JOIN post_tb pt ON (pt.post_id = patl.post_id)
+			LEFT OUTER JOIN user_tb ut ON (ut.user_id = patl.user_id)
+			LEFT OUTER JOIN user_info_tb uit ON (uit.user_info_id = ut.user_id)
+			LEFT OUTER JOIN state_tb stt ON (stt.state_id = patl.state_id)
+			LEFT OUTER JOIN level_tb lt ON (lt.level_id = patl.level_id)
+		WHERE
+	    	1 = 1
+	        and patl.user_id = #{userId}
+	        and pt.deadline &lt; now()
+	</select>
 
 
 	
@@ -485,16 +479,6 @@
 	<insert id="commentSubmit" parameterType="hashMap">
 		INSERT INTO comment_tb
 		VALUES (0, #{postId}, #{userId}, #{comment})
-	</insert>
-	
-	<insert id="saveOwnerPostList" parameterType="com.portfolio.joinus.joinus.entity.OwnerPostList">
-	    INSERT INTO owner_post_list_tb (owner_post_list_id, post_id, user_id)
-	    VALUES (#{ownerPostListId}, #{postId}, #{userId})
-	</insert>
-	
-	<insert id="saveMyApplicantPostList" parameterType="com.portfolio.joinus.joinus.entity.HostPostList">
-	    INSERT INTO host_post_list_tb (host_post_list_id, post_id, user_id)
-	    VALUES (#{hostPostListId}, #{postId}, #{userId})
 	</insert>
 	
 	<delete id="commentDelete" parameterType="hashMap">

@@ -92,7 +92,6 @@ const buttons = css`
 
 
 const OwnerPostList = () => {
-  const [modal, setModal] = useState({ type: "", isOpen: false, postId: null });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 

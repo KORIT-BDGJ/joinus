@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const tableContainer = css`
     width: 100%;
-`
+`;
 
 const member = css`
     margin-top: 5px;
@@ -127,7 +127,6 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
             {getAttendList.data.map(attendData => {
                 return (
                     <div key={attendData.userId} >
-
                         <div css={member}>
                             <div css={attendInfo}>
                                 <div css={infoImage}>
