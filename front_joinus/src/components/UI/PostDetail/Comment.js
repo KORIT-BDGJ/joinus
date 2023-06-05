@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { FaUserCircle } from 'react-icons/fa';
 
 const commentBody = css`
     margin-top: 10px;

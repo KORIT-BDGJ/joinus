@@ -69,6 +69,8 @@ const attendButton = css`
     border: none;
     border-radius: 5px;
     height: 30px;
+    font-weight: bold;
+
     cursor: pointer;
 
     &:hover {
@@ -135,7 +137,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                                         <img
                                             css={imgIcon}
                                             src={"http://localhost:8080/image/profile/" + attendData.image}
-                                            alt="Profile Image"
+                                            alt="ProfileImage"
                                         />
                                     ) : (
                                         <span>{attendData.nickName}</span>
