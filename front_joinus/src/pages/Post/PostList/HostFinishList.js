@@ -13,7 +13,7 @@ const container = css`
   flex-direction: column;
   align-items: center;
   padding: 0px 10px 10px 10px;
-  overflow-y: auto;
+  //overflow-y: auto;
 `;
 
 const logoStyle= css`
@@ -52,7 +52,6 @@ const list = css`
   list-style: none;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   max-height: 300px;
 `;
 
@@ -97,6 +96,10 @@ const buttons = css`
   &:hover {
   border: 1px solid black;
   }
+`;
+
+const noPost = css`
+  font-size: 24px;
 `;
 
 
@@ -150,7 +153,7 @@ const HostFinishList = () => {
         </div>
       </h1>
       {getHostFinishList.data.length === 0 ? (
-          <div>게시물이 없습니다.</div>
+          <div css={noPost}>게시물이 없습니다.</div>
       ) : (
       <div css={list}>
         {getHostFinishList.data.map((post) => (

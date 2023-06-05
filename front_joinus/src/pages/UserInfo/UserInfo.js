@@ -205,7 +205,7 @@ const minusButton = css`
   top: 10px;
   right: 0px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   width: 35px;
   height: 20px;

@@ -760,11 +760,7 @@ const PostDetail = () => {
     }
 
 
-    if(principal.isLoading) {
-        return <div>불러오는 중...</div>
-    }
-
-    if(getPost.isLoading) {
+    if(principal.isLoading || getPost.isLoading) {
         return <div>불러오는 중...</div>
     }
 

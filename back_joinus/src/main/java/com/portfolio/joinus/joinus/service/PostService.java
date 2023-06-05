@@ -124,7 +124,7 @@ public class PostService {
         map.put("searchValue", searchPostReqDto.getSearchValue());
         map.put("sort", searchPostReqDto.getSort());
         map.put("userId", userId);
-        System.out.println("Map: "+map);
+        //System.out.println("Map: "+map);
         
         postRepository.getPostList(map).forEach(post -> {
         	if(post != null) {

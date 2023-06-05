@@ -133,7 +133,9 @@ const Main = () => {
         return response.data;
     });
 
-    const getPostList = useQuery(["getPostList"], async () => {
+    const getPostList = useQuery(
+        ["getPostList",searchParams], 
+        async () => {
         const option = {
             params: {
                 ...searchParams,
@@ -144,18 +146,24 @@ const Main = () => {
         }
 
         const response = await axios.get("http://localhost:8080/post/list", option);
-
         return response.data;
     },{
         onSuccess: () => {
             setRefresh(false);
         },
-        refetchInterval: 3000
+        // refetchInterval: 3000
     });
+    useEffect(() => {
+        if (refresh) {
+            getPostList.refetch();
+        }
+    }, [refresh, getPostList]);
+    
 
     if(principal.isLoading || sportsLikes.isLoading || getSports.isLoading || getRegions.isLoading || getSearchs.isLoading || getPostList.isLoading) {
         return <></>;
     }
+
     
     const expandHeader = () => {
         setIsExpanded(!isExpanded);
