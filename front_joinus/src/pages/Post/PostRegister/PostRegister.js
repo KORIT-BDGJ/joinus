@@ -25,15 +25,6 @@ import { GrGamepad, GrYoga } from 'react-icons/gr';
 const PostRegister = () => {
 
     const navigate = useNavigate();
-    const principal = useQuery(["principal"], async () => {
-        const option = {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            }
-        }
-        const response = await axios.get("http://localhost:8080/account/principal", option);
-        return response.data;
-    });
 
     const [ titlePost, setTitlePost ] = useState("");
     const [ textPost, setTextPost ] = useState("");
@@ -59,6 +50,16 @@ const PostRegister = () => {
             title="운동 선택"
         />
     ));
+
+    const principal = useQuery(["principal"], async () => {
+        const option = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        }
+        const response = await axios.get("http://localhost:8080/account/principal", option);
+        return response.data;
+    });
 
     const sportsIcons = [
         {id: 0, title: "전체", icon: <MdOutlineListAlt size={32} /> },
@@ -225,114 +226,161 @@ const PostRegister = () => {
             </h1>
             <main css={S.postInfo}>
                 <div css={S.postContainer}>
-                    <p css={S.postTitle}>제목</p>
-                    <input css={S.postInput} type="text" placeholder="제목을 입력하세요" value={titlePost} onChange={titleHandleChange}/>
-                </div>
-                <div css={S.postContainer}>
-                    <p css={S.postTitle}>운동 종목</p>
-                    <div onClick={() => setSportsModalIsOpen(true)}>
-                        {icons}
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>제목</p>
                     </div>
-                    {getSports.isLoading ? ""
-                        : <SelectSportsModal 
-                            isOpen={sportsModalIsOpen} 
-                            setIsOpen={setSportsModalIsOpen} 
-                            onSelect={handleIconSelect} 
-                            onClick={selectedIconClickHandle}
-                            hiddenIcons={[0, 99]}
-                        />}
-                    <div css={S.selectLevelBox}>
-                        {getLevels.isLoading ? "" 
-                            : <Select
-                                css={S.selectLevel}
-                                value={selectedOptions.selectedLevel}
-                                onChange={handleOptionChange('selectedLevel')}
-                                options={getLevels.data.map(level => ({
-                                    "value": level.levelId, "label": level.levelName
-                                }))}
-                                placeholder="레벨 선택"
-                            />}
-                    </div>
-                    <div css={S.selectLevelBox}>
-                        {getStates.isLoading ? ""
-                            : <Select
-                                css={S.selectUserStatus}
-                                value={selectedOptions.selectedStates}
-                                onChange={handleOptionChange('selectedStates')}
-                                options={getStates.data.map(state => ({
-                                    "value": state.stateId, "label": state.stateName
-                                }))}
-                                placeholder="운동 방식 선택!"
-                            />}
-                    </div>
-                </div>
-                <div css={S.postContainer}>
-                    <p css={S.postTitle}>지역 선택</p>
-                    {getRegions.isLoading ? ""
-                        : <Select
-                            css={S.selectCountry}
-                            value={selectedOptions.selectedCountry}
-                            onChange={handleOptionChange('selectedCountry')}
-                            options={getRegions.data.map(region => ({
-                                "value": region.regionId, "label": region.regionName
-                            }))}
-                            placeholder="지역을 고르시오."
-                        />}
-                </div>
-                <div css={S.postContainer}>
-                    <p css={S.postTitle}>날짜 선택</p>
-                    <div>
-                        <DatePicker 
-                            locale={ko} 
-                            selected={selectedDate}
-                            onChange={date => setSelectedDate(date)}
-                            showTimeSelect
-                            minDate={minSelectableDate}
-                            dateFormat="yyyy년 MM월 dd일 HH시 mm분"
-                            placeholderText="날짜를 선택하시오."
+                    <div css={S.postInputBox}>
+                        <input 
+                            css={S.postInput} type="text" placeholder="제목을 입력하세요" value={titlePost} onChange={titleHandleChange}
                         />
                     </div>
                 </div>
                 <div css={S.postContainer}>
-                    <p css={S.postTitle}>인원 선택</p>
-                    <div css={S.selectCount}>
-                        <button onClick={handleClick(-5)}>&#60;&#60;</button>
-                        <button onClick={handleClick(-1)}>&#60;</button>
-                        <div css={S.countBox}>{count}</div>
-                        <button onClick={handleClick(1)}>&#62;</button>
-                        <button onClick={handleClick(+5)}>&#62;&#62;</button>
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>운동 종목</p>
+                    </div>
+                    <div css={S.postCategorysBox}>
+                        <div onClick={() => setSportsModalIsOpen(true)}>
+                            {icons}
+                        </div>
+                        {getSports.isLoading ? ""
+                            : <SelectSportsModal 
+                                isOpen={sportsModalIsOpen} 
+                                setIsOpen={setSportsModalIsOpen} 
+                                onSelect={handleIconSelect} 
+                                onClick={selectedIconClickHandle}
+                                hiddenIcons={[0, 99]}
+                            />}
+                        <div css={S.selectLevelBox}>
+                            {getLevels.isLoading ? "" 
+                                : <Select
+                                    css={S.selectLevel}
+                                    value={selectedOptions.selectedLevel}
+                                    onChange={handleOptionChange('selectedLevel')}
+                                    options={getLevels.data.map(level => ({
+                                        "value": level.levelId, "label": level.levelName
+                                    }))}
+                                    placeholder="레벨 선택"
+                                />}
+                        </div>
+                        <div css={S.selectLevelBox}>
+                            {getStates.isLoading ? ""
+                                : <Select
+                                    css={S.selectUserStatus}
+                                    value={selectedOptions.selectedStates}
+                                    onChange={handleOptionChange('selectedStates')}
+                                    options={getStates.data.map(state => ({
+                                        "value": state.stateId, "label": state.stateName
+                                    }))}
+                                    placeholder="운동 방식 선택"
+                                />}
+                        </div>
                     </div>
                 </div>
                 <div css={S.postContainer}>
-                    <p css={S.postTitle}>모집 성별 선택</p>
-                    <div css={S.buttonContainer}>
-                        {getGenders.isLoading ? ""
-                            : getGenders.data.map((genderOption) => (
-                            <label css={S.buttonRadioBox} key={genderOption.genderId}>
-                                <input
-                                    css={S.buttonRadio}
-                                    type="radio"
-                                    name="gender"
-                                    value={genderOption.genderId}
-                                    checked={gender === `${genderOption.genderId}`}
-                                    onChange={genderHandleChange}
-                                />
-                                {genderOption.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
-                                {genderOption.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
-                                {genderOption.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
-                            </label>
-                        ))}
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>지역 선택</p>
+                    </div>
+                    <div css={S.postSelesctsBox}>
+                        {getRegions.isLoading ? ""
+                            : <Select
+                                css={S.selectCountry}
+                                value={selectedOptions.selectedCountry}
+                                onChange={handleOptionChange('selectedCountry')}
+                                options={getRegions.data.map(region => ({
+                                    "value": region.regionId, "label": region.regionName
+                                }))}
+                                placeholder="지역을 고르시오."
+                            />}
                     </div>
                 </div>
-                <div css={S.postWrite}>
-                    <p css={S.writeText}>모집 소개글</p>
-                    <input css={S.writeBox} type="text" value={textPost} onChange={textHandleChange} />
+                <div css={S.postContainer}>
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>날짜 선택</p>
+
+                    </div>
+                    <div css={S.postSelesctsBox}>
+                        <div>
+                            <DatePicker 
+                                locale={ko} 
+                                selected={selectedDate}
+                                css={S.postSelectDate}
+                                onChange={date => setSelectedDate(date)}
+                                showTimeSelect
+                                minDate={minSelectableDate}
+                                dateFormat="yyyy년 MM월 dd일 HH시 mm분"
+                                placeholderText="날짜를 선택하시오."
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div css={S.postContainer}>
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>인원 선택</p>
+                    </div>
+                    <div css={S.postSelesctsBox}>
+                        <div css={S.selectCount}>
+                            <button css={S.countButtons} onClick={handleClick(-5)}>&#60;&#60;</button>
+                            <button css={S.countButtons} onClick={handleClick(-1)}>&#60;</button>
+                            <div css={S.countBox}>{count}</div>
+                            <button css={S.countButtons} onClick={handleClick(1)}>&#62;</button>
+                            <button css={S.countButtons} onClick={handleClick(+5)}>&#62;&#62;</button>
+                        </div>
+                    </div>
+                </div>
+                <div css={S.postContainer}>
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>모집 성별 선택</p>
+                    </div>
+                    <div css={S.postSelesctsBox}>
+                        <div css={S.buttonContainer}>
+                            {getGenders.isLoading ? ""
+                                : getGenders.data.map((genderOption) => (
+                                <label css={S.buttonRadioBox} key={genderOption.genderId}>
+                                    <input
+                                        css={S.buttonRadio}
+                                        type="radio"
+                                        name="gender"
+                                        value={genderOption.genderId}
+                                        checked={gender === `${genderOption.genderId}`}
+                                        onChange={genderHandleChange}
+                                    />
+                                    {genderOption.genderId === 1 && <i className="fas fa-male"><BiMale /></i>}
+                                    {genderOption.genderId === 2 && <i className="fas fa-female"><BiFemale /></i>}
+                                    {genderOption.genderId === 3 && <i className="fas fa-maleFemale"><BiMaleFemale /></i>}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div css={S.postContainer}>
+                    <div css={S.postTitleBox}>
+                        <p css={S.postTitle}>모집 소개글</p>
+                    </div>
+                    <div css={S.postInputBox}>
+                        <input 
+                            css={S.postWriteInput} 
+                            type="text" 
+                            value={textPost} 
+                            onChange={textHandleChange} 
+                        />
+                    </div>
                 </div>
             </main>
-                <div css={S.buttonBox}>
-                    <button css={S.modifyButton} onClick={createClickHandle} >작성</button>
-                    <button css={S.cancelButton} onClick={cancelClickHandle}>취소</button>
-                </div>
+            <div css={S.buttonBox}>
+                <button 
+                    css={S.modifyButton} 
+                    onClick={createClickHandle} 
+                >
+                    작성
+                </button>
+                <button 
+                    css={S.cancelButton} 
+                    onClick={cancelClickHandle}
+                >
+                    취소
+                </button>
+            </div>
         </div>
     );
 };

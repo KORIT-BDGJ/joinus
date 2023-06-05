@@ -66,6 +66,7 @@ const okButton = css`
     height: 30px;
     font-weight: 600;
     background-color: white;
+    cursor: pointer;
 
     &:hover {
         background-color: rgba(0, 255, 0, 0.2);
@@ -84,6 +85,7 @@ const cancelButton = css`
     height: 30px;
     font-weight: 600;
     background-color: white;
+    cursor: pointer;
 
     &:hover {
         background-color: rgba(0, 255, 0, 0.2);
