@@ -1028,7 +1028,7 @@ const PostDetail = () => {
                         </div>
                     </div>
                     <div css={attendList(attendShow)}>
-                        <AttendList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalAttendCount={updateTotalAttendCount}/>
+                        <AttendList postId={postId} isCurrentUserAuthor={isCurrentUserAuthor} updateTotalAttendCount={updateTotalAttendCount} userId={principal.data.userId}/>
                     </div>
                 </div>
             </div>

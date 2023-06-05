@@ -80,7 +80,7 @@ const attendButton = css`
 
 
 
-const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => {
+const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount, userId }) => {
     const [ attendUserId, setAttendUserId ] = useState("");
     const queryClient = useQueryClient();
 
@@ -147,18 +147,18 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount }) => 
                                 <div css={infoOption}>상태: {attendData.stateName}</div>
                             </div>
                             <div css={attendButtonContainer}>
-                                {isCurrentUserAuthor && (
-                                    <>
-                                        <button css={attendButton} onClick={() => deleteAttendUser(attendData.userId)}>내보내기</button>
-                                    </>
-                                )}
+                            {isCurrentUserAuthor && attendData.userId !== userId && (
+                                <button css={attendButton} onClick={() => deleteAttendUser(attendData.userId)}>
+                                내보내기
+                                </button>
+                            )}
                             </div>
                         </div>
                     </div>
                 );
             })}
         </div>
-      );      
+    );      
 };
 
 export default AttendList;

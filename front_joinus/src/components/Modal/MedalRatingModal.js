@@ -206,7 +206,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId }) => {
               const isCurrentUser = currentUserId === userId;
               return (
                 <div key={attendData.userId} >
-                {!isCurrentUser === false ? (
+                {!isCurrentUser  && (
                       <div css={member}>
                           <div css={attendInfo}>
                               <div css={infoImage}>
@@ -214,7 +214,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId }) => {
                                       <img
                                           css={imgIcon}
                                           src={"http://localhost:8080/image/profile/" + attendData.image}
-                                          alt="Profile Image"
+                                          alt="ProfileImage"
                                       />
                                   ) : (
                                       <span>{attendData.nickName}</span>
@@ -238,8 +238,6 @@ const MedalRatingModal = ({ modalState, postId, currentUserId }) => {
                             <button css={attendButton}>별점주기</button>
                           </div>
                       </div>
-                    ) : (
-                      <div>참여유저가 없습니다.</div>
                     )}
                     </div>
                   );
