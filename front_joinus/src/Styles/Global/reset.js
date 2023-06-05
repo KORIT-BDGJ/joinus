@@ -97,4 +97,8 @@ export const Reset = css`
 
     background: #C8E8E5; /* 스크롤바 썸의 호버 배경색 */
     }
+
+    .react-datepicker-popper {
+        font-size: 25px;
+    }
 `;
