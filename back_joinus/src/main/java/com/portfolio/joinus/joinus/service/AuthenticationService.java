@@ -44,10 +44,12 @@ import com.portfolio.joinus.joinus.dto.auth.LoginReqDto;
 import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2ProviderMergeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.OAuth2RegisterReqDto;
+import com.portfolio.joinus.joinus.dto.auth.PointChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PrincipalRespDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwResetReqDto;
 import com.portfolio.joinus.joinus.dto.auth.RegisterReqDto;
+import com.portfolio.joinus.joinus.dto.auth.SinglePointChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.SportsLikesChangeReqDto;
 import com.portfolio.joinus.joinus.entity.Authority;
 import com.portfolio.joinus.joinus.entity.Point;
@@ -383,7 +385,7 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	                .sportsId(sportsId)  // Here we directly assign the sportsId
 	                .build();
 
-	            System.out.println(sportsLikes);
+	           // System.out.println(sportsLikes);
 	            userRepository.updateSportsLikes(sportsLikes);
 	        }
 	        return true;
@@ -433,6 +435,18 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 								.userInfo(userInfo)
 								.build());
 						
+		}
+		
+		public List<Integer> changePoint(PointChangeReqDto pointChangeReqDto) {
+			List<Integer> updateUserIds = new ArrayList<>();
+		    for (Map.Entry<Integer, Integer> entry : pointChangeReqDto.getStarValues().entrySet()) {
+		        SinglePointChangeReqDto singleChange = new SinglePointChangeReqDto();
+		        singleChange.setUserId(entry.getKey());
+		        singleChange.setPoint(entry.getValue());
+		        userRepository.updatePoint(singleChange);
+		        updateUserIds.add(entry.getKey());
+		    }
+		    return updateUserIds;
 		}
 		
 	

@@ -1,6 +1,5 @@
 package com.portfolio.joinus.joinus.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
 import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
-import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -55,7 +53,7 @@ public class PostController {
 	//손님으로 방입장 후 신청버튼 클릭시 신청자 목록
 	@PostMapping("post/apply/{postId}")
 	public ResponseEntity<?> applyPost(@PathVariable int postId, @RequestBody Map<String, Integer> requestMap) {
-		System.out.println(requestMap);
+		//System.out.println(requestMap);
 		return ResponseEntity.ok().body(postService.applyPost(postId,  requestMap.get("userId"), requestMap.get("stateId"), requestMap.get("levelId")));
 	}
 	

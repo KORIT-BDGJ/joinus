@@ -34,20 +34,11 @@ const logoTitle = css`
   font-weight: 600;
 `;
 
-const title = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-  padding: 10px;
-  font-size: 34px;
-  font-weight: 600;
-`;
-
 const list = css`
   width: 650px;
   margin: 30px auto;
-  border: 1px solid #dbdbdb;
+  border: 1px solid #C8E8E5;
+  border-radius: 5px;
   padding: 0;
   list-style: none;
   display: flex;
@@ -63,7 +54,7 @@ const listItem = css`
   &:last-child {
     border-bottom: none;
   }
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 0.5px solid #C8E8E5;
 `;
 
 const postTitle = css`
@@ -85,16 +76,17 @@ const postInfo = css`
 `;
 
 const buttons = css`
-  background-color: white;
-  border: 1px solid #dbdbdb;
+  background-color: #C8E8E5;
+  border: none;
   border-radius: 5px;
   width: 70px;
   height: 30px;
   margin-right: 5px;
+  font-weight: bold;
   cursor: pointer;
 
-  &:hover {
-  border: 1px solid black;
+  &:active {
+    background-color: #A7DED9;
   }
 `;
 
@@ -106,19 +98,33 @@ const noPost = css`
 const HostFinishList = () => {
   const { userId } = useParams();
   const [isStateLevelChangeModalOpen, setIsStateLevelChangeModalOpen] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null); // 추가
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [completedPosts, setCompletedPosts] = useState({});
+  const [deleteButtons, setDeleteButtons] = useState({});
+  const [expiryTimes, setExpiryTimes] = useState({});
 
-  const openStateLevelChangeModal = (postId) => { // 수정
-    setSelectedPostId(postId); // postId 저장
+  const onComplete = (postId) => {
+    setCompletedPosts((prevCompletedPosts) => ({
+      ...prevCompletedPosts,
+      [postId]: true,
+    }));
+  };
+
+  const onDelete = (postId) => {
+    deletePost.mutate({ postId });
+  };
+
+  const openStateLevelChangeModal = (postId) => {
+    setSelectedPostId(postId);
     setIsStateLevelChangeModalOpen(true);
   };
 
   const principal = useQuery(["principal"], async () => {
     const option = {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-    }
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    };
     const response = await axios.get("http://localhost:8080/account/principal", option);
     return response.data;
   });
@@ -134,44 +140,132 @@ const HostFinishList = () => {
     return response.data;
   });
 
-  if (principal.isLoading || getHostFinishList.isLoading) {
-    return <div>로딩중...</div>;
-  }
+  useEffect(() => {
+    if (getHostFinishList.data) {
+      for (let post of getHostFinishList.data) {
+        let expiryTime = new Date(post.expiryTime);
+        let tenMinutes = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+        if (expiryTime.getTime() + tenMinutes >= Date.now()) {
+          // 만료 시간이 아직 지나지 않은 경우에만 타이머 설정
+          let timer = setTimeout(() => {
+            setDeleteButtons((prevDeleteButtons) => ({
+              ...prevDeleteButtons,
+              [post.postId]: true,
+            }));
+          }, expiryTime.getTime() + tenMinutes - Date.now());
+
+          // 만료 시간과 타이머를 상태에 저장
+          setExpiryTimes((prevExpiryTimes) => ({
+            ...prevExpiryTimes,
+            [post.postId]: {
+              expiryTime: expiryTime,
+              timer: timer,
+            },
+          }));
+        }
+      }
+    }
+  }, [getHostFinishList]);
 
   const closeStateLevelChangeModal = () => {
     setIsStateLevelChangeModalOpen(false);
   };
+  const getPost = useQuery(
+    ['getPost', selectedPostId],
+    async () => {
+      const option = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      };
+      const response = await axios.get(`http://localhost:8080/post/${selectedPostId}`, option);
+      return response.data;
+    },
+    {
+      enabled: !!selectedPostId,  // selectedPostId가 있을 때만 쿼리가 활성화되도록 변경
+      onSuccess: (data) => {  
+        if (data.deadLine) {  
+          const expiryTime = new Date(data.deadLine);
+          setExpiryTimes((prevExpiryTimes) => ({
+            ...prevExpiryTimes,
+            [selectedPostId]: {
+              expiryTime: expiryTime,
+              timer: prevExpiryTimes[selectedPostId]?.timer, // 기존 타이머 유지
+            },
+          }));
+        }
+      },
+    }
+  );
 
 
-    
+  const deletePost = useMutation(
+    async ({ postId }) => {
+      const option = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      };
+      await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
+    },
+    {
+      onSuccess: () => {
+        getHostFinishList.refetch();
+        alert("해당 게시글이 삭제되었습니다.");
+      },
+      onError: () => {
+        alert("게시글 삭제에 실패했습니다.");
+      },
+    }
+  );
+
+  if (principal.isLoading || getHostFinishList.isLoading || getPost.isLoading) {
+    return <div>로딩중...</div>;
+  }
+
+  console.log(getPost.data);
+
   return (
     <div css={container}>
       <Sidebar />
       <h1 css={logoTitle}>
-        <div css={logoStyle}>
-          {/* 참여 완료한 글 */}
-        </div>
+        <div css={logoStyle}>{/* 참여 완료한 글 */}</div>
       </h1>
       {getHostFinishList.data.length === 0 ? (
-          <div css={noPost}>게시물이 없습니다.</div>
+        <div css={noPost}>게시물이 없습니다.</div>
       ) : (
-      <div css={list}>
-        {getHostFinishList.data.map((post) => (
-          <div key={post.postId} >
-            <div css={listItem}>
-              <div css={postInfo}>
-                <h1 css={postTitle}>{post.title}</h1>
-                <button css={buttons} onClick={() => openStateLevelChangeModal(post.postId)}>평가하기</button>
+        <div css={list}>
+          {getHostFinishList.data.map((post) => (
+            <div key={post.postId}>
+              <div css={listItem}>
+                <div css={postInfo}>
+                  <h1 css={postTitle}>{post.title}</h1>
+                  {!completedPosts[post.postId] && !deleteButtons[post.postId] ? (
+                    <button css={buttons} onClick={() => openStateLevelChangeModal(post.postId)}>
+                      평가하기
+                    </button>
+                  ) : (
+                    <button css={buttons} onClick={() => onDelete(post.postId)}>
+                      삭제
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
               <footer>
                 {isStateLevelChangeModalOpen && selectedPostId === post.postId && (
-                  <MedalRatingModal modalState={closeStateLevelChangeModal} postId={selectedPostId} currentUserId={principal.data.userId}/> // 수정
+                  <MedalRatingModal
+                    modalState={closeStateLevelChangeModal}
+                    postId={selectedPostId}
+                    currentUserId={principal.data.userId}
+                    refetchHostFinishList={getHostFinishList.refetch}
+                    onComplete={onComplete}
+                  />
                 )}
               </footer>
-          </div>
+            </div>
           ))}
-      </div>
+        </div>
       )}
     </div>
   );
