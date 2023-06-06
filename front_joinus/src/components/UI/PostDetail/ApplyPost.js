@@ -122,7 +122,7 @@ const ApplyPost = ({ postId }) => {
     
     const closeStateLevelChangeModal = () => {
         setIsStateLevelChangeModalOpen(false);
-        applyPost.mutate();
+        // applyPost.mutate(); 06-06 이강용 수정 :취소를 누르는데 신청이 됨 
     };
 
     return (

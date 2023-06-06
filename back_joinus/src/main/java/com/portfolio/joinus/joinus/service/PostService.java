@@ -69,7 +69,7 @@ public class PostService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("postId", postId);
 		map.put("userId", userId);
-		
+		//System.out.println(map);
 		return postRepository.attendDelete(map);
 	}
 	
@@ -200,15 +200,17 @@ public class PostService {
     	
     	return list;
     }
-    
+    //06-06 강용 추가 작업중..
     public List<AttendListRespDto> getFinishPostListByUserId(int userId) {
-    	List<AttendListRespDto> list = new ArrayList<>();
-    	
-    	postRepository.getFinishPostListByUserId(userId).forEach(finishPostData -> {
-    		list.add(finishPostData.toDto());
-    	});
-    	
-    	return list;
+        List<AttendListRespDto> list = new ArrayList<>();
+
+        postRepository.getFinishPostListByUserId(userId).forEach(finishPostData -> {
+            AttendListRespDto dto = finishPostData.toDto();
+            dto.setDeadline(finishPostData.getDeadline()); // 수정 필요
+            list.add(dto);
+        });
+        //System.out.println(list);
+        return list;
     }
 
     public int applyPost(int postId, int userId, int stateId, int levelId) {

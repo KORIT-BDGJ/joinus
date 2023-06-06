@@ -186,7 +186,11 @@ const Comment = ({ postId }) => {
     }
 
     const sendComment = () => {
-        commentSubmit.mutate(postId);
+        if (comment.trim() === "") {
+            alert("댓글을 입력하세요");
+        } else {
+            commentSubmit.mutate(postId);
+        }
     };
 
     const sendCommentHandle = (e) => {

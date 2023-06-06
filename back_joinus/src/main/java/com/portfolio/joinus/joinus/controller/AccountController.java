@@ -1,5 +1,7 @@
 package com.portfolio.joinus.joinus.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import com.portfolio.joinus.joinus.aop.annotation.ValidAspect;
 import com.portfolio.joinus.joinus.dto.auth.AddressChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.CheckPasswordReqDto;
 import com.portfolio.joinus.joinus.dto.auth.NicknameChangeReqDto;
+import com.portfolio.joinus.joinus.dto.auth.PointChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.PwChangeReqDto;
 import com.portfolio.joinus.joinus.dto.auth.SportsLikesChangeReqDto;
 import com.portfolio.joinus.joinus.service.AuthenticationService;
@@ -89,6 +92,13 @@ public class AccountController {
 		//System.out.println(sportsLikesChangeReqDto);
 		
 		return ResponseEntity.ok().body(authenticationService.changeSportsLikes(sportsLikesChangeReqDto));
+	}
+	
+	@PutMapping("/point/rating")
+	public ResponseEntity<?> changePoint(@RequestBody PointChangeReqDto pointChangeReqDto){
+        //System.out.println(pointChangeReqDto);
+	    List<Integer> updatedUserIds = authenticationService.changePoint(pointChangeReqDto);
+	    return ResponseEntity.ok().body(updatedUserIds);
 	}
 		
 }

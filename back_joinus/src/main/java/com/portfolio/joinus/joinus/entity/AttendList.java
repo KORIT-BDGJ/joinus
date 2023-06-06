@@ -1,5 +1,9 @@
 package com.portfolio.joinus.joinus.entity;
 
+
+
+import java.util.Date;
+
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +27,9 @@ public class AttendList {
     private Post post;
     private State state;
     private Level level;
+    
+   // 2023-06-06 이강용 추가
+    private Date deadline;
 
     public AttendListRespDto toDto() {
         return AttendListRespDto.builder()
@@ -34,6 +41,7 @@ public class AttendList {
                 .stateName(stateName)
                 .levelName(levelName)
                 .title(title)
+                .deadline(deadline)
                 .build();
     }
 }
