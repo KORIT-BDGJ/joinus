@@ -24,15 +24,6 @@ const modalContent = css`
   border-radius: 5px;
 `;
 
-const star = css`
-  font-size: 40px;
-  font-weight: 900;
-  color: #A7DED9;
-  cursor: pointer;
-  background-color: white;
-  border: none;
-`;
-
 
 const buttonContainer = css`
   display: flex;
@@ -59,6 +50,20 @@ const cancelButton = css`
   font-weight: bold;
   cursor: pointer;
 `;
+
+const closeButton = css`
+  background-color: #dbdbdb;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+
+
 
 
 const tableContainer = css`
@@ -106,13 +111,7 @@ const infoNickname = css`
     font-weight: 600;
     padding-left: 10px;
 `;
-const infoOption = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-weight: 600;
-    padding-left: 10px;
-`;
+
 
 const attendButtonContainer = css`
     display: flex;
@@ -121,34 +120,51 @@ const attendButtonContainer = css`
         
 `;
 
-const attendButton = css`
-    background-color: #C8E8E5;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    height: 30px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #A7DED9;
-    }
+const star = css`
+  font-size: 40px;
+  font-weight: bold;
+  vertical-align:middle;
+  color: #A7DED9;
+  cursor: pointer;
+  background-color: white;
+  border: none;
 `;
 
-const MedalRatingModal = ({ modalState, postId, currentUserId }) => {
-  const [starValues, setStarValues] = useState({});
-  const getAttendList= useQuery(["getAttendList"], async () => {
-    const option = {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-    }
+const score = css`
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+`;
 
-    const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
+const errormessage = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 25px;
+`;
+
+
+const MedalRatingModal = ({ modalState, postId, currentUserId, refetchHostFinishList, onComplete }) => {
+  const [starValues, setStarValues] = useState({});
+  const [evaluatedUserIds, setEvaluatedUserIds] = useState([]);
+  
+  const getAttendList = useQuery(["getAttendList"], async () => {
+    const option = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    };
+
+    const response = await axios.get(
+      `http://localhost:8080/post/${postId}/attend/list`,
+      option
+    );
     return response.data;
   });
-  
-  
-  
+
   const handleNewStarChange = (userId, selectedStarValue) => {
     setStarValues((prevStarValues) => ({
       ...prevStarValues,
@@ -156,87 +172,150 @@ const MedalRatingModal = ({ modalState, postId, currentUserId }) => {
     }));
   };
 
-  const saveChanges = useMutation(async (starValues)=> {
-    console.log(starValues)
-    const option = {
+  const saveChanges = useMutation(
+    async (starValues) => {
+      console.log(starValues);
+      const option = {
         headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      };
+      const response = await axios.put(
+        `http://localhost:8080/account/point/rating`,
+        starValues,
+        option
+      );
+      return response.data;
+    },
+    {
+      onSuccess: async (data, variables) => {
+        if (data) {
+          alert("평가가 완료되었습니다.");
+    
+          // 1. 평가가 완료된 사용자의 ID를 확인합니다.
+          const evaluatedUserIds = Object.keys(variables.starValues);
+    
+          // 2. post_attend_list_tb에서 해당 사용자의 레코드를 삭제합니다.
+          await Promise.all(
+            evaluatedUserIds.map((userId) =>
+              axios.delete(`http://localhost:8080/post/${postId}/attend/delete`, {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+                params: {
+                  postId: postId,
+                  userId: userId,
+                },
+              })
+            )
+          );
+          setEvaluatedUserIds((prevIds) => [
+            ...prevIds,
+            ...evaluatedUserIds,
+          ]);
+          modalState();
+          refetchHostFinishList();
+          return evaluatedUserIds;
         }
+      },
     }
-    const response = await axios.put(`http://localhost:8080/point/rating/}`, starValues, option);
-    return response;
-    }, {
-      onSuccess: (response) => {
-          if(response.status === 200) {
-              alert("평가가 완료되었습니다.");
-              modalState();
-          }
-      }
-  });
+  );
+  
   const saveChangeSubmitHandle = () => {
-    saveChanges.mutate({
-      starValues
-    })
+    saveChanges.mutateAsync({ starValues })
+      .then(completedUserIds => {
+        // 평가가 완료된 사용자의 ID를 전달합니다.
+        onComplete(postId, completedUserIds);
+      });
+  };
+
+  if (getAttendList.isLoading) {
+    return <div>불러오는 중...</div>;
   }
 
-  if(getAttendList.isLoading) {
-    return <div>불러오는 중...</div>
-  }
-  if(!getAttendList.isLoading)
-  return (
+  if (!getAttendList.isLoading) {
+    const filteredAttendList = getAttendList.data.filter(
+      (attendData) => currentUserId !== attendData.userId
+    );
+
+    const remainingAttendList = filteredAttendList.filter(
+      (attendData) => !evaluatedUserIds.includes(attendData.userId)
+    );
+
+    if (remainingAttendList.length === 0) {
+      return (
+        <div css={modalContainer}>
+          <div css={modalContent}>
+            <p css={errormessage}>평가할 항목이 없습니다.</p>
+            <div css={buttonContainer}>
+              <button css={closeButton} onClick={modalState}>
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
       <div css={modalContainer}>
         <div css={modalContent}>
-        <div css={tableContainer}>
-            {getAttendList.data.map(attendData => {
+          <div css={tableContainer}>
+            {remainingAttendList.map((attendData) => {
               const userId = attendData.userId;
               const starValue = starValues[userId] || 0;
-              const isCurrentUser = currentUserId === userId;
+
               return (
-                <div key={attendData.userId} >
-                {!isCurrentUser  && (
-                      <div css={member}>
-                          <div css={attendInfo}>
-                              <div css={infoImage}>
-                                  {attendData.image ? (
-                                      <img
-                                          css={imgIcon}
-                                          src={"http://localhost:8080/image/profile/" + attendData.image}
-                                          alt="ProfileImage"
-                                      />
-                                  ) : (
-                                      <span>{attendData.nickName}</span>
-                                  )}
-                              </div>
-                              <div css={infoNickname}>{attendData.nickName}</div>
-                          </div>
-                          <div css={attendButtonContainer}>
-                            <div>
-                              {[1, 2, 3, 4, 5].map((rating) => (
-                                <button
-                                  key={rating}
-                                  css={star}
-                                  onClick={() => handleNewStarChange(userId, rating)}
-                                  style={{ color: rating <= starValue ? '#A7DED9' : 'gray' }}
-                                >
-                                  ☆
-                                </button>
-                              ))}
-                            </div>
-                            <button css={attendButton}>별점주기</button>
-                          </div>
+                <div key={attendData.userId}>
+                  <div css={member}>
+                    <div css={attendInfo}>
+                      <div css={infoImage}>
+                        {attendData.image ? (
+                          <img
+                            css={imgIcon}
+                            src={`http://localhost:8080/image/profile/${attendData.image}`}
+                            alt="ProfileImage"
+                          />
+                        ) : (
+                          <span>{attendData.nickName}</span>
+                        )}
                       </div>
-                    )}
+                      <div css={infoNickname}>{attendData.nickName}</div>
                     </div>
-                  );
-          })}
-        </div>
+                    <div css={attendButtonContainer}>
+                      <div>
+                        {[1, 2, 3, 4, 5].map((rating) => (
+                          <button
+                            key={rating}
+                            css={star}
+                            onClick={() => handleNewStarChange(userId, rating)}
+                            style={{
+                              color: rating <= starValue ? "#A7DED9" : "gray",
+                            }}
+                          >
+                            ☆
+                          </button>
+                        ))}
+                      </div>
+                      <div css={score}>{starValue}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           <div css={buttonContainer}>
-            <button css={cancelButton} onClick={modalState}>취소</button>
-            <button css={confirmButton} onClick={saveChangeSubmitHandle}>확인</button>
+            <button css={cancelButton} onClick={modalState}>
+              취소
+            </button>
+            <button css={confirmButton} onClick={saveChangeSubmitHandle}>
+              확인
+            </button>
           </div>
         </div>
       </div>
-  );
+    );
+  }
 };
 
 export default MedalRatingModal;

@@ -69,7 +69,7 @@ public class PostService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("postId", postId);
 		map.put("userId", userId);
-		
+		System.out.println(map);
 		return postRepository.attendDelete(map);
 	}
 	

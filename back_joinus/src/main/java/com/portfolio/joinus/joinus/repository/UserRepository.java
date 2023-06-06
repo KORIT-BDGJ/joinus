@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.portfolio.joinus.joinus.dto.auth.PointChangeReqDto;
+import com.portfolio.joinus.joinus.dto.auth.SinglePointChangeReqDto;
 import com.portfolio.joinus.joinus.entity.Authority;
 import com.portfolio.joinus.joinus.entity.HostPostList;
 import com.portfolio.joinus.joinus.entity.OwnerPostList;
@@ -41,6 +43,8 @@ public interface UserRepository {
 	public int updateSportsLikes (SportsLikes sportsLikes);
 	// 삭제
 	public int deleteSportsLikesByUserId(int userId);
+	
+	public int updatePoint(SinglePointChangeReqDto singlePointChangeReqDto );
 	
 	
 	// registerUser 하는 동작 하나로, DB 테이블 5개 개별로 생성
