@@ -82,7 +82,7 @@
 	    <result property="nickname" column="nickname"/>
 	    <result property="levelName" column="levelName"/>
 	    <result property="stateName" column="stateName"/>
-	   
+		<result property="deadline" column="deadline"/>
 	</resultMap>
 	
 
@@ -448,7 +448,8 @@
 			uit.image,
 			uit.nickname,
 			lt.level_name AS levelName,
-			stt.state_name AS stateName
+			stt.state_name AS stateName,
+			pt.deadline AS deadline
 		FROM 
 			post_attend_list_tb patl
 			LEFT OUTER JOIN post_tb pt ON (pt.post_id = patl.post_id)

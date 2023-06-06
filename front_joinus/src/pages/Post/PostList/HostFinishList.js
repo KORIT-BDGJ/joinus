@@ -103,6 +103,22 @@ const HostFinishList = () => {
   const [deleteButtons, setDeleteButtons] = useState({});
   const [expiryTimes, setExpiryTimes] = useState({});
 
+  // const getPostExpiryTime = useQuery(
+  //   ['getPostExpiryTime', selectedPostId],
+  //   async () => {
+  //     const option = {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //       },
+  //     };
+  //     const response = await axios.get(`http://localhost:8080/post/${selectedPostId}`, option);
+  //     return response.data;
+  //   },
+  //   {
+  //     enabled: selectedPostId !== null,  // selectedPostId가 null이 아닐 때만 쿼리를 활성화
+  //   }
+  // );
+
   const onComplete = (postId) => {
     setCompletedPosts((prevCompletedPosts) => ({
       ...prevCompletedPosts,
@@ -135,70 +151,53 @@ const HostFinishList = () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     };
-
     const response = await axios.get(`http://localhost:8080/post/${userId}/finish`, option);
     return response.data;
   });
-
+  
   useEffect(() => {
     if (getHostFinishList.data) {
+      const updatedDeleteButtons = {};
+      const updatedExpiryTimes = {};
+  
       for (let post of getHostFinishList.data) {
-        let expiryTime = new Date(post.expiryTime);
-        let tenMinutes = 10 * 60 * 1000; // 10 minutes in milliseconds
-
+        const postId = post.postId;
+        const expiryTime = new Date(post.deadline);
+        const tenMinutes = 10 * 60 * 1000; // 10 minutes in milliseconds
+  
         if (expiryTime.getTime() + tenMinutes >= Date.now()) {
-          // 만료 시간이 아직 지나지 않은 경우에만 타이머 설정
-          let timer = setTimeout(() => {
+          const timer = setTimeout(() => {
             setDeleteButtons((prevDeleteButtons) => ({
               ...prevDeleteButtons,
-              [post.postId]: true,
+              [postId]: true,
             }));
           }, expiryTime.getTime() + tenMinutes - Date.now());
-
-          // 만료 시간과 타이머를 상태에 저장
-          setExpiryTimes((prevExpiryTimes) => ({
-            ...prevExpiryTimes,
-            [post.postId]: {
-              expiryTime: expiryTime,
-              timer: timer,
-            },
-          }));
+  
+          updatedExpiryTimes[postId] = {
+            expiryTime: expiryTime,
+            timer: timer,
+          };
+        } else {
+          updatedDeleteButtons[postId] = true;
         }
       }
+  
+      setDeleteButtons((prevDeleteButtons) => ({
+        ...prevDeleteButtons,
+        ...updatedDeleteButtons,
+      }));
+  
+      setExpiryTimes((prevExpiryTimes) => ({
+        ...prevExpiryTimes,
+        ...updatedExpiryTimes,
+      }));
     }
-  }, [getHostFinishList]);
+  }, [getHostFinishList.data]);
+  
 
   const closeStateLevelChangeModal = () => {
     setIsStateLevelChangeModalOpen(false);
   };
-  const getPost = useQuery(
-    ['getPost', selectedPostId],
-    async () => {
-      const option = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      };
-      const response = await axios.get(`http://localhost:8080/post/${selectedPostId}`, option);
-      return response.data;
-    },
-    {
-      enabled: !!selectedPostId,  // selectedPostId가 있을 때만 쿼리가 활성화되도록 변경
-      onSuccess: (data) => {  
-        if (data.deadLine) {  
-          const expiryTime = new Date(data.deadLine);
-          setExpiryTimes((prevExpiryTimes) => ({
-            ...prevExpiryTimes,
-            [selectedPostId]: {
-              expiryTime: expiryTime,
-              timer: prevExpiryTimes[selectedPostId]?.timer, // 기존 타이머 유지
-            },
-          }));
-        }
-      },
-    }
-  );
-
 
   const deletePost = useMutation(
     async ({ postId }) => {
@@ -220,11 +219,9 @@ const HostFinishList = () => {
     }
   );
 
-  if (principal.isLoading || getHostFinishList.isLoading || getPost.isLoading) {
+  if (principal.isLoading || getHostFinishList.isLoading ) {
     return <div>로딩중...</div>;
   }
-
-  console.log(getPost.data);
 
   return (
     <div css={container}>
