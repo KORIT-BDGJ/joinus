@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import axios from "axios";
 
@@ -163,8 +163,7 @@ const button_7= css`
 
 
 const Sidebar = () => {
-    
-    const principal = useQuery(
+  const principal = useQuery(
         ["principal"],
         async () => {
           const option = {
@@ -206,7 +205,7 @@ const Sidebar = () => {
         }
     }
     
-    if(principal.isLoading || principal.isError) {
+    if(principal.isLoading) {
         return <></>;
     }
 
