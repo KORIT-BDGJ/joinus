@@ -96,7 +96,7 @@ public class AccountController {
 	
 	@PutMapping("/point/rating")
 	public ResponseEntity<?> changePoint(@RequestBody PointChangeReqDto pointChangeReqDto){
-        System.out.println(pointChangeReqDto);
+        //System.out.println(pointChangeReqDto);
 	    List<Integer> updatedUserIds = authenticationService.changePoint(pointChangeReqDto);
 	    return ResponseEntity.ok().body(updatedUserIds);
 	}

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -102,32 +102,13 @@ const HostFinishList = () => {
   const [completedPosts, setCompletedPosts] = useState({});
   const [deleteButtons, setDeleteButtons] = useState({});
   const [expiryTimes, setExpiryTimes] = useState({});
-
-  // const getPostExpiryTime = useQuery(
-  //   ['getPostExpiryTime', selectedPostId],
-  //   async () => {
-  //     const option = {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //       },
-  //     };
-  //     const response = await axios.get(`http://localhost:8080/post/${selectedPostId}`, option);
-  //     return response.data;
-  //   },
-  //   {
-  //     enabled: selectedPostId !== null,  // selectedPostId가 null이 아닐 때만 쿼리를 활성화
-  //   }
-  // );
+  const cancelTokenSourceRef = useRef(axios.CancelToken.source());
 
   const onComplete = (postId) => {
     setCompletedPosts((prevCompletedPosts) => ({
       ...prevCompletedPosts,
       [postId]: true,
     }));
-  };
-
-  const onDelete = (postId) => {
-    deletePost.mutate({ postId });
   };
 
   const openStateLevelChangeModal = (postId) => {
@@ -150,54 +131,11 @@ const HostFinishList = () => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
+      cancelToken: cancelTokenSourceRef.current.token,
     };
     const response = await axios.get(`http://localhost:8080/post/${userId}/finish`, option);
     return response.data;
   });
-  
-  useEffect(() => {
-    if (getHostFinishList.data) {
-      const updatedDeleteButtons = {};
-      const updatedExpiryTimes = {};
-  
-      for (let post of getHostFinishList.data) {
-        const postId = post.postId;
-        const expiryTime = new Date(post.deadline);
-        const tenMinutes = 10 * 60 * 1000; // 10 minutes in milliseconds
-  
-        if (expiryTime.getTime() + tenMinutes >= Date.now()) {
-          const timer = setTimeout(() => {
-            setDeleteButtons((prevDeleteButtons) => ({
-              ...prevDeleteButtons,
-              [postId]: true,
-            }));
-          }, expiryTime.getTime() + tenMinutes - Date.now());
-  
-          updatedExpiryTimes[postId] = {
-            expiryTime: expiryTime,
-            timer: timer,
-          };
-        } else {
-          updatedDeleteButtons[postId] = true;
-        }
-      }
-  
-      setDeleteButtons((prevDeleteButtons) => ({
-        ...prevDeleteButtons,
-        ...updatedDeleteButtons,
-      }));
-  
-      setExpiryTimes((prevExpiryTimes) => ({
-        ...prevExpiryTimes,
-        ...updatedExpiryTimes,
-      }));
-    }
-  }, [getHostFinishList.data]);
-  
-
-  const closeStateLevelChangeModal = () => {
-    setIsStateLevelChangeModalOpen(false);
-  };
 
   const deletePost = useMutation(
     async ({ postId }) => {
@@ -205,6 +143,7 @@ const HostFinishList = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
+        cancelToken: cancelTokenSourceRef.current.token, 
       };
       await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
     },
@@ -213,11 +152,78 @@ const HostFinishList = () => {
         getHostFinishList.refetch();
         alert("해당 게시글이 삭제되었습니다.");
       },
-      onError: () => {
-        alert("게시글 삭제에 실패했습니다.");
+      onError: (error) => {
+        if (axios.isCancel(error)) {
+          console.log('Delete Post Request cancelled');
+        } else {
+          alert("게시글 삭제에 실패했습니다.");
+        }
       },
     }
   );
+
+  const onDelete = useCallback((postId) => {
+    deletePost.mutate({ postId });
+  }, [deletePost]);
+
+  const updateTimersAndButtons = useCallback((data) => {
+    let timers = []; 
+
+    if (data) {
+      const updatedDeleteButtons = {};
+      const updatedExpiryTimes = {};
+
+      for (let post of data) {
+        const postId = post.postId;
+        const expiryTime = new Date(post.deadline);
+        const tenMinutes = 10 * 60 * 1000;
+
+        if (expiryTime.getTime() + tenMinutes >= Date.now()) {
+          const timer = setTimeout(() => {
+            setDeleteButtons((prevDeleteButtons) => ({
+              ...prevDeleteButtons,
+              [postId]: true,
+            }));
+          }, expiryTime.getTime() + tenMinutes - Date.now());
+
+          updatedExpiryTimes[postId] = {
+            expiryTime: expiryTime,
+            timer: timer,
+          };
+
+          timers.push(timer);
+        } else {
+          updatedDeleteButtons[postId] = true;
+        }
+      }
+
+      setDeleteButtons((prevDeleteButtons) => ({
+        ...prevDeleteButtons,
+        ...updatedDeleteButtons,
+      }));
+
+      setExpiryTimes((prevExpiryTimes) => ({
+        ...prevExpiryTimes,
+        ...updatedExpiryTimes,
+      }));
+    }
+
+    return timers;
+  }, []);
+
+  useEffect(() => {
+    const timers = updateTimersAndButtons(getHostFinishList.data);
+
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+      cancelTokenSourceRef.current.cancel();
+      cancelTokenSourceRef.current = axios.CancelToken.source();
+    };
+  }, [updateTimersAndButtons, getHostFinishList.data]);
+
+  const closeStateLevelChangeModal = () => {
+    setIsStateLevelChangeModalOpen(false);
+  };
 
   if (principal.isLoading || getHostFinishList.isLoading ) {
     return <div>로딩중...</div>;
@@ -262,7 +268,7 @@ const HostFinishList = () => {
               </footer>
             </div>
           ))}
-        </div>
+        </div>    
       )}
     </div>
   );

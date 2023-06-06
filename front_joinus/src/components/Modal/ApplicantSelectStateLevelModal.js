@@ -119,6 +119,11 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
   }, [newLevelId]);
   
   const handleSubmit = () => {
+    if (!newStateId || !newLevelId) {
+      alert("공란이 있습니다");
+      return;
+    }
+  
     alert("신청이 성공적으로 완료되었습니다.");
     modalState();
   };

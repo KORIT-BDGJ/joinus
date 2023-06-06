@@ -28,7 +28,7 @@ const PostRegister = () => {
 
     const [ titlePost, setTitlePost ] = useState("");
     const [ textPost, setTextPost ] = useState("");
-    const [ count, setCount ] = useState(0);
+    const [ count, setCount ] = useState(2);
     const [ gender, setGender ] = useState('1');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
@@ -205,7 +205,7 @@ const PostRegister = () => {
     }
 
     const handleClick = (value) => () => {
-        if(count + value >= 0) {
+        if(count + value >= 2) {
             setCount((prev) => prev + value);
         }
     }

@@ -69,7 +69,7 @@ public class PostService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("postId", postId);
 		map.put("userId", userId);
-		System.out.println(map);
+		//System.out.println(map);
 		return postRepository.attendDelete(map);
 	}
 	
@@ -209,7 +209,7 @@ public class PostService {
             dto.setDeadline(finishPostData.getDeadline()); // 수정 필요
             list.add(dto);
         });
-        System.out.println(list);
+        //System.out.println(list);
         return list;
     }
 
