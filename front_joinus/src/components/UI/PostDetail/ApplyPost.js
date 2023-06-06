@@ -120,9 +120,13 @@ const ApplyPost = ({ postId }) => {
     const isCurrentUserAttended = getAttendList.data.some(attendData => attendData.userId === currentUserID);
     
     
+    const submitAndCloseModal = () => {
+        applyPost.mutate();
+        setIsStateLevelChangeModalOpen(false);
+    };
+
     const closeStateLevelChangeModal = () => {
         setIsStateLevelChangeModalOpen(false);
-        // applyPost.mutate(); 06-06 이강용 수정 :취소를 누르는데 신청이 됨 
     };
 
     return (
@@ -134,11 +138,19 @@ const ApplyPost = ({ postId }) => {
                     <button css={applyPostButton} onClick={() => { cancelApplyPost.mutate() }}>취소</button>
                   ) : (
                     <button css={applyPostButton} onClick={openStateLevelChangeModal}>신청</button>
-                  )
+                )
             )}
           
             <footer>
-                {isStateLevelChangeModalOpen && <ApplicantSelectStateLevelModal modalState={closeStateLevelChangeModal} updateStateId={updateStateId} updateLevelId={updateLevelId} postId={postId}/>}
+                {isStateLevelChangeModalOpen && (
+                    <ApplicantSelectStateLevelModal
+                        closeStateLevelChangeModal={closeStateLevelChangeModal} // 모달창 닫기 함수 전달
+                        submitAndCloseModal={submitAndCloseModal}
+                        updateStateId={updateStateId}
+                        updateLevelId={updateLevelId}
+                        postId={postId}
+                    />
+                )}
             </footer>
         </div>
     );

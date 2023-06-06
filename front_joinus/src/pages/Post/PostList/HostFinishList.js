@@ -244,13 +244,13 @@ const HostFinishList = () => {
               <div css={listItem}>
                 <div css={postInfo}>
                   <h1 css={postTitle}>{post.title}</h1>
-                  {!completedPosts[post.postId] && !deleteButtons[post.postId] ? (
-                    <button css={buttons} onClick={() => openStateLevelChangeModal(post.postId)}>
-                      평가하기
-                    </button>
-                  ) : (
+                  {completedPosts[post.postId] ? (
                     <button css={buttons} onClick={() => onDelete(post.postId)}>
                       삭제
+                    </button>
+                  ) : (
+                    <button css={buttons} onClick={() => openStateLevelChangeModal(post.postId)}>
+                      평가하기
                     </button>
                   )}
                 </div>
@@ -262,7 +262,7 @@ const HostFinishList = () => {
                     postId={selectedPostId}
                     currentUserId={principal.data.userId}
                     refetchHostFinishList={getHostFinishList.refetch}
-                    onComplete={onComplete}
+                    onComplete={() => onComplete(post.postId)}
                   />
                 )}
               </footer>

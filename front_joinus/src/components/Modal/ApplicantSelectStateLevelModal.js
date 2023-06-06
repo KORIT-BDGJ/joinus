@@ -80,27 +80,24 @@ const radioBox = css`
 `;
 
 
-const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevelId, postId }) => {
+const ApplicantSelectStateLevelModal = ({ closeStateLevelChangeModal, submitAndCloseModal, updateStateId, updateLevelId, postId }) => {
   const [newStateId, setNewStateId] = useState('');
   const [newLevelId, setNewLevelId] = useState('');
 
-
-  
-  
-  
   const handleNewStateChange = (e) => {
-    const selectedStateValue = e.target.value;
-    
-    if (selectedStateValue === '알려주세요') {
-      setNewStateId(1);
-    } else if (selectedStateValue === '같이해요') {
-      setNewStateId(2);
-    } else if (selectedStateValue === '알려줄게요') {
-      setNewStateId(3);
-    }
+      const selectedStateValue = e.target.value;
+
+      if (selectedStateValue === '알려주세요') {
+          setNewStateId(1);
+      } else if (selectedStateValue === '같이해요') {
+          setNewStateId(2);
+      } else if (selectedStateValue === '알려줄게요') {
+          setNewStateId(3);
+      }
   };
+
   useEffect(() =>  {
-    updateStateId(newStateId);
+      updateStateId(newStateId);
   }, [newStateId]);
   
   const handleNewLevelChange = (e) => {
@@ -120,13 +117,17 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
   
   const handleSubmit = () => {
     if (!newStateId || !newLevelId) {
-      alert("공란이 있습니다");
-      return;
+        alert("공란이 있습니다");
+        return;
     }
-  
-    alert("신청이 성공적으로 완료되었습니다.");
-    modalState();
+    submitAndCloseModal();
   };
+
+  const handleCancelButtonClick = () => {
+    closeStateLevelChangeModal(); // 모달창 닫기
+  };
+
+  
 
   return (
       <div css={modalContainer}>
@@ -193,7 +194,7 @@ const ApplicantSelectStateLevelModal = ({ modalState, updateStateId, updateLevel
           </div>
           <div css={buttonContainer}>
             <button css={confirmButton} onClick={handleSubmit}>확인</button>
-            <button css={cancelButton} onClick={modalState}>취소</button>
+            <button css={cancelButton} onClick={handleCancelButtonClick}>취소</button>
           </div>
         </div>
       </div>
