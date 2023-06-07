@@ -557,10 +557,10 @@ const UserInfo = () => {
               </div>
             ))}
           </div>
-          <button css={modifyButton} onClick={handleModifyClick}>수정</button>
+          <button css={modifyButton} onClick={handleModifyClick}>등록</button>
           <div css={emojiContainer}>
             <span css={emoji}>👈🏻</span> 
-            <span css={spanLocation}>수정 버튼을 눌러서 등록해주세요.</span>
+            <span css={spanLocation}>등록 버튼을 눌러주세요.</span>
           </div>
         </div>
       </main>
