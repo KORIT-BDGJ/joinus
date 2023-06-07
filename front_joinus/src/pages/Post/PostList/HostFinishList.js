@@ -176,7 +176,7 @@ const HostFinishList = () => {
       for (let post of data) {
         const postId = post.postId;
         const expiryTime = new Date(post.deadline);
-        const tenMinutes = 10 * 60 * 1000;
+        const tenMinutes =  5 * 60 * 1000;
 
         if (expiryTime.getTime() + tenMinutes >= Date.now()) {
           const timer = setTimeout(() => {
