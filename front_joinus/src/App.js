@@ -35,10 +35,9 @@ function App() {
         <Route path='/auth/oauth2/merge' element={<AuthRoute path={"/auth/oauth2/merge"} element={<OAuth2Merge />}/>} />
         <Route path="/post/register" element={<AuthRoute path={"/post/register"} element={<PostRegister />}/>} />
         <Route path="/post/:postId" element={<AuthRoute path={"/post"} element={<PostDetail />}/>} />
-        <Route path="/post/:userId/owner" element={<OwnerPostList />} />
-        <Route path="/post/:userId/host" element={<HostPostList />} />
-        <Route path="/post/:userId/finish" element={<HostFinishList />} />
-
+        <Route path="/post/:userId/owner" element={<AuthRoute path={"/post/:userId/owner"} element={<OwnerPostList />} />} />
+        <Route path="/post/:userId/host" element={<AuthRoute path={"/post/:userId/host"} element={<HostPostList />} />} />
+        <Route path="/post/:userId/finish" element={<AuthRoute path={"/post/:userId/finish"} element={<HostFinishList />} />} />
       </Routes>
     </>
   );

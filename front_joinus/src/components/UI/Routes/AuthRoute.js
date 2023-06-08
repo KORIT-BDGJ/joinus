@@ -29,13 +29,7 @@ const AuthRoute = ({ path, element }) => {
                         navigate('/auth/login');
                     }
                 }
-            },
-            // onError: () => {
-            //     setAuthState(false);
-            //     if(path.startsWith("/user") || path.startsWith("/main")){
-            //         navigate('/auth/login');
-            //     }
-            // }
+            }
         }
     );
 

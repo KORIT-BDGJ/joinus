@@ -10,5 +10,4 @@ export const refreshState = atom({
 export const authenticatedState = atom({
     key: "authenticatedState",
     default: false
-
 });
