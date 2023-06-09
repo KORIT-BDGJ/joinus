@@ -134,7 +134,7 @@ const Main = () => {
     });
 
     const getPostList = useQuery(
-        ["getPostList",searchParams], 
+        ["getPostList"], 
         async () => {
         const option = {
             params: {
