@@ -180,7 +180,7 @@ const Login = () => {
 
     const login = useMutation(async (loginUser) => {
         try {
-            const response = await axios.post("http://localhost:8080/auth/login", loginUser);
+            const response = await axios.post("http://3.39.18.64/auth/login", loginUser);
             setErrorMessages({email: "", password: "" ,  });
             return response;
         } catch(error) {
@@ -205,15 +205,15 @@ const Login = () => {
     }
 
     const googleAuthClickHandle = () => {
-        window.location.href="http://localhost:8080/oauth2/authorization/google";
+        window.location.href="http://3.39.18.64/oauth2/authorization/google";
     }
 
-    const naverAuthCliclkHandle = () => {
-        window.location.href="http://localhost:8080/oauth2/authorization/naver";
+    const naverAuthClickHandle = () => {
+        window.location.href="http://3.39.18.64/oauth2/authorization/naver";
     }
 
     const kakaoAuthClickHandle = () => {
-        window.location.href="http://localhost:8080/oauth2/authorization/kakao";
+        window.location.href="http://3.39.18.64/oauth2/authorization/kakao";
     }
 
 
@@ -249,7 +249,7 @@ const Login = () => {
 
             <div css={oauth2Container}>
                 <div >
-                    <button css={naverButton} onClick={naverAuthCliclkHandle}></button>
+                    <button css={naverButton} onClick={naverAuthClickHandle}></button>
                 </div>
                 <div>
                     <button css={googleButton} onClick={googleAuthClickHandle}></button>
@@ -258,10 +258,6 @@ const Login = () => {
                     <button css={kakaoButton} onClick={kakaoAuthClickHandle}></button>
                 </div>
             </div>
-
-
-
-            
 
             <footer css={footerStyles}>
                 <div css={register}>

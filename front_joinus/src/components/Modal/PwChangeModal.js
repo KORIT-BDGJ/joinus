@@ -148,7 +148,7 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("http://localhost:8080/account/principal", option);
+    const response = await axios.get("http://3.39.18.64/account/principal", option);
     return response.data;
   });
 
@@ -189,7 +189,7 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
         }
       };
       console.log(`Sending password: ${currentPw}`);
-      const response = await axios.post('http://localhost:8080/account/check/password', 
+      const response = await axios.post('http://3.39.18.64/account/check/password', 
         {
           email: principal.data.email,
           oldPassword: currentPw
@@ -250,7 +250,7 @@ const PwChangeModal = ({ closeModal, updatePassword }) => {
     };
   
     try {
-      const response = await axios.put('http://localhost:8080/account/change/password', 
+      const response = await axios.put('http://3.39.18.64/account/change/password', 
         {
           email: principal.data.email,
           oldPassword: currentPw,

@@ -41,7 +41,7 @@ const LoginInput = ({ type, placeholder, onChange, name, children, readOnly, val
                 readOnly={readOnly}
                 value={value}
                 disabled={disabled} 
-                />
+            />
             
         </div>
     );

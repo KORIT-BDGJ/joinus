@@ -92,7 +92,7 @@ const NicknameChangeModal = ({ closeModal, updateNickname }) => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("http://localhost:8080/account/principal", option);
+    const response = await axios.get("http://3.39.18.64/account/principal", option);
     return response.data;
   });
 
@@ -108,7 +108,7 @@ const NicknameChangeModal = ({ closeModal, updateNickname }) => {
     };
 
     try {
-        const response = await axios.put('http://localhost:8080/account/change/nickname', 
+        const response = await axios.put('http://3.39.18.64/account/change/nickname', 
             {
                 email: principal.data.email,
                 newNickname: newNickname

@@ -65,11 +65,11 @@ const ForgetPassword = () => {
 
     const checkEmailSubmitHandle = async() => {
         try {
-            const response = await axios.put("http://localhost:8080/auth/forget/password", { email: loginUser.email });
+            const response = await axios.put("http://3.39.18.64/auth/forget/password", { email: loginUser.email });
           
             if (response.status === 200) {
                 alert('일치하는 이메일 정보가 있습니다.');
-                const sendResponse = await axios.post("http://localhost:8080/auth/validation/send", { email: loginUser.email });
+                const sendResponse = await axios.post("http://3.39.18.64/auth/validation/send", { email: loginUser.email });
                 if(sendResponse.status === 200) {
                     alert('해당 이메일로 인증 메일을 발송하였습니다.');
                 }

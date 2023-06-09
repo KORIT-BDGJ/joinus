@@ -109,7 +109,7 @@ const OwnerPostList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("http://localhost:8080/account/principal", option);
+    const response = await axios.get("http://3.39.18.64/account/principal", option);
     return response.data;
   });
 
@@ -120,7 +120,7 @@ const OwnerPostList = () => {
         },
       };
 
-      const response = await axios.get(`http://localhost:8080/post/${userId}/owner`, option);
+      const response = await axios.get(`http://3.39.18.64/post/${userId}/owner`, option);
       return response.data;
   });
 
@@ -130,7 +130,7 @@ const OwnerPostList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    return await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
+    return await axios.delete(`http://3.39.18.64/post/${postId}/delete`, option);
   }, {
       onSuccess: () => {
         queryClient.fetchQuery("getOwnerPostList"); 

@@ -57,7 +57,7 @@ const PostRegister = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/account/principal", option);
+        const response = await axios.get("http://3.39.18.64/account/principal", option);
         return response.data;
     });
 
@@ -112,7 +112,7 @@ const PostRegister = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/post/register", data, option);
+            const response = await axios.post("http://3.39.18.64/post/register", data, option);
             
             navigate("/main");
             return response;
@@ -124,31 +124,31 @@ const PostRegister = () => {
 
     const getSports = useQuery(["getSports"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/sports", option);
+        const response = await axios.get("http://3.39.18.64/option/sports", option);
         return response.data;
     });
 
     const getLevels = useQuery(["getLevels"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/levels", option);
+        const response = await axios.get("http://3.39.18.64/option/levels", option);
         return response.data;
     });
 
     const getStates = useQuery(["getStates"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/states", option);
+        const response = await axios.get("http://3.39.18.64/option/states", option);
         return response.data;
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/regions", option);
+        const response = await axios.get("http://3.39.18.64/option/regions", option);
         return response.data;
     });
 
     const getGenders = useQuery(["getGenders"], async () => {
 
-        const response = await axios.get("http://localhost:8080/option/genders", option);
+        const response = await axios.get("http://3.39.18.64/option/genders", option);
         return response.data;
     });
 

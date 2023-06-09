@@ -215,7 +215,7 @@ const UserOAuth2Register = () => {
   
       try {
         const response = await axios.post(
-          'http://localhost:8080/auth/oauth2/register',
+          'http://3.39.18.64/auth/oauth2/register',
           registerData,
           option
         );

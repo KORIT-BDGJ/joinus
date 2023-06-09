@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		// .allowedOrigins("http://localHost:3000") : 해당 port에서 오는 요청을
 		registry.addMapping("/**")
 				.allowedMethods("*")
-				.allowedOrigins("*");
+				.allowedOrigins("http://leesfact.s3-website.ap-northeast-2.amazonaws.com/auth/login");
 //				.allowedOrigins("htp://localHost:3000");
 	}
 	
