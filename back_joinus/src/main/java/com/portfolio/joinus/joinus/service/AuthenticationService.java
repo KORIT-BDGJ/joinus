@@ -1,5 +1,6 @@
 package com.portfolio.joinus.joinus.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -418,6 +419,12 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 			UserInfo userInfo = new UserInfo();
 			userInfo.setImage(tempFileName);
 			Path uploadPath = Paths.get(filePath + "profile/" + tempFileName);
+			
+			File file = new File(filePath + "profile");
+			if(!file.exists()) {
+				file.mkdirs();
+			}
+			
 			//System.out.println(uploadPath);
 			try {
 				Files.write(uploadPath, profileImgFile.getBytes());
