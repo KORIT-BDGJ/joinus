@@ -2,5 +2,5 @@ import axios from "axios"
 
 
 export const getAuthenticated = (accessToken) => {
-    return axios.get( "http://3.39.18.64/auth/authenticated", {params: { accessToken }});
+    return axios.get( "http://localhost:8080/auth/authenticated", {params: { accessToken }});
 }

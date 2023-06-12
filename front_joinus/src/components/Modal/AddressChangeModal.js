@@ -113,7 +113,7 @@ const AddressChangeModal = ({ closeModal, updateAddress }) => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("http://3.39.18.64/account/principal", option);
+    const response = await axios.get("http://localhost:8080/account/principal", option);
     return response.data;
   });
 
@@ -150,7 +150,7 @@ const AddressChangeModal = ({ closeModal, updateAddress }) => {
     };
     
     try {
-      const response = await axios.put('http://3.39.18.64/account/change/address', 
+      const response = await axios.put('http://localhost:8080/account/change/address', 
         {
           email: principal.data.email,
           newAddress: newAddress

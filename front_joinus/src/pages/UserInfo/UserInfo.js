@@ -280,7 +280,7 @@ const UserInfo = () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
     }
-    const response = await axios.get("http://3.39.18.64/account/principal", option);
+    const response = await axios.get("http://localhost:8080/account/principal", option);
     return response.data;
   });
   
@@ -290,7 +290,7 @@ const UserInfo = () => {
       setAddress(principal.data.address);
       setNickname(principal.data.nickName);
       setPoint(principal.data.point);
-      setProfileImgURL("http://3.39.18.64/image/profile/" + principal.data.image);
+      setProfileImgURL("http://localhost:8080/image/profile/" + principal.data.image);
     }
   }, [principal.data]);  
 
@@ -301,7 +301,7 @@ const UserInfo = () => {
       },
     };
 
-    const response = await axios.get("http://3.39.18.64/account/check/sportslikes", options);
+    const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
     return response.data;
   });
 
@@ -330,7 +330,7 @@ const UserInfo = () => {
       },
     };
     
-    const response = await axios.post("http://3.39.18.64/account/profile/img", formData, option);
+    const response = await axios.post("http://localhost:8080/account/profile/img", formData, option);
     return response;
     
   },{
@@ -430,7 +430,7 @@ const UserInfo = () => {
     };
   
     try {
-        const response = await axios.put("http://3.39.18.64/account/change/sportslikes", 
+        const response = await axios.put("http://localhost:8080/account/change/sportslikes", 
             {
                 userId: principal.data.userId,
                 sportsIds: selectedSportsToSend

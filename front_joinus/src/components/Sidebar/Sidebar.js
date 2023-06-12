@@ -171,7 +171,7 @@ const Sidebar = () => {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           };
-        const response = await axios.get("http://3.39.18.64/account/principal", option);
+        const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     },
     {
@@ -219,7 +219,7 @@ const Sidebar = () => {
                 {principal.data.image ? (
                     <img
                     css={imgIcon}
-                    src={"http://3.39.18.64/image/profile/" + principal.data.image}
+                    src={"http://localhost:8080/image/profile/" + principal.data.image}
                     alt={principal.data.nickName}
                     />
                 ) : (

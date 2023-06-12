@@ -205,7 +205,7 @@ const UserRegister = () => {
         };
 
         try{
-            await axios.post("http://3.39.18.64/auth/register", JSON.stringify(data), option);
+            await axios.post("http://localhost:8080/auth/register", JSON.stringify(data), option);
             setErrorMessages({name: "", email: "", password: "" ,passwordConfirm: ""}); //빈값 ( 로그인 성공 시, error 메시지 뜨지않음 )
             alert("회원가입 성공!");
             navigate("/auth/login");

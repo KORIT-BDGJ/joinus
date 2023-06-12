@@ -475,7 +475,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/account/principal", option);
+        const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     });
 
@@ -504,7 +504,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get(`http://3.39.18.64/post/${postId}`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
         return response;
     }, {
         onSuccess: (response) => {
@@ -537,7 +537,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://3.39.18.64/post/${postId}/delete`, option);
+        return await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
     }, {
         onSuccess: () => {
             window.location.replace("/main");
@@ -552,7 +552,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/sports", option);
+        const response = await axios.get("http://localhost:8080/option/sports", option);
         return response.data;
     },
     {
@@ -573,7 +573,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/levels", option);
+        const response = await axios.get("http://localhost:8080/option/levels", option);
         return response.data;
     },
     {
@@ -594,7 +594,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/states", option);
+        const response = await axios.get("http://localhost:8080/option/states", option);
         return response.data;
     },
     {
@@ -615,7 +615,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/regions", option);
+        const response = await axios.get("http://localhost:8080/option/regions", option);
         return response.data;
     },
     {
@@ -636,7 +636,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/genders", option);
+        const response = await axios.get("http://localhost:8080/option/genders", option);
         return response.data;
     },{
         onError: (error) => {
@@ -657,7 +657,7 @@ const PostDetail = () => {
             }
         }
         try{
-            const response = await axios.put(`http://3.39.18.64/post/update/${postId}`, updateData, option);
+            const response = await axios.put(`http://localhost:8080/post/update/${postId}`, updateData, option);
             return response;
         } catch(error) {
             setErrorMsg(error.response.data);
@@ -815,7 +815,7 @@ const PostDetail = () => {
                             {getPost.data.data.image ? (
                                 <img
                                     css={imgIcon}
-                                    src={"http://3.39.18.64/image/profile/" + getPost.data.data.image}
+                                    src={"http://localhost:8080/image/profile/" + getPost.data.data.image}
                                     alt="ProfileImage"
                                 />
                             ) : (

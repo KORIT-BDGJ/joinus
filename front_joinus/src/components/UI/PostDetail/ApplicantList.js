@@ -109,7 +109,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get(`http://3.39.18.64/post/${postId}/applicant/list`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response.data;
     }, {
         onSuccess: (response) => {
@@ -125,7 +125,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                 Authorization : `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.post(`http://3.39.18.64/post/${postId}/applicant/accept`, JSON.stringify({
+        return await axios.post(`http://localhost:8080/post/${postId}/applicant/accept`, JSON.stringify({
             userId: applicantUserId,
             stateId: applicantStateId,
             levelId: applicantLevelId
@@ -146,7 +146,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://3.39.18.64/post/${postId}/applicant/delete`, option);
+        return await axios.delete(`http://localhost:8080/post/${postId}/applicant/delete`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getApplicantList");
@@ -183,7 +183,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                                 {applicantData.image ? (
                                     <img
                                         css={imgIcon}
-                                        src={"http://3.39.18.64/image/profile/" + applicantData.image}
+                                        src={"http://localhost:8080/image/profile/" + applicantData.image}
                                         alt="ProfileImage"
                                     />
                                 ) : (

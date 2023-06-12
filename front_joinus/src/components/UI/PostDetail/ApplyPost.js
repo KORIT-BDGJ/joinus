@@ -38,7 +38,7 @@ const ApplyPost = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`http://3.39.18.64/post/${postId}/applicant/list`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/applicant/list`, option);
         return response.data;
     });
 
@@ -49,7 +49,7 @@ const ApplyPost = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`http://3.39.18.64/post/${postId}/attend/list`, option);
+        const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
         return response.data;
     });
 
@@ -61,7 +61,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization : `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.post(`http://3.39.18.64/post/apply/${postId}`, JSON.stringify({
+        return await axios.post(`http://localhost:8080/post/apply/${postId}`, JSON.stringify({
             userId: queryClient.getQueryData("principal").userId,
             stateId: applyStateId,
             levelId: applyLevelId
@@ -81,7 +81,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://3.39.18.64/post/cancel/apply/${postId}`, option);
+        return await axios.delete(`http://localhost:8080/post/cancel/apply/${postId}`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getApplicantList");
@@ -97,7 +97,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://3.39.18.64/post/cancel/attend/${postId}`, option);
+        return await axios.delete(`http://localhost:8080/post/cancel/attend/${postId}`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getAttendList");

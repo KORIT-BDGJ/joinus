@@ -93,11 +93,9 @@ public class AuthenticationService implements UserDetailsService, OAuth2UserServ
 	@Transactional
 	public void register(RegisterReqDto registerReqDto) {
 		
-			
 			User userEntity = registerReqDto.toEntity();
 			userRepository.registerUser(userEntity);
 			String nickname = userEntity.getEmail();
-//			userEntity.getEmail().split("@")[0];
 		
 			userRepository.registerAuthority(Authority.builder()
 					.userId(userEntity.getUserId())

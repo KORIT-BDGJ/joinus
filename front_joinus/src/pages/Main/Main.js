@@ -54,7 +54,7 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
         };
-        const response = await axios.get("http://3.39.18.64/account/principal", option);
+        const response = await axios.get("http://localhost:8080/account/principal", option);
         return response.data;
     });
 
@@ -94,7 +94,7 @@ const Main = () => {
             },
         };
     
-        const response = await axios.get("http://3.39.18.64/account/check/sportslikes", options);
+        const response = await axios.get("http://localhost:8080/account/check/sportslikes", options);
         return response.data;
     });
 
@@ -105,7 +105,7 @@ const Main = () => {
             }
         }
 
-        const response = await axios.get("http://3.39.18.64/option/sports", option);
+        const response = await axios.get("http://localhost:8080/option/sports", option);
 
         return response.data;
     });
@@ -119,7 +119,7 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/regions", option);
+        const response = await axios.get("http://localhost:8080/option/regions", option);
         return response.data;
     });
 
@@ -129,7 +129,7 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://3.39.18.64/option/searchs", option);
+        const response = await axios.get("http://localhost:8080/option/searchs", option);
         return response.data;
     });
 
@@ -145,7 +145,7 @@ const Main = () => {
             }
         }
 
-        const response = await axios.get("http://3.39.18.64/post/list", option);
+        const response = await axios.get("http://localhost:8080/post/list", option);
         return response.data;
     },{
         onSuccess: () => {
@@ -496,7 +496,7 @@ const Main = () => {
                                         <div css={S.imgIcon}>
                                             <img
                                             css={S.imgIcon}
-                                            src={"http://3.39.18.64/image/profile/" + post.writerImage}
+                                            src={"http://localhost:8080/image/profile/" + post.writerImage}
                                             alt={post.writerNickName}
                                             />
                                         </div>

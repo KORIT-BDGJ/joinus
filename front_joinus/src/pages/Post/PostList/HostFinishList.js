@@ -122,7 +122,7 @@ const HostFinishList = () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     };
-    const response = await axios.get("http://3.39.18.64/account/principal", option);
+    const response = await axios.get("http://localhost:8080/account/principal", option);
     return response.data;
   });
 
@@ -133,7 +133,7 @@ const HostFinishList = () => {
       },
       cancelToken: cancelTokenSourceRef.current.token,
     };
-    const response = await axios.get(`http://3.39.18.64/post/${userId}/finish`, option);
+    const response = await axios.get(`http://localhost:8080/post/${userId}/finish`, option);
     return response.data;
   });
 
@@ -145,7 +145,7 @@ const HostFinishList = () => {
         },
         cancelToken: cancelTokenSourceRef.current.token, 
       };
-      await axios.delete(`http://3.39.18.64/post/${postId}/delete`, option);
+      await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
     },
     {
       onSuccess: () => {
