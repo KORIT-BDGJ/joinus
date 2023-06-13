@@ -96,7 +96,6 @@ const PostRegister = () => {
     }
 
     const postSubmit = useMutation(async () => {
-
         const data = {
             writerId: principal.data.userId,
             title: titlePost,
@@ -109,6 +108,7 @@ const PostRegister = () => {
             genderId: gender,
             text: textPost
         }
+        console.log(adjustedDate);
 
         try {
             const response = await axios.post("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/register", data, option);
@@ -304,7 +304,10 @@ const PostRegister = () => {
                                 locale={ko} 
                                 selected={selectedDate}
                                 css={S.postSelectDate}
-                                onChange={date => setSelectedDate(date)}
+                                onChange={date => {
+                                    console.log(date);  // Log the new date to the console
+                                    setSelectedDate(date);
+                                }}
                                 showTimeSelect
                                 minDate={new Date()}
                                 dateFormat="yyyy년 MM월 dd일 HH시 mm분"
