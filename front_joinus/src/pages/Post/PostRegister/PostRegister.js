@@ -13,7 +13,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
 import { useMutation, useQuery } from "react-query";
 import axios from "axios";
-import { addMinutes } from "date-fns";
+import { addHours, addMinutes } from "date-fns";
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiArcheryTarget, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
@@ -32,10 +32,9 @@ const PostRegister = () => {
     const [ gender, setGender ] = useState('1');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
-    
-    const currentDate = new Date();
+    const adjustedDate = addHours(selectedDate, 9);
     const [ selectedDate, setSelectedDate ] = useState(null);
-    const minSelectableDate = new Date();
+    
 
 
     const [ selectedOptions, setSelectedOptions ] = useState({
@@ -105,7 +104,7 @@ const PostRegister = () => {
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
-            deadLine: selectedDate.toLocaleString('ko-KR', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}),
+            deadLine: adjustedDate.toISOString(),
             recruitsCount: count,
             genderId: gender,
             text: textPost
