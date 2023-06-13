@@ -116,7 +116,7 @@ const PostRegister = () => {
             genderId: gender,
             text: textPost
         }
-        console.log(adjustedDate);
+        // console.log(adjustedDate);
 
         try {
             const response = await axios.post("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/register", data, option);
@@ -315,7 +315,6 @@ const PostRegister = () => {
                                 if (date < new Date()) {
                                     alert("현재 시간보다 이전 시간은 선택할 수 없습니다.");
                                 } else {
-                                    console.log(date);  
                                     setSelectedDate(date);
                                 }
                             }}
