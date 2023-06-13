@@ -18,7 +18,7 @@ public class SearchPostRespDto {
 	private String sportsName;
 	private String regionName;
 	private String genderName;
-	private Date deadLine;
+	private LocalDateTime deadLine;
 	private int recruitsCount;
 	private LocalDateTime registeDate;
 

@@ -19,7 +19,7 @@ public class PostReqDto {
 	private int levelId;
 	private int stateId;
 	private int regionId;
-	private Date deadLine;
+	private LocalDateTime deadLine;
 	private int recruitsCount;
 	private int genderId;
 	private String text;
