@@ -105,7 +105,7 @@ const PostRegister = () => {
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
-            deadLine: selectedDate,
+            deadLine: selectedDate.toISOString(),
             recruitsCount: count,
             genderId: gender,
             text: textPost
