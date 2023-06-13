@@ -50,7 +50,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
             
         response.sendRedirect(
-                "http://localhost:3000/auth/oauth2/register"
+                "http://https://web-joinus-front-dihik2mlitgq33u.sel4.cloudtype.app/auth/oauth2/register"
                         + "?registerToken=" + registerToken
                         + "&email=" + email
                         + "&name=" + URLEncoder.encode(name, "UTF-8")
@@ -63,17 +63,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             if (StringUtils.hasText(userEntity.getProvider())) {
                 if (!userEntity.getProvider().contains(provider)) {
                     // 하지만 로그인된 OAuth2 계정의 provider가 등록되지 않은 경우
-                    response.sendRedirect("http://localhost:3000/auth/oauth2/merge"
+                    response.sendRedirect("https://web-joinus-front-dihik2mlitgq33u.sel4.cloudtype.app/auth/oauth2/merge"
                             + "?provider=" + provider
                             + "&email=" + email);
                     return;
                 }
                 // 회원가입이 되었고, provider가 등록된 경우
-                response.sendRedirect("http://localhost:3000/auth/oauth2/login"
+                response.sendRedirect("http://https://web-joinus-front-dihik2mlitgq33u.sel4.cloudtype.app/auth/oauth2/login"
                         + "?accessToken=" + jwtTokenProvider.generateToken(authentication));
             } else {
                 // 회원가입은 정상적으로 되었지만, provider가 null인 경우
-                response.sendRedirect("http://localhost:3000/auth/oauth2/merge"
+                response.sendRedirect("http://https://web-joinus-front-dihik2mlitgq33u.sel4.cloudtype.app/auth/oauth2/merge"
                         + "?provider=" + provider
                         + "&email=" + email);
             }
