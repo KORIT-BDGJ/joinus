@@ -32,8 +32,8 @@ const PostRegister = () => {
     const [ gender, setGender ] = useState('1');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
-    const adjustedDate = addHours(selectedDate, 21);
-    const [ selectedDate, setSelectedDate ] = useState(null);
+    const [ selectedDate, setSelectedDate ] = useState(new Date());
+    const adjustedDate = selectedDate ? addHours(selectedDate, 9) : null;
     
 
 
@@ -104,7 +104,7 @@ const PostRegister = () => {
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
-            deadLine: adjustedDate.toISOString(),
+            deadLine: adjustedDate ? adjustedDate.toISOString() : null,
             recruitsCount: count,
             genderId: gender,
             text: textPost
