@@ -35,7 +35,7 @@ const PostRegister = () => {
     
     const currentDate = new Date();
     const [ selectedDate, setSelectedDate ] = useState(null);
-    const minSelectableDate = addMinutes(currentDate, 0);
+    const minSelectableDate = new Date();
 
 
     const [ selectedOptions, setSelectedOptions ] = useState({
@@ -307,7 +307,7 @@ const PostRegister = () => {
                                 css={S.postSelectDate}
                                 onChange={date => setSelectedDate(date)}
                                 showTimeSelect
-                                minDate={minSelectableDate}
+                                minDate={new Date()}
                                 dateFormat="yyyy년 MM월 dd일 HH시 mm분"
                                 placeholderText="날짜를 선택하시오 "
                             />
