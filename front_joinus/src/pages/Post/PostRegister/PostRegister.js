@@ -33,7 +33,15 @@ const PostRegister = () => {
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
-    const adjustedDate = selectedDate ? addHours(selectedDate, 0) : null;
+    const adjustedDate = selectedDate 
+    ? new Date(Date.UTC(
+        selectedDate.getUTCFullYear(), 
+        selectedDate.getUTCMonth(), 
+        selectedDate.getUTCDate(), 
+        selectedDate.getUTCHours(), 
+        selectedDate.getUTCMinutes(), 
+        selectedDate.getUTCSeconds()))
+    : null;
     
 
 
@@ -305,7 +313,7 @@ const PostRegister = () => {
                                 selected={selectedDate}
                                 css={S.postSelectDate}
                                 onChange={date => {
-                                    console.log(date);  // Log the new date to the console
+                                    console.log(date);  
                                     setSelectedDate(date);
                                 }}
                                 showTimeSelect
