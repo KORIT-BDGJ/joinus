@@ -105,7 +105,7 @@ const PostRegister = () => {
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
-            deadLine: selectedDate.toISOString(),
+            deadLine: selectedDate.toLocaleString('ko-KR', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}),
             recruitsCount: count,
             genderId: gender,
             text: textPost
