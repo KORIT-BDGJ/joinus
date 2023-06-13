@@ -33,7 +33,7 @@ const PostRegister = () => {
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
-    const adjustedDate = selectedDate ? addHours(selectedDate, 9) : null;
+    const adjustedDate = selectedDate ? addHours(selectedDate, 0) : null;
     
 
 
