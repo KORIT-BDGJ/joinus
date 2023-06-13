@@ -57,7 +57,7 @@ const PostRegister = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/principal", option);
         return response.data;
     });
 
@@ -112,7 +112,7 @@ const PostRegister = () => {
         }
 
         try {
-            const response = await axios.post("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/register", data, option);
+            const response = await axios.post("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/register", data, option);
             
             navigate("/main");
             return response;
@@ -124,31 +124,31 @@ const PostRegister = () => {
 
     const getSports = useQuery(["getSports"], async () => {
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/sports", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/sports", option);
         return response.data;
     });
 
     const getLevels = useQuery(["getLevels"], async () => {
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/levels", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/levels", option);
         return response.data;
     });
 
     const getStates = useQuery(["getStates"], async () => {
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/states", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/states", option);
         return response.data;
     });
 
     const getRegions = useQuery(["getRegions"], async () => {
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/regions", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/regions", option);
         return response.data;
     });
 
     const getGenders = useQuery(["getGenders"], async () => {
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/genders", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/genders", option);
         return response.data;
     });
 

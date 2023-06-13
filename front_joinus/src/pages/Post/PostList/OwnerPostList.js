@@ -109,7 +109,7 @@ const OwnerPostList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", option);
+    const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/principal", option);
     return response.data;
   });
 
@@ -120,7 +120,7 @@ const OwnerPostList = () => {
         },
       };
 
-      const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${userId}/owner`, option);
+      const response = await axios.get(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${userId}/owner`, option);
       return response.data;
   });
 
@@ -130,7 +130,7 @@ const OwnerPostList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/delete`, option);
+    return await axios.delete(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/delete`, option);
   }, {
       onSuccess: () => {
         queryClient.fetchQuery("getOwnerPostList"); 

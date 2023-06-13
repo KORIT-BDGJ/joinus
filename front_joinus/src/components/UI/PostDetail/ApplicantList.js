@@ -109,7 +109,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/applicant/list`, option);
+        const response = await axios.get(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/applicant/list`, option);
         return response.data;
     }, {
         onSuccess: (response) => {
@@ -125,7 +125,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                 Authorization : `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.post(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/applicant/accept`, JSON.stringify({
+        return await axios.post(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/applicant/accept`, JSON.stringify({
             userId: applicantUserId,
             stateId: applicantStateId,
             levelId: applicantLevelId
@@ -146,7 +146,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/applicant/delete`, option);
+        return await axios.delete(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/applicant/delete`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getApplicantList");
@@ -183,7 +183,7 @@ const ApplicantList = ({ postId, isCurrentUserAuthor, updateTotalApplicantCount,
                                 {applicantData.image ? (
                                     <img
                                         css={imgIcon}
-                                        src={"https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/" + applicantData.image}
+                                        src={"https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/image/profile/" + applicantData.image}
                                         alt="ProfileImage"
                                     />
                                 ) : (

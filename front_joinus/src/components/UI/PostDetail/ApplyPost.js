@@ -38,7 +38,7 @@ const ApplyPost = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/applicant/list`, option);
+        const response = await axios.get(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/applicant/list`, option);
         return response.data;
     });
 
@@ -49,7 +49,7 @@ const ApplyPost = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/attend/list`, option);
+        const response = await axios.get(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/attend/list`, option);
         return response.data;
     });
 
@@ -61,7 +61,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization : `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.post(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/apply/${postId}`, JSON.stringify({
+        return await axios.post(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/apply/${postId}`, JSON.stringify({
             userId: queryClient.getQueryData("principal").userId,
             stateId: applyStateId,
             levelId: applyLevelId
@@ -81,7 +81,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/cancel/apply/${postId}`, option);
+        return await axios.delete(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/cancel/apply/${postId}`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getApplicantList");
@@ -97,7 +97,7 @@ const ApplyPost = ({ postId }) => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/cancel/attend/${postId}`, option);
+        return await axios.delete(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/cancel/attend/${postId}`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getAttendList");

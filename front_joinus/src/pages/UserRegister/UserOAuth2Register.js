@@ -215,7 +215,7 @@ const UserOAuth2Register = () => {
   
       try {
         const response = await axios.post(
-          'https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/oauth2/register',
+          'https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/auth/oauth2/register',
           registerData,
           option
         );

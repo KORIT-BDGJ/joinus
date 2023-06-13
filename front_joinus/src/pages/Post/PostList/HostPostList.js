@@ -172,7 +172,7 @@ const HostPostList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", option);
+    const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/principal", option);
     return response.data;
   });
 
@@ -184,7 +184,7 @@ const HostPostList = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       };
-      const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${userId}/host/applicant`, option);
+      const response = await axios.get(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${userId}/host/applicant`, option);
       return response.data;
   });
 
@@ -197,7 +197,7 @@ const HostPostList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     }
-    return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/cancel/apply/${postId}`, option);
+    return await axios.delete(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/cancel/apply/${postId}`, option);
   }, {
       onSuccess: () => {
           queryClient.invalidateQueries("getHostApplicantList");
@@ -210,7 +210,7 @@ const HostPostList = () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     };
-    const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${userId}/host/attend`, option);
+    const response = await axios.get(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${userId}/host/attend`, option);
     return response.data;
   });
 
@@ -223,7 +223,7 @@ const cancelAttendPost = useMutation(async (postId) => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
   }
-  return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/attend/delete`, option);
+  return await axios.delete(`https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/${postId}/attend/delete`, option);
 }, {
     onSuccess: () => {
         queryClient.invalidateQueries("getHostAttendList");

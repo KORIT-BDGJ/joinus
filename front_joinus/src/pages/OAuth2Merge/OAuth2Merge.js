@@ -98,7 +98,7 @@ const inputFocused = css`
 const OAuth2Merge = () => {
   const providerMerge = useMutation(async (mergeData) => {
     try {
-      const response = await axios.put("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/oauth2/merge", mergeData);
+      const response = await axios.put("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/auth/oauth2/merge", mergeData);
       return response;
     } catch (error) {
       setErrorMsg(error.response.data);

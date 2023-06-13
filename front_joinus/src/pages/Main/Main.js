@@ -54,7 +54,7 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
         };
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/principal", option);
         return response.data;
     });
 
@@ -94,7 +94,7 @@ const Main = () => {
             },
         };
     
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/check/sportslikes", options);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/check/sportslikes", options);
         return response.data;
     });
 
@@ -105,7 +105,7 @@ const Main = () => {
             }
         }
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/sports", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/sports", option);
 
         return response.data;
     });
@@ -119,7 +119,7 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/regions", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/regions", option);
         return response.data;
     });
 
@@ -129,7 +129,7 @@ const Main = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/searchs", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/option/searchs", option);
         return response.data;
     });
 
@@ -145,7 +145,7 @@ const Main = () => {
             }
         }
 
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/list", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/list", option);
         return response.data;
     },{
         onSuccess: () => {
@@ -496,7 +496,7 @@ const Main = () => {
                                         <div css={S.imgIcon}>
                                             <img
                                             css={S.imgIcon}
-                                            src={"https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/" + post.writerImage}
+                                            src={"https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/image/profile/" + post.writerImage}
                                             alt={post.writerNickName}
                                             />
                                         </div>

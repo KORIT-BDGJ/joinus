@@ -171,7 +171,7 @@ const Sidebar = () => {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           };
-        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", option);
+        const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/principal", option);
         return response.data;
     },
     {
@@ -219,7 +219,7 @@ const Sidebar = () => {
                 {principal.data.image ? (
                     <img
                     css={imgIcon}
-                    src={"https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/" + principal.data.image}
+                    src={"https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/image/profile/" + principal.data.image}
                     alt={principal.data.nickName}
                     />
                 ) : (

@@ -14,7 +14,7 @@ const AuthRouteReactQuery = ({ path, element }) => {
           queryKey: ["authenticated"],
           queryFn: async () => {
             const accessToken = localStorage.getItem("accessToken");
-            const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/authenticated", {
+            const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/auth/authenticated", {
               params: { accessToken },
             });
             return response;
@@ -25,7 +25,7 @@ const AuthRouteReactQuery = ({ path, element }) => {
           queryKey: ["principal"],
           queryFn: async () => {
             const accessToken = localStorage.getItem("accessToken");
-            const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", {
+            const response = await axios.get("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/account/principal", {
               params: { accessToken },
             });
             return response;
