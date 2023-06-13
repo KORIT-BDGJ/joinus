@@ -475,7 +475,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/account/principal", option);
+        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/principal", option);
         return response.data;
     });
 
@@ -504,7 +504,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get(`http://localhost:8080/post/${postId}`, option);
+        const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}`, option);
         return response;
     }, {
         onSuccess: (response) => {
@@ -537,7 +537,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://localhost:8080/post/${postId}/delete`, option);
+        return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/delete`, option);
     }, {
         onSuccess: () => {
             window.location.replace("/main");
@@ -552,7 +552,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/option/sports", option);
+        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/sports", option);
         return response.data;
     },
     {
@@ -573,7 +573,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/option/levels", option);
+        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/levels", option);
         return response.data;
     },
     {
@@ -594,7 +594,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/option/states", option);
+        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/states", option);
         return response.data;
     },
     {
@@ -615,7 +615,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/option/regions", option);
+        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/regions", option);
         return response.data;
     },
     {
@@ -636,7 +636,7 @@ const PostDetail = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        const response = await axios.get("http://localhost:8080/option/genders", option);
+        const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/option/genders", option);
         return response.data;
     },{
         onError: (error) => {
@@ -657,7 +657,7 @@ const PostDetail = () => {
             }
         }
         try{
-            const response = await axios.put(`http://localhost:8080/post/update/${postId}`, updateData, option);
+            const response = await axios.put(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/update/${postId}`, updateData, option);
             return response;
         } catch(error) {
             setErrorMsg(error.response.data);
@@ -815,7 +815,7 @@ const PostDetail = () => {
                             {getPost.data.data.image ? (
                                 <img
                                     css={imgIcon}
-                                    src={"http://localhost:8080/image/profile/" + getPost.data.data.image}
+                                    src={"https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/" + getPost.data.data.image}
                                     alt="ProfileImage"
                                 />
                             ) : (

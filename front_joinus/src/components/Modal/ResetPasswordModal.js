@@ -112,7 +112,7 @@ const ResetPasswordModal = ({ setIsOpen , setResetSuccess }) => {
       }
     }
     try {
-      const response = await axios.get("http://localhost:8080/auth/forget/password/token", option);
+      const response = await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/forget/password/token", option);
       return response.data
     } catch (error) {
       alert(error.response.data.message);
@@ -153,7 +153,7 @@ const ResetPasswordModal = ({ setIsOpen , setResetSuccess }) => {
     try {
       
       const response = await axios.put(
-        'http://localhost:8080/auth/reset/password',
+        'https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/reset/password',
         {
           temporaryToken: temporaryToken,
           email: checkToken.data,

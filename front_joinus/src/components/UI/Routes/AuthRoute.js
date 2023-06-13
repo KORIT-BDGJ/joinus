@@ -16,7 +16,7 @@ const AuthRoute = ({ path, element }) => {
                     "Authorization": `Bearer ${localStorage.getItem("accessToken")}` ,
                 },
             };
-            return await axios.get("http://localhost:8080/auth/authenticated", option);
+            return await axios.get("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/authenticated", option);
         },{
             onSuccess: (response) => {
                 if(response.status === 200 && response.data){

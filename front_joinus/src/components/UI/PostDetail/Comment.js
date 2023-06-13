@@ -137,7 +137,7 @@ const Comment = ({ postId }) => {
             }
         }
 
-        const response = await axios.get(`http://localhost:8080/post/${postId}/comment`, option);
+        const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/comment`, option);
         return response;
     });
 
@@ -149,7 +149,7 @@ const Comment = ({ postId }) => {
                 Authorization : `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.post(`http://localhost:8080/post/${postId}/comment/submit`, JSON.stringify({
+        return await axios.post(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/comment/submit`, JSON.stringify({
             userId: queryClient.getQueryData("principal").userId,
             comment: comment
         }), option);
@@ -171,7 +171,7 @@ const Comment = ({ postId }) => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://localhost:8080/post/${postId}/comment/delete`, option);
+        return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/comment/delete`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getComment");
@@ -225,7 +225,7 @@ const Comment = ({ postId }) => {
                                 {commentData.image ? (
                                         <img
                                             css={imgIcon}
-                                            src={"http://localhost:8080/image/profile/" + commentData.image}
+                                            src={"https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/" + commentData.image}
                                             alt="ProfileImage"
                                         />
                                     ) : (

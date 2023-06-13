@@ -91,7 +91,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount, userI
             }
         }
 
-        const response = await axios.get(`http://localhost:8080/post/${postId}/attend/list`, option);
+        const response = await axios.get(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/attend/list`, option);
         return response.data;
     }, {
         onSuccess: (response) => {
@@ -108,7 +108,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount, userI
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             }
         }
-        return await axios.delete(`http://localhost:8080/post/${postId}/attend/delete`, option);
+        return await axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/attend/delete`, option);
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries("getAttendList");
@@ -135,7 +135,7 @@ const AttendList = ({ postId, isCurrentUserAuthor, updateTotalAttendCount, userI
                                     {attendData.image ? (
                                         <img
                                             css={imgIcon}
-                                            src={"http://localhost:8080/image/profile/" + attendData.image}
+                                            src={"https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/" + attendData.image}
                                             alt="ProfileImage"
                                         />
                                     ) : (

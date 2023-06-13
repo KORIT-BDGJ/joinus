@@ -159,7 +159,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId, refetchHostFinish
     };
 
     const response = await axios.get(
-      `http://localhost:8080/post/${postId}/attend/list`,
+      `https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/attend/list`,
       option
     );
     return response.data;
@@ -181,7 +181,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId, refetchHostFinish
         },
       };
       const response = await axios.put(
-        `http://localhost:8080/account/point/rating`,
+        `https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/account/point/rating`,
         starValues,
         option
       );
@@ -198,7 +198,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId, refetchHostFinish
           // 2. post_attend_list_tb에서 해당 사용자의 레코드를 삭제합니다.
           await Promise.all(
             evaluatedUserIds.map((userId) =>
-              axios.delete(`http://localhost:8080/post/${postId}/attend/delete`, {
+              axios.delete(`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/post/${postId}/attend/delete`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                 },
@@ -273,7 +273,7 @@ const MedalRatingModal = ({ modalState, postId, currentUserId, refetchHostFinish
                         {attendData.image ? (
                           <img
                             css={imgIcon}
-                            src={`http://localhost:8080/image/profile/${attendData.image}`}
+                            src={`https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/image/profile/${attendData.image}`}
                             alt="ProfileImage"
                           />
                         ) : (

@@ -180,7 +180,7 @@ const Login = () => {
 
     const login = useMutation(async (loginUser) => {
         try {
-            const response = await axios.post("http://localhost:8080/auth/login", loginUser);
+            const response = await axios.post("https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/auth/login", loginUser);
             setErrorMessages({email: "", password: "" ,  });
             return response;
         } catch(error) {
@@ -204,15 +204,15 @@ const Login = () => {
     }
 
     const googleAuthClickHandle = () => {
-        window.location.href="http://localhost:8080/oauth2/authorization/google";
+        window.location.href="https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/oauth2/authorization/google";
     }
 
     const naverAuthClickHandle = () => {
-        window.location.href="http://localhost:8080/oauth2/authorization/naver";
+        window.location.href="https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/oauth2/authorization/naver";
     }
 
     const kakaoAuthClickHandle = () => {
-        window.location.href="http://localhost:8080/oauth2/authorization/kakao";
+        window.location.href="https://port-0-joinus-dihik2mlitgq33u.sel4.cloudtype.app/oauth2/authorization/kakao";
     }
 
 
