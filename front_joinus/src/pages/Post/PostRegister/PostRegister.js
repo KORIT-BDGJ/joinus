@@ -34,13 +34,7 @@ const PostRegister = () => {
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
     const [ selectedDate, setSelectedDate ] = useState(new Date());
     const adjustedDate = selectedDate 
-    ? new Date(Date.UTC(
-        selectedDate.getUTCFullYear(), 
-        selectedDate.getUTCMonth(), 
-        selectedDate.getUTCDate(), 
-        selectedDate.getUTCHours(), 
-        selectedDate.getUTCMinutes(), 
-        selectedDate.getUTCSeconds()))
+    ? new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000)
     : null;
     
 
