@@ -301,21 +301,23 @@ const PostRegister = () => {
 
                     </div>
                     <div css={S.postSelesctsBox}>
-                        <div>
-                            <DatePicker 
-                                locale={ko} 
-                                selected={selectedDate}
-                                css={S.postSelectDate}
-                                onChange={date => {
-                                    console.log(date);  
-                                    setSelectedDate(date);
-                                }}
-                                showTimeSelect
-                                minDate={new Date()}
-                                dateFormat="yyyy년 MM월 dd일 HH시 mm분"
-                                placeholderText="날짜를 선택하시오 "
-                            />
-                        </div>
+                    <DatePicker 
+                        locale={ko} 
+                        selected={selectedDate}
+                        css={S.postSelectDate}
+                        onChange={date => {
+                            if (date < new Date()) {
+                                alert("현재 시간보다 이전 시간은 선택할 수 없습니다.");
+                            } else {
+                                console.log(date);  
+                                setSelectedDate(date);
+                            }
+                        }}
+                        showTimeSelect
+                        minDate={new Date()}
+                        dateFormat="yyyy년 MM월 dd일 HH시 mm분"
+                        placeholderText="날짜를 선택하시오 "
+                    />
                     </div>
                 </div>
                 <div css={S.postContainer}>
