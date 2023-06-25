@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 	 .authenticated()
 		 	 .and()
 		 	 .oauth2Login()
-		 	 .loginPage("http://localhost:3000/auth/login")
+		 	 .loginPage("https://web-joinus-front-dihik2mlitgq33u.sel4.cloudtype.app/auth/login")
 		 	 .successHandler(oAuth2SuccessHandler)
 		 	 .userInfoEndpoint()
 			 .userService(authenticationService);

@@ -212,13 +212,15 @@ const HostFinishList = () => {
   }, []);
 
   useEffect(() => {
-    const timers = updateTimersAndButtons(getHostFinishList.data);
-
-    return () => {
-      timers.forEach(timer => clearTimeout(timer));
-      cancelTokenSourceRef.current.cancel();
-      cancelTokenSourceRef.current = axios.CancelToken.source();
-    };
+    if (getHostFinishList.data) {
+      const timers = updateTimersAndButtons(getHostFinishList.data);
+  
+      return () => {
+        timers.forEach(timer => clearTimeout(timer));
+        cancelTokenSourceRef.current.cancel();
+        cancelTokenSourceRef.current = axios.CancelToken.source();
+      };
+    }
   }, [updateTimersAndButtons, getHostFinishList.data]);
 
   const closeStateLevelChangeModal = () => {

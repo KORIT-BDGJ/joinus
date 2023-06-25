@@ -13,7 +13,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import SelectSportsModal from "../../../components/Modal/SelectModal/SelectSportsModal";
 import { useMutation, useQuery } from "react-query";
 import axios from "axios";
-import { addMinutes } from "date-fns";
+import { addHours, addMinutes } from "date-fns";
 import { GiBaseballBat, GiBasketballBasket, GiBoatFishing, GiMountainClimbing, GiSoccerKick, GiTennisRacket, GiMountainRoad, GiBowlingStrike, GiHockey, GiArcheryTarget, GiBoxingGlove } from 'react-icons/gi';
 import { CgGym } from 'react-icons/cg';
 import { IoMdBicycle } from 'react-icons/io';
@@ -32,10 +32,17 @@ const PostRegister = () => {
     const [ gender, setGender ] = useState('1');
     const [ selectedIcon, setSelectedIcon ] = useState(null);
     const [ sportsModalIsOpen, setSportsModalIsOpen ] = useState(false);
+    const [ selectedDate, setSelectedDate ] = useState(new Date());
+    const adjustedDate = selectedDate 
+    ? new Date(Date.UTC(
+        selectedDate.getFullYear(), 
+        selectedDate.getMonth(), 
+        selectedDate.getDate(), 
+        selectedDate.getHours(), 
+        selectedDate.getMinutes(), 
+        selectedDate.getSeconds()))
+    : null;
     
-    const currentDate = new Date();
-    const [ selectedDate, setSelectedDate ] = useState(null);
-    const minSelectableDate = addMinutes(currentDate, 0);
 
 
     const [ selectedOptions, setSelectedOptions ] = useState({
@@ -97,7 +104,6 @@ const PostRegister = () => {
     }
 
     const postSubmit = useMutation(async () => {
-
         const data = {
             writerId: principal.data.userId,
             title: titlePost,
@@ -105,11 +111,12 @@ const PostRegister = () => {
             levelId: selectedOptions.selectedLevel.value,
             stateId: selectedOptions.selectedStates.value,
             regionId: selectedOptions.selectedCountry.value,
-            deadLine: selectedDate,
+            deadLine: adjustedDate ? adjustedDate.toISOString() : null,
             recruitsCount: count,
             genderId: gender,
             text: textPost
         }
+        // console.log(adjustedDate);
 
         try {
             const response = await axios.post("https://port-0-joinus-koh2xlitnedv8.sel4.cloudtype.app/post/register", data, option);
@@ -300,18 +307,22 @@ const PostRegister = () => {
 
                     </div>
                     <div css={S.postSelesctsBox}>
-                        <div>
-                            <DatePicker 
-                                locale={ko} 
-                                selected={selectedDate}
-                                css={S.postSelectDate}
-                                onChange={date => setSelectedDate(date)}
-                                showTimeSelect
-                                minDate={minSelectableDate}
-                                dateFormat="yyyy년 MM월 dd일 HH시 mm분"
-                                placeholderText="날짜를 선택하시오 "
-                            />
-                        </div>
+                        <DatePicker 
+                            locale={ko} 
+                            selected={selectedDate}
+                            css={S.postSelectDate}
+                            onChange={date => {
+                                if (date < new Date()) {
+                                    alert("현재 시간보다 이전 시간은 선택할 수 없습니다.");
+                                } else {
+                                    setSelectedDate(date);
+                                }
+                            }}
+                            showTimeSelect
+                            minDate={new Date()}
+                            dateFormat="yyyy년 MM월 dd일 HH시 mm분"
+                            placeholderText="날짜를 선택하시오 "
+                        />
                     </div>
                 </div>
                 <div css={S.postContainer}>

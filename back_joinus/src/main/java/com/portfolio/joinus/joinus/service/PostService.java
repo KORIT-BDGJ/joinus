@@ -1,11 +1,10 @@
 package com.portfolio.joinus.joinus.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,14 +13,10 @@ import com.portfolio.joinus.joinus.dto.post.ApplicantListRespDto;
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 import com.portfolio.joinus.joinus.dto.post.CommentRespDto;
 import com.portfolio.joinus.joinus.dto.post.GetPostRespDto;
-import com.portfolio.joinus.joinus.dto.post.OwnerPostListRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostReqDto;
-import com.portfolio.joinus.joinus.dto.post.PostRespDto;
 import com.portfolio.joinus.joinus.dto.post.PostUpdateReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostReqDto;
 import com.portfolio.joinus.joinus.dto.post.SearchPostRespDto;
-import com.portfolio.joinus.joinus.entity.HostPostList;
-import com.portfolio.joinus.joinus.entity.OwnerPostList;
 import com.portfolio.joinus.joinus.entity.Post;
 import com.portfolio.joinus.joinus.repository.PostRepository;
 import com.portfolio.joinus.joinus.security.PrincipalUser;
@@ -231,7 +226,7 @@ public class PostService {
     	int updateSports = postUpdateReqDto.getUpdateSports();
     	int updateRegion = postUpdateReqDto.getUpdateRegion();
     	int updateGender = postUpdateReqDto.getUpdateGender();
-    	Date updateDate = postUpdateReqDto.getUpdateDate();
+    	LocalDateTime updateDate = postUpdateReqDto.getUpdateDate();
     	int updateState = postUpdateReqDto.getUpdateState();
     	int updateLevel = postUpdateReqDto.getUpdateLevel();
     	int updateRecruitsCount = postUpdateReqDto.getUpdateRecruitsCount();

@@ -2,7 +2,8 @@ package com.portfolio.joinus.joinus.dto.post;
 
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +19,6 @@ public class AttendListRespDto {
     private String levelName;
     private String title;
     // 06-06 이강용 추
-    private Date deadline;
+    private LocalDateTime deadline;
 }
 

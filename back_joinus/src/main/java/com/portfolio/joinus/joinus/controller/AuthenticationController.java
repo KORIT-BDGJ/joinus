@@ -98,16 +98,16 @@ public class AuthenticationController {
 	    return ResponseEntity.ok(emailExists);
 	}
 	
-	@GetMapping("/forget/password/token")
-	public ResponseEntity<?> checkForgotToken(String token) {
-		return ResponseEntity.ok(authenticationService.checkForgotToken(token));
-	}
-	
 	@PostMapping("/validation/send")
 	public ResponseEntity<?> sendMail(@RequestBody Map<String, String> requestData){
 		//System.out.println(requestData);
 		
 		return ResponseEntity.ok(authenticationService.validAndSendEmail(requestData.get("email")));
+	}
+	
+	@GetMapping("/forget/password/token")
+	public ResponseEntity<?> checkForgotToken(String token) {
+		return ResponseEntity.ok(authenticationService.checkForgotToken(token));
 	}
 	
 	@ValidAspect

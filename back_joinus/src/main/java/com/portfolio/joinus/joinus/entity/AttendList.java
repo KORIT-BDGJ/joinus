@@ -2,7 +2,7 @@ package com.portfolio.joinus.joinus.entity;
 
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.portfolio.joinus.joinus.dto.post.AttendListRespDto;
 
@@ -29,7 +29,7 @@ public class AttendList {
     private Level level;
     
    // 2023-06-06 이강용 추가
-    private Date deadline;
+    private LocalDateTime deadline;
 
     public AttendListRespDto toDto() {
         return AttendListRespDto.builder()

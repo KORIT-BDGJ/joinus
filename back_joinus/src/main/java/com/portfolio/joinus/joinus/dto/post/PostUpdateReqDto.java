@@ -1,6 +1,6 @@
 package com.portfolio.joinus.joinus.dto.post;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ public class PostUpdateReqDto {
 	private String updateTitle;
 	private int updateSports;
 	private int updateRegion;
-	private Date updateDate;
+	private LocalDateTime updateDate;
 	private int updateRecruitsCount;
 	private int updateGender;
 	private int updateState;
